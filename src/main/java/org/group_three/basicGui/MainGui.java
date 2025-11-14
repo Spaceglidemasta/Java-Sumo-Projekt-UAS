@@ -1,13 +1,22 @@
 package org.group_three.basicGui;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
 import javafx.animation.PauseTransition;
+import javafx.util.Duration;
+
+import javafx.animation.RotateTransition;
+import javafx.application.Application;
+import javafx.scene.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
+import javafx.scene.transform.Rotate;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
@@ -35,7 +44,7 @@ public class MainGui extends Application {
 	public void start(Stage stage) {
 
 
-		Label label2 = new Label("Hallo JavaFX 25 mit Maven!");
+		/*Label label2 = new Label("Hallo JavaFX 25 mit Maven!");
 		StackPane root2 = new StackPane(label2);
 		Scene scene2 = new Scene(root2, 400, 300);
 
@@ -57,7 +66,54 @@ public class MainGui extends Application {
 			// neue Scene hier setzen
 			stage.setScene(scene2);
 		});
-		delay.play();
+		delay.play();*/
+
+		// 3D Objekt
+        Box box = new Box(100, 100, 100);
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.DODGERBLUE);
+        material.setSpecularColor(Color.LIGHTBLUE);
+        box.setMaterial(material);
+
+        // Licht
+        PointLight light = new PointLight(Color.WHITE);
+        light.setTranslateX(-200);
+        light.setTranslateY(-100);
+        light.setTranslateZ(-200);
+
+        AmbientLight ambient = new AmbientLight(Color.color(0.3, 0.3, 0.3));
+
+        // Gruppe für 3D-Szene
+        Group root3D = new Group(box, light, ambient);
+
+        // Kamera
+        PerspectiveCamera camera = new PerspectiveCamera(true);
+        camera.setTranslateZ(-500);  // Kamera etwas zurück
+        camera.setNearClip(0.1);
+        camera.setFarClip(10000);
+
+        // SubScene für 3D (empfohlen)
+        SubScene subScene = new SubScene(root3D, 800, 600, true, SceneAntialiasing.BALANCED);
+        subScene.setCamera(camera);
+        subScene.setFill(Color.GRAY);
+
+        // Haupt-Root (2D), hier könnte auch UI drüber liegen
+        Group root = new Group(subScene);
+        Scene scene = new Scene(root, 800, 600, true);
+
+        stage.setTitle("JavaFX 3D Beispiel");
+        stage.setScene(scene);
+        stage.show();
+
+        // einfache Rotation-Animation
+        RotateTransition rt = new RotateTransition(Duration.seconds(3), box);
+        rt.setAxis(Rotate.Y_AXIS);
+        rt.setFromAngle(0);
+        rt.setToAngle(360);
+        rt.setCycleCount(RotateTransition.INDEFINITE);
+        rt.play();
+
+
 	}
 
 	public static void main(String[] args) {
