@@ -46,7 +46,7 @@ public class MainGui extends Application {
 		return resourcePath + resource + ".png";
 	}
 
-	public Image getAppIcon()
+	public Image getAppIcon() //add error handling, if no "icon" is found
 	{
 		return new Image(getClass().getResourceAsStream(getResourcePath("icon")));
 	}
@@ -76,6 +76,7 @@ public class MainGui extends Application {
 		delay.setOnFinished(event -> {
 			// neue Scene hier setzen
 			stage.setScene(scene2);
+			System.out.println("Switched scenes.");
 		});
 		delay.play();
 		
