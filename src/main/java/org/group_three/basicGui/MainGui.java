@@ -40,11 +40,22 @@ public class MainGui extends Application {
 		"#3E4047"
 	};
 
+	public String getResourcePath(String resource)
+	{
+		String resourcePath = "/org/group_three/basicGui/";
+		return resourcePath + resource + ".png";
+	}
+
+	public Image getAppIcon()
+	{
+		return new Image(getClass().getResourceAsStream(getResourcePath("icon")));
+	}
+
 	@Override
 	public void start(Stage stage) {
 
 
-		/*Label label2 = new Label("Hallo JavaFX 25 mit Maven!");
+		Label label2 = new Label("Hallo JavaFX 25 mit Maven!");
 		StackPane root2 = new StackPane(label2);
 		Scene scene2 = new Scene(root2, 400, 300);
 
@@ -57,7 +68,7 @@ public class MainGui extends Application {
 		root.setStyle("-fx-background-color: #171D25;"); // Blau
 
 		stage.setTitle(windowTitle);
-		stage.getIcons().add(new Image(getClass().getResourceAsStream("/org/group_three/basicGui/icon.png")));
+		stage.getIcons().add(getAppIcon());
 		stage.setScene(scene);
 		stage.show();
 
@@ -66,8 +77,10 @@ public class MainGui extends Application {
 			// neue Scene hier setzen
 			stage.setScene(scene2);
 		});
-		delay.play();*/
-
+		delay.play();
+		
+		/*
+		// GPT EXAMPLE
 		// 3D Objekt
         Box box = new Box(100, 100, 100);
         PhongMaterial material = new PhongMaterial();
@@ -111,9 +124,7 @@ public class MainGui extends Application {
         rt.setFromAngle(0);
         rt.setToAngle(360);
         rt.setCycleCount(RotateTransition.INDEFINITE);
-        rt.play();
-
-
+        rt.play();*/
 	}
 
 	public static void main(String[] args) {
