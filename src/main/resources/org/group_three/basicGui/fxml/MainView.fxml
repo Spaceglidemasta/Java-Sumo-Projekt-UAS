@@ -50,7 +50,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.basicGui.MainViewController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -110,7 +110,7 @@
           <content>
             <AnchorPane id="Content" fx:id="fxsubscene_mainview" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
               <children>
-                        <SubScene id="subscene_mainView" fill="RED" height="512.0" width="512.0">
+                        <SubScene id="subscene_mainView" fx:id="subsceneView" fill="RED" height="512.0" width="512.0">
                           <root>
                             <Region />
                           </root>
