@@ -1,4 +1,4 @@
-package service;
+package org.group_three.service;
 
 public class MetricsCalculator {
 }
