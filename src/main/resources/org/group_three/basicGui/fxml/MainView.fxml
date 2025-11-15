@@ -109,13 +109,13 @@
         <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
           <content>
             <AnchorPane id="Content" fx:id="fxsubscene_mainview" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
-              <children>
-                        <SubScene id="subscene_mainView" fx:id="subsceneView" fill="RED" height="512.0" width="512.0">
+                     <children>
+                        <SubScene id="subscene_mainView" fx:id="subsceneView" fill="BLACK" height="64.0" layoutX="255.0" layoutY="243.0" scaleX="8.0" scaleY="8.0" width="64.0">
                           <root>
                             <Region />
                           </root>
                         </SubScene>
-              </children>
+                     </children>
             </AnchorPane>
           </content>
         </ScrollPane>
