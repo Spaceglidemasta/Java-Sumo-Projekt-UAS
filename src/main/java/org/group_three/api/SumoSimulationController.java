@@ -1,4 +1,4 @@
-package api;
+package org.group_three.api;
 
 public class SumoSimulationController {
 }
