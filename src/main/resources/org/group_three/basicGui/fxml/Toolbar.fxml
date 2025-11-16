@@ -32,7 +32,6 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -51,27 +50,6 @@
             <MenuItem fx:id="simulationExport" disable="true" mnemonicParsing="false" onAction="#onSimulationExportClicked" text="Export" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#onSimulationPreferencesClicked" text="Preferences…" />
-         </items>
-      </Menu>
-      <Menu mnemonicParsing="false" text="Windows">
-         <items>
-            <CheckMenuItem mnemonicParsing="false" selected="true" text="Details" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <CheckMenuItem mnemonicParsing="false" text="StressTesting" />
-         </items>
-      </Menu>
-      <Menu mnemonicParsing="false" text="Select">
-         <items>
-            <MenuItem mnemonicParsing="false" text="TrafficLights" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cars" />
-         </items>
-      </Menu>
-      <Menu mnemonicParsing="false" text="Visibility">
-         <items>
-            <CheckMenuItem mnemonicParsing="false" selected="true" text="TrafficLights" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <CheckMenuItem mnemonicParsing="false" selected="true" text="Cars" />
          </items>
       </Menu>
    </menus>
