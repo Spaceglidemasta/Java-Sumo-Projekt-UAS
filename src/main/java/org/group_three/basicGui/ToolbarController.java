@@ -19,15 +19,15 @@ public class ToolbarController {
 	public void initialize() throws IOException {
 		System.out.println("Toolbar loaded.");
 
-		String[] recentlyOpendSimulations = {"0", "1", "2", "3"};
+		String[][] recentlyOpendSimulations = {{"Sim0", "SimulationPath0"},{"Sim1", "SimulationPath1"},{"Sim2", "SimulationPath2"}};
 
 		initializeOpenRecentList(recentlyOpendSimulations);
 	}
 
-	private void initializeOpenRecentList(String[] recentlyOpendSimulations)
+	private void initializeOpenRecentList(String[][] recentlyOpendSimulations)
 	{
-		for (String simulation : recentlyOpendSimulations) {
-			MenuItem item = new MenuItem(simulation);
+		for (String[] simulation : recentlyOpendSimulations) {
+			MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(simulation[0], simulation[1]);
 			item.setOnAction(event -> onSimulationOpenRecentClicked(item));
 			simulationOpenRecent.getItems().add(item);
 		}
@@ -47,8 +47,8 @@ public class ToolbarController {
 		setSimulationLoaded(true);
 	}
 
-	private void onSimulationOpenRecentClicked(MenuItem item) {
-		System.out.println("Simulation -> OpenRecent -> " + item.getText());
+	private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
+		System.out.println("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
 		setSimulationLoaded(true);
 	}
 
