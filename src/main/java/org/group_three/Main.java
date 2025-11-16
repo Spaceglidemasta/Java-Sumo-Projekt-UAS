@@ -16,5 +16,6 @@ public class Main {
 
         MainGui aMainGui = new MainGui();
         aMainGui.start(args);
+        System.out.println("Program continue HERE");
     }
 }

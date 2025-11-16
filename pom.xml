@@ -13,7 +13,7 @@
 		<maven.compiler.target>25</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javafx.version>25.0.1</javafx.version> <!-- Set JavaFX-Version to 25.0.1 -->
-		<mainClassPath>org.group_three.basicGui.MainGui</mainClassPath> <!-- Set the main class path -->
+		<mainClassPath>org.group_three.Main</mainClassPath> <!-- Set the main class path -->
 	</properties>
 
 	<!-- Repository, wo Maven die SUMO-Libs findet -->
