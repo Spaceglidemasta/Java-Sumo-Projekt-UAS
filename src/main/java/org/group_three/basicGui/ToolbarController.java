@@ -18,17 +18,44 @@ public class ToolbarController {
 	@FXML
 	public void initialize() throws IOException {
 		System.out.println("Toolbar loaded.");
+
+		String[] recentlyOpendSimulations = {"0", "1", "2", "3"};
+
+		initializeOpenRecentList(recentlyOpendSimulations);
+	}
+
+	private void initializeOpenRecentList(String[] recentlyOpendSimulations)
+	{
+		for (String simulation : recentlyOpendSimulations) {
+			MenuItem item = new MenuItem(simulation);
+			item.setOnAction(e -> onSimulationOpenRecentClicked(item));
+			simulationOpenRecent.getItems().add(item);
+		}
+	}
+
+	private void setSimulationLoaded(boolean loaded) //rename? load sim?? 100% needs rework
+	{
+		simulationClose.setDisable(!loaded);
+		simulationReload.setDisable(!loaded);
+		simulationExport.setDisable(!loaded);
 	}
 
 	// Simulation -> ButtonClicked
 	@FXML
 	private void onSimulationOpenClicked() {
 		System.out.println("Simulation -> Open...");
+		setSimulationLoaded(true);
+	}
+
+	private void onSimulationOpenRecentClicked(MenuItem item) {
+		System.out.println("Simulation -> OpenRecent -> " + item.getText());
+		setSimulationLoaded(true);
 	}
 
 	@FXML
 	private void onSimulationCloseClicked() {
 		System.out.println("Simulation -> Close");
+		setSimulationLoaded(false);
 	}
 
 	@FXML
