@@ -28,7 +28,7 @@ public class ToolbarController {
 	{
 		for (String simulation : recentlyOpendSimulations) {
 			MenuItem item = new MenuItem(simulation);
-			item.setOnAction(e -> onSimulationOpenRecentClicked(item));
+			item.setOnAction(event -> onSimulationOpenRecentClicked(item));
 			simulationOpenRecent.getItems().add(item);
 		}
 	}
