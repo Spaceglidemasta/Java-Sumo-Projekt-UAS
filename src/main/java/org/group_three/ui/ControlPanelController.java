@@ -1,4 +1,4 @@
-package ui;
+package org.group_three.ui;
 
 public class ControlPanelController {
 }

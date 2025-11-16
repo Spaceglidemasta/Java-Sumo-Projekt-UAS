@@ -1,4 +1,4 @@
-package model;
+package org.group_three.model;
 
 public class Vehicle {
 }
