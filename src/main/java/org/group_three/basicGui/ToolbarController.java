@@ -16,7 +16,7 @@ public class ToolbarController {
 
 	// Ini
 	@FXML
-	public void initialize() throws IOException {
+	private void initialize() throws IOException {
 		System.out.println("Toolbar loaded.");
 
 		String[][] recentlyOpendSimulations = {{"Sim0", "SimulationPath0"},{"Sim1", "SimulationPath1"},{"Sim2", "SimulationPath2"}};
