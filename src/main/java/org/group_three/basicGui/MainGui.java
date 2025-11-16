@@ -96,7 +96,12 @@ public class MainGui extends Application {
 		
 	}
 
-	public static void main(String[] args) {
+	public void start(String[] args)
+	{
 		launch(args);
 	}
+
+	//public static void main(String[] args) {
+	//	launch(args);
+	//}
 }

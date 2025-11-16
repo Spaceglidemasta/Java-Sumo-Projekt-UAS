@@ -1,6 +1,7 @@
 package org.group_three;
 
 import org.eclipse.sumo.libsumo.*;
+import org.group_three.basicGui.MainGui;
 
 
 
@@ -13,6 +14,7 @@ public class Main {
 
         System.out.println("Program start HERE");
 
-
+        MainGui aMainGui = new MainGui();
+        aMainGui.start(args);
     }
 }
