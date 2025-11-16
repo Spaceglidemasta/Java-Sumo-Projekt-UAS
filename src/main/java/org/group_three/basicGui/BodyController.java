@@ -4,19 +4,19 @@ import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.SubScene;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.SubScene;
 
-public class MainViewController {
+public class BodyController {
 
 	@FXML
 	private SubScene subsceneView;
 
 	@FXML
 	public void initialize() throws IOException {
-		System.out.println("Controller geladen!");
-		System.out.println("SubScene: " + subsceneView);
+		System.out.println("Body loaded.");
+		//System.out.println("SubScene: " + subsceneView);
 
 		SimulationView3D sv3d = new SimulationView3D();
 		SimulationView2D sv2d = new SimulationView2D();
@@ -45,4 +45,5 @@ public class MainViewController {
 
 
 	}
+
 }
