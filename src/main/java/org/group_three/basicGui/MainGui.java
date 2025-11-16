@@ -49,7 +49,7 @@ public class MainGui extends Application {
 		
 
 		FXMLLoader loader = new FXMLLoader(
-			getClass().getResource("/org/group_three/basicGui/fxml/MainView.fxml")
+			getClass().getResource("/org/group_three/basicGui/fxml/MainWindow.fxml")
 		);
 
         Parent root = loader.load();
