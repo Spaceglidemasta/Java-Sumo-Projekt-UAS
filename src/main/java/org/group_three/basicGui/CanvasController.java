@@ -2,6 +2,8 @@ package org.group_three.basicGui;
 
 import java.io.IOException;
 
+import org.group_three.debug.Debug;
+
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,7 +21,7 @@ public class CanvasController {
 
     @FXML
 	public void initialize() throws IOException {
-        System.out.println("Canvas loaded.");
+        Debug.print("Canvas loaded.");
 
         gc = canvasObject.getGraphicsContext2D();
 
@@ -27,14 +29,14 @@ public class CanvasController {
     	canvasObject.heightProperty().bind(binder.heightProperty());
 
         canvasObject.widthProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Neue Breite: " + newValue);
+            Debug.print("Neue Breite: " + newValue);
 
             posCameraOffset.x = newValue.doubleValue()/2;
             update();
         });
 
         canvasObject.heightProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Neue Breite: " + newValue);
+            Debug.print("Neue Breite: " + newValue);
             posCameraOffset.y = newValue.doubleValue()/2;
             update();
         });
@@ -48,13 +50,13 @@ public class CanvasController {
 
     @FXML
 	private void onMouseClicked() {
-		System.out.println("Canvas clicked.");
+		Debug.print("Canvas clicked.");
     
 	}
 
     @FXML
 	private void onCanvasDragged(MouseEvent event) {
-		System.out.println("onCanvasDragged");
+		Debug.print("onCanvasDragged");
 
         double x = event.getX();
         double y = event.getY();
@@ -64,7 +66,7 @@ public class CanvasController {
         deltaY = y - lastY;
 
         // Optional: zur Kontrolle
-        System.out.println("Drag Δ = " + deltaX + " / " + deltaY);
+        Debug.print("Drag Δ = " + deltaX + " / " + deltaY);
         pos.x += deltaX;
         pos.y += deltaY;
         update();
@@ -77,7 +79,7 @@ public class CanvasController {
 
     @FXML
 	private void onCanvasPressed(MouseEvent event) {
-		System.out.println("onCanvasPressed");
+		Debug.print("onCanvasPressed");
 
         // Startpunkt fürs Draggen speichern
         lastX = event.getX();
@@ -87,11 +89,11 @@ public class CanvasController {
 
     @FXML
 	private void onScroll(ScrollEvent event) {
-		System.out.println("onScroll");
+		Debug.print("onScroll");
 
         double deltaY = event.getDeltaY();
         zoom += deltaY*0.01;
-        System.out.println("Zoom: " + zoom);
+        Debug.print("Zoom: " + zoom);
         
         update();
    
@@ -117,12 +119,10 @@ public class CanvasController {
     {
         gc.clearRect(0, 0, canvasObject.getWidth(), canvasObject.getHeight());
 
-        // ---- dein Code jede 10 ms ----
-        //System.out.println("Tick");
         gc.setFill(Color.BLACK);
         gc.fillRect(posCameraOffset.x+pos.x-16*zoom, posCameraOffset.y+pos.y-16*zoom, 32*zoom, 32*zoom);
 
-        System.out.println("PosXY: "+ pos.x + " | " + pos.y);
+        Debug.print("PosXY: "+ pos.x + " | " + pos.y);
     }
 
 

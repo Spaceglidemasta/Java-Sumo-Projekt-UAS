@@ -2,6 +2,8 @@ package org.group_three.basicGui;
 
 import java.io.IOException;
 
+import org.group_three.debug.Debug;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.SubScene;
@@ -15,8 +17,8 @@ public class MainViewController {
 
 	@FXML
 	public void initialize() throws IOException {
-		System.out.println("Controller geladen!");
-		System.out.println("SubScene: " + subsceneView);
+		Debug.print("Controller geladen!");
+		Debug.print("SubScene: " + subsceneView);
 
 		SimulationView3D sv3d = new SimulationView3D();
 		SimulationView2D sv2d = new SimulationView2D();

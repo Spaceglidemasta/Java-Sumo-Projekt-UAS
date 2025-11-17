@@ -1,5 +1,7 @@
 package org.group_three.basicGui;
 
+import org.group_three.debug.Debug;
+
 import javafx.application.Application;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -72,7 +74,7 @@ public class MainGui extends Application {
 		stage.setX((screen.getWidth() - w) / 2);
 		stage.setY((screen.getHeight() - h) / 2);
 
-		System.out.println(stage.getX() + ":" + stage.getY());
+		Debug.print(stage.getX() + ":" + stage.getY());
 		//-------------------------------------------------------------
 		
 
@@ -92,7 +94,7 @@ public class MainGui extends Application {
 		delay.setOnFinished(event -> {
 			// neue Scene hier setzen
 			stage.setScene(scene2);
-			System.out.println("Switched scenes.");
+			Debug.print("Switched scenes.");
 		});
 		delay.play();*/
 		

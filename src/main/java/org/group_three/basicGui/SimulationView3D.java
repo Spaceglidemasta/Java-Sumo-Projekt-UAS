@@ -1,5 +1,7 @@
 package org.group_three.basicGui;
 
+import org.group_three.debug.Debug;
+
 import javafx.animation.RotateTransition;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
@@ -79,7 +81,7 @@ public class SimulationView3D {
     }
 
     public void onMouseClicked(Pane binder) {
-		System.out.println("Body -> SubScene -> SimulationView3D");
+		Debug.print("Body -> SubScene -> SimulationView3D");
         //subScene.setCamera(null);
 
         subScene.widthProperty().bind(binder.widthProperty());

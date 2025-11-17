@@ -2,6 +2,8 @@ package org.group_three.basicGui;
 
 import java.io.IOException;
 
+import org.group_three.debug.Debug;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,8 +22,8 @@ public class BodyController {
 
 	@FXML
 	public void initialize() throws IOException {
-		System.out.println("Body loaded.");
-		//System.out.println("SubScene: " + subsceneView);
+		Debug.print("Body loaded.");
+		//Debug.print("SubScene: " + subsceneView);
 
 		sv3d = new SimulationView3D();
 		sv2d = new SimulationView2D();
@@ -55,7 +57,7 @@ public class BodyController {
 
 	/*@FXML
 	private void onMouseClicked() {
-		System.out.println("Body -> SubScene");
+		Debug.print("Body -> SubScene");
 		sv3d.onMouseClicked(binder);
 	}*/
 

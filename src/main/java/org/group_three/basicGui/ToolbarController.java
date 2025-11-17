@@ -3,6 +3,8 @@ package org.group_three.basicGui;
 import java.io.File;
 import java.io.IOException;
 
+import org.group_three.debug.Debug;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -19,7 +21,7 @@ public class ToolbarController {
 	// Ini
 	@FXML
 	private void initialize() throws IOException {
-		System.out.println("Toolbar loaded.");
+		Debug.print("Toolbar loaded.");
 
 		String[][] recentlyOpendSimulations = {{"Sim0", "SimulationPath0"},{"Sim1", "SimulationPath1"},{"Sim2", "SimulationPath2"}};
 
@@ -49,7 +51,7 @@ public class ToolbarController {
 	// Simulation -> ButtonClicked
 	@FXML
 	private void onSimulationOpenClicked() {
-		System.out.println("Simulation -> Open...");
+		Debug.print("Simulation -> Open...");
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select file");
@@ -69,35 +71,35 @@ public class ToolbarController {
 
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
-			System.out.println("Selected: " + file);
+			Debug.print("Selected: " + file);
 			setSimulationLoaded(true);
 		}
 	}
 
 	private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
-		System.out.println("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
+		Debug.print("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
 		setSimulationLoaded(true);
 	}
 
 	@FXML
 	private void onSimulationCloseClicked() {
-		System.out.println("Simulation -> Close");
+		Debug.print("Simulation -> Close");
 		setSimulationLoaded(false);
 	}
 
 	@FXML
 	private void onSimulationReloadClicked() {
-		System.out.println("Simulation -> Reload");
+		Debug.print("Simulation -> Reload");
 	}
 	
 	@FXML
 	private void onSimulationExportClicked() {
-		System.out.println("Simulation -> Export");
+		Debug.print("Simulation -> Export");
 	}
 
 	@FXML
 	private void onSimulationPreferencesClicked() {
-		System.out.println("Simulation -> Preferences");
+		Debug.print("Simulation -> Preferences");
 	}
 	
 }
