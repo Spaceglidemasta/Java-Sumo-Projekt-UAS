@@ -19,10 +19,6 @@ public class Main {
         SimController sumosim = new SimController();
 
 
-
-        SimSumo sumosim = new SimSumo();
-
-
         System.out.println("Program start HERE");
 
         MainGui aMainGui = new MainGui();

@@ -1,6 +1,7 @@
 package org.group_three.api;
 
 import org.eclipse.sumo.libtraci.*;
+import org.group_three.debug.Debug;
 
 public class SimTraci {
 
@@ -9,8 +10,7 @@ public class SimTraci {
     public SimTraci(){
 
 
-
-        System.out.println("api.SimTraci: Traci invoked");
+        Debug.print("SimTraci invoked");
 
     }
 }
