@@ -1,16 +1,19 @@
 package org.group_three;
 
+
+
+//external libraries
 import org.eclipse.sumo.libsumo.*;
 import org.group_three.basicGui.MainGui;
 
+//packages
+import org.group_three.api.SimSumo;
 
 
 public class Main {
     public static void main(String[] args) {
-        Simulation.preloadLibraries();
-        Simulation.start(new StringVector(new String[] {"sumo", "-n", "src/main/resources/net.net.xml",
-                                                                "-r", "src/main/resources/net.rou.xml"
-                                                        }));
+
+        SimSumo sumosim = new SimSumo();
 
         System.out.println("Program start HERE");
 
