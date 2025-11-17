@@ -14,151 +14,134 @@ import javafx.scene.paint.Color;
 
 public class CanvasController {
 
-    @FXML private Canvas canvasObject;
-    @FXML private Pane binder;
+	@FXML private Canvas worldStaticRenderTarget;	// for static world elements: roads, traffic lights,...
+	@FXML private Canvas worldDynamicRenderTarget;	// for dynamic world elements: cars,...
+	@FXML private Pane renderTargetBounds;			// a reference to adjust the render target sizes dynamically on window resize
 
-    private GraphicsContext gc;
+	private GraphicsContext worldStaticRenderTarget_GraphicsContext;
 
-    @FXML
+	@FXML
 	public void initialize() throws IOException {
-        Debug.print("Canvas loaded.");
+		Debug.print("Canvas loaded.");
 
-        gc = canvasObject.getGraphicsContext2D();
+		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 
-        canvasObject.widthProperty().bind(binder.widthProperty());
-    	canvasObject.heightProperty().bind(binder.heightProperty());
+		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
+		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
 
-        canvasObject.widthProperty().addListener((observable, oldValue, newValue) -> {
-            Debug.print("Neue Breite: " + newValue);
+		worldDynamicRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
+		worldDynamicRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
 
-            posCameraOffset.x = newValue.doubleValue()/2;
-            update();
-        });
+		renderTargetBounds.widthProperty().addListener((observable, oldValue, newValue) -> {
+			Debug.print("RenderTargetSize.X: " + newValue);
 
-        canvasObject.heightProperty().addListener((observable, oldValue, newValue) -> {
-            Debug.print("Neue Breite: " + newValue);
-            posCameraOffset.y = newValue.doubleValue()/2;
-            update();
-        });
+			posCameraOffset.x = newValue.doubleValue()/2;
+			update();
+		});
 
+		renderTargetBounds.heightProperty().addListener((observable, oldValue, newValue) -> {
+			Debug.print("RenderTargetSize.Y: " + newValue);
+			posCameraOffset.y = newValue.doubleValue()/2;
+			update();
+		});
+	}
 
-
-        //t.setDaemon(true); // optional: beendet sich mit dem Programm
-        //t.start();
-
-    }
-
-    @FXML
+	@FXML
 	private void onMouseClicked() {
 		Debug.print("Canvas clicked.");
 
-        setRotation(rotation+15);
-    
+		setRotation(rotation+15);
+	
 	}
 
-    @FXML
+	@FXML
 	private void onCanvasDragged(MouseEvent event) {
 		Debug.print("onCanvasDragged");
 
-        double x = event.getX();
-        double y = event.getY();
+		double x = event.getX();
+		double y = event.getY();
 
-        // Delta berechnen
-        deltaX = x - lastX;
-        deltaY = y - lastY;
+		deltaX = x - lastX;
+		deltaY = y - lastY;
 
-        // Optional: zur Kontrolle
-        Debug.print("Drag Δ = " + deltaX + " / " + deltaY);
-        pos.x += deltaX;
-        pos.y += deltaY;
-        update();
+		pos.x += deltaX;
+		pos.y += deltaY;
+		update();
 
-        // neuen Startpunkt setzen
-        lastX = x;
-        lastY = y;
+		lastX = x;
+		lastY = y;
    
 	}
 
-    @FXML
+	@FXML
 	private void onCanvasPressed(MouseEvent event) {
 		Debug.print("onCanvasPressed");
 
-        // Startpunkt fürs Draggen speichern
-        lastX = event.getX();
-        lastY = event.getY();
-   
+		lastX = event.getX();
+		lastY = event.getY();
 	}
 
-    @FXML
+	@FXML
 	private void onScroll(ScrollEvent event) {
 		Debug.print("onScroll");
 
-        double deltaY = event.getDeltaY();
-        zoom += deltaY*0.01;
-        Debug.print("Zoom: " + zoom);
-        
-        update();
+		double deltaY = event.getDeltaY();
+		zoom += deltaY*0.01;
+		Debug.print("Zoom: " + zoom);
+		
+		update();
    
 	}
 
 
-    private double lastX;
-    private double lastY;
+	private double lastX;
+	private double lastY;
 
-    public double deltaX;
-    public double deltaY;
-
-
+	public double deltaX;
+	public double deltaY;
 
 
 
-    private double zoom = 1;
-    private Vector2D pos = new Vector2D();
-    private Vector2D posCameraOffset = new Vector2D();
-    private double rotation;
+	private double zoom = 1;
+	private Vector2D pos = new Vector2D();
+	private Vector2D posCameraOffset = new Vector2D();
+	private double rotation;
 
-    private void setRotation(double rotation)
-    {
-        this.rotation = rotation;
+	private void setRotation(double rotation) {
+		this.rotation = rotation;
 
-        // Clamp rotation from 0 to 359.99...
-        while (this.rotation < 0)
-        {
-            this.rotation += 360;
-        }
-        while (this.rotation >= 360)
-        {
-            this.rotation -= 360;
-        }
+		// Clamp rotation from 0 to 359.99...
+		while (this.rotation < 0)
+		{
+			this.rotation += 360;
+		}
+		while (this.rotation >= 360)
+		{
+			this.rotation -= 360;
+		}
 
-        Debug.print(rotation);
-    }
-
-
-    private void update()
-    {
-        gc.clearRect(0, 0, canvasObject.getWidth(), canvasObject.getHeight());
-
-        gc.setFill(Color.BLACK);
-        //gc.translate(posCameraOffset.x, posCameraOffset.y);
-        gc.fillRect(posCameraOffset.x+pos.x-16*zoom, posCameraOffset.y+pos.y-16*zoom, 32*zoom, 32*zoom);
-
-        Debug.print("PosXY: "+ pos.x + " | " + pos.y);
-
-        //gc.rotate(rotation);
-
-        /*
-            gc.save();
-            gc.translate(px, py);
-            gc.rotate(90);
-            gc.strokeLine(0, 0, 100, 0);
-            gc.restore();
-
-        */
-    }
+		Debug.print(rotation);
+	}
 
 
-    
+	private void update() {
+		worldStaticRenderTarget_GraphicsContext.clearRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
 
-    
+		worldStaticRenderTarget_GraphicsContext.setFill(Color.BLACK);
+		//worldStaticRenderTarget_GraphicsContext.translate(posCameraOffset.x, posCameraOffset.y);
+		worldStaticRenderTarget_GraphicsContext.fillRect(posCameraOffset.x+pos.x-16*zoom, posCameraOffset.y+pos.y-16*zoom, 32*zoom, 32*zoom);
+
+		Debug.print("PosXY: "+ pos.x + " | " + pos.y);
+
+		//worldStaticRenderTarget_GraphicsContext.rotate(rotation);
+
+		/*
+			worldStaticRenderTarget_GraphicsContext.save();
+			worldStaticRenderTarget_GraphicsContext.translate(px, py);
+			worldStaticRenderTarget_GraphicsContext.rotate(90);
+			worldStaticRenderTarget_GraphicsContext.strokeLine(0, 0, 100, 0);
+			worldStaticRenderTarget_GraphicsContext.restore();
+
+		*/
+	}
 }
