@@ -1,7 +1,10 @@
 package org.group_three.api;
 
+// external libaries
 import org.eclipse.sumo.libsumo.Simulation;
 import org.eclipse.sumo.libsumo.StringVector;
+
+// packages
 
 public class SimSumo {
 
