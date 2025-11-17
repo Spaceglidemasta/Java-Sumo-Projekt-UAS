@@ -34,9 +34,9 @@
 
 <?import javafx.scene.SubScene?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
@@ -55,19 +55,19 @@
             </Label>
          </children>
       </AnchorPane>
-      <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
-         <content>
-            <AnchorPane id="Content" fx:id="fxsubscene_mainview" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
+      <AnchorPane id="Content" fx:id="fxsubscene_mainview" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
+         <children>
+            <Pane fx:id="binder" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <SubScene id="subscene_mainView" fx:id="subsceneView" fill="BLACK" height="64.0" layoutX="255.0" layoutY="243.0" scaleX="8.0" scaleY="8.0" width="64.0">
+                  <SubScene id="subscene_mainView" fx:id="subsceneView" fill="BLACK" height="64.0" width="64.0">
                      <root>
                         <Region />
                      </root>
                   </SubScene>
                </children>
-            </AnchorPane>
-         </content>
-      </ScrollPane>
+            </Pane>
+         </children>
+      </AnchorPane>
       <AnchorPane>
          <children>
             <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="Details" textAlignment="CENTER" textFill="$x2" wrapText="false" />
