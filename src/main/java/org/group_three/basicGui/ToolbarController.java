@@ -1,10 +1,12 @@
 package org.group_three.basicGui;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.stage.FileChooser;
 
 public class ToolbarController {
 
@@ -33,6 +35,8 @@ public class ToolbarController {
 		}
 	}
 
+
+
 	private void setSimulationLoaded(boolean loaded) //rename? load sim?? 100% needs rework
 	{
 		simulationClose.setDisable(!loaded);
@@ -40,11 +44,34 @@ public class ToolbarController {
 		simulationExport.setDisable(!loaded);
 	}
 
+
+
 	// Simulation -> ButtonClicked
 	@FXML
 	private void onSimulationOpenClicked() {
 		System.out.println("Simulation -> Open...");
-		setSimulationLoaded(true);
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Select file");
+		
+		// Desktop-Pfad holen (funktioniert auf Windows, macOS, Linux)
+		String desktopPath = System.getProperty("user.home") + "/Desktop";
+		File desktopDir = new File(desktopPath);
+
+		if (desktopDir.exists()) {
+			fileChooser.setInitialDirectory(desktopDir);
+		}
+
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("All", "*.sumocfg", "*.net.xml", "*.rou.xml"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SUMO Config", "*.sumocfg"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Network", "*.net.xml"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Route", "*.rou.xml"));
+
+		File file = fileChooser.showOpenDialog(null);
+		if (file != null) {
+			System.out.println("Selected: " + file);
+			setSimulationLoaded(true);
+		}
 	}
 
 	private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
