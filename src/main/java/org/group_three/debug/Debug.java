@@ -14,7 +14,7 @@ public class Debug {
 
         if(do_debug){
             StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
-            String className = caller.getClassName();
+            String className = caller.getClassName().substring(16);
 
             System.out.println(BOLD + "[" + ANSI_BLUE + "DEBUG" + ANSI_RESET + BOLD + "](" + className + ") " + ANSI_RESET + s );
         }
