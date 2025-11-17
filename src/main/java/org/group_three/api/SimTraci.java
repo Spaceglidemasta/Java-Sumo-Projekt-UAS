@@ -1,4 +1,4 @@
 package org.group_three.api;
 
-public class TrafficLightAPI {
+public class SimTraci {
 }
