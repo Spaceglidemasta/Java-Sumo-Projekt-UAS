@@ -132,8 +132,6 @@ public class CanvasController {
         }
 
         Debug.print(rotation);
-
-        gc.rotate(rotation);
     }
 
 
@@ -142,9 +140,21 @@ public class CanvasController {
         gc.clearRect(0, 0, canvasObject.getWidth(), canvasObject.getHeight());
 
         gc.setFill(Color.BLACK);
+        //gc.translate(posCameraOffset.x, posCameraOffset.y);
         gc.fillRect(posCameraOffset.x+pos.x-16*zoom, posCameraOffset.y+pos.y-16*zoom, 32*zoom, 32*zoom);
 
         Debug.print("PosXY: "+ pos.x + " | " + pos.y);
+
+        //gc.rotate(rotation);
+
+        /*
+            gc.save();
+            gc.translate(px, py);
+            gc.rotate(90);
+            gc.strokeLine(0, 0, 100, 0);
+            gc.restore();
+
+        */
     }
 
 
