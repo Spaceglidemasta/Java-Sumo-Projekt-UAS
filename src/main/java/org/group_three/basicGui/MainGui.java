@@ -49,35 +49,37 @@ public class MainGui extends Application {
 		
 
 		FXMLLoader loader = new FXMLLoader(
-			getClass().getResource("/org/group_three/basicGui/fxml/MainView.fxml")
+			getClass().getResource("/org/group_three/basicGui/fxml/MainWindow.fxml")
 		);
 
-        Parent root = loader.load();
+		Parent root = loader.load();
 
-        Scene scene = new Scene(root);
+		Scene scene = new Scene(root);
 
+		stage.setMinWidth(960);   // Mindestbreite
+		stage.setMinHeight(540);  // Mindesthöhe
 
 
 		// SPawn Window in the middle of the screen at 60% monitor size
 		Rectangle2D screen = Screen.getPrimary().getVisualBounds();
 
-        double w = screen.getWidth() * 0.60;
-        double h = screen.getHeight() * 0.60;
+		double w = screen.getWidth() * 0.60;
+		double h = screen.getHeight() * 0.60;
 
-        stage.setWidth(w);
-        stage.setHeight(h);
+		stage.setWidth(w);
+		stage.setHeight(h);
 
-        stage.setX((screen.getWidth() - w) / 2);
-        stage.setY((screen.getHeight() - h) / 2);
+		stage.setX((screen.getWidth() - w) / 2);
+		stage.setY((screen.getHeight() - h) / 2);
 
 		System.out.println(stage.getX() + ":" + stage.getY());
 		//-------------------------------------------------------------
 		
 
-        // CSS hinzufügen
-        //scene.getStylesheets().add(
-        //        getClass().getResource("style.css").toExternalForm()
-        //);
+		// CSS hinzufügen
+		//scene.getStylesheets().add(
+		//        getClass().getResource("style.css").toExternalForm()
+		//);
 
 
 
