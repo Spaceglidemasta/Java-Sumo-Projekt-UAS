@@ -7,6 +7,7 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -14,6 +15,8 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 public class SimulationView3D {
+
+    private SubScene subScene;
 
     public Group createView()
     {
@@ -44,6 +47,7 @@ public class SimulationView3D {
 
         // Gruppe für 3D-Szene
         Group root3D = new Group(box, light, ambient);
+        root3D.getChildren().add(box2);
 
         // Kamera
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -52,9 +56,11 @@ public class SimulationView3D {
         camera.setFarClip(10000);
 
         // SubScene für 3D (empfohlen)
-        SubScene subScene = new SubScene(root3D, 64, 64, true, SceneAntialiasing.BALANCED);
+        subScene = new SubScene(root3D, 512, 512, true, SceneAntialiasing.DISABLED);
         subScene.setCamera(camera);
         subScene.setFill(Color.GRAY);
+
+        
 
         // Haupt-Root (2D), hier könnte auch UI drüber liegen
         Group root3d = new Group(subScene);
@@ -67,8 +73,18 @@ public class SimulationView3D {
         rt.setToAngle(360);
         rt.setCycleCount(RotateTransition.INDEFINITE);
         rt.play();
-		//----------------------------
+		//----------------------------onMouseClicked
 
         return root3d;
     }
+
+    public void onMouseClicked(Pane binder) {
+		System.out.println("Body -> SubScene -> SimulationView3D");
+        //subScene.setCamera(null);
+
+        subScene.widthProperty().bind(binder.widthProperty());
+    	subScene.heightProperty().bind(binder.heightProperty());
+
+	}
+
 }
