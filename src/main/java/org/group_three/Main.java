@@ -19,11 +19,11 @@ public class Main {
         SimController sumosim = new SimController();
 
 
-        System.out.println("Program start HERE");
+        Debug.print("Program start HERE");
 
         MainGui aMainGui = new MainGui();
         aMainGui.start(args);
-        System.out.println("Program continue HERE");
+        Debug.print("Program continue HERE");
 
 
     }
