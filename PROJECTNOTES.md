@@ -10,6 +10,11 @@ das projekt wird mit _"mvn clean install -U"_ gebaut,
 
 und mit _"mvn exec:java"_ ausgeführt.
 
+## Debugging
+
+beim debuggen bitte immer angeben von wo man printed:
+
+System.out.println("api.SimSumo: Simstart");
 
 ## UI
 
