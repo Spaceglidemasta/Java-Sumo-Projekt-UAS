@@ -51,6 +51,8 @@ public class CanvasController {
     @FXML
 	private void onMouseClicked() {
 		Debug.print("Canvas clicked.");
+
+        setRotation(rotation+15);
     
 	}
 
@@ -113,6 +115,26 @@ public class CanvasController {
     private double zoom = 1;
     private Vector2D pos = new Vector2D();
     private Vector2D posCameraOffset = new Vector2D();
+    private double rotation;
+
+    private void setRotation(double rotation)
+    {
+        this.rotation = rotation;
+
+        // Clamp rotation from 0 to 359.99...
+        while (this.rotation < 0)
+        {
+            this.rotation += 360;
+        }
+        while (this.rotation >= 360)
+        {
+            this.rotation -= 360;
+        }
+
+        Debug.print(rotation);
+
+        gc.rotate(rotation);
+    }
 
 
     private void update()
