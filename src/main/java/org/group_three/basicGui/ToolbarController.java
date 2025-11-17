@@ -28,8 +28,7 @@ public class ToolbarController {
 		initializeOpenRecentList(recentlyOpendSimulations);
 	}
 
-	private void initializeOpenRecentList(String[][] recentlyOpendSimulations)
-	{
+	private void initializeOpenRecentList(String[][] recentlyOpendSimulations) {
 		for (String[] simulation : recentlyOpendSimulations) {
 			MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(simulation[0], simulation[1]);
 			item.setOnAction(event -> onSimulationOpenRecentClicked(item));
@@ -39,8 +38,7 @@ public class ToolbarController {
 
 
 
-	private void setSimulationLoaded(boolean loaded) //rename? load sim?? 100% needs rework
-	{
+	private void setSimulationLoaded(boolean loaded) { //rename? load sim?? 100% needs rework 
 		simulationClose.setDisable(!loaded);
 		simulationReload.setDisable(!loaded);
 		simulationExport.setDisable(!loaded);
