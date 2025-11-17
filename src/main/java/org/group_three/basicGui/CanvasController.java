@@ -25,6 +25,7 @@ public class CanvasController {
 		Debug.print("Canvas loaded.");
 
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
+		
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
@@ -51,6 +52,7 @@ public class CanvasController {
 		Debug.print("Canvas clicked.");
 
 		setRotation(rotation+15);
+		update();
 	
 	}
 
@@ -105,7 +107,8 @@ public class CanvasController {
 	private double zoom = 1;
 	private Vector2D pos = new Vector2D();
 	private Vector2D posCameraOffset = new Vector2D();
-	private double rotation;
+	private double rotation = 0;
+	private Vector2D worldSize = new Vector2D(512, 256);
 
 	private void setRotation(double rotation) {
 		this.rotation = rotation;
@@ -125,23 +128,26 @@ public class CanvasController {
 
 
 	private void update() {
-		worldStaticRenderTarget_GraphicsContext.clearRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
+		worldStaticRenderTarget_GraphicsContext.save();
+		worldStaticRenderTarget_GraphicsContext.setFill(Color.GREY);
+		worldStaticRenderTarget_GraphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
+		worldStaticRenderTarget_GraphicsContext.restore();
 
-		worldStaticRenderTarget_GraphicsContext.setFill(Color.BLACK);
-		//worldStaticRenderTarget_GraphicsContext.translate(posCameraOffset.x, posCameraOffset.y);
-		worldStaticRenderTarget_GraphicsContext.fillRect(posCameraOffset.x+pos.x-16*zoom, posCameraOffset.y+pos.y-16*zoom, 32*zoom, 32*zoom);
+		
+		worldStaticRenderTarget_GraphicsContext.save();
+		worldStaticRenderTarget_GraphicsContext.translate(pos.x + posCameraOffset.x, pos.y + posCameraOffset.y); // Object Location
+		worldStaticRenderTarget_GraphicsContext.rotate(rotation);
+		worldStaticRenderTarget_GraphicsContext.clearRect(-256*zoom, -128*zoom, 512*zoom, 256*zoom);
+		worldStaticRenderTarget_GraphicsContext.restore();
 
 		Debug.print("PosXY: "+ pos.x + " | " + pos.y);
 
-		//worldStaticRenderTarget_GraphicsContext.rotate(rotation);
+		worldStaticRenderTarget_GraphicsContext.save();
+		worldStaticRenderTarget_GraphicsContext.setFill(Color.BLUE);
+		worldStaticRenderTarget_GraphicsContext.translate(pos.x + posCameraOffset.x, pos.y + posCameraOffset.y); // Object Location
+		worldStaticRenderTarget_GraphicsContext.rotate(rotation);
+		worldStaticRenderTarget_GraphicsContext.fillRect(-16*zoom, -16*zoom, 32*zoom, 32*zoom);
+		worldStaticRenderTarget_GraphicsContext.restore();
 
-		/*
-			worldStaticRenderTarget_GraphicsContext.save();
-			worldStaticRenderTarget_GraphicsContext.translate(px, py);
-			worldStaticRenderTarget_GraphicsContext.rotate(90);
-			worldStaticRenderTarget_GraphicsContext.strokeLine(0, 0, 100, 0);
-			worldStaticRenderTarget_GraphicsContext.restore();
-
-		*/
 	}
 }
