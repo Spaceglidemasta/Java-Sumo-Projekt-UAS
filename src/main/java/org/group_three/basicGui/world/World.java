@@ -32,6 +32,10 @@ public class World {
 		Debug.print(rotation);
 	}
 
+	public void addViewerRotation(double rotation) {
+		setViewerRotation(getViewerRotation() + rotation);
+	}
+
 	public double getViewerZoom() {
 		return viewerZoom;
 	}
@@ -45,6 +49,10 @@ public class World {
 		}
 
 		Debug.print(zoom);
+	}
+
+	public void addViewerZoom(double zoom) {
+		setViewerZoom(getViewerZoom() + zoom);
 	}
 
 	public Vector2D getViewerPositionOffset() {
@@ -73,5 +81,12 @@ public class World {
 		else if (position.y > worldSize.y) {
 			position.y = worldSize.y;
 		}
+	}
+
+	public void addViewerPosition(Vector2D position) {
+		Vector2D pos = getViewerPosition();
+		pos.x += position.x;
+		pos.y *= position.y;
+		setViewerPostion(pos);
 	}
 }

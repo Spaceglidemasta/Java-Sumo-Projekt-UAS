@@ -21,7 +21,7 @@ public class WorldStaticObject {
 
 
 
-	public boolean shouldDraw() {
-		return true;
-	}
+	//public boolean shouldDraw() {
+	//	return true;
+	//}
 }
