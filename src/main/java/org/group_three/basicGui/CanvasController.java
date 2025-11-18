@@ -102,7 +102,7 @@ public class CanvasController {
 	public double deltaX;
 	public double deltaY;
 
-
+	// draw handler needed so it doesnt waste performance
 
 	private double zoom = 1;
 	private Vector2D pos = new Vector2D();
