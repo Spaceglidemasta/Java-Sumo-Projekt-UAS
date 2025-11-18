@@ -14,7 +14,11 @@ public class World {
 
 	World() {}
 
-	public void setRotation(double rotation) {
+	public double getViewerRotation() {
+		return viewerRotation;
+	}
+
+	public void setViewerRotation(double rotation) {
 		viewerRotation = rotation;
 
 		// Clamp rotation from 0 to 359.99...
@@ -28,7 +32,11 @@ public class World {
 		Debug.print(rotation);
 	}
 
-	public void setZoom(double zoom) {
+	public double getViewerZoom() {
+		return viewerZoom;
+	}
+
+	public void setViewerZoom(double zoom) {
 		if (zoom < viewerZoomLimit.x) {
 			zoom = viewerZoomLimit.x;
 		}
@@ -39,8 +47,16 @@ public class World {
 		Debug.print(zoom);
 	}
 
+	public Vector2D getViewerPositionOffset() {
+		return viewerPositionOffset;
+	}
+
 	public void setViewerPostionOffset(Vector2D positionOffset) {
 		viewerPositionOffset = positionOffset;
+	}
+
+	public Vector2D getViewerPosition() {
+		return viewerPosition;
 	}
 
 	public void setViewerPostion(Vector2D position) {
