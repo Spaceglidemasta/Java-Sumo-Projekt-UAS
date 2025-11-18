@@ -10,7 +10,7 @@ public class World {
 	private double viewerZoom = 1;
 	private Vector2D viewerZoomLimit = new Vector2D(0.1, 2);
 	private Vector2D worldSize = new Vector2D(1000, 500);
-	private WorldStaticObject[] worldObjects;
+	private WorldObject[] worldObjects;
 
 	World() {}
 
@@ -88,5 +88,9 @@ public class World {
 		pos.x += position.x;
 		pos.y *= position.y;
 		setViewerPostion(pos);
+	}
+
+	public Vector2D getWorldSize() {
+		return worldSize;
 	}
 }
