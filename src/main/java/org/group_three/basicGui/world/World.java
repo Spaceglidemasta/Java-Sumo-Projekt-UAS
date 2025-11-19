@@ -118,6 +118,10 @@ public class World {
 	}
 
 	private void requestUpdate() {
+		update();
+	}
+
+	private void update() {
 		graphicsContext.save();
 		graphicsContext.setFill(backgroundColor);
 		graphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
