@@ -48,9 +48,9 @@
             <MenuItem fx:id="simulationReload" disable="true" mnemonicParsing="false" onAction="#onSimulationReloadClicked" text="Reload" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="simulationExport" disable="true" mnemonicParsing="false" onAction="#onSimulationExportClicked" text="Export" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#onSimulationPreferencesClicked" text="Preferences…" />
          </items>
       </Menu>
+      <Menu mnemonicParsing="false" onAction="#onSettingsClicked" text="Settings" />
+      <Menu mnemonicParsing="false" onAction="#onHelpClicked" text="Help" />
    </menus>
 </MenuBar>
