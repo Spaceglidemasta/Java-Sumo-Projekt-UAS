@@ -14,4 +14,10 @@ public class SimController {
         this._simtraci = new SimTraci();
     }
 
+    public void step(){
+        _simsumo.step();
+    }
+
+
+
 }

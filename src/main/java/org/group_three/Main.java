@@ -14,16 +14,23 @@ import org.group_three.debug.Debug;
 
 public class Main {
     public static void main(String[] args) {
+        Debug.print("Programm Start");
 
+        Simulation.preloadLibraries();
+        Simulation.start(new StringVector(new String[] {"sumo", "-n", "src/main/resources/net.net.xml",
+                "-r", "src/main/resources/net.rou.xml"
+        }));
 
-        SimController sumosim = new SimController();
+        for (int i = 0; i < 5; i++) {
+            Simulation.step();
+        }
 
+        Simulation.close();
 
-        System.out.println("Program start HERE");
 
         MainGui aMainGui = new MainGui();
         aMainGui.start(args);
-        System.out.println("Program continue HERE");
+
 
 
     }
