@@ -18,8 +18,12 @@ public class SimController {
                     "src/main/resources/net.net.xml",
                     "src/main/resources/net.rou.xml");
 
+
+            sumcon.printSumoOutput(true);
+            sumcon.printSumoError(true);
             sumcon.runServer(8813);
 
+            Debug.print("timesteps:");
             for (int i = 0; i < 5; i++) {
                 sumcon.do_timestep();
             }

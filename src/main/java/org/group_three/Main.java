@@ -11,7 +11,7 @@ import org.group_three.basicGui.MainGui;
 //packages
 import org.group_three.api.SimSumo;
 import org.group_three.debug.Debug;
-
+import org.group_three.constants.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,8 +22,6 @@ public class Main {
 
         MainGui aMainGui = new MainGui();
         aMainGui.start(args);
-
-
 
     }
 }
