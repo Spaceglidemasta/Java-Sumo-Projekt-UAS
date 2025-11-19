@@ -9,7 +9,6 @@ public class SimTraci {
 
     public SimTraci(){
 
-
         Debug.print("SimTraci invoked");
 
     }

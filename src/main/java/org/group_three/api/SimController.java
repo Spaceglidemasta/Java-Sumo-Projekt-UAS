@@ -1,6 +1,8 @@
 package org.group_three.api;
 
+import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
+
 
 public class SimController {
 
@@ -10,8 +12,16 @@ public class SimController {
     public SimController(){
         Debug.print("SimController invoked");
 
-        this._simsumo = new SimSumo();
-        this._simtraci = new SimTraci();
+        SumoTraciConnection sumcon = new SumoTraciConnection(   "src/main/resources/sumo.exe",
+                                                                "src/main/resources/net.net.xml",
+                                                                "src/main/resources/net.rou.xml");
+
+        Debug.print("SimController finished");
+
     }
+
+
+
+
 
 }
