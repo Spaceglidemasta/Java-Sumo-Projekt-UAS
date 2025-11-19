@@ -83,7 +83,7 @@ public class World {
 	}
 
 	public void setViewerPosition(Vector2D position) {
-		if (position.x < -(worldSize.x/2)) {
+		/*if (position.x < -(worldSize.x/2)) {
 			position.x = -(worldSize.x/2);
 		} else if (position.x > (worldSize.x/2)) {
 			position.x = (worldSize.x/2);
@@ -97,12 +97,12 @@ public class World {
 			position.y = (worldSize.y/2);
 		} else {
 			viewerPosition.y = position.y;
-		}
+		}*/
 
 		viewerPosition = position;
 
 		requestUpdate();
-	} // world bounds limit doesnt account for rotation yet
+	} // world bounds limit doesn't account for rotation yet, well or scale, disabled for now
 
 	public void addViewerPosition(Vector2D position) {
 		Vector2D pos = getViewerPosition();
