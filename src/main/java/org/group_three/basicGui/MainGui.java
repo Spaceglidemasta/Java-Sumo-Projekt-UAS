@@ -11,28 +11,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 
 
-
 public class MainGui extends Application {
 
 	// Basic GUI Adjustments
 	String windowTitle = "Java-Sumo-Projekt-UAS";
 
 	String[] colorPalette = {
-		"#171D25",
+			"#171D25",
 
-		"#2D333C",
-		"#24282F",
-		"#3D4249",
-		"#1999FF",
-		"#DCDEDF",
-		"#BFD8EE",
-		"#24282F",
-		"#606774",
-		"#3E4047"
+			"#2D333C",
+			"#24282F",
+			"#3D4249",
+			"#1999FF",
+			"#DCDEDF",
+			"#BFD8EE",
+			"#24282F",
+			"#606774",
+			"#3E4047"
 	};
 
-	public String getResourcePath(String resource)
-	{
+	public String getResourcePath(String resource) {
 		String resourcePath = "/org/group_three/basicGui/";
 		return resourcePath + resource + ".png";
 	}
@@ -45,13 +43,9 @@ public class MainGui extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 
-		
-
-
-		
 
 		FXMLLoader loader = new FXMLLoader(
-			getClass().getResource("/org/group_three/basicGui/fxml/MainWindow.fxml")
+				getClass().getResource("/org/group_three/basicGui/fxml/MainWindow.fxml")
 		);
 
 		Parent root = loader.load();
@@ -76,13 +70,12 @@ public class MainGui extends Application {
 
 		Debug.print(stage.getX() + ":" + stage.getY());
 		//-------------------------------------------------------------
-		
+
 
 		// CSS hinzufügen
 		//scene.getStylesheets().add(
 		//        getClass().getResource("style.css").toExternalForm()
 		//);
-
 
 
 		stage.setTitle(windowTitle);
@@ -97,11 +90,10 @@ public class MainGui extends Application {
 			Debug.print("Switched scenes.");
 		});
 		delay.play();*/
-		
+
 	}
 
-	public void start(String[] args)
-	{
+	public void start(String[] args) {
 		launch(args);
 	}
 

@@ -13,9 +13,11 @@ import javafx.scene.layout.Pane;
 
 public class BodyController {
 
-	@FXML private SubScene subsceneView;
+	@FXML
+	private SubScene subsceneView;
 
-	@FXML private Pane binder;
+	@FXML
+	private Pane binder;
 
 	private SimulationView3D sv3d;
 	private SimulationView2D sv2d;
@@ -29,27 +31,26 @@ public class BodyController {
 		sv2d = new SimulationView2D();
 
 		subsceneView.widthProperty().bind(binder.widthProperty());
-    	subsceneView.heightProperty().bind(binder.heightProperty());
+		subsceneView.heightProperty().bind(binder.heightProperty());
 
-		switch (2)
-		{
+		switch (2) {
 			case 0:
 				subsceneView.setRoot(sv3d.createView());
 				subsceneView.setCamera(new PerspectiveCamera());
-			break;
+				break;
 
 			case 1:
 				subsceneView.setRoot(sv2d.createView());
-			break;
+				break;
 
 			case 2:
 				FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/org/group_three/basicGui/fxml/CanvasView.fxml")
+						getClass().getResource("/org/group_three/basicGui/fxml/CanvasView.fxml")
 				);
 
 				Parent root = loader.load();
 				subsceneView.setRoot(root);
-			break;
+				break;
 		}
 
 

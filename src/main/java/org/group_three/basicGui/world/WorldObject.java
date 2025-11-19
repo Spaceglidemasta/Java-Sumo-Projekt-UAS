@@ -15,7 +15,8 @@ public class WorldObject {
 	private boolean interactable = false;
 	private World world;
 
-	WorldObject() {}
+	WorldObject() {
+	}
 
 	WorldObject(double sphereCollision) {
 		this.sphereCollision = sphereCollision;
@@ -26,19 +27,17 @@ public class WorldObject {
 	}
 
 	public void setPostion(Vector2D position) {
-		double worldSizeX = world.getWorldSize().x-sphereCollision/2;
+		double worldSizeX = world.getWorldSize().x - sphereCollision / 2;
 		if (position.x < worldSizeX) {
 			position.x = worldSizeX;
-		}
-		else if (position.x > worldSizeX) {
+		} else if (position.x > worldSizeX) {
 			position.x = worldSizeX;
 		}
 
-		double worldSizeY = world.getWorldSize().y-sphereCollision/2;
+		double worldSizeY = world.getWorldSize().y - sphereCollision / 2;
 		if (position.y < worldSizeY) {
 			position.y = worldSizeY;
-		}
-		else if (position.y > worldSizeY) {
+		} else if (position.y > worldSizeY) {
 			position.y = worldSizeY;
 		}
 	}

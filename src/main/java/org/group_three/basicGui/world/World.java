@@ -12,7 +12,8 @@ public class World {
 	private Vector2D worldSize = new Vector2D(1000, 500);
 	private WorldObject[] worldObjects;
 
-	World() {}
+	World() {
+	}
 
 	public double getViewerRotation() {
 		return viewerRotation;
@@ -43,8 +44,7 @@ public class World {
 	public void setViewerZoom(double zoom) {
 		if (zoom < viewerZoomLimit.x) {
 			zoom = viewerZoomLimit.x;
-		}
-		else if (zoom > viewerZoomLimit.y) {
+		} else if (zoom > viewerZoomLimit.y) {
 			zoom = viewerZoomLimit.y;
 		}
 
@@ -70,15 +70,13 @@ public class World {
 	public void setViewerPostion(Vector2D position) {
 		if (position.x < worldSize.x) {
 			position.x = worldSize.x;
-		}
-		else if (position.x > worldSize.x) {
+		} else if (position.x > worldSize.x) {
 			position.x = worldSize.x;
 		}
 
 		if (position.y < worldSize.y) {
 			position.y = worldSize.y;
-		}
-		else if (position.y > worldSize.y) {
+		} else if (position.y > worldSize.y) {
 			position.y = worldSize.y;
 		}
 	}

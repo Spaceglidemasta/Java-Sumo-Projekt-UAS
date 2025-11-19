@@ -24,25 +24,24 @@ public class MainViewController {
 		SimulationView2D sv2d = new SimulationView2D();
 
 
-		switch (0)
-		{
+		switch (0) {
 			case 0:
 				subsceneView.setRoot(sv3d.createView());
 				subsceneView.setCamera(new PerspectiveCamera());
-			break;
+				break;
 
 			case 1:
 				subsceneView.setRoot(sv2d.createView());
-			break;
+				break;
 
 			case 2:
 				FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/org/group_three/basicGui/fxml/RandomTestView.fxml")
+						getClass().getResource("/org/group_three/basicGui/fxml/RandomTestView.fxml")
 				);
 
 				Parent root = loader.load();
 				subsceneView.setRoot(root);
-			break;
+				break;
 		}
 
 

@@ -13,17 +13,21 @@ import javafx.stage.FileChooser;
 public class ToolbarController {
 
 	// FX:ID's
-	@FXML private Menu simulationOpenRecent;
-	@FXML private MenuItem simulationClose;
-	@FXML private MenuItem simulationReload;
-	@FXML private MenuItem simulationExport;
+	@FXML
+	private Menu simulationOpenRecent;
+	@FXML
+	private MenuItem simulationClose;
+	@FXML
+	private MenuItem simulationReload;
+	@FXML
+	private MenuItem simulationExport;
 
 	// Ini
 	@FXML
 	private void initialize() { //throws IOException { for what was that?
 		Debug.print("Toolbar loaded.");
 
-		String[][] recentlyOpenedSimulations = {{"Sim0", "SimulationPath0"},{"Sim1", "SimulationPath1"},{"Sim2", "SimulationPath2"}};
+		String[][] recentlyOpenedSimulations = {{"Sim0", "SimulationPath0"}, {"Sim1", "SimulationPath1"}, {"Sim2", "SimulationPath2"}};
 
 		initializeOpenRecentList(recentlyOpenedSimulations);
 	}
@@ -31,19 +35,17 @@ public class ToolbarController {
 	private void initializeOpenRecentList(String[][] recentlyOpenedSimulations) {
 		for (String[] simulation : recentlyOpenedSimulations) {
 			MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(simulation[0], simulation[1]);
-            item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
+			item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
 			simulationOpenRecent.getItems().add(item);
 		}
 	}
 
 
-
-	private void setSimulationLoaded(boolean loaded) { //rename? load sim?? 100% needs rework 
+	private void setSimulationLoaded(boolean loaded) { //rename? load sim?? 100% needs rework
 		simulationClose.setDisable(!loaded);
 		simulationReload.setDisable(!loaded);
 		simulationExport.setDisable(!loaded);
 	}
-
 
 
 	// Simulation -> ButtonClicked
@@ -53,7 +55,7 @@ public class ToolbarController {
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select file");
-		
+
 		// desktop path, works for windows macOS and linux
 		String desktopPath = System.getProperty("user.home") + "/Desktop";
 		File desktopDir = new File(desktopPath);
@@ -89,7 +91,7 @@ public class ToolbarController {
 	private void onSimulationReloadClicked() {
 		Debug.print("Simulation -> Reload");
 	}
-	
+
 	@FXML
 	private void onSimulationExportClicked() {
 		Debug.print("Simulation -> Export");
@@ -99,5 +101,5 @@ public class ToolbarController {
 	private void onSimulationPreferencesClicked() {
 		Debug.print("Simulation -> Preferences");
 	}
-	
+
 }

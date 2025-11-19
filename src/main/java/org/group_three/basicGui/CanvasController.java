@@ -14,9 +14,12 @@ import javafx.scene.paint.Color;
 
 public class CanvasController {
 
-	@FXML private Canvas worldStaticRenderTarget;	// for static world elements: roads, traffic lights,...
-	@FXML private Canvas worldDynamicRenderTarget;	// for dynamic world elements: cars,...
-	@FXML private Pane renderTargetBounds;			// a reference to adjust the render target sizes dynamically on window resize
+	@FXML
+	private Canvas worldStaticRenderTarget;    // for static world elements: roads, traffic lights,...
+	@FXML
+	private Canvas worldDynamicRenderTarget;    // for dynamic world elements: cars,...
+	@FXML
+	private Pane renderTargetBounds;            // a reference to adjust the render target sizes dynamically on window resize
 
 	private GraphicsContext worldStaticRenderTarget_GraphicsContext;
 
@@ -25,7 +28,7 @@ public class CanvasController {
 		Debug.print("Canvas loaded.");
 
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
-		
+
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
@@ -36,13 +39,13 @@ public class CanvasController {
 		renderTargetBounds.widthProperty().addListener((observable, oldValue, newValue) -> {
 			Debug.print("RenderTargetSize.X: " + newValue);
 
-			posCameraOffset.x = newValue.doubleValue()/2;
+			posCameraOffset.x = newValue.doubleValue() / 2;
 			update();
 		});
 
 		renderTargetBounds.heightProperty().addListener((observable, oldValue, newValue) -> {
 			Debug.print("RenderTargetSize.Y: " + newValue);
-			posCameraOffset.y = newValue.doubleValue()/2;
+			posCameraOffset.y = newValue.doubleValue() / 2;
 			update();
 		});
 	}
@@ -51,9 +54,9 @@ public class CanvasController {
 	private void onMouseClicked() {
 		Debug.print("Canvas clicked.");
 
-		setRotation(rotation+15);
+		setRotation(rotation + 15);
 		update();
-	
+
 	}
 
 	@FXML
@@ -72,7 +75,7 @@ public class CanvasController {
 
 		lastX = x;
 		lastY = y;
-   
+
 	}
 
 	@FXML
@@ -88,11 +91,11 @@ public class CanvasController {
 		Debug.print("onScroll");
 
 		double deltaY = event.getDeltaY();
-		zoom += deltaY*0.01;
+		zoom += deltaY * 0.01;
 		Debug.print("Zoom: " + zoom);
-		
+
 		update();
-   
+
 	}
 
 
@@ -114,12 +117,10 @@ public class CanvasController {
 		this.rotation = rotation;
 
 		// Clamp rotation from 0 to 359.99...
-		while (this.rotation < 0)
-		{
+		while (this.rotation < 0) {
 			this.rotation += 360;
 		}
-		while (this.rotation >= 360)
-		{
+		while (this.rotation >= 360) {
 			this.rotation -= 360;
 		}
 
@@ -133,20 +134,20 @@ public class CanvasController {
 		worldStaticRenderTarget_GraphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
 		worldStaticRenderTarget_GraphicsContext.restore();
 
-		
+
 		worldStaticRenderTarget_GraphicsContext.save();
 		worldStaticRenderTarget_GraphicsContext.translate(pos.x + posCameraOffset.x, pos.y + posCameraOffset.y); // Object Location
 		worldStaticRenderTarget_GraphicsContext.rotate(rotation);
-		worldStaticRenderTarget_GraphicsContext.clearRect(-256*zoom, -128*zoom, 512*zoom, 256*zoom);
+		worldStaticRenderTarget_GraphicsContext.clearRect(-256 * zoom, -128 * zoom, 512 * zoom, 256 * zoom);
 		worldStaticRenderTarget_GraphicsContext.restore();
 
-		Debug.print("PosXY: "+ pos.x + " | " + pos.y);
+		Debug.print("PosXY: " + pos.x + " | " + pos.y);
 
 		worldStaticRenderTarget_GraphicsContext.save();
 		worldStaticRenderTarget_GraphicsContext.setFill(Color.BLUE);
 		worldStaticRenderTarget_GraphicsContext.translate(pos.x + posCameraOffset.x, pos.y + posCameraOffset.y); // Object Location
 		worldStaticRenderTarget_GraphicsContext.rotate(rotation);
-		worldStaticRenderTarget_GraphicsContext.fillRect(-16*zoom, -16*zoom, 32*zoom, 32*zoom);
+		worldStaticRenderTarget_GraphicsContext.fillRect(-16 * zoom, -16 * zoom, 32 * zoom, 32 * zoom);
 		worldStaticRenderTarget_GraphicsContext.restore();
 
 	}
