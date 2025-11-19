@@ -27,15 +27,15 @@ public class World {
 	}
 
 	public void setViewerRotation(double rotation) {
-		viewerRotation = rotation;
-
 		// Clamp rotation from 0 to 359.99...
-		while (viewerRotation < 0) {
-			viewerRotation += 360;
+		while (rotation < 0) {
+			rotation += 360;
 		}
-		while (viewerRotation >= 360) {
-			viewerRotation -= 360;
+		while (rotation >= 360) {
+			rotation -= 360;
 		}
+
+		viewerRotation = rotation;
 
 		Debug.print(rotation);
 
@@ -83,21 +83,21 @@ public class World {
 	}
 
 	public void setViewerPosition(Vector2D position) {
-		/*if (position.x < worldSize.x) {
-			position.x = worldSize.x;
-		} else if (position.x > worldSize.x) {
-			position.x = worldSize.x;
+		if (position.x < -(worldSize.x/2)) {
+			position.x = -(worldSize.x/2);
+		} else if (position.x > (worldSize.x/2)) {
+			position.x = (worldSize.x/2);
 		} else {
 			viewerPosition.x = position.x;
 		}
 
-		if (position.y < worldSize.y) {
-			position.y = worldSize.y;
-		} else if (position.y > worldSize.y) {
-			position.y = worldSize.y;
+		if (position.y < -(worldSize.y/2)) {
+			position.y = -(worldSize.y/2);
+		} else if (position.y > (worldSize.y/2)) {
+			position.y = (worldSize.y/2);
 		} else {
 			viewerPosition.y = position.y;
-		}*/
+		}
 
 		viewerPosition = position;
 
