@@ -55,8 +55,6 @@
             <groupId>org.eclipse.sumo</groupId>
             <artifactId>traas</artifactId>
             <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/TraaS.jar</systemPath>
         </dependency>
 
 	</dependencies>
