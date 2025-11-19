@@ -2,6 +2,7 @@ package org.group_three.basicGui;
 
 import java.io.IOException;
 
+import org.group_three.basicGui.world.World;
 import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
@@ -23,12 +24,15 @@ public class CanvasController {
 
 	private GraphicsContext worldStaticRenderTarget_GraphicsContext;
 
+	private World world = new World();
+
 	@FXML
 	public void initialize() throws IOException {
 		Debug.print("Canvas loaded.");
 
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
-
+		world.worldStaticRenderTarget = worldStaticRenderTarget;
+		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
@@ -40,14 +44,18 @@ public class CanvasController {
 			Debug.print("RenderTargetSize.X: " + newValue);
 
 			posCameraOffset.x = newValue.doubleValue() / 2;
+			world.setViewerPositionOffset(new Vector2D((newValue.doubleValue() / 2), (world.getViewerPositionOffset().y)));
 			update();
 		});
 
 		renderTargetBounds.heightProperty().addListener((observable, oldValue, newValue) -> {
 			Debug.print("RenderTargetSize.Y: " + newValue);
 			posCameraOffset.y = newValue.doubleValue() / 2;
+			world.setViewerPositionOffset(new Vector2D((world.getViewerPositionOffset().x), (newValue.doubleValue() / 2)));
 			update();
 		});
+
+		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth()/2, worldStaticRenderTarget.getHeight()/2));
 	}
 
 	@FXML
@@ -55,6 +63,7 @@ public class CanvasController {
 		Debug.print("Canvas clicked.");
 
 		setRotation(rotation + 15);
+		world.addViewerRotation(15);
 		update();
 
 	}
@@ -71,6 +80,7 @@ public class CanvasController {
 
 		pos.x += deltaX;
 		pos.y += deltaY;
+		world.addViewerPosition(new Vector2D(deltaX, deltaY));
 		update();
 
 		lastX = x;
@@ -92,6 +102,7 @@ public class CanvasController {
 
 		double deltaY = event.getDeltaY();
 		zoom += deltaY * 0.01;
+		world.addViewerZoom(event.getDeltaY() * 0.01);
 		Debug.print("Zoom: " + zoom);
 
 		update();
@@ -129,7 +140,7 @@ public class CanvasController {
 
 
 	private void update() {
-		worldStaticRenderTarget_GraphicsContext.save();
+		/*worldStaticRenderTarget_GraphicsContext.save();
 		worldStaticRenderTarget_GraphicsContext.setFill(Color.GREY);
 		worldStaticRenderTarget_GraphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
 		worldStaticRenderTarget_GraphicsContext.restore();
@@ -148,7 +159,7 @@ public class CanvasController {
 		worldStaticRenderTarget_GraphicsContext.translate(pos.x + posCameraOffset.x, pos.y + posCameraOffset.y); // Object Location
 		worldStaticRenderTarget_GraphicsContext.rotate(rotation);
 		worldStaticRenderTarget_GraphicsContext.fillRect(-16 * zoom, -16 * zoom, 32 * zoom, 32 * zoom);
-		worldStaticRenderTarget_GraphicsContext.restore();
+		worldStaticRenderTarget_GraphicsContext.restore();*/
 
 	}
 }

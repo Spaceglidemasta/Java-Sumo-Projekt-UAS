@@ -1,5 +1,8 @@
 package org.group_three.basicGui.world;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import org.group_three.basicGui.Vector2D;
 import org.group_three.debug.Debug;
 
@@ -9,10 +12,14 @@ public class World {
 	private double viewerRotation = 0;
 	private double viewerZoom = 1;
 	private Vector2D viewerZoomLimit = new Vector2D(0.1, 2);
-	private Vector2D worldSize = new Vector2D(1000, 500);
+	private Vector2D worldSize = new Vector2D(512, 256);
 	private WorldObject[] worldObjects;
+	private Color worldColor = Color.GREY;
+	private Color backgroundColor = Color.BLACK;
+	public GraphicsContext graphicsContext;
+	public Canvas worldStaticRenderTarget;
 
-	World() {
+	public World() {
 	}
 
 	public double getViewerRotation() {
@@ -31,6 +38,8 @@ public class World {
 		}
 
 		Debug.print(rotation);
+
+		requestUpdate();
 	}
 
 	public void addViewerRotation(double rotation) {
@@ -46,9 +55,13 @@ public class World {
 			zoom = viewerZoomLimit.x;
 		} else if (zoom > viewerZoomLimit.y) {
 			zoom = viewerZoomLimit.y;
+		} else {
+			viewerZoom = zoom;
 		}
 
 		Debug.print(zoom);
+
+		requestUpdate();
 	}
 
 	public void addViewerZoom(double zoom) {
@@ -61,6 +74,8 @@ public class World {
 
 	public void setViewerPositionOffset(Vector2D positionOffset) {
 		viewerPositionOffset = positionOffset;
+
+		requestUpdate();
 	}
 
 	public Vector2D getViewerPosition() {
@@ -68,27 +83,52 @@ public class World {
 	}
 
 	public void setViewerPosition(Vector2D position) {
-		if (position.x < worldSize.x) {
+		/*if (position.x < worldSize.x) {
 			position.x = worldSize.x;
 		} else if (position.x > worldSize.x) {
 			position.x = worldSize.x;
+		} else {
+			viewerPosition.x = position.x;
 		}
 
 		if (position.y < worldSize.y) {
 			position.y = worldSize.y;
 		} else if (position.y > worldSize.y) {
 			position.y = worldSize.y;
-		}
+		} else {
+			viewerPosition.y = position.y;
+		}*/
+
+		viewerPosition = position;
+
+		requestUpdate();
 	}
 
 	public void addViewerPosition(Vector2D position) {
 		Vector2D pos = getViewerPosition();
 		pos.x += position.x;
-		pos.y *= position.y;
+		pos.y += position.y;
 		setViewerPosition(pos);
+
+		Debug.print(getViewerPosition().x + " " + getViewerPosition().y);
 	}
 
 	public Vector2D getWorldSize() {
 		return worldSize;
+	}
+
+	public void requestUpdate() {
+		graphicsContext.save();
+		graphicsContext.setFill(backgroundColor);
+		graphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
+		graphicsContext.restore();
+
+
+		graphicsContext.save();
+		graphicsContext.setFill(worldColor);
+		graphicsContext.translate(getViewerPosition().x + getViewerPositionOffset().x, getViewerPosition().y + getViewerPositionOffset().y); // Object Location
+		graphicsContext.rotate(getViewerRotation());
+		graphicsContext.fillRect((getWorldSize().x/2) * getViewerZoom() * -1, (getWorldSize().y/2) * getViewerZoom() * -1, getWorldSize().x * getViewerZoom(), getWorldSize().y * getViewerZoom());
+		graphicsContext.restore();
 	}
 }
