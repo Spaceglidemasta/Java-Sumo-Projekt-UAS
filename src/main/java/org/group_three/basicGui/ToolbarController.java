@@ -1,7 +1,7 @@
 package org.group_three.basicGui;
 
 import java.io.File;
-import java.io.IOException;
+// import java.io.IOException; for what was that?
 
 import org.group_three.debug.Debug;
 
@@ -20,18 +20,18 @@ public class ToolbarController {
 
 	// Ini
 	@FXML
-	private void initialize() throws IOException {
+	private void initialize() { //throws IOException { for what was that?
 		Debug.print("Toolbar loaded.");
 
-		String[][] recentlyOpendSimulations = {{"Sim0", "SimulationPath0"},{"Sim1", "SimulationPath1"},{"Sim2", "SimulationPath2"}};
+		String[][] recentlyOpenedSimulations = {{"Sim0", "SimulationPath0"},{"Sim1", "SimulationPath1"},{"Sim2", "SimulationPath2"}};
 
-		initializeOpenRecentList(recentlyOpendSimulations);
+		initializeOpenRecentList(recentlyOpenedSimulations);
 	}
 
-	private void initializeOpenRecentList(String[][] recentlyOpendSimulations) {
-		for (String[] simulation : recentlyOpendSimulations) {
+	private void initializeOpenRecentList(String[][] recentlyOpenedSimulations) {
+		for (String[] simulation : recentlyOpenedSimulations) {
 			MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(simulation[0], simulation[1]);
-			item.setOnAction(event -> onSimulationOpenRecentClicked(item));
+            item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
 			simulationOpenRecent.getItems().add(item);
 		}
 	}
@@ -54,7 +54,7 @@ public class ToolbarController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select file");
 		
-		// Desktop-Pfad holen (funktioniert auf Windows, macOS, Linux)
+		// desktop path, works for windows macOS and linux
 		String desktopPath = System.getProperty("user.home") + "/Desktop";
 		File desktopDir = new File(desktopPath);
 
