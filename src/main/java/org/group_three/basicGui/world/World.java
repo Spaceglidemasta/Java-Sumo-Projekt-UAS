@@ -102,7 +102,7 @@ public class World {
 		viewerPosition = position;
 
 		requestUpdate();
-	}
+	} // world bounds limit doesnt account for rotation yet
 
 	public void addViewerPosition(Vector2D position) {
 		Vector2D pos = getViewerPosition();
@@ -117,7 +117,7 @@ public class World {
 		return worldSize;
 	}
 
-	public void requestUpdate() {
+	private void requestUpdate() {
 		graphicsContext.save();
 		graphicsContext.setFill(backgroundColor);
 		graphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
