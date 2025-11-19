@@ -59,7 +59,7 @@ public class World {
 		return viewerPositionOffset;
 	}
 
-	public void setViewerPostionOffset(Vector2D positionOffset) {
+	public void setViewerPositionOffset(Vector2D positionOffset) {
 		viewerPositionOffset = positionOffset;
 	}
 
@@ -67,7 +67,7 @@ public class World {
 		return viewerPosition;
 	}
 
-	public void setViewerPostion(Vector2D position) {
+	public void setViewerPosition(Vector2D position) {
 		if (position.x < worldSize.x) {
 			position.x = worldSize.x;
 		} else if (position.x > worldSize.x) {
@@ -85,7 +85,7 @@ public class World {
 		Vector2D pos = getViewerPosition();
 		pos.x += position.x;
 		pos.y *= position.y;
-		setViewerPostion(pos);
+		setViewerPosition(pos);
 	}
 
 	public Vector2D getWorldSize() {
