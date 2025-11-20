@@ -1,7 +1,11 @@
 package org.group_three.api;
 
+//packages
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
+import org.group_three.constants.Settings;
+
+//libs
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -16,29 +20,36 @@ public class SimController {
         try {
             File jarDir = getSumoLoc();
 
-            File resourcesDir = new File(jarDir, "resources");
+            File resourcesDir = new File(jarDir, Settings.resourcesdirname);
+            if (!resourcesDir.exists()){
+                Debug.print(resourcesDir.getAbsolutePath());
+                throw new Exception("resources dir not found!");
+            }
+            else {
+                Debug.print("resources dir found");
+            }
 
-            File sumoexe = new File(resourcesDir, "sumo.exe");
-            Debug.print(sumoexe.getAbsolutePath());
+            File sumoexe = new File(resourcesDir, Settings.sumoexename);
             if (!sumoexe.exists()) {
+                Debug.print(sumoexe.getAbsolutePath());
                 throw new Exception("sumo.exe not found");
             }
             else {
                 Debug.print("sumo.exe found");
             }
 
-            File networknet = new File(resourcesDir, "net.net.xml");
-            Debug.print(networknet.getAbsolutePath());
+            File networknet = new File(resourcesDir, Settings.networkfilename);
             if (!networknet.exists()) {
+                Debug.print(networknet.getAbsolutePath());
                 throw new Exception("net.net.xml not found");
             }
             else {
                 Debug.print("network file found");
             }
 
-            File routenet = new File(resourcesDir, "net.rou.xml");
-            Debug.print(routenet.getAbsolutePath());
+            File routenet = new File(resourcesDir, Settings.routefilename);
             if (!routenet.exists()) {
+                Debug.print(routenet.getAbsolutePath());
                 throw new Exception("net.rou.xml not found");
             }
             else {
