@@ -38,34 +38,43 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.basicGui.BodyController">
    <children>
-      <SplitPane dividerPositions="0.7" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.7" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
             <AnchorPane id="Content" fx:id="fxsubscene_mainview" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
                <children>
-                  <Pane fx:id="binder" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox styleClass="tail" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <SubScene id="subscene_mainView" fx:id="subsceneView" fill="BLACK" height="64.0" width="64.0">
-                           <root>
-                              <Region />
-                           </root>
-                        </SubScene>
+                        <Pane fx:id="binder" VBox.vgrow="ALWAYS">
+                           <children>
+                              <SubScene id="subscene_mainView" fx:id="subsceneView" fill="BLACK" height="64.0" width="64.0">
+                                 <root>
+                                    <Region />
+                                 </root>
+                              </SubScene>
+                           </children>
+                        </Pane>
+                        <StackPane>
+                           <children>
+                              <fx:include scaleX="0.8" scaleY="0.8" scaleZ="0.8" source="SimulationControls.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                           </children>
+                        </StackPane>
                      </children>
-                  </Pane>
+                  </VBox>
                </children>
             </AnchorPane>
             <AnchorPane>
                <children>
-                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TitledPane animated="false" collapsible="false" text="Outliner" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TitledPane animated="false" collapsible="false" stylesheets="@../css/style.css" text="Outliner" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -78,18 +87,18 @@
                         </AnchorPane>
                       <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox prefHeight="200.0" prefWidth="100.0" styleClass="tail" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <TitledPane animated="false" expanded="false" text="Details">
+                                    <TitledPane animated="false" expanded="false" stylesheets="@../css/style.css" text="Details">
                                       <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                       </content>
                                     </TitledPane>
-                                    <TitledPane animated="false" layoutX="10.0" layoutY="10.0" text="Statistics &amp; Analytics">
+                                    <TitledPane animated="false" layoutX="10.0" layoutY="10.0" styleClass="tail" stylesheets="@../css/style.css" text="Statistics &amp; Analytics">
                                        <content>
                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                <SplitPane dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <SplitPane dividerPositions="0.5" styleClass="tail" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                   <items>
                                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                                          <children>
@@ -97,7 +106,7 @@
                                                                <children>
                                                                   <AnchorPane>
                                                                      <children>
-                                                                        <Pane style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                        <Pane styleClass="tail" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                            <children>
                                                                               <AnchorPane>
                                                                                  <children>
@@ -118,7 +127,7 @@
                                                                <children>
                                                                   <AnchorPane>
                                                                      <children>
-                                                                        <Pane style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                        <Pane styleClass="tail" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                            <children>
                                                                               <AnchorPane>
                                                                                  <children>
@@ -139,7 +148,7 @@
                                           </AnchorPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane animated="false" text="Filters">
+                                    <TitledPane animated="false" styleClass="tail" stylesheets="@../css/style.css" text="Filters">
                                        <content>
                                           <AnchorPane>
                                              <children>

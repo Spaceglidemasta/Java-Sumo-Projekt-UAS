@@ -98,8 +98,13 @@ public class ToolbarController {
 	}
 
 	@FXML
-	private void onSimulationPreferencesClicked() {
-		Debug.print("Simulation -> Preferences");
+	private void onSettingsClicked() {
+		Debug.print("Settings");
+	}
+
+	@FXML
+	private void onHelpClicked() {
+		Debug.print("Help");
 	}
 
 }
