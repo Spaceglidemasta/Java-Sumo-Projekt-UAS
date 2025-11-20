@@ -37,7 +37,7 @@ public class MainGui extends Application {
 
 	public Image getAppIcon() //add error handling, if no "icon" is found
 	{
-		return new Image(getClass().getResourceAsStream(getResourcePath("icon")));
+		return new Image(getClass().getResourceAsStream(getResourcePath("SumoLogoAdjustments3")));
 	}
 
 	@Override
