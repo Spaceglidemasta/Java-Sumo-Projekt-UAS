@@ -23,4 +23,8 @@ public class Vector2D {
 	public Vector2D mul(double v) {
 		return new Vector2D(x * v, y * v);
 	}
+
+	public Vector2D div(double v) {
+		return new Vector2D(x / v, y / v);
+	}
 }
