@@ -11,4 +11,16 @@ public class Vector2D {
 		this.x = x;
 		this.y = y;
 	}
+
+	public Vector2D add(Vector2D v) {
+		return new Vector2D(x + v.x, y + v.y);
+	}
+
+	public Vector2D sub(Vector2D v) {
+		return new Vector2D(x - v.x, y - v.y);
+	}
+
+	public Vector2D mul(double v) {
+		return new Vector2D(x * v, y * v);
+	}
 }
