@@ -54,7 +54,7 @@ public class MainApp extends Application {
 		launch(args);
 	}
 
-	public Image getAppIcon() //add error handling, if no "icon" is found
+	public Image getAppIcon() //add error handling, if no "icons" is found
 	{
 		return new Image(getClass().getResourceAsStream(UI.appIcon));
 	}

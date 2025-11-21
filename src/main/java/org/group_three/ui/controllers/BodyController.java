@@ -47,7 +47,7 @@ public class BodyController {
 
 			case 2:
 				FXMLLoader loader = new FXMLLoader(
-						getClass().getResource("/org/group_three/basicGui/fxml/CanvasView.fxml")
+						getClass().getResource("/org/group_three/ui/fxml/CanvasView.fxml")
 				);
 
 				Parent root = loader.load();
