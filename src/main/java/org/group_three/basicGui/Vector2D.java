@@ -49,4 +49,8 @@ public class Vector2D {
 
 		return rotation;
 	}
+
+	public Vector2D flipY() {
+		return new Vector2D(x, -y);
+	}
 }

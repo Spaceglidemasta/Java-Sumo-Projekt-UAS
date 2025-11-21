@@ -91,15 +91,38 @@ public class CanvasController {
 		deltaY = y - lastY;
 
 		if(Keyboard.altKey) { // start rotation
-			Vector2D origin = new Vector2D(x, y).add(world.getViewerPositionOffset());
+			Vector2D origin = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY();
 			Debug.print(origin);
+			double rot = origin.getRotation();
+			Debug.print("Rotation: " + rot);
 
 			Debug.print(world.getViewerPositionOffset());
 
 			if (Keyboard.ctrlKey) { // rotate with 45 degree snapping
+				if ( ((rot >= 0) && (rot < 22.5)) || rot >= 337.5) {
+					rot = 0;
+				} else if ( (rot >= 22.5) && (rot < 67.5)) {
+					rot = 45;
+				} else if ( (rot >= 67.5) && (rot < 112.5)) {
+					rot = 90;
+				} else if ( (rot >= 112.5) && (rot < 157.5)) {
+					rot = 135;
+				} else if ( (rot >= 157.5) && (rot < 202.5)) {
+					rot = 180;
+				} else if ( (rot >= 202.5) && (rot < 247.5)) {
+					rot = 225;
+				} else if ( (rot >= 247.5) && (rot < 292.5)) {
+					rot = 270;
+				} else if (rot >= 292.5) {
+					rot = 315;
+				} else {
+					throw new RuntimeException("Rotation reached an impossible value!");
+				}
+
+				world.setViewerRotation(rot);
 
 			} else { // rotate freely, no snapping
-
+				world.setViewerRotation(rot);
 			}
 
 		} else {
