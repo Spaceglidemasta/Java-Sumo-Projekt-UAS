@@ -3,6 +3,7 @@ package org.group_three.basicGui;
 import java.io.IOException;
 
 import org.group_three.basicGui.world.World;
+import org.group_three.basicGui.world.WorldObject;
 import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
@@ -33,6 +34,14 @@ public class CanvasController {
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 		world.worldStaticRenderTarget = worldStaticRenderTarget;
 		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
+
+		WorldObject test = new WorldObject();
+		test.world = world;
+		test.graphicsContext = worldStaticRenderTarget_GraphicsContext;
+		test.renderTarget = worldStaticRenderTarget;
+		test.setPosition(new Vector2D(32, 64));
+		test.setRotation(30);
+		world.addWorldObject(test);
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());

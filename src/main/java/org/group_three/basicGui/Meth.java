@@ -35,7 +35,7 @@ public class Meth {
 	}
 
 	public static double addRelativeRotation(double rotation, double relativeRotation) {
-		return 0;
+		return rotation + relativeRotation;
 	}
 
 }

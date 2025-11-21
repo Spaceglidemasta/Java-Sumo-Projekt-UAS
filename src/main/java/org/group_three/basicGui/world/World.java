@@ -3,8 +3,11 @@ package org.group_three.basicGui.world;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.group_three.basicGui.MenuItem_RecentlyOpend;
 import org.group_three.basicGui.Vector2D;
 import org.group_three.debug.Debug;
+
+import java.util.*;
 
 public class World {
 	private Vector2D viewerPositionOffset = new Vector2D();
@@ -13,7 +16,7 @@ public class World {
 	private double viewerZoom = 1;
 	private Vector2D viewerZoomLimit = new Vector2D(0.1, 2);
 	private Vector2D worldSize = new Vector2D(512, 256);
-	private WorldObject[] worldObjects;
+	private List<WorldObject> worldObjects = new ArrayList<WorldObject>();
 	private Color worldColor = Color.GREY;
 	private Color backgroundColor = Color.BLACK;
 	public GraphicsContext graphicsContext;
@@ -134,5 +137,13 @@ public class World {
 		graphicsContext.rotate(getViewerRotation());
 		graphicsContext.fillRect((getWorldSize().x/2) * getViewerZoom() * -1, (getWorldSize().y/2) * getViewerZoom() * -1, getWorldSize().x * getViewerZoom(), getWorldSize().y * getViewerZoom());
 		graphicsContext.restore();
+
+		for (WorldObject object : worldObjects) {
+			object.update();
+		}
+	}
+
+	public void addWorldObject(WorldObject object) {
+		worldObjects.add(object);
 	}
 }
