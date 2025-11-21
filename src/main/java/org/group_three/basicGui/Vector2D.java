@@ -27,4 +27,9 @@ public class Vector2D {
 	public Vector2D div(double v) {
 		return new Vector2D(x / v, y / v);
 	}
+
+	@Override
+	public String toString() {
+		return "Vector2D{" + "x=" + x + ", y=" + y + "}";
+	}
 }
