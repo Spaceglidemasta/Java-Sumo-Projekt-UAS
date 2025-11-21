@@ -61,6 +61,16 @@ public class CanvasController {
 		});
 
 		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth()/2, worldStaticRenderTarget.getHeight()/2));
+
+		Debug.print(new Vector2D(0,10).getRotation()); // 0°
+		Debug.print(new Vector2D(10,10).getRotation()); // 45°
+		Debug.print(new Vector2D(10,0).getRotation()); // 90°
+		Debug.print(new Vector2D(10,-10).getRotation()); // 135°
+		Debug.print(new Vector2D(0,-10).getRotation()); // 180°
+		Debug.print(new Vector2D(-10,-10).getRotation()); // 225°
+		Debug.print(new Vector2D(-10,0).getRotation()); // 270°
+		Debug.print(new Vector2D(-10,10).getRotation()); // 315°
+		Debug.print(new Vector2D(-0.001,10).getRotation()); // 0/360°
 	}
 
 	@FXML

@@ -39,4 +39,14 @@ public class Vector2D {
 
 		return new Vector2D(x, y);
 	}
+
+	public double getRotation() {
+		double rotation = Math.toDegrees(Math.atan2(-y, x)) + 90;
+
+		if (rotation < 0) {
+			rotation += 360;
+		}
+
+		return rotation;
+	}
 }
