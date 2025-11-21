@@ -68,7 +68,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.13.0</version>
 				<configuration>
-					<source>25</source> <!-- oder 21, je nach JDK -->
+					<source>25</source>
 					<target>25</target>
 				</configuration>
 			</plugin>
@@ -90,6 +90,9 @@
 				<version>0.0.8</version>
 				<configuration>
 					<mainClass>${mainClassPath}</mainClass>
+                    <options>
+                        <option>--enable-native-access=javafx.graphics</option>
+                    </options>
 				</configuration>
 			</plugin>
 
