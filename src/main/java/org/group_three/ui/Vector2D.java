@@ -1,4 +1,4 @@
-package org.group_three.basicGui;
+package org.group_three.ui;
 
 public class Vector2D {
 	public double x = 0;

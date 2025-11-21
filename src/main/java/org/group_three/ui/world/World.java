@@ -1,10 +1,9 @@
-package org.group_three.basicGui.world;
+package org.group_three.ui.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import org.group_three.basicGui.MenuItem_RecentlyOpend;
-import org.group_three.basicGui.Vector2D;
+import org.group_three.ui.Vector2D;
 import org.group_three.debug.Debug;
 
 import java.util.*;

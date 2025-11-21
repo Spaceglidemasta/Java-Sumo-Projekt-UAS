@@ -1,4 +1,4 @@
-package org.group_three.basicGui;
+package org.group_three.ui;
 
 import org.group_three.debug.Debug;
 

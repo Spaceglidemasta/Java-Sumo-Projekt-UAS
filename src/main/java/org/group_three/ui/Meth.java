@@ -1,4 +1,4 @@
-package org.group_three.basicGui;
+package org.group_three.ui;
 
 // Meth, the custom Math class
 public class Meth {
