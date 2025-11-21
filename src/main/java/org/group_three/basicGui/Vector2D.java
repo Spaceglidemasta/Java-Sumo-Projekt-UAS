@@ -32,4 +32,11 @@ public class Vector2D {
 	public String toString() {
 		return "Vector2D{" + "x=" + x + ", y=" + y + "}";
 	}
+
+	public Vector2D round() {
+		double x = Math.round(this.x * 1_000_000_000d) / 1_000_000_000d;
+		double y = Math.round(this.y * 1_000_000_000d) / 1_000_000_000d;
+
+		return new Vector2D(x, y);
+	}
 }

@@ -91,6 +91,23 @@ public class MainGui extends Application {
 		});
 		delay.play();*/
 
+		/*
+		Vector2D v0 = new Vector2D(0,0);
+		Vector2D v1 = new Vector2D(10,15);
+		Vector2D v2 = new Vector2D(50,75);
+
+		Debug.print(Meth.getRelativeLocation(v1, 0, v0).toString());
+		Debug.print(Meth.getRelativeLocation(v2, 0, v1).toString());
+		Debug.print(Meth.getRelativeLocation(v1, 45, v0).toString());
+		Debug.print(Meth.getRelativeLocation(v2, 45, v1).toString());
+		Debug.print(Meth.getRelativeLocation(v1, 90, v0).toString());
+		Debug.print(Meth.getRelativeLocation(v2, 90, v1).toString());
+
+		Debug.print(Meth.addRelativeLocation(v0, 0, v1).toString());
+		Debug.print(Meth.addRelativeLocation(v0, 45, v1).toString());
+		Debug.print(Meth.addRelativeLocation(v0, 90, v1).toString());
+		Debug.print(Meth.addRelativeLocation(v0, 180, v1).toString());
+		*/
 	}
 
 	public void start(String[] args) {
