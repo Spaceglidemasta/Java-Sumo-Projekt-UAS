@@ -1,6 +1,7 @@
 package org.group_three.basicGui;
 
 import java.io.IOException;
+import java.security.Key;
 
 import org.group_three.basicGui.world.World;
 import org.group_three.basicGui.world.WorldObject;
@@ -90,35 +91,24 @@ public class CanvasController {
 		deltaX = x - lastX;
 		deltaY = y - lastY;
 
-		if (Keyboard.altKey) { // start rotation
+		if (!Keyboard.ctrlKey && Keyboard.altKey) { // start rotation freely, no snapping
+			double rot = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY().getRotation();
+			world.setViewerRotation(rot);
+
+		} else if (Keyboard.ctrlKey && Keyboard.altKey) { // start rotation with 45 degree snapping
 			double rot = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY().getRotation();
 
-			if (Keyboard.ctrlKey) { // rotate with 45 degree snapping
-				if (((rot >= 0) && (rot < 22.5)) || rot >= 337.5) {
-					rot = 0;
-				} else if ((rot >= 22.5) && (rot < 67.5)) {
-					rot = 45;
-				} else if ((rot >= 67.5) && (rot < 112.5)) {
-					rot = 90;
-				} else if ((rot >= 112.5) && (rot < 157.5)) {
-					rot = 135;
-				} else if ((rot >= 157.5) && (rot < 202.5)) {
-					rot = 180;
-				} else if ((rot >= 202.5) && (rot < 247.5)) {
-					rot = 225;
-				} else if ((rot >= 247.5) && (rot < 292.5)) {
-					rot = 270;
-				} else if (rot >= 292.5) {
-					rot = 315;
-				} else {
-					throw new RuntimeException("Rotation reached an impossible value!");
-				}
+			if (((rot >= 0) && (rot < 22.5)) || rot >= 337.5) rot = 0;
+			else if ((rot >= 22.5) && (rot < 67.5)) rot = 45;
+			else if ((rot >= 67.5) && (rot < 112.5)) rot = 90;
+			else if ((rot >= 112.5) && (rot < 157.5)) rot = 135;
+			else if ((rot >= 157.5) && (rot < 202.5)) rot = 180;
+			else if ((rot >= 202.5) && (rot < 247.5)) rot = 225;
+			else if ((rot >= 247.5) && (rot < 292.5)) rot = 270;
+			else if (rot >= 292.5) rot = 315;
+			else throw new RuntimeException("Rotation reached an impossible value!");
 
-				world.setViewerRotation(rot);
-
-			} else { // rotate freely, no snapping
-				world.setViewerRotation(rot);
-			}
+			world.setViewerRotation(rot);
 
 		} else {
 			world.addViewerPosition(new Vector2D(deltaX, deltaY));
