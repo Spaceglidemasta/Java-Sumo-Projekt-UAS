@@ -1,5 +1,6 @@
 package org.group_three.basicGui;
 
+import javafx.scene.input.KeyCode;
 import org.group_three.debug.Debug;
 
 import javafx.application.Application;
@@ -77,6 +78,8 @@ public class MainGui extends Application {
 		//        getClass().getResource("style.css").toExternalForm()
 		//);
 
+
+		Keyboard.initialize(scene);
 
 		stage.setTitle(windowTitle);
 		stage.getIcons().add(getAppIcon());
