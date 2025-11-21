@@ -12,7 +12,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 public class CanvasController {
 
@@ -52,16 +51,13 @@ public class CanvasController {
 		renderTargetBounds.widthProperty().addListener((observable, oldValue, newValue) -> {
 			Debug.print("RenderTargetSize.X: " + newValue);
 
-			posCameraOffset.x = newValue.doubleValue() / 2;
 			world.setViewerPositionOffset(new Vector2D((newValue.doubleValue() / 2), (world.getViewerPositionOffset().y)));
-			update();
 		});
 
 		renderTargetBounds.heightProperty().addListener((observable, oldValue, newValue) -> {
 			Debug.print("RenderTargetSize.Y: " + newValue);
-			posCameraOffset.y = newValue.doubleValue() / 2;
+
 			world.setViewerPositionOffset(new Vector2D((world.getViewerPositionOffset().x), (newValue.doubleValue() / 2)));
-			update();
 		});
 
 		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth()/2, worldStaticRenderTarget.getHeight()/2));
@@ -71,10 +67,7 @@ public class CanvasController {
 	private void onMouseClicked() {
 		Debug.print("Canvas clicked.");
 
-		setRotation(rotation + 15);
-		world.addViewerRotation(15);
-		update();
-
+		//world.addViewerRotation(15);
 	}
 
 	@FXML
@@ -87,14 +80,24 @@ public class CanvasController {
 		deltaX = x - lastX;
 		deltaY = y - lastY;
 
-		pos.x += deltaX;
-		pos.y += deltaY;
-		world.addViewerPosition(new Vector2D(deltaX, deltaY));
-		update();
+		if(Keyboard.altKey) { // start rotation
+			Vector2D origin = new Vector2D(x, y).add(world.getViewerPositionOffset());
+			Debug.print(origin);
+
+			Debug.print(world.getViewerPositionOffset());
+
+			if (Keyboard.ctrlKey) { // rotate with 45 degree snapping
+
+			} else { // rotate freely, no snapping
+
+			}
+
+		} else {
+			world.addViewerPosition(new Vector2D(deltaX, deltaY));
+		}
 
 		lastX = x;
 		lastY = y;
-
 	}
 
 	@FXML
@@ -109,13 +112,7 @@ public class CanvasController {
 	private void onScroll(ScrollEvent event) {
 		Debug.print("onScroll");
 
-		double deltaY = event.getDeltaY();
-		zoom += deltaY * 0.01;
 		world.addViewerZoom(event.getDeltaY() * 0.01);
-		Debug.print("Zoom: " + zoom);
-
-		update();
-
 	}
 
 
@@ -125,50 +122,5 @@ public class CanvasController {
 	public double deltaX;
 	public double deltaY;
 
-	// draw handler needed so it doesnt waste performance
-
-	private double zoom = 1;
-	private Vector2D pos = new Vector2D();
-	private Vector2D posCameraOffset = new Vector2D();
-	private double rotation = 0;
-	private Vector2D worldSize = new Vector2D(512, 256);
-
-	private void setRotation(double rotation) {
-		this.rotation = rotation;
-
-		// Clamp rotation from 0 to 359.99...
-		while (this.rotation < 0) {
-			this.rotation += 360;
-		}
-		while (this.rotation >= 360) {
-			this.rotation -= 360;
-		}
-
-		Debug.print(rotation);
-	}
-
-
-	private void update() {
-		/*worldStaticRenderTarget_GraphicsContext.save();
-		worldStaticRenderTarget_GraphicsContext.setFill(Color.GREY);
-		worldStaticRenderTarget_GraphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
-		worldStaticRenderTarget_GraphicsContext.restore();
-
-
-		worldStaticRenderTarget_GraphicsContext.save();
-		worldStaticRenderTarget_GraphicsContext.translate(pos.x + posCameraOffset.x, pos.y + posCameraOffset.y); // Object Location
-		worldStaticRenderTarget_GraphicsContext.rotate(rotation);
-		worldStaticRenderTarget_GraphicsContext.clearRect(-256 * zoom, -128 * zoom, 512 * zoom, 256 * zoom);
-		worldStaticRenderTarget_GraphicsContext.restore();
-
-		Debug.print("PosXY: " + pos.x + " | " + pos.y);
-
-		worldStaticRenderTarget_GraphicsContext.save();
-		worldStaticRenderTarget_GraphicsContext.setFill(Color.BLUE);
-		worldStaticRenderTarget_GraphicsContext.translate(pos.x + posCameraOffset.x, pos.y + posCameraOffset.y); // Object Location
-		worldStaticRenderTarget_GraphicsContext.rotate(rotation);
-		worldStaticRenderTarget_GraphicsContext.fillRect(-16 * zoom, -16 * zoom, 32 * zoom, 32 * zoom);
-		worldStaticRenderTarget_GraphicsContext.restore();*/
-
-	}
+	// draw handler needed so it doesn't waste performance
 }

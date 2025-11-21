@@ -50,7 +50,7 @@ public class WorldObject {
 		}*/
 
 		this.position = position;
-		this.position.y *= -1;
+		//this.position.y *= -1;
 	}
 
 	public void addPosition(Vector2D position) {
