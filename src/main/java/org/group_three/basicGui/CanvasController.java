@@ -60,17 +60,17 @@ public class CanvasController {
 			world.setViewerPositionOffset(new Vector2D((world.getViewerPositionOffset().x), (newValue.doubleValue() / 2)));
 		});
 
-		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth()/2, worldStaticRenderTarget.getHeight()/2));
+		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth() / 2, worldStaticRenderTarget.getHeight() / 2));
 
-		Debug.print(new Vector2D(0,10).getRotation()); // 0°
-		Debug.print(new Vector2D(10,10).getRotation()); // 45°
-		Debug.print(new Vector2D(10,0).getRotation()); // 90°
-		Debug.print(new Vector2D(10,-10).getRotation()); // 135°
-		Debug.print(new Vector2D(0,-10).getRotation()); // 180°
-		Debug.print(new Vector2D(-10,-10).getRotation()); // 225°
-		Debug.print(new Vector2D(-10,0).getRotation()); // 270°
-		Debug.print(new Vector2D(-10,10).getRotation()); // 315°
-		Debug.print(new Vector2D(-0.001,10).getRotation()); // 0/360°
+		Debug.print(new Vector2D(0, 10).getRotation()); // 0°
+		Debug.print(new Vector2D(10, 10).getRotation()); // 45°
+		Debug.print(new Vector2D(10, 0).getRotation()); // 90°
+		Debug.print(new Vector2D(10, -10).getRotation()); // 135°
+		Debug.print(new Vector2D(0, -10).getRotation()); // 180°
+		Debug.print(new Vector2D(-10, -10).getRotation()); // 225°
+		Debug.print(new Vector2D(-10, 0).getRotation()); // 270°
+		Debug.print(new Vector2D(-10, 10).getRotation()); // 315°
+		Debug.print(new Vector2D(-0.001, 10).getRotation()); // 0/360°
 	}
 
 	@FXML
@@ -90,28 +90,23 @@ public class CanvasController {
 		deltaX = x - lastX;
 		deltaY = y - lastY;
 
-		if(Keyboard.altKey) { // start rotation
-			Vector2D origin = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY();
-			Debug.print(origin);
-			double rot = origin.getRotation();
-			Debug.print("Rotation: " + rot);
-
-			Debug.print(world.getViewerPositionOffset());
+		if (Keyboard.altKey) { // start rotation
+			double rot = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY().getRotation();
 
 			if (Keyboard.ctrlKey) { // rotate with 45 degree snapping
-				if ( ((rot >= 0) && (rot < 22.5)) || rot >= 337.5) {
+				if (((rot >= 0) && (rot < 22.5)) || rot >= 337.5) {
 					rot = 0;
-				} else if ( (rot >= 22.5) && (rot < 67.5)) {
+				} else if ((rot >= 22.5) && (rot < 67.5)) {
 					rot = 45;
-				} else if ( (rot >= 67.5) && (rot < 112.5)) {
+				} else if ((rot >= 67.5) && (rot < 112.5)) {
 					rot = 90;
-				} else if ( (rot >= 112.5) && (rot < 157.5)) {
+				} else if ((rot >= 112.5) && (rot < 157.5)) {
 					rot = 135;
-				} else if ( (rot >= 157.5) && (rot < 202.5)) {
+				} else if ((rot >= 157.5) && (rot < 202.5)) {
 					rot = 180;
-				} else if ( (rot >= 202.5) && (rot < 247.5)) {
+				} else if ((rot >= 202.5) && (rot < 247.5)) {
 					rot = 225;
-				} else if ( (rot >= 247.5) && (rot < 292.5)) {
+				} else if ((rot >= 247.5) && (rot < 292.5)) {
 					rot = 270;
 				} else if (rot >= 292.5) {
 					rot = 315;
