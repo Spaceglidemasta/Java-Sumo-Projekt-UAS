@@ -1,7 +1,9 @@
-package org.group_three.basicGui;
+package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
+import org.group_three.basicGui.SimulationView2D;
+import org.group_three.basicGui.SimulationView3D;
 import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;

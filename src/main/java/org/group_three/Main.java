@@ -3,15 +3,12 @@ package org.group_three;
 
 
 //external libraries
-import org.eclipse.sumo.libsumo.*;
 import org.group_three.api.SimController;
-import org.group_three.basicGui.MainGui;
+import org.group_three.ui.MainApp;
 
 
 //packages
-import org.group_three.api.SimSumo;
 import org.group_three.debug.Debug;
-import org.group_three.constants.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,7 +17,7 @@ public class Main {
         SimController sim = new SimController();
 
 
-        MainGui aMainGui = new MainGui();
+        MainApp aMainGui = new MainApp();
         aMainGui.start(args);
 
     }

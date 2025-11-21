@@ -1,8 +1,9 @@
-package org.group_three.basicGui;
+package org.group_three.ui.controllers;
 
 import java.io.IOException;
-import java.security.Key;
 
+import org.group_three.basicGui.Keyboard;
+import org.group_three.basicGui.Vector2D;
 import org.group_three.basicGui.world.World;
 import org.group_three.basicGui.world.WorldObject;
 import org.group_three.debug.Debug;

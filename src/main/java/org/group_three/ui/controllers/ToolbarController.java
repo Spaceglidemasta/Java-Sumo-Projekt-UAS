@@ -1,8 +1,9 @@
-package org.group_three.basicGui;
+package org.group_three.ui.controllers;
 
 import java.io.File;
 // import java.io.IOException; for what was that?
 
+import org.group_three.basicGui.MenuItem_RecentlyOpend;
 import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;

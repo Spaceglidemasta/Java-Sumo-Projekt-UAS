@@ -1,4 +1,4 @@
-package org.group_three.basicGui;
+package org.group_three.ui.controllers;
 
 import java.io.IOException;
 

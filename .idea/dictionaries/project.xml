@@ -2,6 +2,7 @@
   <dictionary name="project">
     <words>
       <w>cosr</w>
+      <w>lerp</w>
       <w>restep</w>
       <w>sinr</w>
       <w>sumocfg</w>
