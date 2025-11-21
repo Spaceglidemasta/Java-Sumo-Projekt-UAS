@@ -1,4 +1,4 @@
-package org.group_three.ui;
+package org.group_three.ui.idkyet;
 
 // Meth, the custom Math class
 public class Meth {

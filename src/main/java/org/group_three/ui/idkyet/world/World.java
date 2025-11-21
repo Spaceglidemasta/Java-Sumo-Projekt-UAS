@@ -1,9 +1,9 @@
-package org.group_three.ui.world;
+package org.group_three.ui.idkyet.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import org.group_three.ui.Vector2D;
+import org.group_three.ui.idkyet.Vector2D;
 import org.group_three.debug.Debug;
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package org.group_three.ui;
+package org.group_three.ui.idkyet;
 
 public class Vector2D {
 	public double x = 0;

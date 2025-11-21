@@ -1,9 +1,12 @@
-package org.group_three.ui;
+package org.group_three.ui.idkyet;
 
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
+
+
+// Remove later!!!
 public class SimulationView2D {
 
 	public Group createView() {

@@ -1,4 +1,4 @@
-package org.group_three.ui;
+package org.group_three.ui.idkyet;
 
 import javafx.scene.control.MenuItem;
 

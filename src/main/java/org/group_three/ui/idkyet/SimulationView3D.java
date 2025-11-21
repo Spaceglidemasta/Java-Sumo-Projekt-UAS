@@ -1,4 +1,4 @@
-package org.group_three.ui;
+package org.group_three.ui.idkyet;
 
 import org.group_three.debug.Debug;
 
@@ -16,6 +16,8 @@ import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+
+// Remove later!!!
 public class SimulationView3D {
 
 	private SubScene subScene;
