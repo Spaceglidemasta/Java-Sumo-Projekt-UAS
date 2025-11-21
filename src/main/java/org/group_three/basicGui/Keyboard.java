@@ -13,30 +13,28 @@ public class Keyboard {
 			switch (e.getCode()) {
 				case KeyCode.ALT:
 					altKey = true;
+					Debug.print("altKey: " + true);
 					break;
 
 				case KeyCode.CONTROL:
 					ctrlKey = true;
+					Debug.print("ctrlKey: " + true);
 					break;
 			}
-
-			Debug.print("altKey: " + altKey);
-			Debug.print("ctrlKey: " + ctrlKey);
 		});
 
 		scene.setOnKeyReleased(e -> {
 			switch (e.getCode()) {
 				case KeyCode.ALT:
 					altKey = false;
+					Debug.print("altKey: " + false);
 					break;
 
 				case KeyCode.CONTROL:
 					ctrlKey = false;
+					Debug.print("ctrlKey: " + false);
 					break;
 			}
-
-			Debug.print("altKey: " + altKey);
-			Debug.print("ctrlKey: " + ctrlKey);
 		});
 	}
 }
