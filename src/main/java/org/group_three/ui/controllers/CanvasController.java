@@ -2,10 +2,10 @@ package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
-import org.group_three.ui.Keyboard;
-import org.group_three.ui.Vector2D;
-import org.group_three.ui.world.World;
-import org.group_three.ui.world.WorldObject;
+import org.group_three.ui.idkyet.Keyboard;
+import org.group_three.ui.idkyet.Vector2D;
+import org.group_three.ui.idkyet.world.World;
+import org.group_three.ui.idkyet.world.WorldObject;
 import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
