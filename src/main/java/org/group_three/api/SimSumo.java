@@ -7,6 +7,7 @@ import org.group_three.debug.Debug;
 
 // packages
 
+@Deprecated
 public class SimSumo {
 
     private final double steptime = 0.5;
