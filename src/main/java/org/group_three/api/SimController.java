@@ -1,11 +1,7 @@
 package org.group_three.api;
 
-//packages
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
-import org.group_three.constants.Settings;
-
-//libs
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -13,65 +9,66 @@ import java.net.URL;
 
 public class SimController {
 
+    //The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
+    private SumoTraciConnection _sumcon;
+
 
     public SimController(){
         Debug.print("SimController invoked");
 
+        //try & catch to catch exceptions
         try {
+            // get folder location of Project
             File jarDir = getSumoLoc();
 
-            File resourcesDir = new File(jarDir, Settings.resourcesdirname);
-            if (!resourcesDir.exists()){
-                Debug.print(resourcesDir.getAbsolutePath());
-                throw new Exception("resources dir not found!");
-            }
-            else {
-                Debug.print("resources dir found");
-            }
+            // opens said folder
+            File resourcesDir = new File(jarDir, "resources");
 
-            File sumoexe = new File(resourcesDir, Settings.sumoexename);
+            // opens sumo.exe inside the resources Folder
+            File sumoexe = new File(resourcesDir, "sumo.exe");
+            Debug.print(sumoexe.getAbsolutePath());
             if (!sumoexe.exists()) {
-                Debug.print(sumoexe.getAbsolutePath());
                 throw new Exception("sumo.exe not found");
             }
             else {
                 Debug.print("sumo.exe found");
             }
-
-            File networknet = new File(resourcesDir, Settings.networkfilename);
+            // opens the network file inside the resources Folder
+            File networknet = new File(resourcesDir, "net.net.xml");
+            Debug.print(networknet.getAbsolutePath());
             if (!networknet.exists()) {
-                Debug.print(networknet.getAbsolutePath());
                 throw new Exception("net.net.xml not found");
             }
             else {
                 Debug.print("network file found");
             }
-
-            File routenet = new File(resourcesDir, Settings.routefilename);
+            // opens the route file inside the resources Folder
+            File routenet = new File(resourcesDir, "net.rou.xml");
+            Debug.print(routenet.getAbsolutePath());
             if (!routenet.exists()) {
-                Debug.print(routenet.getAbsolutePath());
                 throw new Exception("net.rou.xml not found");
             }
             else {
                 Debug.print("route file found");
             }
 
-            SumoTraciConnection sumcon = new SumoTraciConnection(
+            // establishes the connection to sumo with the route and network via TraaS
+            _sumcon = new SumoTraciConnection(
                     sumoexe.getAbsolutePath(),
                     networknet.getAbsolutePath(),
                     routenet.getAbsolutePath()
             );
 
-            sumcon.printSumoOutput(true);
-            sumcon.printSumoError(true);
-            sumcon.runServer(8813);
+            // options that set sumo to print outputs & errors.
+            _sumcon.printSumoOutput(true);
+            _sumcon.printSumoError(true);
+            _sumcon.runServer(8813);
 
+            // does 5 steps in the Simulation
             Debug.print("timesteps:");
             for (int i = 0; i < 5; i++) {
-                sumcon.do_timestep();
+                _sumcon.do_timestep();
             }
-
-            sumcon.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,26 +78,41 @@ public class SimController {
 
     }
 
+    //closes the SumoTraciConnection
+    public void close(){
+        _sumcon.close();
+    }
+
+    /*
+        returns the location(FILE) the Project is located in.
+        Knows if the Program is compiled & executed or a jar file
+    */
     private static File getSumoLoc() {
+
+
+        //the location of this class in the URL format
         URL mainURL = SimController.class.getProtectionDomain().getCodeSource().getLocation();
         URI mainURI = null;
 
+        //"cast" to URI format
         try {
             mainURI = mainURL.toURI();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //checks if the last "cast" was successfull.
         assert mainURI != null;
 
-
-
+        //transforms the URI to a FILE
         File jarDir = new File(mainURI);
 
+        //if compiled to a Jar
         if(jarDir.isFile()){
             Debug.print("Jar Execution detected");
             return jarDir.getParentFile();
         }
 
+        //if compiled normally
         Debug.print("Normal Execution detected");
         return jarDir.getParentFile().getParentFile().getParentFile();
 

@@ -1,0 +1,328 @@
+.flat-button {
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+}
+
+.flat-button:hover {
+    -fx-background-color: #444;
+}
+
+.flat-button:pressed {
+    -fx-background-color: #222;
+}
+
+.default {
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+}
+
+.default:hover {
+    -fx-background-color: #444;
+}
+
+.default:pressed {
+    -fx-background-color: #222;
+}
+
+.hbox {
+    -fx-background-color: #333;
+    -fx-background-radius: 8;
+    -fx-padding: 4 8;
+}
+
+.tail {
+    -fx-background-color: #333;
+}
+
+.speed-mod {
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+}
+
+.speed-mod:hover {
+    -fx-background-color: #444;
+}
+
+.pause-button {
+    -fx-background-image: url("../icons/pause-button.png");
+    -fx-background-size: 28 28;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+
+.pause-button:hover {
+    -fx-background-color: #444;
+}
+
+.play-button {
+    -fx-background-image: url("../icons/play-button.png");
+    -fx-background-size: 28 28;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+
+.play-button:hover {
+    -fx-background-color: #444;
+}
+
+.replay-button {
+    -fx-background-image: url("../icons/replay-button.png");
+    -fx-background-size: 28 28;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+
+.replay-button:hover {
+    -fx-background-color: #444;
+}
+
+.step-button {
+    -fx-background-image: url("../icons/next-button.png");
+    -fx-background-size: 28 28;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+
+.step-button:hover {
+    -fx-background-color: #444;
+}
+
+.restep-button {
+    -fx-background-image: url("../icons/previous-button.png");
+    -fx-background-size: 28 28;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+}
+
+.restep-button:hover {
+    -fx-background-color: #444;
+}
+
+
+
+
+
+/* ganze Menüleiste */
+.menu-bar {
+    -fx-background-color: #333;
+}
+
+/* alle Menüs oben (Datei, Bearbeiten, ...) */
+.menu-bar .label {
+    -fx-text-fill: white;
+}
+
+/* alle Einträge im Dropdown */
+.menu-item {
+    -fx-background-color: #444;
+}
+
+.menu-item:hover {
+    -fx-background-color: #555;
+}
+
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
+/* Speziell nur für dieses Menu über fx:id */
+#fileMenu .label {
+    -fx-text-fill: orange;
+}
+
+/* Speziell nur für einen bestimmten MenuItem über fx:id */
+#exitItem .label {
+    -fx-text-fill: red;
+}
+
+/* ================================
+   MENU BAR (Top Area)
+   ================================ */
+
+/* Hintergrund der Dropdown-Menüs */
+.context-menu {
+    -fx-background-color: #2b2b2b; /* dunkel */
+    -fx-text-fill: white;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-border-color: #444;
+    -fx-border-width: 1;
+}
+
+/* MenuItem normal */
+.menu-item {
+    -fx-background-color: #3a3a3a; /* mittel-dunkel */
+    -fx-text-fill: white;
+}
+
+/* Text im MenuItem */
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
+/* Hover Effekt */
+.menu-item:hover {
+    -fx-background-color: #4b4b4b; /* bisschen heller */
+}
+
+/* ================================
+   DISABLED ITEMS
+   ================================ */
+.menu-item:disabled {
+    -fx-background-color: #2f2f2f; /* dunkler als normale Elemente */
+}
+
+.menu-item:disabled .label {
+    -fx-text-fill: #777; /* grau */
+}
+
+/* ================================
+   MENU SEPARATOR
+   ================================ */
+.menu-item:focused .separator {
+    -fx-background-color: transparent; /* fix for odd focus behavior */
+}
+
+.separator {
+    -fx-background-color: #1e1e1e;  /* sehr dunkel */
+    -fx-padding: 4 0 4 0;
+}
+
+/* ================================
+   ARROW (►) Submenu Indicator
+   ================================ */
+.menu-item > .right-container > .arrow {
+    -fx-background-color: white; /* Farbe des Pfeils */
+}
+
+
+/* Separator Hintergrund */
+.separator {
+    -fx-background-color: transparent;
+    -fx-padding: 4 0 4 0;
+}
+
+/* DIESE zwei Zeilen sind entscheidend! */
+.separator .line {
+    -fx-border-color: #1a1a1a; /* sehr dunkel */
+    -fx-background-color: #1a1a1a;
+}
+
+
+
+
+
+
+
+
+
+
+/* Gesamtes TitledPane */
+.titled-pane {
+    -fx-text-fill: white;
+}
+
+/* Header/Title-Bar */
+.titled-pane > .title {
+    -fx-background-color: #333;
+    -fx-padding: 6 10;
+}
+
+/* Text im Title */
+.titled-pane > .title > .text {
+    -fx-fill: white;        /* für Labels im Header */
+}
+
+/* Inhalt */
+.titled-pane > .content {
+    -fx-background-color: #2a2a2a;
+    -fx-padding: 8;
+}
+
+/* Hover-Effekt auf der Titelleiste */
+.titled-pane:hover > .title {
+    -fx-background-color: #3e3e3e;
+}
+
+/* Wenn aufgeklappt */
+.titled-pane:expanded > .title {
+    -fx-background-color: #007acc;  /* z.B. blau wie dein Menü */
+}
+
+/* Disabled */
+.titled-pane:disabled > .title {
+    -fx-background-color: #222;
+}
+.titled-pane:disabled > .title > .text {
+    -fx-fill: #777;
+}
+
+
+/* Button um den Pfeil herum */
+.titled-pane > .title > .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/* Arrow selbst */
+.titled-pane > .title > .arrow-button > .arrow {
+    -fx-background-color: white;    /* Farbe des Pfeils */
+}
+
+
+
+
+
+
+
+
+/* Gesamter SplitPane-Hintergrund */
+.split-pane {
+    -fx-background-color: #2b2b2b;   /* dunkel, wie dein Menü */
+}
+
+/* Divider (Trennbalken) – horizontal UND vertikal */
+.split-pane > .split-pane-divider {
+    -fx-background-color: #3a3a3a;   /* etwas heller als Hintergrund */
+    -fx-padding: 0 2 0 2;            /* "Breite" des Dividers */
+}
+
+/* Wenn du horizontal & vertikal getrennt stylen willst: */
+.split-pane:horizontal > .split-pane-divider {
+    -fx-padding: 0 3 0 3;
+}
+
+.split-pane:vertical > .split-pane-divider {
+    -fx-padding: 3 0 3 0;
+}
+
+
+/* Griff im Divider (die kleine Linie in der Mitte) */
+.split-pane > .split-pane-divider > .horizontal-grabber,
+.split-pane > .split-pane-divider > .vertical-grabber {
+    -fx-background-color: #6f6f6f;      /* mittleres Grau */
+}
+
+/* Beim Hover Divider etwas hervorheben */
+.split-pane > .split-pane-divider:hover {
+    -fx-background-color: #4a4a4a;
+}
+
+.split-pane > .split-pane-divider:hover > .horizontal-grabber,
+.split-pane > .split-pane-divider:hover > .vertical-grabber {
+    -fx-background-color: #777;
+}
+
