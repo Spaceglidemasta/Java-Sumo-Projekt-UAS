@@ -1,6 +1,8 @@
-package org.group_three.basicGui;
+package org.group_three.ui.controllers;
 
 import java.io.IOException;
+
+import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
 
@@ -8,7 +10,7 @@ public class TailController {
 
 	@FXML
 	public void initialize() throws IOException {
-		System.out.println("Tail loaded.");
+		Debug.print("Tail loaded.");
 	}
 
 }

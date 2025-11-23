@@ -1,7 +1,10 @@
-package org.group_three.basicGui;
+package org.group_three.ui.controllers;
 
 import java.io.File;
-import java.io.IOException;
+// import java.io.IOException; for what was that?
+
+import org.group_three.ui.idkyet.MenuItem_RecentlyOpend;
+import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
@@ -11,50 +14,50 @@ import javafx.stage.FileChooser;
 public class ToolbarController {
 
 	// FX:ID's
-	@FXML private Menu simulationOpenRecent;
-	@FXML private MenuItem simulationClose;
-	@FXML private MenuItem simulationReload;
-	@FXML private MenuItem simulationExport;
+	@FXML
+	private Menu simulationOpenRecent;
+	@FXML
+	private MenuItem simulationClose;
+	@FXML
+	private MenuItem simulationReload;
+	@FXML
+	private MenuItem simulationExport;
 
 	// Ini
 	@FXML
-	private void initialize() throws IOException {
-		System.out.println("Toolbar loaded.");
+	private void initialize() { //throws IOException { for what was that?
+		Debug.print("Toolbar loaded.");
 
-		String[][] recentlyOpendSimulations = {{"Sim0", "SimulationPath0"},{"Sim1", "SimulationPath1"},{"Sim2", "SimulationPath2"}};
+		String[][] recentlyOpenedSimulations = {{"Sim0", "SimulationPath0"}, {"Sim1", "SimulationPath1"}, {"Sim2", "SimulationPath2"}};
 
-		initializeOpenRecentList(recentlyOpendSimulations);
+		initializeOpenRecentList(recentlyOpenedSimulations);
 	}
 
-	private void initializeOpenRecentList(String[][] recentlyOpendSimulations)
-	{
-		for (String[] simulation : recentlyOpendSimulations) {
+	private void initializeOpenRecentList(String[][] recentlyOpenedSimulations) {
+		for (String[] simulation : recentlyOpenedSimulations) {
 			MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(simulation[0], simulation[1]);
-			item.setOnAction(event -> onSimulationOpenRecentClicked(item));
+			item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
 			simulationOpenRecent.getItems().add(item);
 		}
 	}
 
 
-
-	private void setSimulationLoaded(boolean loaded) //rename? load sim?? 100% needs rework
-	{
+	private void setSimulationLoaded(boolean loaded) { //rename? load sim?? 100% needs rework
 		simulationClose.setDisable(!loaded);
 		simulationReload.setDisable(!loaded);
 		simulationExport.setDisable(!loaded);
 	}
 
 
-
 	// Simulation -> ButtonClicked
 	@FXML
 	private void onSimulationOpenClicked() {
-		System.out.println("Simulation -> Open...");
+		Debug.print("Simulation -> Open...");
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select file");
-		
-		// Desktop-Pfad holen (funktioniert auf Windows, macOS, Linux)
+
+		// desktop path, works for windows macOS and linux
 		String desktopPath = System.getProperty("user.home") + "/Desktop";
 		File desktopDir = new File(desktopPath);
 
@@ -69,35 +72,40 @@ public class ToolbarController {
 
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
-			System.out.println("Selected: " + file);
+			Debug.print("Selected: " + file);
 			setSimulationLoaded(true);
 		}
 	}
 
 	private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
-		System.out.println("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
+		Debug.print("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
 		setSimulationLoaded(true);
 	}
 
 	@FXML
 	private void onSimulationCloseClicked() {
-		System.out.println("Simulation -> Close");
+		Debug.print("Simulation -> Close");
 		setSimulationLoaded(false);
 	}
 
 	@FXML
 	private void onSimulationReloadClicked() {
-		System.out.println("Simulation -> Reload");
-	}
-	
-	@FXML
-	private void onSimulationExportClicked() {
-		System.out.println("Simulation -> Export");
+		Debug.print("Simulation -> Reload");
 	}
 
 	@FXML
-	private void onSimulationPreferencesClicked() {
-		System.out.println("Simulation -> Preferences");
+	private void onSimulationExportClicked() {
+		Debug.print("Simulation -> Export");
 	}
-	
+
+	@FXML
+	private void onSettingsClicked() {
+		Debug.print("Settings");
+	}
+
+	@FXML
+	private void onHelpClicked() {
+		Debug.print("Help");
+	}
+
 }

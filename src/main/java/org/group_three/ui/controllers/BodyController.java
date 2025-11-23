@@ -1,6 +1,10 @@
-package org.group_three.basicGui;
+package org.group_three.ui.controllers;
 
 import java.io.IOException;
+
+import org.group_three.ui.idkyet.SimulationView2D;
+import org.group_three.ui.idkyet.SimulationView3D;
+import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,43 +15,44 @@ import javafx.scene.layout.Pane;
 
 public class BodyController {
 
-	@FXML private SubScene subsceneView;
+	@FXML
+	private SubScene subsceneView;
 
-	@FXML private Pane binder;
+	@FXML
+	private Pane binder;
 
 	private SimulationView3D sv3d;
 	private SimulationView2D sv2d;
 
 	@FXML
 	public void initialize() throws IOException {
-		System.out.println("Body loaded.");
-		//System.out.println("SubScene: " + subsceneView);
+		Debug.print("Body loaded.");
+		//Debug.print("SubScene: " + subsceneView);
 
 		sv3d = new SimulationView3D();
 		sv2d = new SimulationView2D();
 
 		subsceneView.widthProperty().bind(binder.widthProperty());
-    	subsceneView.heightProperty().bind(binder.heightProperty());
+		subsceneView.heightProperty().bind(binder.heightProperty());
 
-		switch (2)
-		{
+		switch (2) {
 			case 0:
 				subsceneView.setRoot(sv3d.createView());
 				subsceneView.setCamera(new PerspectiveCamera());
-			break;
+				break;
 
 			case 1:
 				subsceneView.setRoot(sv2d.createView());
-			break;
+				break;
 
 			case 2:
 				FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/org/group_three/basicGui/fxml/CanvasView.fxml")
+						getClass().getResource("/org/group_three/ui/fxml/CanvasView.fxml")
 				);
 
 				Parent root = loader.load();
 				subsceneView.setRoot(root);
-			break;
+				break;
 		}
 
 
@@ -55,7 +60,7 @@ public class BodyController {
 
 	/*@FXML
 	private void onMouseClicked() {
-		System.out.println("Body -> SubScene");
+		Debug.print("Body -> SubScene");
 		sv3d.onMouseClicked(binder);
 	}*/
 

@@ -44,7 +44,7 @@
    <children>
       <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT">
          <image>
-            <Image url="@../icon.png" />
+            <Image url="@../icons/icon.png" />
          </image>
       </ImageView>
       <Label text="Java-Sumo-Projekt-UAS" StackPane.alignment="CENTER_LEFT">
