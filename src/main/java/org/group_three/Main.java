@@ -16,6 +16,10 @@ public class Main {
 
         SimController sim = new SimController();
 
+        Debug.print(sim.getTrafficLights().toString());
+
+        sim.close();
+
 
         MainApp aMainGui = new MainApp();
         aMainGui.start(args);

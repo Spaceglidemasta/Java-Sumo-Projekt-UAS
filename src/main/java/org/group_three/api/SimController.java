@@ -1,10 +1,18 @@
 package org.group_three.api;
 
+import de.tudresden.sumo.cmd.Simulation;
+import de.tudresden.sumo.cmd.Trafficlight;
+import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
+import javafx.beans.binding.ObjectExpression;
 import org.group_three.debug.Debug;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 public class SimController {
@@ -80,8 +88,34 @@ public class SimController {
 
     //closes the SumoTraciConnection
     public void close(){
-        _sumcon.close();
+
+        try {
+            // this can actually throw an ISE even tho it's not indicated.
+            _sumcon.close();
+        }
+        catch (IllegalStateException ise){
+            ise.printStackTrace();
+        }
+
+
     }
+
+
+    public List<Objects> getTrafficLights(){
+        try {
+            return (List<Objects>) _sumcon.do_job_get(Trafficlight.getIDList());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<Objects>();
+    }
+
+    public void addVehicle(Vehicle v){
+
+    }
+
+
 
     /*
         returns the location(FILE) the Project is located in.
@@ -115,8 +149,6 @@ public class SimController {
         //if compiled normally
         Debug.print("Normal Execution detected");
         return jarDir.getParentFile().getParentFile().getParentFile();
-
-
 
     }
 }
