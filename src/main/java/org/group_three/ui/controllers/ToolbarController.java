@@ -106,8 +106,10 @@ public class ToolbarController {
 
     @FXML
     private void onConsoleOpen() {
-        Console console = Console.getInstance();  // Use the singleton instance
-        console.log("Debug Message");  // Append a test message to the console
+        Console console = Console.getInstance();  // Get the single instance of the Console
+        console.show();  // Show the debug window
+        console.log("Debug window opened.");
+        Debug.toConsole("This is a debug message in the JavaFX console.");
     }
 
 	@FXML
