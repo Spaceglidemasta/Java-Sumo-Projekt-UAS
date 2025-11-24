@@ -86,7 +86,7 @@ public class WorldObject {
 		Vector2D rect = new Vector2D(64,32);
 		graphicsContext.save();
 		graphicsContext.setFill(Color.BLUE);
-		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition());
+		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
 
 		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
 		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
