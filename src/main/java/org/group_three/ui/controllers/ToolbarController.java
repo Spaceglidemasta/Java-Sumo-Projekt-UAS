@@ -3,6 +3,7 @@ package org.group_three.ui.controllers;
 import java.io.File;
 // import java.io.IOException; for what was that?
 
+import org.group_three.debug.Console;
 import org.group_three.ui.idkyet.MenuItem_RecentlyOpend;
 import org.group_three.debug.Debug;
 
@@ -102,6 +103,12 @@ public class ToolbarController {
 	private void onSettingsClicked() {
 		Debug.print("Settings");
 	}
+
+    @FXML
+    private void onConsoleOpen() {
+        Console console = Console.getInstance();  // Use the singleton instance
+        console.log("Debug Message");  // Append a test message to the console
+    }
 
 	@FXML
 	private void onHelpClicked() {
