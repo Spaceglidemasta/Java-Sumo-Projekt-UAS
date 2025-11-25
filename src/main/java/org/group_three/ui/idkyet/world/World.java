@@ -39,7 +39,7 @@ public class World {
 
 		viewerRotation = rotation;
 
-		Debug.print(rotation);
+        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(rotation);
 
 		requestUpdate();
 	}
@@ -61,7 +61,7 @@ public class World {
 			viewerZoom = zoom;
 		}
 
-		Debug.print(zoom);
+        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(zoom);
 
 		requestUpdate();
 	}
@@ -112,7 +112,7 @@ public class World {
 		pos.y += position.y;
 		setViewerPosition(pos);
 
-		Debug.print(getViewerPosition().x + " " + getViewerPosition().y);
+        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(getViewerPosition().x + " " + getViewerPosition().y);
 	}
 
 	public Vector2D getWorldSize() {

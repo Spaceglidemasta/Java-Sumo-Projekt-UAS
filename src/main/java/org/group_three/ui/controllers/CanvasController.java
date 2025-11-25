@@ -30,7 +30,7 @@ public class CanvasController {
 
 	@FXML
 	public void initialize() throws IOException {
-		Debug.print("Canvas loaded.");
+		Debug.toConsole("Canvas loaded.");
 
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 		world.worldStaticRenderTarget = worldStaticRenderTarget;
@@ -51,40 +51,40 @@ public class CanvasController {
 		worldDynamicRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
 
 		renderTargetBounds.widthProperty().addListener((observable, oldValue, newValue) -> {
-			Debug.print("RenderTargetSize.X: " + newValue);
+            if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("RenderTargetSize.X: " + newValue);
 
 			world.setViewerPositionOffset(new Vector2D((newValue.doubleValue() / 2), (world.getViewerPositionOffset().y)));
 		});
 
 		renderTargetBounds.heightProperty().addListener((observable, oldValue, newValue) -> {
-			Debug.print("RenderTargetSize.Y: " + newValue);
+            if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("RenderTargetSize.Y: " + newValue);
 
 			world.setViewerPositionOffset(new Vector2D((world.getViewerPositionOffset().x), (newValue.doubleValue() / 2)));
 		});
 
 		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth() / 2, worldStaticRenderTarget.getHeight() / 2));
 
-		Debug.print(new Vector2D(0, 10).getRotation()); // 0°
-		Debug.print(new Vector2D(10, 10).getRotation()); // 45°
-		Debug.print(new Vector2D(10, 0).getRotation()); // 90°
-		Debug.print(new Vector2D(10, -10).getRotation()); // 135°
-		Debug.print(new Vector2D(0, -10).getRotation()); // 180°
-		Debug.print(new Vector2D(-10, -10).getRotation()); // 225°
-		Debug.print(new Vector2D(-10, 0).getRotation()); // 270°
-		Debug.print(new Vector2D(-10, 10).getRotation()); // 315°
-		Debug.print(new Vector2D(-0.001, 10).getRotation()); // 0/360°
+		Debug.toConsole(new Vector2D(0, 10).getRotation()); // 0°
+		Debug.toConsole(new Vector2D(10, 10).getRotation()); // 45°
+		Debug.toConsole(new Vector2D(10, 0).getRotation()); // 90°
+		Debug.toConsole(new Vector2D(10, -10).getRotation()); // 135°
+		Debug.toConsole(new Vector2D(0, -10).getRotation()); // 180°
+		Debug.toConsole(new Vector2D(-10, -10).getRotation()); // 225°
+		Debug.toConsole(new Vector2D(-10, 0).getRotation()); // 270°
+		Debug.toConsole(new Vector2D(-10, 10).getRotation()); // 315°
+		Debug.toConsole(new Vector2D(-0.001, 10).getRotation()); // 0/360°
 	}
 
 	@FXML
 	private void onMouseClicked() {
-		Debug.print("Canvas clicked.");
+		if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("Canvas clicked.");
 
 		//world.addViewerRotation(15);
 	}
 
 	@FXML
 	private void onCanvasDragged(MouseEvent event) {
-		Debug.print("onCanvasDragged");
+        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasDragged");
 
 		double x = event.getX();
 		double y = event.getY();
@@ -121,7 +121,7 @@ public class CanvasController {
 
 	@FXML
 	private void onCanvasPressed(MouseEvent event) {
-		Debug.print("onCanvasPressed");
+        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasPressed");
 
 		lastX = event.getX();
 		lastY = event.getY();
@@ -129,7 +129,7 @@ public class CanvasController {
 
 	@FXML
 	private void onScroll(ScrollEvent event) {
-		Debug.print("onScroll");
+        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onScroll");
 
 		world.addViewerZoom(event.getDeltaY() * 0.01);
 	}

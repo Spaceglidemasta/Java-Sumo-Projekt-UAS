@@ -5,7 +5,8 @@ import javafx.scene.control.TextArea;
 
 public class Debug {
 
-    private static final boolean do_debug = true;
+    private static final boolean MAIN_CON_DEBUG = true;
+    public static boolean JAVAFX_FULL_DEBUG = false;
     private static TextArea debugTextArea;
 
     private static final String ANSI_RESET = "\u001B[0m";
@@ -20,7 +21,7 @@ public class Debug {
 
     // Print to the terminal (standard output)
     public static void print(Object value) {
-        if (do_debug) {
+        if (MAIN_CON_DEBUG) {
             StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
             String className = caller.getClassName().substring(16);
             System.out.println(BOLD + "[" + ANSI_BLUE + "DEBUG" + ANSI_RESET + BOLD + "](" + ANSI_CYAN + className + ANSI_RESET + ") " + ANSI_RESET + String.valueOf(value));
@@ -28,11 +29,12 @@ public class Debug {
     }
 
     // Print to the console (JavaFX TextArea)
-    public static void toConsole(String message) {
-        if (debugTextArea != null) {
+    public static void toConsole(Object message) {
+
+        if (debugTextArea != null && debugTextArea.isVisible()) {
             // Use Platform.runLater to ensure that the UI update happens on the JavaFX application thread
             Platform.runLater(() -> {
-                debugTextArea.appendText(message + "\n");
+                debugTextArea.appendText(message.toString() + "\n");
                 debugTextArea.setScrollTop(Double.MAX_VALUE);  // Scroll to the bottom
             });
         }

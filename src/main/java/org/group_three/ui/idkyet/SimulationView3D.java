@@ -81,7 +81,7 @@ public class SimulationView3D {
 	}
 
 	public void onMouseClicked(Pane binder) {
-		Debug.print("Body -> SubScene -> SimulationView3D");
+		Debug.toConsole("Body -> SubScene -> SimulationView3D");
 		//subScene.setCamera(null);
 
 		subScene.widthProperty().bind(binder.widthProperty());
