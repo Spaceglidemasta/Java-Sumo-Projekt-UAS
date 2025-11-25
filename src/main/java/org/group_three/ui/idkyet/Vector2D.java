@@ -14,22 +14,27 @@ public class Vector2D {
 		this.y = y;
 	}
 
+	// Vector2D + Vector2D
 	public Vector2D add(Vector2D v) {
 		return new Vector2D(x + v.x, y + v.y);
 	}
 
+	// Vector2D - Vector2D
 	public Vector2D sub(Vector2D v) {
 		return new Vector2D(x - v.x, y - v.y);
 	}
 
+	// Vector2D * Vector2D
 	public Vector2D mul(double v) {
 		return new Vector2D(x * v, y * v);
 	}
 
+	// Vector2D / Vector2D
 	public Vector2D div(double v) {
 		return new Vector2D(x / v, y / v);
 	}
 
+	// Convert Vector2D to string
 	@Override
 	public String toString() {
 		return "Vector2D{" + "x=" + x + ", y=" + y + "}";
