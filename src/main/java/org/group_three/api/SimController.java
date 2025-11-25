@@ -16,10 +16,10 @@ import java.util.Objects;
 
 
 public class SimController {
-
     //The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
     private SumoTraciConnection _sumcon;
-
+    private static final String networkfname = "net.net.xml";
+    private static final String routefname = "net.rou.xml";
 
     public SimController(){
         Debug.print("SimController invoked");
@@ -32,17 +32,31 @@ public class SimController {
             // opens said folder
             File resourcesDir = new File(jarDir, "resources");
 
-            // opens sumo.exe inside the resources Folder
-            File sumoexe = new File(resourcesDir, "sumo.exe");
-            Debug.print(sumoexe.getAbsolutePath());
-            if (!sumoexe.exists()) {
+
+            // Try SUMO_HOME/bin/sumo.exe, otherwise use resourcesDir/sumo.exe
+            String sumoHome = System.getenv("SUMO_HOME");
+
+            // possible location of sumo.exe in %SUMO_HOME%/bin
+            File sumoExeHome = (sumoHome != null)
+                    ? new File(sumoHome + "/bin/sumo.exe")
+                    : null;
+
+            // possible location of sumo.exe in resources
+            File sumoExeResources = new File(resourcesDir, "sumo.exe");
+
+            // Decide final path
+            File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
+                            ? sumoExeHome
+                            : sumoExeResources;
+
+            if (!sumoExe.exists()) {
                 throw new Exception("sumo.exe not found");
             }
-            else {
-                Debug.print("sumo.exe found");
-            }
+
+            Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
+
             // opens the network file inside the resources Folder
-            File networknet = new File(resourcesDir, "net.net.xml");
+            File networknet = new File(resourcesDir, networkfname);
             Debug.print(networknet.getAbsolutePath());
             if (!networknet.exists()) {
                 throw new Exception("net.net.xml not found");
@@ -51,7 +65,7 @@ public class SimController {
                 Debug.print("network file found");
             }
             // opens the route file inside the resources Folder
-            File routenet = new File(resourcesDir, "net.rou.xml");
+            File routenet = new File(resourcesDir, routefname);
             Debug.print(routenet.getAbsolutePath());
             if (!routenet.exists()) {
                 throw new Exception("net.rou.xml not found");
@@ -62,7 +76,7 @@ public class SimController {
 
             // establishes the connection to sumo with the route and network via TraaS
             _sumcon = new SumoTraciConnection(
-                    sumoexe.getAbsolutePath(),
+                    sumoExe.getAbsolutePath(),
                     networknet.getAbsolutePath(),
                     routenet.getAbsolutePath()
             );
@@ -82,7 +96,8 @@ public class SimController {
             e.printStackTrace();
         }
 
-        Debug.print("SimController finished");
+        Debug.print("SimController startup was successfull");
+        Debug.toConsole("SimController startup was successfull");
 
     }
 
