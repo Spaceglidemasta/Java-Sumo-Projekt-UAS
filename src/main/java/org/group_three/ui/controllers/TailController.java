@@ -10,7 +10,7 @@ public class TailController {
 
 	@FXML
 	public void initialize() throws IOException {
-		Debug.print("Tail loaded.");
+		Debug.toConsole("Tail loaded.");
 	}
 
 }
