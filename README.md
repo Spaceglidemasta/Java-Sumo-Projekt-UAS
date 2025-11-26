@@ -25,7 +25,7 @@ This automatically gets installed when you install SUMO on you device, or when y
 
 Make sure to have SUMO installed and the environment variable SUMO_HOME set correctly. The TraaS API needs this.
 
-Move the /SumoConfig directory to the parent folder and rename it to "resources":
+Move the /SumoConfig directory to the parent folder (This is already done in the .zip):
 
 ```
 ├> JavaProjectWiSe2526: 16.42 MB // <-- Project
@@ -45,7 +45,7 @@ Move the /SumoConfig directory to the parent folder and rename it to "resources"
 ├──────┼> target: 9.94 MB
 │      │       ...
 ├> JavaProjectWiSe2526-1.0-SNAPSHOT-jar-with-dependencies.jar: 9.83 MB // <-- .jar, if you use one
-├> resources: 6.61 MB
+├> SumoConfig: 6.61 MB
 │      ├> net.net.xml: 1.71 KB
 │      ├> net.rou.xml: 449 B
 │      ├> sumo.exe: 6.61 MB     <-- IMPORTANT: Only needed if there is no sumo.exe in %SUMO_HOME%\bin
@@ -72,7 +72,7 @@ Then, double-click the .jar or, inside the parent folder,
     java -jar JavaProjectWi[...]-dependencies.jar
 
 Important: if there is no sumo.exe / sumo in your "%sumo_home%\bin" / "$SUMO_HOME/bin", there needs to be one
-in the resource folder, although this is redundant, as TraaS needs SUMO_HOME anyway.
+in the SumoConfig folder, although this is redundant, as TraaS needs SUMO_HOME anyway.
 
 ## Usage
 
