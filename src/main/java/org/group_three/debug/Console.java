@@ -1,5 +1,6 @@
 package org.group_three.debug;
 
+import com.sun.glass.ui.PlatformFactory;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -14,22 +15,22 @@ public class Console {
 
     // Private constructor for Singleton
     private Console() {
-        // Create the Debug window (JavaFX Stage)
+
         debugStage = new Stage();
         debugStage.setTitle("Debug Window");
 
         // Create the TextArea for displaying debug messages
         debugTextArea = new TextArea();
         debugTextArea.setEditable(false);  // Make sure the user can't edit this
-        debugTextArea.setWrapText(true);   // Allow text wrapping
+        debugTextArea.setWrapText(true);   // allow newline
 
         // Create a BorderPane as the layout for the window
         BorderPane root = new BorderPane();
         root.setCenter(debugTextArea);
 
-        // Create the Scene and add it to the Stage
-        Scene scene = new Scene(root, 600, 400);  // Adjust size as needed
-        debugStage.setScene(scene);
+
+        Scene scene = new Scene(root, 600, 400);
+        debugStage.setScene(scene); // add scene to the stage
 
         // Set the TextArea in Debug class
         Debug.setDebugTextArea(debugTextArea);
@@ -45,13 +46,14 @@ public class Console {
         return instance;
     }
 
-    // Method to log messages (you can call this from anywhere)
+
     public void log(String message) {
-        Platform.runLater(() -> {
+        Platform.runLater(() -> { // pass lambda function
             debugTextArea.appendText(message + "\n");
-            debugTextArea.setScrollTop(Double.MAX_VALUE);  // Scroll to the bottom
+            debugTextArea.setScrollTop(Double.MAX_VALUE);
         });
     }
+
 
     // Method to show the debug window
     public void show() {

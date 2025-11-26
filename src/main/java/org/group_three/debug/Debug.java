@@ -28,11 +28,11 @@ public class Debug {
         }
     }
 
-    // Print to the console (JavaFX TextArea)
+    // Print to the console
     public static void toConsole(Object message) {
 
-        if (debugTextArea != null && debugTextArea.isVisible()) {
-            // Use Platform.runLater to ensure that the UI update happens on the JavaFX application thread
+        if (debugTextArea != null && debugTextArea.isVisible()) { //TODO remove isVisible later
+            // UI update only on javafx thread, wait for "later"
             Platform.runLater(() -> {
                 debugTextArea.appendText(message.toString() + "\n");
                 debugTextArea.setScrollTop(Double.MAX_VALUE);  // Scroll to the bottom
