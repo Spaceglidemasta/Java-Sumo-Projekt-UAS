@@ -8,6 +8,7 @@ import org.group_three.debug.Debug;
 
 import java.util.*;
 
+// a class that represents the 2d world
 public class World {
 	private Vector2D viewerPositionOffset = new Vector2D();
 	private Vector2D viewerPosition = new Vector2D();

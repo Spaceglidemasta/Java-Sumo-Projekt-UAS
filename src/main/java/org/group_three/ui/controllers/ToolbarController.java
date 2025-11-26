@@ -33,6 +33,7 @@ public class ToolbarController {
 		initializeOpenRecentList(recentlyOpenedSimulations);
 	}
 
+	// adds the recent simulations to the open recent menu tab
 	private void initializeOpenRecentList(String[][] recentlyOpenedSimulations) {
 		for (String[] simulation : recentlyOpenedSimulations) {
 			MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(simulation[0], simulation[1]);
@@ -42,6 +43,7 @@ public class ToolbarController {
 	}
 
 
+	// func to disable/reactivate the close, reload and export buttons when no simulation is loaded
 	private void setSimulationLoaded(boolean loaded) { //rename? load sim?? 100% needs rework
 		simulationClose.setDisable(!loaded);
 		simulationReload.setDisable(!loaded);
@@ -65,6 +67,7 @@ public class ToolbarController {
 			fileChooser.setInitialDirectory(desktopDir);
 		}
 
+		// add selectable data types to the file chooser
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("All", "*.sumocfg", "*.net.xml", "*.rou.xml"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SUMO Config", "*.sumocfg"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Network", "*.net.xml"));
@@ -72,6 +75,7 @@ public class ToolbarController {
 
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
+			// if a file was selected do something with it here
 			Debug.print("Selected: " + file);
 			setSimulationLoaded(true);
 		}

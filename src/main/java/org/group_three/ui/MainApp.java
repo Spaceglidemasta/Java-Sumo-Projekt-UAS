@@ -22,6 +22,7 @@ public class MainApp extends Application {
 
 		Scene scene = new Scene(root);
 
+		// set minium app window size
 		stage.setMinWidth(UI.appMinWidth);
 		stage.setMinHeight(UI.appMinHeight);
 

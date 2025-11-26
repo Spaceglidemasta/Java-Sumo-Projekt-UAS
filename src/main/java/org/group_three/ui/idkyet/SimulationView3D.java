@@ -17,7 +17,7 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 
-// Remove later!!!
+// REMOVE LATER! CURRENTLY, ALSO NOT USED
 public class SimulationView3D {
 
 	private SubScene subScene;
