@@ -15,6 +15,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 
+
+// current controller for the 2d view, name needs to be changed later
+// needs much clean up, is intended to be the manager of the world and world objects
 public class CanvasController {
 
 	@FXML

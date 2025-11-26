@@ -6,7 +6,7 @@ import javafx.scene.layout.*;
 
 
 
-// Remove later!!!
+// REMOVE LATER! CURRENTLY, ALSO NOT USED
 public class SimulationView2D {
 
 	public Group createView() {

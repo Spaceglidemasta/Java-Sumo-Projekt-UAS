@@ -13,6 +13,7 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
 
+// basically has no real use yet, is just used as a proxy for the 2d view right now
 public class BodyController {
 
 	@FXML

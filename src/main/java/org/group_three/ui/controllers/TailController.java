@@ -6,6 +6,7 @@ import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
 
+// No functionality yet
 public class TailController {
 
 	@FXML

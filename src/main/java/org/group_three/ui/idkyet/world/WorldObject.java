@@ -9,6 +9,8 @@ import org.group_three.debug.Debug;
 
 import javafx.scene.image.Image;
 
+// a class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
+// will be divided into static and dynamic for rendering efficiency
 public class WorldObject {
 	public Vector2D position = new Vector2D();
 	public double rotation = 0;
@@ -86,7 +88,7 @@ public class WorldObject {
 		Vector2D rect = new Vector2D(64,32);
 		graphicsContext.save();
 		graphicsContext.setFill(Color.BLUE);
-		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition());
+		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
 
 		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
 		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
