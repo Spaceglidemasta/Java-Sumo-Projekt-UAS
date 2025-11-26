@@ -13,7 +13,6 @@ public class TextAreaPrintStream extends PrintStream {
         super(new OutputStream() {
             @Override
             public void write(int b) {
-                // Append the character to the TextArea
                 textArea.appendText(String.valueOf((char) b));
                 textArea.setScrollTop(Double.MAX_VALUE);  // Scroll to the bottom
             }
