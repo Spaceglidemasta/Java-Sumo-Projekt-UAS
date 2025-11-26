@@ -40,7 +40,7 @@ public class MainApp extends Application {
 		stage.setX((screen.getWidth() - w) / 2);
 		stage.setY((screen.getHeight() - h) / 2);
 
-		Debug.print(stage.getX() + ":" + stage.getY());
+        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(stage.getX() + ":" + stage.getY());
 		//-------------------------------------------------------------
 
 		stage.setTitle(UI.appTitle);

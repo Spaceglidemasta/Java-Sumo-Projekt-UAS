@@ -4,6 +4,7 @@ package org.group_three;
 
 //external libraries
 import org.group_three.api.SimController;
+import org.group_three.debug.Console;
 import org.group_three.ui.MainApp;
 
 
@@ -19,7 +20,6 @@ public class Main {
         Debug.print(sim.getTrafficLights().toString());
 
         sim.close();
-
 
         MainApp aMainGui = new MainApp();
         aMainGui.start(args);

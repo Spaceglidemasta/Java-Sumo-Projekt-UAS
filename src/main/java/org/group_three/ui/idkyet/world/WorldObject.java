@@ -77,7 +77,7 @@ public class WorldObject {
 			this.rotation -= 360;
 		}
 
-		Debug.print(rotation);
+		Debug.toConsole(rotation);
 	}
 
 	public void addRotation(double rotation) {
@@ -94,6 +94,6 @@ public class WorldObject {
 		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
 		graphicsContext.fillRect((rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
 		graphicsContext.restore();
-		Debug.print("Updated WorldObject");
+        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("Updated WorldObject");
 	}
 }

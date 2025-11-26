@@ -27,8 +27,8 @@ public class BodyController {
 
 	@FXML
 	public void initialize() throws IOException {
-		Debug.print("Body loaded.");
-		//Debug.print("SubScene: " + subsceneView);
+		Debug.toConsole("Body loaded.");
+		//Debug.toConsole("SubScene: " + subsceneView);
 
 		sv3d = new SimulationView3D();
 		sv2d = new SimulationView2D();
@@ -61,7 +61,7 @@ public class BodyController {
 
 	/*@FXML
 	private void onMouseClicked() {
-		Debug.print("Body -> SubScene");
+		Debug.toConsole("Body -> SubScene");
 		sv3d.onMouseClicked(binder);
 	}*/
 

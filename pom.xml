@@ -16,27 +16,7 @@
 		<mainClassPath>org.group_three.Main</mainClassPath> <!-- Set the main class path -->
 	</properties>
 
-	<!-- Repository, wo Maven die SUMO-Libs findet -->
-	<repositories>
-		<repository>
-			<id>eclipse-sumo</id>
-			<name>Public Eclipse SUMO Nexus</name>
-			<url>https://repo.eclipse.org/content/repositories/sumo-releases/</url>
-		</repository>
-	</repositories>
-
-	<!-- Dependencies (SUMO Java-Libraries) -->
 	<dependencies>
-		<dependency>
-			<groupId>org.eclipse.sumo</groupId>
-			<artifactId>libsumo</artifactId>
-			<version>1.24.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sumo</groupId>
-			<artifactId>libtraci</artifactId>
-			<version>1.24.0</version>
-		</dependency>
 
 		<!-- Add JavaFX -->
 		<dependency>
@@ -54,7 +34,7 @@
         <dependency>
             <groupId>org.eclipse.sumo</groupId>
             <artifactId>traas</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.0</version> <!-- TraaS internally has Version 1.1.0, but Maven cant see that -->
         </dependency>
 
 	</dependencies>

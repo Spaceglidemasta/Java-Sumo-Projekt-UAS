@@ -3,6 +3,7 @@ package org.group_three.ui.controllers;
 import java.io.File;
 // import java.io.IOException; for what was that?
 
+import org.group_three.debug.Console;
 import org.group_three.ui.idkyet.MenuItem_RecentlyOpend;
 import org.group_three.debug.Debug;
 
@@ -26,7 +27,7 @@ public class ToolbarController {
 	// Ini
 	@FXML
 	private void initialize() { //throws IOException { for what was that?
-		Debug.print("Toolbar loaded.");
+		Debug.toConsole("Toolbar loaded.");
 
 		String[][] recentlyOpenedSimulations = {{"Sim0", "SimulationPath0"}, {"Sim1", "SimulationPath1"}, {"Sim2", "SimulationPath2"}};
 
@@ -54,7 +55,7 @@ public class ToolbarController {
 	// Simulation -> ButtonClicked
 	@FXML
 	private void onSimulationOpenClicked() {
-		Debug.print("Simulation -> Open...");
+		Debug.toConsole("Simulation -> Open...");
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select file");
@@ -76,40 +77,47 @@ public class ToolbarController {
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
 			// if a file was selected do something with it here
-			Debug.print("Selected: " + file);
+			Debug.toConsole("Selected: " + file);
 			setSimulationLoaded(true);
 		}
 	}
 
 	private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
-		Debug.print("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
+		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
 		setSimulationLoaded(true);
 	}
 
 	@FXML
 	private void onSimulationCloseClicked() {
-		Debug.print("Simulation -> Close");
+		Debug.toConsole("Simulation -> Close");
 		setSimulationLoaded(false);
 	}
 
 	@FXML
 	private void onSimulationReloadClicked() {
-		Debug.print("Simulation -> Reload");
+		Debug.toConsole("Simulation -> Reload");
 	}
 
 	@FXML
 	private void onSimulationExportClicked() {
-		Debug.print("Simulation -> Export");
+		Debug.toConsole("Simulation -> Export");
 	}
 
 	@FXML
 	private void onSettingsClicked() {
-		Debug.print("Settings");
+		Debug.toConsole("Settings");
 	}
+
+    @FXML
+    private void onConsoleOpen() {
+        Console console = Console.getInstance();  // Get the single instance of the Console
+        console.show();  // Show the debug window
+        console.log("Debug window opened.");
+    }
 
 	@FXML
 	private void onHelpClicked() {
-		Debug.print("Help");
+		Debug.toConsole("Help");
 	}
 
 }

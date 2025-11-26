@@ -50,7 +50,11 @@
             <MenuItem fx:id="simulationExport" disable="true" mnemonicParsing="false" onAction="#onSimulationExportClicked" text="Export" />
          </items>
       </Menu>
-      <Menu mnemonicParsing="false" text="Settings" />
-      <Menu mnemonicParsing="false" onAction="#onHelpClicked" text="Help" />
+      <Menu mnemonicParsing="false" text="Settings">
+          <items>
+               <MenuItem mnemonicParsing="false" onAction="#onConsoleOpen" text="Open Console" />
+          </items>
+      </Menu>
+    <Menu mnemonicParsing="false" onAction="#onHelpClicked" text="Help" />
    </menus>
 </MenuBar>

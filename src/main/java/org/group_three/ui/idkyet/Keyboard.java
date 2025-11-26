@@ -16,12 +16,12 @@ public class Keyboard {
 			switch (e.getCode()) {
 				case KeyCode.ALT:
 					altKey = true;
-					Debug.print("altKey: " + true);
+					Debug.toConsole("altKey: " + true);
 					break;
 
 				case KeyCode.CONTROL:
 					ctrlKey = true;
-					Debug.print("ctrlKey: " + true);
+					Debug.toConsole("ctrlKey: " + true);
 					break;
 			}
 		});
@@ -30,12 +30,12 @@ public class Keyboard {
 			switch (e.getCode()) {
 				case KeyCode.ALT:
 					altKey = false;
-					Debug.print("altKey: " + false);
+					Debug.toConsole("altKey: " + false);
 					break;
 
 				case KeyCode.CONTROL:
 					ctrlKey = false;
-					Debug.print("ctrlKey: " + false);
+					Debug.toConsole("ctrlKey: " + false);
 					break;
 			}
 		});
