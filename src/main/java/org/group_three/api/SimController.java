@@ -37,6 +37,7 @@ public class SimController {
             String sumoHome = System.getenv("SUMO_HOME");
 
             // possible location of sumo.exe in %SUMO_HOME%/bin
+            //A ? B : C <=> if A then B else C
             File sumoExeHome = (sumoHome != null)
                     ? new File(sumoHome + "/bin/sumo.exe")
                     : null;
