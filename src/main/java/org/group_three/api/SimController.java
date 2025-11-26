@@ -30,7 +30,7 @@ public class SimController {
             File jarDir = getSumoLoc();
 
             // opens said folder
-            File resourcesDir = new File(jarDir, "resources");
+            File resourcesDir = new File(jarDir, "SumoConfig");
 
 
             // Try SUMO_HOME/bin/sumo.exe, otherwise use resourcesDir/sumo.exe
