@@ -1,6 +1,9 @@
 package org.group_three.ui.controllers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 // import java.io.IOException; for what was that?
@@ -31,6 +34,9 @@ public class ToolbarController {
 	@FXML
 	private void initialize() { //throws IOException { for what was that?
 		Debug.toConsole("Toolbar loaded.");
+
+		// --> add load recentlyLoadedSimulations from file code here <--
+		validateRecentlyLoadedSimulations();
 
 		initializeOpenRecentList();
 	}
@@ -83,12 +89,37 @@ public class ToolbarController {
 	}
 
 	private void tryLoadingSimulation(String path) {
+		validateRecentlyLoadedSimulations();
 		// don't attempt to load the same simulation if its currently loaded
-		if (path.equals(loadedSimulation)) return;
+		if (path.equals(loadedSimulation)) return; // ----------- add a check to not display the currently loaded file in recently opend
 
 		if (FakeInteractions.loadSimulation(path)) {
 			setLoadedSimulation(path);
 		}
+	}
+
+	private void validateRecentlyLoadedSimulations() {
+		List<String> fails = new ArrayList<String>() {};
+
+		for (String path : recentlyLoadedSimulations) {
+			try {
+				new FileReader(path).close();
+			} catch (FileNotFoundException e) {
+				Debug.toConsole("FileNotFoundException " + e.getMessage());
+				// remove path if file at path doesn't exist
+				fails.add(path); // don't modify looping list while using it
+
+			} catch (IOException e) {
+				Debug.toConsole("IOException e " + e.getMessage());
+				throw new RuntimeException(e);
+			}
+		}
+
+		for (String path : fails) {
+			recentlyLoadedSimulations.remove(path);
+		}
+
+		initializeOpenRecentList(); // maybe? !makes ini run multiple times in some places right now, TODO:change that
 	}
 
 
