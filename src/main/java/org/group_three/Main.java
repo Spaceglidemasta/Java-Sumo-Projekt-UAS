@@ -3,6 +3,7 @@ package org.group_three;
 
 
 //external libraries
+import de.tudresden.sumo.cmd.Trafficlight;
 import org.group_three.api.SimController;
 import org.group_three.debug.Console;
 import org.group_three.ui.MainApp;
@@ -17,7 +18,7 @@ public class Main {
 
         SimController sim = new SimController();
 
-        Debug.print(sim.getTrafficLights().toString());
+        Debug.print(sim.job(Trafficlight.getIDList()).toString());
 
         sim.close();
 

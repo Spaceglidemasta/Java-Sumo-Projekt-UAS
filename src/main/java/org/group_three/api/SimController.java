@@ -14,7 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * Class used to Connect & Control to SUMO via the TraaS API <br>
+ * The constructor does everything for you, you only need
+ * to SimController.close() the Simulation after you are done.
+ * @author Luca
+ */
 public class SimController {
     //The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
     private SumoTraciConnection _sumcon;
@@ -102,7 +107,10 @@ public class SimController {
 
     }
 
-    //closes the SumoTraciConnection
+    /**
+     * closes the SumoTraciConnection
+     * @author Luca
+     * */
     public void close(){
 
         try {
@@ -116,29 +124,12 @@ public class SimController {
 
     }
 
-
-    public List<Objects> getTrafficLights(){
-        try {
-            return (List<Objects>) _sumcon.do_job_get(Trafficlight.getIDList());
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return new ArrayList<Objects>();
-    }
-
-    public void addVehicle(Vehicle v){
-
-    }
-
-
-
-    /*
-        returns the location(FILE) the Project is located in.
-        Knows if the Program is compiled & executed or a jar file
-    */
+    /**
+     * @author Luca
+     * @return the location(FILE) the Project is located in.
+     * Knows if the Program is compiled & executed or a jar file
+    **/
     private static File getSumoLoc() {
-
 
         //the location of this class in the URL format
         URL mainURL = SimController.class.getProtectionDomain().getCodeSource().getLocation();
@@ -167,4 +158,37 @@ public class SimController {
         return jarDir.getParentFile().getParentFile().getParentFile();
 
     }
+
+    @Deprecated
+    public List<Objects> getTrafficLights(){
+        try {
+            return (List<Objects>) _sumcon.do_job_get(Trafficlight.getIDList());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<Objects>();
+    }
+
+    /**
+     * Method to invoke a Command in the Simulation.
+     * If you want to print the returned object, .to_String() is probably the best option.
+     * @param scmd The SumoCommand to be executed upon the Simulation.
+     * @example
+     * <code>
+     * sumcon.job(Vehicle.add(vehID, typeID, routeID, depart, speed, lane)
+     * </code>
+     * @return 🎲
+     * */
+    public Object job(SumoCommand scmd){
+        try {
+            return _sumcon.do_job_get(scmd);
+        }
+        catch (Exception e){
+            Debug.print("JOB FAILED: " + scmd.toString());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
