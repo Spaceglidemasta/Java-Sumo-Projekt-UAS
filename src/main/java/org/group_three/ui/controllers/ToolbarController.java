@@ -1,11 +1,14 @@
 package org.group_three.ui.controllers;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 // import java.io.IOException; for what was that?
 
 import org.group_three.debug.Console;
 import org.group_three.ui.idkyet.MenuItem_RecentlyOpend;
 import org.group_three.debug.Debug;
+import org.group_three.ui.FakeInteractions;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
@@ -29,18 +32,24 @@ public class ToolbarController {
 	private void initialize() { //throws IOException { for what was that?
 		Debug.toConsole("Toolbar loaded.");
 
-		String[][] recentlyOpenedSimulations = {{"Sim0", "SimulationPath0"}, {"Sim1", "SimulationPath1"}, {"Sim2", "SimulationPath2"}};
-
-		initializeOpenRecentList(recentlyOpenedSimulations);
+		initializeOpenRecentList();
 	}
 
 	// adds the recent simulations to the open recent menu tab
-	private void initializeOpenRecentList(String[][] recentlyOpenedSimulations) {
-		for (String[] simulation : recentlyOpenedSimulations) {
-			MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(simulation[0], simulation[1]);
+	private void initializeOpenRecentList() {
+		// clear entry list to avoid duplicates
+		simulationOpenRecent.getItems().clear();
+
+		// add options
+		for (String path : recentlyLoadedSimulations) {
+			//MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(path, path);
+			MenuItem item = new MenuItem(path);
 			item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
 			simulationOpenRecent.getItems().add(item);
 		}
+
+		// enable/disable button depending on entry count
+		simulationOpenRecent.setDisable(simulationOpenRecent.getItems().isEmpty());
 	}
 
 
@@ -49,6 +58,31 @@ public class ToolbarController {
 		simulationClose.setDisable(!loaded);
 		simulationReload.setDisable(!loaded);
 		simulationExport.setDisable(!loaded);
+	}
+
+	private List<String> recentlyLoadedSimulations = new ArrayList<String>();
+	private String loadedSimulation = "";
+
+	private void setLoadedSimulation(String path) {
+		loadedSimulation = path;
+		setSimulationLoaded(true);
+
+		// try to remove entry first before adding it at the start of the list to always have the newest selection at the first entry
+		recentlyLoadedSimulations.remove(loadedSimulation);
+		recentlyLoadedSimulations.addFirst(loadedSimulation);
+
+		initializeOpenRecentList();
+
+		Debug.toConsole(recentlyLoadedSimulations.size());
+	}
+
+	private void tryLoadingSimulation(String path) {
+		// don't attempt to load the same simulation if its currently loaded
+		if (path.equals(loadedSimulation)) return;
+
+		if (FakeInteractions.loadSimulation(path)) {
+			setLoadedSimulation(path);
+		}
 	}
 
 
@@ -77,14 +111,20 @@ public class ToolbarController {
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
 			// if a file was selected do something with it here
-			Debug.toConsole("Selected: " + file);
-			setSimulationLoaded(true);
+			Debug.toConsole("Selected: " + file.getName());
+			Debug.toConsole(file.getPath());
+			tryLoadingSimulation(file.getPath());
 		}
 	}
 
-	private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
+	/*private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
 		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
-		setSimulationLoaded(true);
+		tryLoadingSimulation(item.getPath());
+	}*/
+
+	private void onSimulationOpenRecentClicked(MenuItem item) {
+		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText());
+		tryLoadingSimulation(item.getText());
 	}
 
 	@FXML
