@@ -54,18 +54,24 @@ public class ToolbarController {
 
 
 	// func to disable/reactivate the close, reload and export buttons when no simulation is loaded
-	private void setSimulationLoaded(boolean loaded) { //rename? load sim?? 100% needs rework
-		simulationClose.setDisable(!loaded);
-		simulationReload.setDisable(!loaded);
-		simulationExport.setDisable(!loaded);
+	private void setSimulationButtonStates(boolean disabled) {
+		simulationClose.setDisable(disabled);
+		simulationReload.setDisable(disabled);
+		simulationExport.setDisable(disabled);
 	}
 
-	private List<String> recentlyLoadedSimulations = new ArrayList<String>();
-	private String loadedSimulation = "";
+	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {};
+	private String loadedSimulation = null;
 
 	private void setLoadedSimulation(String path) {
+		if (path == null) {
+			loadedSimulation = null;
+			setSimulationButtonStates(false);
+			return;
+		}
+
 		loadedSimulation = path;
-		setSimulationLoaded(true);
+		setSimulationButtonStates(true);
 
 		// try to remove entry first before adding it at the start of the list to always have the newest selection at the first entry
 		recentlyLoadedSimulations.remove(loadedSimulation);
@@ -130,7 +136,7 @@ public class ToolbarController {
 	@FXML
 	private void onSimulationCloseClicked() {
 		Debug.toConsole("Simulation -> Close");
-		setSimulationLoaded(false);
+		setLoadedSimulation(null);
 	}
 
 	@FXML
