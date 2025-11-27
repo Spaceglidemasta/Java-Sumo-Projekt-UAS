@@ -42,7 +42,7 @@
       <Menu mnemonicParsing="false" text="Simulation">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#onSimulationOpenClicked" text="Open…" />
-            <Menu fx:id="simulationOpenRecent" mnemonicParsing="false" text="Open Recent" />
+            <Menu fx:id="simulationOpenRecent" disable="true" mnemonicParsing="false" text="Open Recent" />
             <MenuItem fx:id="simulationClose" disable="true" mnemonicParsing="false" onAction="#onSimulationCloseClicked" text="Close" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="simulationReload" disable="true" mnemonicParsing="false" onAction="#onSimulationReloadClicked" text="Reload" />
