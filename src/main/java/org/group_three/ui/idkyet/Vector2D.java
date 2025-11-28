@@ -66,4 +66,20 @@ public class Vector2D {
 	public Vector2D flipY() {
 		return new Vector2D(x, -y);
 	}
+
+	public Vector2D negate() {
+		return  new Vector2D(-x, -y);
+	}
+
+	public double length() {
+		return Math.sqrt(x*x + y*y);
+	}
+
+	public Vector2D rotate(double degrees) {
+		return this.rotate(degrees, new Vector2D());
+	}
+
+	public Vector2D rotate(double degrees, Vector2D pivot) {
+		return Meth.addRelativeLocation(pivot, degrees, Meth.getRelativeLocation(pivot, 0, this));
+	}
 }
