@@ -1,12 +1,12 @@
 package org.group_three.api;
 
-import de.tudresden.sumo.cmd.Simulation;
-import de.tudresden.sumo.cmd.Trafficlight;
-import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import javafx.beans.binding.ObjectExpression;
 import org.group_three.debug.Debug;
+import org.group_three.model.WVehicle;
+
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -26,7 +26,12 @@ public class SimController {
     private static final String networkfname = "net.net.xml";
     private static final String routefname = "net.rou.xml";
 
+
     public SimController(){
+        this(networkfname, routefname);
+    }
+
+    public SimController(String net, String rou){
         Debug.print("SimController invoked");
 
         //try & catch to catch exceptions
@@ -168,6 +173,110 @@ public class SimController {
             e.printStackTrace();
         }
         return new ArrayList<Objects>();
+    }
+
+    //Funny no template Language incoming
+
+    /**
+     * Beware that this uses unchecked casting and CAN return null.
+     * @author Luca
+     * */
+    public List<String> getallVehicles() {
+
+        try {
+            // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
+            return (List<String>) _sumcon.do_job_get(Vehicle.getIDList());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Beware that this uses unchecked casting and CAN return null.
+     * @author Luca
+     * */
+    public List<String> getallRoutes() {
+
+        try {
+            // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
+            return (List<String>) _sumcon.do_job_get(Route.getIDList());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Beware that this uses unchecked casting and CAN return null.
+     * @author Luca
+     * */
+    public List<String> getallEdges() {
+
+        try {
+            // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
+            return (List<String>) _sumcon.do_job_get(Edge.getIDList());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Beware that this uses unchecked casting and CAN return null.
+     * @param edgeID The String of the EdgeID you want the number of lanes from.
+     * @author Luca
+     * */
+    public List<String> getLaneNum(String edgeID) {
+
+        try {
+            // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
+            return (List<String>) _sumcon.do_job_get(Edge.getLaneNumber(edgeID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Basicly the normal Vehicle.add(), but it handles the VehicleID setting logic for you.
+     *
+     * @param typeID The type of the Vehicle; Use constants.Vehicle for this.
+     * @param routeID The ID of the route where the Vehicle is supposed to land
+     * @param depart (0 indexing) The lane it's supposed to depart in. Use SimController.job(Edge.getIDCount()) for max lane num.
+     * @param pos Position in m from the start of the Route
+     * @param speed Speed? Not clear from declaration
+     * @param lane 🌭
+     * @author Luca
+     * */
+    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, byte lane){;
+
+        try {
+            int newVID = (int) _sumcon.do_job_get(Vehicle.getIDCount()) - 1;
+            do {
+                newVID = newVID + 1;
+            }
+            while(getallVehicles().contains("t_" + newVID));
+
+            String newVIDstr = "t_" + newVID;
+
+            _sumcon.do_job_get(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, lane));
+            return new WVehicle(newVIDstr, _sumcon);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
     /**
