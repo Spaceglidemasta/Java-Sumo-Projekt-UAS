@@ -1,4 +1,4 @@
-package org.group_three.ui.idkyet;
+package org.group_three.ui;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;

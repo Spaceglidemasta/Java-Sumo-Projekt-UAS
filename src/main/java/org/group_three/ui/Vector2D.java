@@ -1,4 +1,4 @@
-package org.group_three.ui.idkyet;
+package org.group_three.ui;
 
 /**
  * The Vector2D class contains two double components: x and y.

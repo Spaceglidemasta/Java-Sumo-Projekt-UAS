@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.*;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import org.group_three.ui.idkyet.Keyboard;
 
 public class MainApp extends Application {
 
