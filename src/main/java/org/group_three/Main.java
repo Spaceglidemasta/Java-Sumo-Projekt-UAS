@@ -1,14 +1,16 @@
 package org.group_three;
 
 import de.tudresden.sumo.cmd.Route;
+import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.debug.Debug;
 import org.group_three.api.SimController;
-import org.group_three.debug.Console;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.MainApp;
 import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.sumo.cmd.Vehicle;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main {
@@ -17,19 +19,29 @@ public class Main {
 
         SimController sim = new SimController("net.net.xml", "speedtest.rou.xml");
 
-        Debug.print("Trafic lights: " + sim.job(Trafficlight.getIDList()).toString());
+        Debug.print("Trafic lights: " + sim.jobget(Trafficlight.getIDList()).toString());
 
-        Debug.print("Routes:" + sim.getallRoutes());
+
 
         Debug.print("Edges:" + sim.getallEdges());
 
         Debug.print("Vehicles:" + sim.getallVehicles());
 
-        Debug.print("Vehicle Count: " + sim.job(Vehicle.getIDCount()));
+        Debug.print("Vehicle Count: " + sim.jobget(Vehicle.getIDCount()));
 
-        //WVehicle v = sim.addVehicle("DEFAULT_CONTAINERTYPE", "!t_8!var#1", 2, 0, 1, (byte)0);
+        List<String> edgelist = new ArrayList<>();
+        edgelist.add("-E2");
+        edgelist.add("E1.200");
 
-        //Debug.print(v.getPos());
+        SumoStringList edges = new SumoStringList(edgelist);
+
+        sim.jobset(Route.add("r_1", edges));
+
+        Debug.print("Routes:" + sim.getallRoutes());
+
+        WVehicle v = sim.addVehicle("DEFAULT_CONTAINERTYPE", "r_1", 2, 0, 1, (byte)0);
+
+        Debug.print(v.getPos());
 
         sim.close();
 

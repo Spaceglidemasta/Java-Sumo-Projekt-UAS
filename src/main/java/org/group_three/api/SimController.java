@@ -3,7 +3,6 @@ package org.group_three.api;
 import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
-import javafx.beans.binding.ObjectExpression;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 
@@ -268,7 +267,7 @@ public class SimController {
 
             String newVIDstr = "t_" + newVID;
 
-            _sumcon.do_job_get(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, lane));
+            _sumcon.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, lane));
             return new WVehicle(newVIDstr, _sumcon);
         }
         catch (Exception e) {
@@ -280,24 +279,43 @@ public class SimController {
     }
 
     /**
-     * Method to invoke a Command in the Simulation.
+     * Getter of the Simulation
      * If you want to print the returned object, .to_String() is probably the best option.
      * @param scmd The SumoCommand to be executed upon the Simulation.
      * @example
      * <code>
-     * sumcon.job(Vehicle.add(vehID, typeID, routeID, depart, speed, lane)
+     * sumcon.jobget(Vehicle.getIDList())
      * </code>
      * @return 🎲
      * */
-    public Object job(SumoCommand scmd){
+    public Object jobget(SumoCommand scmd){
         try {
             return _sumcon.do_job_get(scmd);
         }
         catch (Exception e){
-            Debug.print("JOB FAILED: " + scmd.toString());
+            Debug.print("GET JOB FAILED: " + scmd.toString());
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Setter of the Simulation
+     * @param scmd The SumoCommand to be executed upon the Simulation.
+     * @example
+     * <code>
+     * sumcon.jobset(Vehicle.add(vehID, typeID, routeID, depart, speed, lane)
+     * </code>
+     * */
+    public void jobset(SumoCommand scmd){
+        try {
+            _sumcon.do_job_set(scmd);
+        }
+        catch (Exception e){
+            Debug.print("DO JOB FAILED: " + scmd.toString());
+            e.printStackTrace();
+        }
+
     }
 
 }
