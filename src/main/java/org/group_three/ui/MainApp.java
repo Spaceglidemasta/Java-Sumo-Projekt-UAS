@@ -11,8 +11,20 @@ import javafx.scene.*;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 
+/**
+ * Comment
+ *
+ * @author Joel
+ */
 public class MainApp extends Application {
-
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param stage
+	 * Param-Comment
+	 */
 	@Override
 	public void start(Stage stage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(UI.appFXML));
@@ -50,10 +62,26 @@ public class MainApp extends Application {
 		Keyboard.initialize(scene);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param args
+	 * Param-Comment
+	 */
 	public void start(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public Image getAppIcon() //add error handling, if no "icons" is found
 	{
 		return new Image(getClass().getResourceAsStream(UI.appIcon));
