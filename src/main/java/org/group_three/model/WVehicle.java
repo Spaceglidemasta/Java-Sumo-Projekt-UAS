@@ -1,6 +1,7 @@
 package org.group_three.model;
 
 import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.objects.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 
 /**
@@ -24,13 +25,22 @@ public class WVehicle {
         this._sumcon = sc;
     }
 
-    public String getPos(){
+    /**
+     * Gets you the SumoPosition2D of the Vehicle. Attributes are public.<br>
+     * @example <code>
+     * double x = v.getPos().x <br>
+     * double y = v.getPos().y = y
+     * </code>
+     * @return SumoPosition2D
+     * @author Luca
+     * */
+    public SumoPosition2D getPos(){
         try {
-            return (String) _sumcon.do_job_get(Vehicle.getPosition(vehID));
+            return (SumoPosition2D) _sumcon.do_job_get(Vehicle.getPosition(vehID));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
 
 }
