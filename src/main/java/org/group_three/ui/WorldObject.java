@@ -7,8 +7,12 @@ import org.group_three.debug.Debug;
 
 import javafx.scene.image.Image;
 
-// a class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
-// will be divided into static and dynamic for rendering efficiency
+/**
+ * a class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
+ * will be divided into static and dynamic for rendering efficiency
+ *
+ * @author Joel
+ */
 public class WorldObject {
 	public Vector2D position = new Vector2D();
 	public double rotation = 0;
@@ -21,17 +25,46 @@ public class WorldObject {
 	public GraphicsContext graphicsContext;
 	public Canvas renderTarget;
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	public WorldObject() {
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param sphereCollision
+	 * Param-Comment
+	 */
 	public WorldObject(double sphereCollision) {
 		this.sphereCollision = sphereCollision;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public Vector2D getPosition() {
 		return position;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param position
+	 * Param-Comment
+	 */
 	public void setPosition(Vector2D position) {
 		/*double worldSizeX = world.getWorldSize().x - sphereCollision / 2;
 		if (position.x < worldSizeX) {
@@ -53,6 +86,14 @@ public class WorldObject {
 		//this.position.y *= -1;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param position
+	 * Param-Comment
+	 */
 	public void addPosition(Vector2D position) {
 		Vector2D pos = getPosition();
 		pos.x += position.x;
@@ -60,10 +101,26 @@ public class WorldObject {
 		setPosition(pos);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public double getRotation() {
 		return rotation;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param rotation
+	 * Param-Comment
+	 */
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
 
@@ -78,10 +135,23 @@ public class WorldObject {
 		Debug.toConsole(rotation);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param rotation
+	 * Param-Comment
+	 */
 	public void addRotation(double rotation) {
 		setRotation(getRotation() + rotation);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	public void update() {
 		Vector2D rect = new Vector2D(64,32);
 		graphicsContext.save();
