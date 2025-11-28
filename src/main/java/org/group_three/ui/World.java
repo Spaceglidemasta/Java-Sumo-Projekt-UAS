@@ -7,7 +7,11 @@ import org.group_three.debug.Debug;
 
 import java.util.*;
 
-// a class that represents the 2d world
+/**
+ * a class that represents the 2d world
+ *
+ * @author Joel
+ */
 public class World {
 	private Vector2D viewerPositionOffset = new Vector2D();
 	private Vector2D viewerPosition = new Vector2D();
@@ -21,13 +25,34 @@ public class World {
 	public GraphicsContext graphicsContext;
 	public Canvas worldStaticRenderTarget;
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	public World() {
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public double getViewerRotation() {
 		return viewerRotation;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param rotation
+	 * Param-Comment
+	 */
 	public void setViewerRotation(double rotation) {
 		// Clamp rotation from 0 to 359.99...
 		while (rotation < 0) {
@@ -44,14 +69,38 @@ public class World {
 		requestUpdate();
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param rotation
+	 * Param-Comment
+	 */
 	public void addViewerRotation(double rotation) {
 		setViewerRotation(getViewerRotation() + rotation);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public double getViewerZoom() {
 		return viewerZoom;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param zoom
+	 * Param-Comment
+	 */
 	public void setViewerZoom(double zoom) {
 		if (zoom < viewerZoomLimit.x) {
 			zoom = viewerZoomLimit.x;
@@ -66,24 +115,64 @@ public class World {
 		requestUpdate();
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param zoom
+	 * Param-Comment
+	 */
 	public void addViewerZoom(double zoom) {
 		setViewerZoom(getViewerZoom() + zoom);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public Vector2D getViewerPositionOffset() {
 		return viewerPositionOffset;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param positionOffset
+	 * Param-Comment
+	 */
 	public void setViewerPositionOffset(Vector2D positionOffset) {
 		viewerPositionOffset = positionOffset;
 
 		requestUpdate();
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public Vector2D getViewerPosition() {
 		return viewerPosition;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param position
+	 * Param-Comment
+	 */
 	public void setViewerPosition(Vector2D position) {
 		/*if (position.x < -(worldSize.x/2)) {
 			position.x = -(worldSize.x/2);
@@ -106,6 +195,14 @@ public class World {
 		requestUpdate();
 	} // world bounds limit doesn't account for rotation yet, well or scale, disabled for now
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param position
+	 * Param-Comment
+	 */
 	public void addViewerPosition(Vector2D position) {
 		Vector2D pos = getViewerPosition();
 		pos.x += position.x;
@@ -115,14 +212,36 @@ public class World {
         if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(getViewerPosition().x + " " + getViewerPosition().y);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public Vector2D getWorldSize() {
 		return worldSize;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @see #update()
+	 */
 	private void requestUpdate() {
 		update();
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @see #requestUpdate()
+	 */
 	private void update() {
 		graphicsContext.save();
 		graphicsContext.setFill(backgroundColor);
@@ -142,6 +261,14 @@ public class World {
 		}
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param object
+	 * Param-Comment
+	 */
 	public void addWorldObject(WorldObject object) {
 		worldObjects.add(object);
 	}
