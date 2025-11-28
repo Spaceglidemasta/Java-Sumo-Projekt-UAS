@@ -32,6 +32,70 @@ public class SimController {
         this(networkfname, routefname);
     }
 
+    public SimController(String cfg) {
+        Debug.print("SimController invoked");
+
+        try {
+
+            // get folder location of Project
+            File jarDir = getSumoLoc();
+
+            // opens said folder
+            File resourcesDir = new File(jarDir, "SumoConfig");
+
+
+            // Try SUMO_HOME/bin/sumo.exe, otherwise use resourcesDir/sumo.exe
+            String sumoHome = System.getenv("SUMO_HOME");
+
+            // possible location of sumo.exe in %SUMO_HOME%/bin
+            //A ? B : C <=> if A then B else C
+            File sumoExeHome = (sumoHome != null)
+                    ? new File(sumoHome + "/bin/sumo.exe")
+                    : null;
+
+            // possible location of sumo.exe in resources
+            File sumoExeResources = new File(resourcesDir, "sumo.exe");
+
+            // Decide final path
+            File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
+                    ? sumoExeHome
+                    : sumoExeResources;
+
+            if (!sumoExe.exists()) {
+                throw new Exception("sumo.exe not found");
+            }
+
+            Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
+
+            // opens the sumocfg file inside the resources Folder
+            File sumocfg = new File(resourcesDir, cfg);
+            Debug.print(sumocfg.getAbsolutePath());
+            if (!sumocfg.exists()) {
+                throw new Exception(cfg + " not found");
+            }
+            else {
+                Debug.print("sumocfg file found");
+            }
+
+            // establishes the connection to sumo with the route and network via TraaS
+            _sumcon = new SumoTraciConnection(
+                    sumoExe.getAbsolutePath(),
+                    sumocfg.getAbsolutePath()
+            );
+
+            // options that set sumo to print outputs & errors.
+            _sumcon.printSumoOutput(true);
+            _sumcon.printSumoError(true);
+            _sumcon.runServer(8813);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Debug.print("SimController startup was successfull");
+        Debug.toConsole("SimController startup was successfull");
+    }
+
     public SimController(String net, String rou){
         Debug.print("SimController invoked");
 
@@ -71,7 +135,7 @@ public class SimController {
             File networknet = new File(resourcesDir, networkfname);
             Debug.print(networknet.getAbsolutePath());
             if (!networknet.exists()) {
-                throw new Exception("net.net.xml not found");
+                throw new Exception(net + " not found");
             }
             else {
                 Debug.print("network file found");
@@ -80,7 +144,7 @@ public class SimController {
             File routenet = new File(resourcesDir, routefname);
             Debug.print(routenet.getAbsolutePath());
             if (!routenet.exists()) {
-                throw new Exception("net.rou.xml not found");
+                throw new Exception(rou + " not found");
             }
             else {
                 Debug.print("route file found");
@@ -98,11 +162,6 @@ public class SimController {
             _sumcon.printSumoError(true);
             _sumcon.runServer(8813);
 
-            // does 5 steps in the Simulation
-            Debug.print("timesteps:");
-            for (int i = 0; i < 5; i++) {
-                _sumcon.do_timestep();
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
