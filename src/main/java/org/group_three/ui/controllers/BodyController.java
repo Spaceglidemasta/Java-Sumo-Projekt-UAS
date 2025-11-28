@@ -13,7 +13,11 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
 
-// basically has no real use yet, is just used as a proxy for the 2d view right now
+/**
+ * basically has no real use yet, is just used as a proxy for the 2d view right now
+ *
+ * @author Joel
+ */
 public class BodyController {
 
 	@FXML
@@ -25,6 +29,15 @@ public class BodyController {
 	//private SimulationView3D sv3d;
 	//private SimulationView2D sv2d;
 
+	/**
+	 * Comment
+	 * Code-Snippet: {@code code}
+	 *
+	 * @author Joel
+	 *
+	 * @throws IOException
+	 * Throw-Comment
+	 */
 	@FXML
 	public void initialize() throws IOException {
 		Debug.toConsole("Body loaded.");
