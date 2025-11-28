@@ -15,9 +15,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 
-
-// current controller for the 2d view, name needs to be changed later
-// needs much clean up, is intended to be the manager of the world and world objects
+/**
+ * current controller for the 2d view, name needs to be changed later
+ * needs much clean up, is intended to be the manager of the world and world objects
+ *
+ * @author Joel
+ */
 public class CanvasController {
 
 	@FXML
@@ -31,6 +34,14 @@ public class CanvasController {
 
 	private World world = new World();
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @throws IOException
+	 * Throw-Comment
+	 */
 	@FXML
 	public void initialize() throws IOException {
 		Debug.toConsole("Canvas loaded.");
@@ -78,6 +89,11 @@ public class CanvasController {
 		Debug.toConsole(new Vector2D(-0.001, 10).getRotation()); // 0/360°
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onMouseClicked() {
 		if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("Canvas clicked.");
@@ -85,6 +101,14 @@ public class CanvasController {
 		//world.addViewerRotation(15);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param event
+	 * Param-Comment
+	 */
 	@FXML
 	private void onCanvasDragged(MouseEvent event) {
         if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasDragged");
@@ -122,6 +146,14 @@ public class CanvasController {
 		lastY = y;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param event
+	 * Param-Comment
+	 */
 	@FXML
 	private void onCanvasPressed(MouseEvent event) {
         if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasPressed");
@@ -130,6 +162,14 @@ public class CanvasController {
 		lastY = event.getY();
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param event
+	 * Param-Comment
+	 */
 	@FXML
 	private void onScroll(ScrollEvent event) {
         if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onScroll");
