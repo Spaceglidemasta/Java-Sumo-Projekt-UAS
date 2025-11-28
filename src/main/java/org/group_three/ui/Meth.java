@@ -1,13 +1,51 @@
 package org.group_three.ui;
 
-// Meth, the custom Math class
+/**
+ * Meth, the custom Math class
+ *
+ * @author Joel
+ */
 public class Meth {
-	// Just uses linear interpolation to lerp between two vectors.
+	/**
+	 * Just uses linear interpolation to lerp between two vectors.
+	 *
+	 * @author Joel
+	 *
+	 * @param v0
+	 * Param-Comment
+	 *
+	 * @param v1
+	 * Param-Comment
+	 *
+	 * @param lerp
+	 * Param-Comment
+	 *
+	 * @return
+	 * Return-Comment
+	 */
 	public static Vector2D lerp(Vector2D v0, Vector2D v1, double lerp) {
 		return v0.add(v0.sub(v1).mul(lerp));
 	}
 
-	// A func to get the relative location(vector) of two vectors in world (non-relative) space.
+	/**
+	 * A method to get the relative location(vector) of two vectors in world (non-relative) space.
+	 *
+	 * @author Joel
+	 *
+	 * @param location
+	 * Param-Comment
+	 *
+	 * @param rotation
+	 * Param-Comment
+	 *
+	 * @param relativeLocation
+	 * Param-Comment
+	 *
+	 * @return
+	 * Return-Comment
+	 *
+	 * @see #addRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation)
+	 */
 	public static Vector2D getRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation) {
 		double r = Math.toRadians(rotation); // Math.cos and Math.sin work with radians, but input rotation is in degrees
 		double cosr = Math.cos(r);
@@ -22,7 +60,25 @@ public class Meth {
 		return new Vector2D(x, y).round(); // return of relative location
 	}
 
-	// A function to add a relative location to a world space vector.
+	/**
+	 * A method to add a relative location to a world space vector.
+	 *
+	 * @author Joel
+	 *
+	 * @param location
+	 * Param-Comment
+	 *
+	 * @param rotation
+	 * Param-Comment
+	 *
+	 * @param relativeLocation
+	 * Param-Comment
+	 *
+	 * @return
+	 * Return-Comment
+	 *
+	 * @see #getRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation)
+	 */
 	public static Vector2D addRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation) {
 		double r = Math.toRadians(rotation); // Math.cos and Math.sin work with radians, but input rotation is in degrees
 		double cosr = Math.cos(r);
@@ -33,14 +89,43 @@ public class Meth {
 		return new Vector2D(x, y).round();
 	}
 
-	// not implemented yet
+	/**
+	 * basically just does double - double right now, might change
+	 *
+	 * @author Joel
+	 *
+	 * @param rotation
+	 * Param-Comment
+	 *
+	 * @param relativeRotation
+	 * Param-Comment
+	 *
+	 * @return
+	 * Return-Comment
+	 *
+	 * @see #addRelativeRotation(double rotation, double relativeRotation)
+	 */
 	public static double getRelativeRotation(double rotation, double relativeRotation) {
-		return 0;
+		return rotation - relativeRotation;
 	}
 
-	// basically just does double + double right now, might change
+	/**
+	 * basically just does double + double right now, might change
+	 *
+	 * @author Joel
+	 *
+	 * @param rotation
+	 * Param-Comment
+	 *
+	 * @param relativeRotation
+	 * Param-Comment
+	 *
+	 * @return
+	 * Return-Comment
+	 *
+	 * @see #getRelativeRotation(double rotation, double relativeRotation)
+	 */
 	public static double addRelativeRotation(double rotation, double relativeRotation) {
 		return rotation + relativeRotation;
 	}
-
 }
