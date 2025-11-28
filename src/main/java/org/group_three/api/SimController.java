@@ -25,6 +25,9 @@ public class SimController {
     private static final String networkfname = "net.net.xml";
     private static final String routefname = "net.rou.xml";
 
+    // Easy mode
+    private static SimController _mainsim = null;
+
     public SimController(){
         this(networkfname, routefname);
     }
@@ -160,6 +163,28 @@ public class SimController {
         Debug.print("Normal Execution detected");
         return jarDir.getParentFile().getParentFile().getParentFile();
 
+    }
+
+    /**
+     * Returns the global / static _mainsim.
+     * @author Luca
+     * */
+    public static SimController getMainsim() {return _mainsim;}
+
+    /**
+     * Sets this Simulation as the new, global, main simulation. <br>
+     * Beware that this overwrites the old one
+     * @author Luca
+     * */
+    public void setMain(boolean close_old){
+
+        if(_mainsim != null && close_old){
+            _mainsim.close();
+        }
+
+        _mainsim = this;
+
+        Debug.print("Main SUMO Simulation was overwritten.");
     }
 
     @Deprecated
