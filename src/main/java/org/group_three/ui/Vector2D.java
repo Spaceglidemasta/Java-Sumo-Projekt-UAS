@@ -55,9 +55,9 @@ public class Vector2D {
 	 * @return
 	 * The result of the addition of both Vector2Ds.
 	 *
-	 * @see #sub(Vector2D v)
-	 * @see #mul(double v)
-	 * @see #div(double v)
+	 * @see #sub(Vector2D)
+	 * @see #mul(double)
+	 * @see #div(double)
 	 */
 	public Vector2D add(Vector2D v) {
 		return new Vector2D(x + v.x, y + v.y);
@@ -75,9 +75,9 @@ public class Vector2D {
 	 * @return
 	 * The result of the subtraction of both Vector2Ds.
 	 *
-	 * @see #add(Vector2D v)
-	 * @see #mul(double v)
-	 * @see #div(double v)
+	 * @see #add(Vector2D)
+	 * @see #mul(double)
+	 * @see #div(double)
 	 */
 	public Vector2D sub(Vector2D v) {
 		return new Vector2D(x - v.x, y - v.y);
@@ -95,9 +95,9 @@ public class Vector2D {
 	 * @return
 	 * The result of the multiplication.
 	 *
-	 * @see #sub(Vector2D v)
-	 * @see #add(Vector2D v)
-	 * @see #div(double v)
+	 * @see #sub(Vector2D)
+	 * @see #add(Vector2D)
+	 * @see #div(double)
 	 */
 	public Vector2D mul(double v) {
 		return new Vector2D(x * v, y * v);
@@ -115,9 +115,9 @@ public class Vector2D {
 	 * @return
 	 * The result of the division.
 	 *
-	 * @see #sub(Vector2D v)
-	 * @see #add(Vector2D v)
-	 * @see #mul(double v)
+	 * @see #sub(Vector2D)
+	 * @see #add(Vector2D)
+	 * @see #mul(double)
 	 */
 	public Vector2D div(double v) {
 		return new Vector2D(x / v, y / v);
