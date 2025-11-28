@@ -30,6 +30,8 @@ public class ToolbarController {
 	@FXML
 	private MenuItem simulationExport;
 
+	// TODO: Fix issues from multi file selection
+
 	// Ini
 	@FXML
 	private void initialize() { //throws IOException { for what was that?
@@ -88,13 +90,20 @@ public class ToolbarController {
 		Debug.toConsole(recentlyLoadedSimulations.size());
 	}
 
-	private void tryLoadingSimulation(String path) {
+	private void tryLoadingSimulation(List<String> paths) {
 		validateRecentlyLoadedSimulations();
-		// don't attempt to load the same simulation if its currently loaded
-		if (path.equals(loadedSimulation)) return; // ----------- add a check to not display the currently loaded file in recently opend
 
-		if (FakeInteractions.loadSimulation(path)) {
-			setLoadedSimulation(path);
+		StringBuilder mergedPath = new StringBuilder();
+
+		for (String path : paths) {
+			mergedPath.append(path);
+		}
+
+		// don't attempt to load the same simulation if its currently loaded
+		if (mergedPath.toString().equals(loadedSimulation)) return; // ----------- add a check to not display the currently loaded file in recently opend
+
+		if (FakeInteractions.loadSimulation(paths)) {
+			setLoadedSimulation(mergedPath.toString());
 		}
 	}
 
@@ -145,12 +154,18 @@ public class ToolbarController {
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Network", "*.net.xml"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Route", "*.rou.xml"));
 
-		File file = fileChooser.showOpenDialog(null);
-		if (file != null) {
-			// if a file was selected do something with it here
-			Debug.toConsole("Selected: " + file.getName());
-			Debug.toConsole(file.getPath());
-			tryLoadingSimulation(file.getPath());
+		List<File> files = fileChooser.showOpenMultipleDialog(null);
+		if (files != null) {
+			List<String> paths = new ArrayList<String>() {};
+
+			for (File file : files) {
+				// if a file was selected do something with it here
+				Debug.toConsole("Selected: " + file.getName());
+				Debug.toConsole(file.getPath());
+				paths.add(file.getPath());
+			}
+
+			tryLoadingSimulation(paths);
 		}
 	}
 
@@ -161,7 +176,7 @@ public class ToolbarController {
 
 	private void onSimulationOpenRecentClicked(MenuItem item) {
 		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText());
-		tryLoadingSimulation(item.getText());
+		tryLoadingSimulation(new ArrayList<>());
 	}
 
 	@FXML
