@@ -25,7 +25,6 @@ public class SimController {
     private static final String networkfname = "net.net.xml";
     private static final String routefname = "net.rou.xml";
 
-
     public SimController(){
         this(networkfname, routefname);
     }
@@ -250,13 +249,13 @@ public class SimController {
      *
      * @param typeID The type of the Vehicle; Use constants.Vehicle for this.
      * @param routeID The ID of the route where the Vehicle is supposed to land
-     * @param depart (0 indexing) The lane it's supposed to depart in. Use SimController.job(Edge.getIDCount()) for max lane num.
+     * @param depart departing delay in ms
      * @param pos Position in m from the start of the Route
      * @param speed Speed? Not clear from declaration
-     * @param lane 🌭
+     * @param lane departing lane. Use .getLaneNum(edgeID) for lane number.
      * @author Luca
      * */
-    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, byte lane){;
+    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){;
 
         try {
             int newVID = (int) _sumcon.do_job_get(Vehicle.getIDCount()) - 1;
@@ -267,7 +266,7 @@ public class SimController {
 
             String newVIDstr = "t_" + newVID;
 
-            _sumcon.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, lane));
+            _sumcon.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, (byte)lane));
             return new WVehicle(newVIDstr, _sumcon);
         }
         catch (Exception e) {

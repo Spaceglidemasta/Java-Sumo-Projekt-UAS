@@ -6,7 +6,13 @@ import java.util.List;
 
 public class FakeInteractions {
 	public static boolean loadSimulation(List<String> paths) {
-		Debug.toConsole("FakeInteractions:");
+
+        if(paths.size() != 2){
+
+            return false;
+        }
+
+		Debug.toConsole("Loading Files:");
 		for (String path : paths) {
 			Debug.toConsole(path);
 		}

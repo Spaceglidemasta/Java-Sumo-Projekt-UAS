@@ -19,9 +19,9 @@ public class Main {
 
         SimController sim = new SimController("net.net.xml", "speedtest.rou.xml");
 
+        //Test Scenario
+
         Debug.print("Trafic lights: " + sim.jobget(Trafficlight.getIDList()).toString());
-
-
 
         Debug.print("Edges:" + sim.getallEdges());
 
