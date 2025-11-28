@@ -1,11 +1,17 @@
 package org.group_three.ui.controllers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 // import java.io.IOException; for what was that?
 
 import org.group_three.debug.Console;
 import org.group_three.ui.idkyet.MenuItem_RecentlyOpend;
 import org.group_three.debug.Debug;
+import org.group_three.ui.FakeInteractions;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
@@ -24,31 +30,105 @@ public class ToolbarController {
 	@FXML
 	private MenuItem simulationExport;
 
+	// TODO: Fix issues from multi file selection
+
 	// Ini
 	@FXML
 	private void initialize() { //throws IOException { for what was that?
 		Debug.toConsole("Toolbar loaded.");
 
-		String[][] recentlyOpenedSimulations = {{"Sim0", "SimulationPath0"}, {"Sim1", "SimulationPath1"}, {"Sim2", "SimulationPath2"}};
+		// --> add load recentlyLoadedSimulations from file code here <--
+		validateRecentlyLoadedSimulations();
 
-		initializeOpenRecentList(recentlyOpenedSimulations);
+		initializeOpenRecentList();
 	}
 
 	// adds the recent simulations to the open recent menu tab
-	private void initializeOpenRecentList(String[][] recentlyOpenedSimulations) {
-		for (String[] simulation : recentlyOpenedSimulations) {
-			MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(simulation[0], simulation[1]);
+	private void initializeOpenRecentList() {
+		// clear entry list to avoid duplicates
+		simulationOpenRecent.getItems().clear();
+
+		// add options
+		for (String path : recentlyLoadedSimulations) {
+			//MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(path, path);
+			MenuItem item = new MenuItem(path);
 			item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
 			simulationOpenRecent.getItems().add(item);
 		}
+
+		// enable/disable button depending on entry count
+		simulationOpenRecent.setDisable(simulationOpenRecent.getItems().isEmpty());
 	}
 
 
 	// func to disable/reactivate the close, reload and export buttons when no simulation is loaded
-	private void setSimulationLoaded(boolean loaded) { //rename? load sim?? 100% needs rework
-		simulationClose.setDisable(!loaded);
-		simulationReload.setDisable(!loaded);
-		simulationExport.setDisable(!loaded);
+	private void setSimulationButtonStates(boolean disabled) {
+		simulationClose.setDisable(disabled);
+		simulationReload.setDisable(disabled);
+		simulationExport.setDisable(disabled);
+	}
+
+	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {};
+	private String loadedSimulation = null;
+
+	private void setLoadedSimulation(String path) {
+		if (path == null) {
+			loadedSimulation = null;
+			setSimulationButtonStates(false);
+			return;
+		}
+
+		loadedSimulation = path;
+		setSimulationButtonStates(true);
+
+		// try to remove entry first before adding it at the start of the list to always have the newest selection at the first entry
+		recentlyLoadedSimulations.remove(loadedSimulation);
+		recentlyLoadedSimulations.addFirst(loadedSimulation);
+
+		initializeOpenRecentList();
+
+		Debug.toConsole(recentlyLoadedSimulations.size());
+	}
+
+	private void tryLoadingSimulation(List<String> paths) {
+		validateRecentlyLoadedSimulations();
+
+		StringBuilder mergedPath = new StringBuilder();
+
+		for (String path : paths) {
+			mergedPath.append(path);
+		}
+
+		// don't attempt to load the same simulation if its currently loaded
+		if (mergedPath.toString().equals(loadedSimulation)) return; // ----------- add a check to not display the currently loaded file in recently opend
+
+		if (FakeInteractions.loadSimulation(paths)) {
+			setLoadedSimulation(mergedPath.toString());
+		}
+	}
+
+	private void validateRecentlyLoadedSimulations() {
+		List<String> fails = new ArrayList<String>() {};
+
+		for (String path : recentlyLoadedSimulations) {
+			try {
+				new FileReader(path).close();
+			} catch (FileNotFoundException e) {
+				Debug.toConsole("FileNotFoundException " + e.getMessage());
+				// remove path if file at path doesn't exist
+				fails.add(path); // don't modify looping list while using it
+
+			} catch (IOException e) {
+				Debug.toConsole("IOException e " + e.getMessage());
+				throw new RuntimeException(e);
+			}
+		}
+
+		for (String path : fails) {
+			recentlyLoadedSimulations.remove(path);
+		}
+
+		initializeOpenRecentList(); // maybe? !makes ini run multiple times in some places right now, TODO:change that
 	}
 
 
@@ -74,23 +154,35 @@ public class ToolbarController {
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Network", "*.net.xml"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Route", "*.rou.xml"));
 
-		File file = fileChooser.showOpenDialog(null);
-		if (file != null) {
-			// if a file was selected do something with it here
-			Debug.toConsole("Selected: " + file);
-			setSimulationLoaded(true);
+		List<File> files = fileChooser.showOpenMultipleDialog(null);
+		if (files != null) {
+			List<String> paths = new ArrayList<String>() {};
+
+			for (File file : files) {
+				// if a file was selected do something with it here
+				Debug.toConsole("Selected: " + file.getName());
+				Debug.toConsole(file.getPath());
+				paths.add(file.getPath());
+			}
+
+			tryLoadingSimulation(paths);
 		}
 	}
 
-	private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
+	/*private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
 		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
-		setSimulationLoaded(true);
+		tryLoadingSimulation(item.getPath());
+	}*/
+
+	private void onSimulationOpenRecentClicked(MenuItem item) {
+		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText());
+		tryLoadingSimulation(new ArrayList<>());
 	}
 
 	@FXML
 	private void onSimulationCloseClicked() {
 		Debug.toConsole("Simulation -> Close");
-		setSimulationLoaded(false);
+		setLoadedSimulation(null);
 	}
 
 	@FXML
