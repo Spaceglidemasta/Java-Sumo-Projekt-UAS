@@ -194,7 +194,7 @@ public class CanvasController {
 		double oldZoom = world.getViewerZoom();
 		//Debug.print(mlp);
 		world.addViewerZoom(zoomDelta);
-		world.setViewerPosition(Meth.addRelativeLocation(new Vector2D(), world.getViewerRotation(), world.getViewerPosition().mul(world.getViewerZoom()/oldZoom)));
+		world.setViewerPosition(world.getViewerPosition().mul(world.getViewerZoom()/oldZoom));
 		Debug.print(world.getViewerPosition());
 	}
 
