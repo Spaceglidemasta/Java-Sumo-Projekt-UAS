@@ -101,9 +101,19 @@ public class CanvasController {
 	 */
 	@FXML
 	private void onMouseClicked() {
-		if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("Canvas clicked.");
+		Debug.print("Canvas clicked.");
 
-		//world.addViewerRotation(15);
+		Vector2D nMP = mousePosition.sub(world.getViewerPositionOffset());
+		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), nMP);
+
+		WorldObject test = new WorldObject();
+		test.world = world;
+		test.graphicsContext = worldStaticRenderTarget_GraphicsContext;
+		test.renderTarget = worldStaticRenderTarget;
+		test.setPosition(worldspaceMousePosition);
+		world.addWorldObject(test);
+
+		world.requestUpdate();
 	}
 
 	/**
@@ -171,6 +181,14 @@ public class CanvasController {
 
 	private Vector2D mousePosition = new Vector2D();
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param event
+	 * Param-Comment
+	 */
 	@FXML
 	private void onMouseMoved(MouseEvent event) {
 		mousePosition = new Vector2D(event.getX(), event.getY());
@@ -194,6 +212,7 @@ public class CanvasController {
 		double oldZoom = world.getViewerZoom();
 		//Debug.print(mlp);
 		world.addViewerZoom(zoomDelta);
+		//world.setViewerPosition(world.getViewerPosition().mul(world.getViewerZoom()/oldZoom));
 		world.setViewerPosition(world.getViewerPosition().mul(world.getViewerZoom()/oldZoom));
 		Debug.print(world.getViewerPosition());
 	}
