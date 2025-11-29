@@ -104,7 +104,7 @@ public class CanvasController {
 		Debug.print("Canvas clicked.");
 
 		Vector2D nMP = mousePosition.sub(world.getViewerPositionOffset());
-		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), nMP);
+		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), nMP).mul(1/world.getViewerZoom());
 
 		WorldObject test = new WorldObject();
 		test.world = world;
