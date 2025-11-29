@@ -2,10 +2,7 @@ package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
-import org.group_three.ui.Keyboard;
-import org.group_three.ui.Vector2D;
-import org.group_three.ui.World;
-import org.group_three.ui.WorldObject;
+import org.group_three.ui.*;
 import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
@@ -57,6 +54,14 @@ public class CanvasController {
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(30);
 		world.addWorldObject(test);
+
+		WorldObject test2 = new WorldObject();
+		test2.world = world;
+		test2.graphicsContext = worldStaticRenderTarget_GraphicsContext;
+		test2.renderTarget = worldStaticRenderTarget;
+		test2.setPosition(new Vector2D(128, -64));
+		test2.setRotation(30);
+		world.addWorldObject(test2);
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
@@ -164,6 +169,14 @@ public class CanvasController {
 		lastY = event.getY();
 	}
 
+	private Vector2D mousePosition = new Vector2D();
+
+	@FXML
+	private void onMouseMoved(MouseEvent event) {
+		mousePosition = new Vector2D(event.getX(), event.getY());
+		//Debug.print(mousePosition);
+	}
+
 	/**
 	 * Comment
 	 *
@@ -176,7 +189,13 @@ public class CanvasController {
 	private void onScroll(ScrollEvent event) {
         if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onScroll");
 
-		world.addViewerZoom(event.getDeltaY() * 0.01);
+		double zoomDelta = event.getDeltaY() * 0.01;
+		double mlp = zoomDelta < 0 ? 1 : 1;
+		double oldZoom = world.getViewerZoom();
+		//Debug.print(mlp);
+		world.addViewerZoom(zoomDelta);
+		world.setViewerPosition(Meth.addRelativeLocation(new Vector2D(), world.getViewerRotation(), world.getViewerPosition().mul(world.getViewerZoom()/oldZoom)));
+		Debug.print(world.getViewerPosition());
 	}
 
 
