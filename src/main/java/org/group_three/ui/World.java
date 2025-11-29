@@ -272,4 +272,45 @@ public class World {
 	public void addWorldObject(WorldObject object) {
 		worldObjects.add(object);
 	}
+
+	/**
+	 * Is missing a render check to only test objects that are currently rendered on the canvas. aka not outside of the frame
+	 * @author Joel
+	 * @param worldPosition
+	 * @return
+	 */
+	public WorldObject interact(Vector2D worldPosition) {
+		if (worldObjects.isEmpty()) return null;
+
+		List<Double> distances = new ArrayList<>() {};
+		List<WorldObject> interactableObjects = new ArrayList<>() {};
+
+		for (WorldObject worldObject : worldObjects) {
+			double distanceToObject = worldObject.getPosition().sub(worldPosition).length();
+
+			if (distanceToObject <= worldObject.sphereCollision) {
+				distances.add(distanceToObject);
+				interactableObjects.add(worldObject);
+			}
+
+			Debug.print(distanceToObject);
+		}
+
+		if (interactableObjects.isEmpty()) return null;
+		if (distances.isEmpty()) return null;
+
+		double shortestDistance = distances.getFirst();
+		int shortestDistanceIndex = 0;
+		int index = 0;
+
+		for (double distance : distances) {
+			if (distance < shortestDistance) {
+				shortestDistance = distance;
+				shortestDistanceIndex = index;
+			}
+			index++;
+		}
+
+		return interactableObjects.get(shortestDistanceIndex);
+	}
 }

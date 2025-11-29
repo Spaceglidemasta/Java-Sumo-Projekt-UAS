@@ -16,7 +16,7 @@ import javafx.scene.image.Image;
 public class WorldObject {
 	public Vector2D position = new Vector2D();
 	public double rotation = 0;
-	public double sphereCollision = 0;
+	public double sphereCollision = 32; // Radius
 	public Vector2D boxCollision = new Vector2D();
 	public boolean useBoxCollision = false;
 	public Image visualImage;
@@ -24,6 +24,8 @@ public class WorldObject {
 	public World world;
 	public GraphicsContext graphicsContext;
 	public Canvas renderTarget;
+	public String displayName = "";
+	public String id = "";
 
 	/**
 	 * Comment
@@ -153,6 +155,7 @@ public class WorldObject {
 	 * @author Joel
 	 */
 	public void update() {
+		drawCollision();
 		Vector2D rect = new Vector2D(64,32);
 		graphicsContext.save();
 		graphicsContext.setFill(Color.BLUE);
@@ -164,4 +167,26 @@ public class WorldObject {
 		graphicsContext.restore();
         if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("Updated WorldObject");
 	}
+
+	public void drawCollision() {
+		graphicsContext.save();
+		graphicsContext.setFill(Color.RED);
+		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
+
+		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
+		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
+		graphicsContext.fillOval ((sphereCollision) * world.getViewerZoom() * -1, (sphereCollision) * world.getViewerZoom() * -1, sphereCollision*2 * world.getViewerZoom(), sphereCollision*2 * world.getViewerZoom());
+		graphicsContext.restore();
+	}
+	/*
+	public void drawCollision() {
+		graphicsContext.save();
+		graphicsContext.setFill(Color.RED);
+		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
+
+		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
+		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
+		graphicsContext.fillOval ((sphereCollision/2) * world.getViewerZoom() * -1, (sphereCollision/2) * world.getViewerZoom() * -1, sphereCollision * world.getViewerZoom(), sphereCollision * world.getViewerZoom());
+		graphicsContext.restore();
+	}*/
 }

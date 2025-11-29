@@ -51,6 +51,7 @@ public class CanvasController {
 		test.world = world;
 		test.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 		test.renderTarget = worldStaticRenderTarget;
+		test.displayName = "Object Test";
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(30);
 		world.addWorldObject(test);
@@ -59,6 +60,7 @@ public class CanvasController {
 		test2.world = world;
 		test2.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 		test2.renderTarget = worldStaticRenderTarget;
+		test2.displayName = "Object Test2";
 		test2.setPosition(new Vector2D(128, -64));
 		test2.setRotation(30);
 		world.addWorldObject(test2);
@@ -106,12 +108,21 @@ public class CanvasController {
 		Vector2D nMP = mousePosition.sub(world.getViewerPositionOffset());
 		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), nMP).mul(1/world.getViewerZoom());
 
-		WorldObject test = new WorldObject();
+		/*WorldObject test = new WorldObject();
 		test.world = world;
 		test.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 		test.renderTarget = worldStaticRenderTarget;
 		test.setPosition(worldspaceMousePosition);
-		world.addWorldObject(test);
+		world.addWorldObject(test);*/
+
+		//world.world
+
+		try {
+			Debug.print(world.interact(worldspaceMousePosition).displayName);
+		} catch (Exception e) {
+			//throw new RuntimeException(e);
+			Debug.print("NULL");
+		}
 
 		world.requestUpdate();
 	}
