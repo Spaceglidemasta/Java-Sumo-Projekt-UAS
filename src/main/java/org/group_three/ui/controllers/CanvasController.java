@@ -119,13 +119,15 @@ public class CanvasController {
 		deltaX = x - lastX;
 		deltaY = y - lastY;
 
-		if (!Keyboard.isCtrlKeyPressed() && Keyboard.isAltKeyPressed()) { // start rotation freely, no snapping
-			double rot = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY().getRotation();
-			world.setViewerRotation(rot);
+		double startRot = new Vector2D(lastX, lastY).sub(world.getViewerPositionOffset()).flipY().getRotation();
+		double rot = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY().getRotation();
+		double deltaRot = rot-startRot;
 
-		} else if (Keyboard.isCtrlKeyPressed() && Keyboard.isAltKeyPressed()) { // start rotation with 45 degree snapping
-			double rot = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY().getRotation();
+		if (/*!Keyboard.isCtrlKeyPressed() && */Keyboard.isAltKeyPressed()) { // start rotation freely, no snapping
+			world.addViewerRotation(deltaRot);
+			world.setViewerPosition(world.getViewerPosition().rotate(deltaRot)); // move to rotate viewer func?!?
 
+		} else if (Keyboard.isCtrlKeyPressed() && Keyboard.isAltKeyPressed() && false) { // start rotation with 45 degree snapping
 			if (((rot >= 0) && (rot < 22.5)) || rot >= 337.5) rot = 0;
 			else if ((rot >= 22.5) && (rot < 67.5)) rot = 45;
 			else if ((rot >= 67.5) && (rot < 112.5)) rot = 90;

@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class World {
 	private Vector2D viewerPositionOffset = new Vector2D();
-	private Vector2D viewerPosition = new Vector2D();
+	private Vector2D viewerPosition = new Vector2D(-256,0);
 	private double viewerRotation = 0;
 	private double viewerZoom = 1;
 	private Vector2D viewerZoomLimit = new Vector2D(0.1, 2);
