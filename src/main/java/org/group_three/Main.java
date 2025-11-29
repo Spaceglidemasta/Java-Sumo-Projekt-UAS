@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) {
         Debug.print("Programm Start");
 
-        SimController sim = new SimController("net.net.xml", "speedtest.rou.xml");
+        SimController sim = new SimController("speedtest.sumocfg");
 
         //Test Scenario
 
@@ -42,6 +42,8 @@ public class Main {
         WVehicle v = sim.addVehicle("DEFAULT_CONTAINERTYPE", "r_1", 2, 0, 1, (byte)0);
 
         Debug.print(v.getPos());
+
+        Debug.print("Angle: " + sim.jobget(Vehicle.getAngle(v.getID())).getClass().getName());
 
         sim.close();
 

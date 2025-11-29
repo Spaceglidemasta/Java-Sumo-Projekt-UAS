@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * <h1>SimController</h1>
  * Class used to Connect & Control to SUMO via the TraaS API <br>
  * The constructor does everything for you, you only need
  * to SimController.close() the Simulation after you are done.
@@ -88,9 +89,14 @@ public class SimController {
             _sumcon.printSumoError(true);
             _sumcon.runServer(8813);
 
+            // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
+            _sumcon.do_timestep();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
         Debug.print("SimController startup was successfull");
         Debug.toConsole("SimController startup was successfull");
@@ -132,7 +138,7 @@ public class SimController {
             Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
 
             // opens the network file inside the resources Folder
-            File networknet = new File(resourcesDir, networkfname);
+            File networknet = new File(resourcesDir, net);
             Debug.print(networknet.getAbsolutePath());
             if (!networknet.exists()) {
                 throw new Exception(net + " not found");
@@ -141,7 +147,7 @@ public class SimController {
                 Debug.print("network file found");
             }
             // opens the route file inside the resources Folder
-            File routenet = new File(resourcesDir, routefname);
+            File routenet = new File(resourcesDir, rou);
             Debug.print(routenet.getAbsolutePath());
             if (!routenet.exists()) {
                 throw new Exception(rou + " not found");
@@ -161,6 +167,9 @@ public class SimController {
             _sumcon.printSumoOutput(true);
             _sumcon.printSumoError(true);
             _sumcon.runServer(8813);
+
+            // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
+            _sumcon.do_timestep();
 
 
         } catch (Exception e) {
