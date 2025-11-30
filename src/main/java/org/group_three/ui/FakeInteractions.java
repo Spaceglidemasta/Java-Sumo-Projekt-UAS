@@ -1,12 +1,10 @@
 package org.group_three.ui;
 
-import jdk.jshell.spi.ExecutionControl;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 
 /**
@@ -72,7 +70,7 @@ public class FakeInteractions {
         }
 
         //set selected simulation as the main, global / static simulation.
-        simcon.setMain(true);
+        simcon.setMainsim(true);
 
         return true;
 	}
