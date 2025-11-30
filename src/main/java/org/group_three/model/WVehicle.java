@@ -17,7 +17,7 @@ public class WVehicle {
     //Attributes-Attributes
     private SumoPosition2D pos;
     private double angle;
-    private boolean isactive = false;
+    private int lane;
 
 
     /**
@@ -44,6 +44,20 @@ public class WVehicle {
      * @author Luca
      * */
     public SumoTraciConnection getSumoCon() {return _sumcon;}
+
+    /**
+     * Returns the Angle
+     * @author Luca
+     * */
+    public double getAngle() {return angle;}
+
+    /**
+     * Returns the index of the Lane. <br>
+     * This is NOT the Lane ID. If you want the LaneID, try: <br>
+     * <code>simcon.jobget(Vehicle.getLaneID(VehID))</code>
+     * @author Luca
+     * */
+    public int getLane() {return lane;}
 
     /**
      * Gets you the SumoPosition2D of the Vehicle. Attributes are public.<br>
@@ -101,6 +115,7 @@ public class WVehicle {
 
         boolean ipos = true;
         boolean iangle = true;
+        boolean ilane = true;
 
         //position getter
         try {
@@ -118,8 +133,15 @@ public class WVehicle {
             iangle = false;
         }
 
+        //lane getter
+        try {
+            this.lane = (int) _sumcon.do_job_get(Vehicle.getLaneIndex(vehID));
+        }
+        catch (Exception _) {
+            ilane = false;
+        }
 
-        return new WVehicleUpdateObject(ipos, iangle);
+        return new WVehicleUpdateObject(ipos, iangle, ilane);
     }
 
 }
