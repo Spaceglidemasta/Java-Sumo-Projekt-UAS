@@ -23,9 +23,9 @@ public class Main {
 
         Debug.print("Trafic lights: " + sim.jobget(Trafficlight.getIDList()).toString());
 
-        Debug.print("Edges:" + sim.getallEdges());
+        Debug.print("Edges:" + sim.getEdgeIDList());
 
-        Debug.print("Vehicles:" + sim.getallVehicles());
+        Debug.print("Vehicles:" + sim.getVehicleIDList());
 
         Debug.print("Vehicle Count: " + sim.jobget(Vehicle.getIDCount()));
 
@@ -37,13 +37,17 @@ public class Main {
 
         sim.jobset(Route.add("r_1", edges));
 
-        Debug.print("Routes:" + sim.getallRoutes());
+        Debug.print("Routes:" + sim.getRouteIDList());
 
         WVehicle v = sim.addVehicle("DEFAULT_CONTAINERTYPE", "r_1", 2, 0, 1, (byte)0);
 
         Debug.print(v.getPos());
 
-        Debug.print("Angle: " + sim.jobget(Vehicle.getAngle(v.getID())).getClass().getName());
+        Debug.print("V Angle: " + sim.jobget(Vehicle.getAngle(v.getID())).getClass().getName());
+
+        for(String junc : sim.getJunctionIDList()){
+            Debug.print(junc + ": " + sim.getJunctionPos(junc));
+        }
 
         sim.close();
 
