@@ -19,6 +19,7 @@ public class Main {
         Debug.print("Programm Start");
 
         //Tester, so this isn't full of random test calls
+        //Currently using speedtest.cfg
         new StaticTester();
 
         MainApp aMainGui = new MainApp();

@@ -187,6 +187,67 @@ public class SimController {
     }
 
     /**
+     * Does 1 step in the simulation.
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean step(){
+
+        try {
+            _sumcon.do_timestep();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Does n steps in the simulation.
+     * @param n The number of steps to be done
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean step(int n){
+
+        for(int i = 0; i < n; i++){
+            try {
+                _sumcon.do_timestep();
+            } catch (Exception e) {
+                Debug.print("CRITICAL ERROR:");
+                e.printStackTrace();
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Sets the Time of the Simulation to (time), needs to be in the Future.
+     * @param time The time in the future to travel to.
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean timetravel_to(double time){
+
+        try {
+            _sumcon.do_timestep(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+    /**
      * closes the SumoTraciConnection
      * @author Luca
      * */
@@ -372,9 +433,9 @@ public class SimController {
             do {
                 newVID = newVID + 1;
             }
-            while(getVehicleIDList().contains("t_" + newVID));
+            while(getVehicleIDList().contains("wveh_" + newVID));
 
-            String newVIDstr = "t_" + newVID;
+            String newVIDstr = "wveh_" + newVID;
 
             _sumcon.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, (byte)lane));
             return new WVehicle(newVIDstr, _sumcon);
