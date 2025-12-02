@@ -11,6 +11,8 @@ public final class UI {
 	// The main FXML class which is loaded into the main window.
 	// Other UI/FXML parts will be loaded into it.
 	public static final String appFXML = "/org/group_three/ui/fxml/MainWindow.fxml";
+	// The base icon to be used and colored for cars
+	public static final String carIcon = "/org/group_three/ui/fxml/car.png";
 
 
 	// The minimal window width.

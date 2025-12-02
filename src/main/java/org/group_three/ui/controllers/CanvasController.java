@@ -3,6 +3,7 @@ package org.group_three.ui.controllers;
 import java.io.IOException;
 
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
 import org.group_three.ui.*;
 import org.group_three.debug.Debug;
@@ -57,6 +58,7 @@ public class CanvasController {
 		Image testImage = new Image(getClass().getResourceAsStream("/org/group_three/ui/icons/car.png"));
 		Debug.print("ImageNull: " + (testImage == null));
 		test.visualImage = testImage;
+		test.imageTint = new Color(0,1,0,1);
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(0);
 		world.addWorldObject(test);
