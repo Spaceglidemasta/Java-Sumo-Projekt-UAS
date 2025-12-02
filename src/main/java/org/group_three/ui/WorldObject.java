@@ -21,16 +21,18 @@ public class WorldObject {
 	public Vector2D position = new Vector2D();
 	public double rotation = 0;
 	public double sphereCollision = 32; // Radius
+	public Color sphereCollisionColor = new Color(1,0,0,0.1);
 	public Vector2D boxCollision = new Vector2D();
 	public boolean useBoxCollision = false;
 	public Image visualImage;
-	//public Color imageTint = new Color(255, 255, 255, 255);
+	public Color imageTint = new Color(1, 1, 1, 1);
 	public boolean interactable = false;
 	public World world;
 	public GraphicsContext graphicsContext;
 	public Canvas renderTarget;
 	public String displayName = "";
 	public String id = "";
+	public double worldSize = 1; // in meters
 
 	/**
 	 * Comment
@@ -177,7 +179,7 @@ public class WorldObject {
 
 	public void drawCollision() {
 		graphicsContext.save();
-		graphicsContext.setFill(Color.RED);
+		graphicsContext.setFill(sphereCollisionColor);
 		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
 
 		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
@@ -206,7 +208,7 @@ public class WorldObject {
 		PixelReader reader = input.getPixelReader();
 		PixelWriter writer = tinted.getPixelWriter();
 
-		Color tintColor = Color.YELLOW;
+		Color tintColor = imageTint;
 
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {

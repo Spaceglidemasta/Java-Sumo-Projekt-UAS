@@ -58,7 +58,7 @@ public class CanvasController {
 		Debug.print("ImageNull: " + (testImage == null));
 		test.visualImage = testImage;
 		test.setPosition(new Vector2D(32, 64));
-		test.setRotation(30);
+		test.setRotation(0);
 		world.addWorldObject(test);
 
 		WorldObject test2 = new WorldObject();
