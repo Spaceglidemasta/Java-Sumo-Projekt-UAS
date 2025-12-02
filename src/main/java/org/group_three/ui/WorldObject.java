@@ -7,6 +7,7 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 
 import javafx.scene.image.Image;
@@ -33,6 +34,11 @@ public class WorldObject {
 	public String displayName = "";
 	public String id = "";
 	public double worldSize = 1; // in meters
+	//public static ColoredIconManager iconManager = createCIM();
+
+	/*private static ColoredIconManager createCIM() {
+		return (iconManager == null) ? new ColoredIconManager(UI.carIcon) : null;
+	}*/
 
 	/**
 	 * Comment

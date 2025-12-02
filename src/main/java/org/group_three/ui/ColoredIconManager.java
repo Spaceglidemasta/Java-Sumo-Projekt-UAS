@@ -12,23 +12,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ColoredIconManager {
-	private static Map<ColoredIcon, Image> icons = new HashMap<>() {};
+	private Image image = null;
+	private Map<Color, Image> icons = new HashMap<>() {};
 
-	public static Image getIcon(ColoredIcon coloredIcon) {
+	ColoredIconManager() {
+		Debug.print("ColoredIconManager created.");
+	}
+
+	ColoredIconManager(String iconPath) {
+		image = new Image(getClass().getResourceAsStream(iconPath));
+
+		Debug.print("ColoredIconManager created.");
+	}
+
+	public Image getIcon(Color color) {
 		// Check if icon with specified color already exists
-		Image icon = icons.get(coloredIcon);
+		Image icon = icons.get(color);
 
 		if (icon == null) {
 			// Create icon with specified color if icon doesn't exist yet and add it to map
-			//icon = addImageTint(ColoredIcon.class.getResourceAsStream("/org/group_three/ui/fxml/car.png"), coloredIcon.color);
-			icons.put(coloredIcon, icon);
-			Debug.print(coloredIcon.toString() + " ### " + coloredIcon.color.toString() + ": " + icons.size());
+			icon = addImageTint(image, color);
+			icons.put(color, icon);
+			Debug.print("IconCount: " + icons.size());
 		}
 
 		return icon;
 	}
 
-	private static Image addImageTint(Image icon, Color color) {
+	private Image addImageTint(Image icon, Color color) {
 		//GPT
 		int w = (int) icon.getWidth();
 		int h = (int) icon.getHeight();
