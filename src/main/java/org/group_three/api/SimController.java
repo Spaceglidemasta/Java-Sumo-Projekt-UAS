@@ -2,6 +2,7 @@ package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.SumoPosition2D;
+import de.tudresden.sumo.objects.SumoStringList;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
@@ -330,14 +331,15 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getTrafficLightsIDList(){
+    public SumoStringList getTrafficLightsIDList(){
         try {
-            return (List<String>) _sumcon.do_job_get(Trafficlight.getIDList());
+            return (SumoStringList) _sumcon.do_job_get(Trafficlight.getIDList());
         }
         catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return new ArrayList<String>();
+
     }
 
     //Funny no template Language incoming
@@ -346,11 +348,11 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getVehicleIDList() {
+    public SumoStringList getVehicleIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Vehicle.getIDList());
+            return (SumoStringList) _sumcon.do_job_get(Vehicle.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -363,11 +365,11 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getRouteIDList() {
+    public SumoStringList getRouteIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Route.getIDList());
+            return (SumoStringList) _sumcon.do_job_get(Route.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -380,11 +382,12 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getEdgeIDList() {
+    public SumoStringList getEdgeIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Edge.getIDList());
+            return (SumoStringList) _sumcon.do_job_get(Edge.getIDList());
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -398,11 +401,11 @@ public class SimController {
      * @param edgeID The String of the EdgeID you want the number of lanes from.
      * @author Luca
      * */
-    public List<String> getLaneNumOfEdge(String edgeID) {
+    public SumoStringList getLaneNumOfEdge(String edgeID) {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Edge.getLaneNumber(edgeID));
+            return (SumoStringList) _sumcon.do_job_get(Edge.getLaneNumber(edgeID));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -426,7 +429,7 @@ public class SimController {
      * @param lane departing lane. Use .getLaneNum(edgeID) for lane number.
      * @author Luca
      * */
-    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){;
+    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){
 
         try {
             int newVID = (int) _sumcon.do_job_get(Vehicle.getIDCount()) - 1;
