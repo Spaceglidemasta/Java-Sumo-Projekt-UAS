@@ -2,6 +2,8 @@ package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
+import javafx.scene.image.Image;
+import org.group_three.constants.UI;
 import org.group_three.ui.*;
 import org.group_three.debug.Debug;
 
@@ -51,7 +53,10 @@ public class CanvasController {
 		test.world = world;
 		test.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 		test.renderTarget = worldStaticRenderTarget;
-		test.displayName = "Object Test";
+		test.displayName = "Object TestCar";
+		Image testImage = new Image(getClass().getResourceAsStream("/org/group_three/ui/icons/car.png"));
+		Debug.print("ImageNull: " + (testImage == null));
+		test.visualImage = testImage;
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(30);
 		world.addWorldObject(test);
@@ -61,6 +66,7 @@ public class CanvasController {
 		test2.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 		test2.renderTarget = worldStaticRenderTarget;
 		test2.displayName = "Object Test2";
+		test2.visualImage = testImage;
 		test2.setPosition(new Vector2D(128, -64));
 		test2.setRotation(30);
 		world.addWorldObject(test2);

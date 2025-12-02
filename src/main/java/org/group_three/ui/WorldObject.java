@@ -2,6 +2,10 @@ package org.group_three.ui;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import org.group_three.debug.Debug;
 
@@ -20,6 +24,7 @@ public class WorldObject {
 	public Vector2D boxCollision = new Vector2D();
 	public boolean useBoxCollision = false;
 	public Image visualImage;
+	//public Color imageTint = new Color(255, 255, 255, 255);
 	public boolean interactable = false;
 	public World world;
 	public GraphicsContext graphicsContext;
@@ -156,14 +161,16 @@ public class WorldObject {
 	 */
 	public void update() {
 		drawCollision();
-		Vector2D rect = new Vector2D(64,32);
+		Vector2D rect = new Vector2D(visualImage.getWidth(), visualImage.getHeight());
+		rect = rect.div(10);
 		graphicsContext.save();
-		graphicsContext.setFill(Color.BLUE);
+		//graphicsContext.setFill(Color.BLUE);
 		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
 
 		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
 		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
-		graphicsContext.fillRect((rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
+		graphicsContext.drawImage(addImageTint(visualImage), (rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
+		//graphicsContext.fillRect((rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
 		graphicsContext.restore();
         if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("Updated WorldObject");
 	}
@@ -189,4 +196,37 @@ public class WorldObject {
 		graphicsContext.fillOval ((sphereCollision/2) * world.getViewerZoom() * -1, (sphereCollision/2) * world.getViewerZoom() * -1, sphereCollision * world.getViewerZoom(), sphereCollision * world.getViewerZoom());
 		graphicsContext.restore();
 	}*/
+
+	private Image addImageTint(Image input) {
+		//GPT
+		int w = (int) input.getWidth();
+		int h = (int) input.getHeight();
+
+		WritableImage tinted = new WritableImage(w, h);
+		PixelReader reader = input.getPixelReader();
+		PixelWriter writer = tinted.getPixelWriter();
+
+		Color tintColor = Color.YELLOW;
+
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				Color c = reader.getColor(x, y);
+
+				if (c.getOpacity() > 0) {
+					Color newColor = new Color(
+							tintColor.getRed(),
+							tintColor.getGreen(),
+							tintColor.getBlue(),
+							c.getOpacity()
+					);
+					writer.setColor(x, y, newColor);
+				} else {
+					writer.setColor(x, y, c);
+				}
+			}
+		}
+
+		return  tinted;
+
+	}
 }
