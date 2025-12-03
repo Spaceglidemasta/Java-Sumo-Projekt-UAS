@@ -15,14 +15,18 @@ public class ColoredIconManager {
 	private Image image = null;
 	private Map<Color, Image> icons = new HashMap<>() {};
 
-	ColoredIconManager() {
+	public ColoredIconManager() {
 		Debug.print("ColoredIconManager created.");
 	}
 
-	ColoredIconManager(String iconPath) {
-		image = new Image(getClass().getResourceAsStream(iconPath));
-
-		Debug.print("ColoredIconManager created.");
+	public ColoredIconManager(String iconPath) {
+		try {
+			image = new Image(getClass().getResourceAsStream(iconPath));
+			Debug.print("ColoredIconManager created.");
+		} catch (Exception e) {
+			//throw new RuntimeException(e);
+			Debug.print("ColoredIconManager failed to create!");
+		}
 	}
 
 	public Image getIcon(Color color) {
@@ -40,7 +44,6 @@ public class ColoredIconManager {
 	}
 
 	private Image addImageTint(Image icon, Color color) {
-		//GPT
 		int w = (int) icon.getWidth();
 		int h = (int) icon.getHeight();
 

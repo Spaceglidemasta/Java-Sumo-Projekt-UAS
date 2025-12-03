@@ -6,15 +6,13 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import org.group_three.constants.UI;
+import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
 public class WorldVehicle extends WorldObject {
-	//public static ColoredIconManager iconManager = createCIM();
-
-	/*private static ColoredIconManager createCIM() {
-		return (iconManager == null) ? new ColoredIconManager(UI.carIcon) : null;
-	}*/
+	public static ColoredIconManager iconManager = new ColoredIconManager(UI.carIcon);
 
 	/**
 	 * Comment
@@ -46,6 +44,7 @@ public class WorldVehicle extends WorldObject {
 
 	private Color imageTint = new Color(1, 1, 1, 1);
 
+
 	/**
 	 * Comment
 	 *
@@ -62,41 +61,8 @@ public class WorldVehicle extends WorldObject {
 
 		getGraphicsContext().translate(drawLoc.x + getWorld().getViewerPositionOffset().x, drawLoc.y + getWorld().getViewerPositionOffset().y); // Object Location
 		getGraphicsContext().rotate(Meth.addRelativeRotation(getWorld().getViewerRotation(), getRotation()));
-		getGraphicsContext().drawImage(addImageTint(getVisualImage()), (rect.x/2) * getWorld().getViewerZoom() * -1, (rect.y/2) * getWorld().getViewerZoom() * -1, rect.x * getWorld().getViewerZoom(), rect.y * getWorld().getViewerZoom());
+		getGraphicsContext().drawImage(iconManager.getIcon(getImageTint()), (rect.x/2) * getWorld().getViewerZoom() * -1, (rect.y/2) * getWorld().getViewerZoom() * -1, rect.x * getWorld().getViewerZoom(), rect.y * getWorld().getViewerZoom());
 		//graphicsContext.fillRect((rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
 		getGraphicsContext().restore();
-	}
-
-	private Image addImageTint(Image input) {
-		//GPT
-		int w = (int) input.getWidth();
-		int h = (int) input.getHeight();
-
-		WritableImage tinted = new WritableImage(w, h);
-		PixelReader reader = input.getPixelReader();
-		PixelWriter writer = tinted.getPixelWriter();
-
-		Color tintColor = imageTint;
-
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				Color c = reader.getColor(x, y);
-
-				if (c.getOpacity() > 0) {
-					Color newColor = new Color(
-							tintColor.getRed(),
-							tintColor.getGreen(),
-							tintColor.getBlue(),
-							c.getOpacity()
-					);
-					writer.setColor(x, y, newColor);
-				} else {
-					writer.setColor(x, y, c);
-				}
-			}
-		}
-
-		return  tinted;
-
 	}
 }

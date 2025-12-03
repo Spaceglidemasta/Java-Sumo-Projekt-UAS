@@ -29,7 +29,7 @@ public class WorldObject {
 	private double rotation = 0;
 
 	private boolean interactable = false;
-	private double sphereCollision = 32; // Radius
+	private double sphereCollision = 32; // Radius in meters?
 	private Color sphereCollisionColor = UI.sphereCollisionColor;
 	private Vector2D boxCollision = new Vector2D();
 	private boolean useBoxCollision = false;
@@ -89,7 +89,7 @@ public class WorldObject {
 		return world;
 	}
 
-	public GraphicsContext getGraphicsContext() {
+	protected GraphicsContext getGraphicsContext() {
 		return graphicsContext;
 	}
 

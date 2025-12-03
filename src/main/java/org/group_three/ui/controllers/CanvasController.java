@@ -64,7 +64,7 @@ public class CanvasController {
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(0);
 
-		WorldObject test2 = new WorldObject(
+		WorldVehicle test2 = new WorldVehicle(
 				world,
 				worldStaticRenderTarget,
 				"Object TestCar2"
@@ -73,7 +73,14 @@ public class CanvasController {
 		test2.setPosition(new Vector2D(128, -64));
 		test2.setRotation(30);
 
-		Debug.print("GraphicsContextUnique: " + (test.getGraphicsContext() == test2.getGraphicsContext()));
+		WorldVehicle test3 = new WorldVehicle(
+				world,
+				worldStaticRenderTarget,
+				"Object TestCar3"
+		);
+		test3.setVisualImage(testImage);
+		test3.setPosition(new Vector2D(-64, -64));
+		test3.setRotation(90);
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());

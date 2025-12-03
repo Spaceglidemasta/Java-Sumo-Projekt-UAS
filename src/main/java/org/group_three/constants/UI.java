@@ -14,7 +14,7 @@ public final class UI {
 	// Other UI/FXML parts will be loaded into it.
 	public static final String appFXML = "/org/group_three/ui/fxml/MainWindow.fxml";
 	// The base icon to be used and colored for cars.
-	public static final String carIcon = "/org/group_three/ui/fxml/car.png";
+	public static final String carIcon = "/org/group_three/ui/icons/car.png";
 	// The default sphere collision color of world objects.
 	public static final Color sphereCollisionColor = new Color(1,0,0,0.1);
 
