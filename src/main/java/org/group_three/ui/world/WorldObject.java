@@ -17,23 +17,56 @@ import org.group_three.ui.Vector2D;
  * @author Joel
  */
 public class WorldObject {
-	private final World world;
-	private final Canvas renderTarget;
-	private final GraphicsContext graphicsContext; // is the same across all canvas users
+	/**
+	 * @author Joel
+	 */private final World world;
+	/**
+	 * @author Joel
+	 */private final Canvas renderTarget;
+	/**
+	 * is the same across all canvas users
+	 * @author Joel
+	 */private final GraphicsContext graphicsContext;
 
-	private final String displayName; // not unique
-	private final String id; // unique
-	private static int idCounter = 0; // keeps track of all instances ever created, will always be the count of created objects and not the index of the last created object
+	/**
+	 * not unique
+	 * @author Joel
+	 */private final String displayName;
+	/**
+	 * unique
+	 * @author Joel
+	 */private final String id;
+	/**
+	 * keeps track of all instances ever created, will always be the count of created objects and not the index of the last created object
+	 * @author Joel
+	 */private static int idCounter = 0;
 
-	private Vector2D position = new Vector2D();
-	private double rotation = 0;
+	/**
+	 * @author Joel
+	 */private Vector2D position = new Vector2D();
+	/**
+	 * @author Joel
+	 */private double rotation = 0;
 
-	private boolean interactable = false;
-	private double sphereCollision = 32; // Radius in meters?
-	private final Color sphereCollisionColor = UI.sphereCollisionColor;
-	private boolean useBoxCollision = false;
-	private Vector2D boxCollision = new Vector2D();
-	private final Color boxCollisionColor = UI.boxCollisionColor;
+	/**
+	 * @author Joel
+	 */private boolean interactable = false;
+	/**
+	 * Radius in meters?
+	 * @author Joel
+	 */private double sphereCollision = 32;
+	/**
+	 * @author Joel
+	 */private final Color sphereCollisionColor = UI.sphereCollisionColor;
+	/**
+	 * @author Joel
+	 */private boolean useBoxCollision = false;
+	/**
+	 * @author Joel
+	 */private Vector2D boxCollision = new Vector2D();
+	/**
+	 * @author Joel
+	 */ private final Color boxCollisionColor = UI.boxCollisionColor;
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructor++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -73,30 +106,70 @@ public class WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Getter++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 */
 	public double getSphereCollision() {
 		return sphereCollision;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 */
 	public World getWorld() {
 		return world;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 */
 	protected GraphicsContext getGraphicsContext() {
 		return graphicsContext;
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 */
 	public Canvas getRenderTarget() {
 		return renderTarget;
 	}
 
+	/**
+	 * @author Joel
+	 * @return
+	 */
 	public String getDisplayName() {
 		return displayName;
 	}
 
+	/**
+	 * @author Joel
+	 * @return
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * @author Joel
+	 * @return
+	 */
 	public String getIdName() {
 		//return "WorldObject";
 		return getClass().getSimpleName();
@@ -126,6 +199,10 @@ public class WorldObject {
 		return rotation;
 	}
 
+	/**
+	 * @author Joel
+	 * @return
+	 */
 	public boolean isInteractable() {
 		return interactable;
 	}
@@ -185,6 +262,10 @@ public class WorldObject {
 		Debug.toConsole(rotation);
 	}
 
+	/**
+	 * @author Joel
+	 * @param interactable
+	 */
 	public void setInteractable(boolean interactable) {
 		this.interactable = interactable;
 	}
@@ -226,10 +307,17 @@ public class WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++#####++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	/**
+	 * @author Joel
+	 * @return
+	 */
 	private String createId() {
 		return getIdName() + "_" + idCounter++;
 	}
 
+	/**
+	 * @author Joel
+	 */
 	public void remove() {
 		getWorld().removeWorldObject(this);
 	}
@@ -243,6 +331,9 @@ public class WorldObject {
 		drawCollision();
 	}
 
+	/**
+	 * @author Joel
+	 */
 	public void drawCollision() {
 		graphicsContext.save();
 		graphicsContext.setFill(sphereCollisionColor);

@@ -274,6 +274,14 @@ public class World {
 		worldObjects.add(object);
 	}
 
+
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param object
+	 */
 	public void removeWorldObject(WorldObject object) {
 		worldObjects.remove(object);
 	}
