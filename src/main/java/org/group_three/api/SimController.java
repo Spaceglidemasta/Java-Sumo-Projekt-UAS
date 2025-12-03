@@ -1,6 +1,7 @@
 package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
+import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
@@ -11,9 +12,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
+ * <h1>SimController</h1>
  * Class used to Connect & Control to SUMO via the TraaS API <br>
  * The constructor does everything for you, you only need
  * to SimController.close() the Simulation after you are done.
@@ -25,9 +26,85 @@ public class SimController {
     private static final String networkfname = "net.net.xml";
     private static final String routefname = "net.rou.xml";
 
+    // Easy mode
+    private static SimController _mainsim = null;
+
+
+/// ******************************************************
+/// **                   SIMULATION                     **
+/// ******************************************************
 
     public SimController(){
         this(networkfname, routefname);
+    }
+
+    public SimController(String cfg) {
+        Debug.print("SimController invoked");
+
+        try {
+
+            // get folder location of Project
+            File jarDir = getSumoLoc();
+
+            // opens said folder
+            File resourcesDir = new File(jarDir, "SumoConfig");
+
+
+            // Try SUMO_HOME/bin/sumo.exe, otherwise use resourcesDir/sumo.exe
+            String sumoHome = System.getenv("SUMO_HOME");
+
+            // possible location of sumo.exe in %SUMO_HOME%/bin
+            //A ? B : C <=> if A then B else C
+            File sumoExeHome = (sumoHome != null)
+                    ? new File(sumoHome + "/bin/sumo.exe")
+                    : null;
+
+            // possible location of sumo.exe in resources
+            File sumoExeResources = new File(resourcesDir, "sumo.exe");
+
+            // Decide final path
+            File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
+                    ? sumoExeHome
+                    : sumoExeResources;
+
+            if (!sumoExe.exists()) {
+                throw new Exception("sumo.exe not found");
+            }
+
+            Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
+
+            // opens the sumocfg file inside the resources Folder
+            File sumocfg = new File(resourcesDir, cfg);
+            Debug.print(sumocfg.getAbsolutePath());
+            if (!sumocfg.exists()) {
+                throw new Exception(cfg + " not found");
+            }
+            else {
+                Debug.print("sumocfg file found");
+            }
+
+            // establishes the connection to sumo with the route and network via TraaS
+            _sumcon = new SumoTraciConnection(
+                    sumoExe.getAbsolutePath(),
+                    sumocfg.getAbsolutePath()
+            );
+
+            // options that set sumo to print outputs & errors.
+            _sumcon.printSumoOutput(true);
+            _sumcon.printSumoError(true);
+            _sumcon.runServer(8813);
+
+            // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
+            _sumcon.do_timestep();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+        Debug.print("SimController startup was successfull");
+        Debug.toConsole("SimController startup was successfull");
     }
 
     public SimController(String net, String rou){
@@ -66,19 +143,19 @@ public class SimController {
             Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
 
             // opens the network file inside the resources Folder
-            File networknet = new File(resourcesDir, networkfname);
+            File networknet = new File(resourcesDir, net);
             Debug.print(networknet.getAbsolutePath());
             if (!networknet.exists()) {
-                throw new Exception("net.net.xml not found");
+                throw new Exception(net + " not found");
             }
             else {
                 Debug.print("network file found");
             }
             // opens the route file inside the resources Folder
-            File routenet = new File(resourcesDir, routefname);
+            File routenet = new File(resourcesDir, rou);
             Debug.print(routenet.getAbsolutePath());
             if (!routenet.exists()) {
-                throw new Exception("net.rou.xml not found");
+                throw new Exception(rou + " not found");
             }
             else {
                 Debug.print("route file found");
@@ -96,11 +173,9 @@ public class SimController {
             _sumcon.printSumoError(true);
             _sumcon.runServer(8813);
 
-            // does 5 steps in the Simulation
-            Debug.print("timesteps:");
-            for (int i = 0; i < 5; i++) {
-                _sumcon.do_timestep();
-            }
+            // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
+            _sumcon.do_timestep();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,15 +238,45 @@ public class SimController {
 
     }
 
-    @Deprecated
-    public List<Objects> getTrafficLights(){
+    /**
+     * Returns the global / static _mainsim.
+     * @author Luca
+     * */
+    public static SimController getMainsim() {return _mainsim;}
+
+    /**
+     * Sets this Simulation as the new, global, main simulation. <br>
+     * Beware that this overwrites the old one
+     * @author Luca
+     * */
+    public void setMainsim(boolean close_old){
+
+        if(_mainsim != null && close_old){
+            _mainsim.close();
+        }
+
+        _mainsim = this;
+
+        Debug.print("Main SUMO Simulation was overwritten.");
+    }
+
+    /// ******************************************************
+    /// **                   Getters                        **
+    /// ******************************************************
+
+
+    /**
+     * Beware that this uses unchecked casting and CAN return null.
+     * @author Luca
+     * */
+    public List<String> getTrafficLightsIDList(){
         try {
-            return (List<Objects>) _sumcon.do_job_get(Trafficlight.getIDList());
+            return (List<String>) _sumcon.do_job_get(Trafficlight.getIDList());
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return new ArrayList<Objects>();
+        return new ArrayList<String>();
     }
 
     //Funny no template Language incoming
@@ -180,7 +285,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getallVehicles() {
+    public List<String> getVehicleIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
@@ -197,7 +302,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getallRoutes() {
+    public List<String> getRouteIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
@@ -214,7 +319,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getallEdges() {
+    public List<String> getEdgeIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
@@ -232,7 +337,7 @@ public class SimController {
      * @param edgeID The String of the EdgeID you want the number of lanes from.
      * @author Luca
      * */
-    public List<String> getLaneNum(String edgeID) {
+    public List<String> getLaneNumOfEdge(String edgeID) {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
@@ -245,29 +350,33 @@ public class SimController {
         return null;
     }
 
+    /// ******************************************************
+    /// **                   Vehicle                        **
+    /// ******************************************************
+
     /**
      * Basicly the normal Vehicle.add(), but it handles the VehicleID setting logic for you.
      *
      * @param typeID The type of the Vehicle; Use constants.Vehicle for this.
      * @param routeID The ID of the route where the Vehicle is supposed to land
-     * @param depart (0 indexing) The lane it's supposed to depart in. Use SimController.job(Edge.getIDCount()) for max lane num.
+     * @param depart departing delay in ms
      * @param pos Position in m from the start of the Route
      * @param speed Speed? Not clear from declaration
-     * @param lane 🌭
+     * @param lane departing lane. Use .getLaneNum(edgeID) for lane number.
      * @author Luca
      * */
-    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, byte lane){;
+    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){;
 
         try {
             int newVID = (int) _sumcon.do_job_get(Vehicle.getIDCount()) - 1;
             do {
                 newVID = newVID + 1;
             }
-            while(getallVehicles().contains("t_" + newVID));
+            while(getVehicleIDList().contains("t_" + newVID));
 
             String newVIDstr = "t_" + newVID;
 
-            _sumcon.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, lane));
+            _sumcon.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, (byte)lane));
             return new WVehicle(newVIDstr, _sumcon);
         }
         catch (Exception e) {
@@ -278,6 +387,161 @@ public class SimController {
 
     }
 
+    /// ******************************************************
+    ///                  Traffic Lights                     **
+    /// ******************************************************
+    /*"Why is this not its own Wrapper-Class like WVehicle?"
+     * There simply aren't enough functions & attributes to a TL
+     * that we need, that it's worth to build its own class.
+     * It would also be too much of a hassle to work with an own
+     * Wrapper-class that needs to be connected to the Sim. via an Attribute.
+     * */
+
+    /**
+     * Sets the Phase Index [0:2] of the TL. <br>
+     * @param TLID Traffic Light ID
+     * @param iPhase Phase index as int
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean setTLPhase(String TLID, int iPhase){
+
+        try {
+            Debug.toConsole("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
+            _sumcon.do_job_set(Trafficlight.setPhase(TLID, iPhase));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
+
+    /**
+     * Returns the Traffic Light phase as Index [0:2] <br>
+     * @param TLID ID of the Traffic Light
+     * @return Phase of the TL, <code>-1</code> if getter failed.
+     * @author Luca
+     */
+    public int getTLPhase(String TLID) {
+        int iphase;
+        try {
+            iphase = (int) _sumcon.do_job_get(Trafficlight.getPhase(TLID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            iphase = -1;
+        }
+        return iphase;
+    }
+
+    /**
+     * Sets the Length of the current Phase of the given TL.
+     * @param TLID Traffic Light ID
+     * @param dur new Duration in seconds(?)( <- This not my questionmark, the TraaS doc also has a "?")
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * */
+    public boolean setTLPhaseLen(String TLID, double dur){
+
+        try {
+            _sumcon.do_job_set(Trafficlight.setPhaseDuration(TLID, dur));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns the requested Parameter of a Trafficlight
+     * @param TLID TrafficLight ID
+     * @param param The requested parameter
+     * @return <code>null</code> if failed, else the requested parameter
+     * @author Luca
+     * */
+    public String getTLParam(String TLID, String param){
+        String retparam = null;
+        try {
+            retparam = (String) _sumcon.do_job_get(Trafficlight.getParameter(TLID,param));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return retparam;
+    }
+
+
+    /**
+     * Sets the given Parameter of a Trafficlight
+     * @param TLID TrafficLight ID
+     * @param param the parameter which is supposed to change
+     * @param value the value that is to be inserted in the given parameter
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * */
+    public boolean setTLParam(String TLID, String param, String value){
+        try {
+            _sumcon.do_job_set(Trafficlight.setParameter(TLID, param, value));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /// ******************************************************
+    /// **                      Junctions                   **
+    /// ******************************************************
+
+    /**
+     * Beware that this uses unchecked casting and CAN return null.
+     * @author Luca
+     * */
+    public List<String> getJunctionIDList() {
+
+        try {
+            // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
+            return (List<String>) _sumcon.do_job_get(Junction.getIDList());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets you the SumoPosition2D of the Junction. Attributes are public.<br>
+     * @example <code>
+     * double x = j.getPos().x <br>
+     * double y = j.getPos().y = y
+     * </code>
+     * @return SumoPosition2D, or <code>null</code> if failed.
+     * @author Luca
+     * */
+    public SumoPosition2D getJunctionPos(String juncID){
+
+        try {
+            return (SumoPosition2D) _sumcon.do_job_get(Junction.getPosition(juncID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    /// ******************************************************
+    /// **          General Getters and Setters             **
+    /// ******************************************************
+
+
     /**
      * Getter of the Simulation
      * If you want to print the returned object, .to_String() is probably the best option.
@@ -286,7 +550,8 @@ public class SimController {
      * <code>
      * sumcon.jobget(Vehicle.getIDList())
      * </code>
-     * @return 🎲
+     * @return "Object" of the .do_job_get() method. Yes, you need to unsafe cast this.
+     * <code>null</code> if failed.
      * */
     public Object jobget(SumoCommand scmd){
         try {
@@ -302,20 +567,23 @@ public class SimController {
     /**
      * Setter of the Simulation
      * @param scmd The SumoCommand to be executed upon the Simulation.
+     * @return <code>true</code> if successfull, <code>false</code> if not.
      * @example
      * <code>
-     * sumcon.jobset(Vehicle.add(vehID, typeID, routeID, depart, speed, lane)
+     * sumcon.jobset(Vehicle.add(vehID, typeID, routeID, depart, speed, lane))
      * </code>
      * */
-    public void jobset(SumoCommand scmd){
+    public boolean jobset(SumoCommand scmd){
         try {
             _sumcon.do_job_set(scmd);
         }
         catch (Exception e){
             Debug.print("DO JOB FAILED: " + scmd.toString());
             e.printStackTrace();
+            return false;
         }
 
+        return true;
     }
 
 }

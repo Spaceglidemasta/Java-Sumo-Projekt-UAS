@@ -9,6 +9,8 @@ import java.util.List;
 // import java.io.IOException; for what was that?
 
 import org.group_three.debug.Console;
+import org.group_three.debug.exceptions.InvalidFilesSelected;
+import org.group_three.ui.idkyet.MenuItem_RecentlyOpend;
 import org.group_three.debug.Debug;
 import org.group_three.ui.FakeInteractions;
 
@@ -136,9 +138,15 @@ public class ToolbarController {
 		// don't attempt to load the same simulation if its currently loaded
 		if (mergedPath.toString().equals(loadedSimulation)) return; // ----------- add a check to not display the currently loaded file in recently opend
 
-		if (FakeInteractions.loadSimulation(paths)) {
-			setLoadedSimulation(mergedPath.toString());
-		}
+        // Normally we would handle errors with booleans (like every professional C lib), but apparently we need custom Exceptions.
+        try {
+            FakeInteractions.loadSimulation(paths);
+            setLoadedSimulation(mergedPath.toString());
+        }
+        catch (InvalidFilesSelected ifs){
+            ifs.printStackTrace();
+        }
+
 	}
 
 	/**

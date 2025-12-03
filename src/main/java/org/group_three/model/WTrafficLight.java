@@ -1,5 +1,10 @@
 package org.group_three.model;
 
+
+
 @Deprecated
-public class Edge {
+public class WTrafficLight {
+
+
+
 }
