@@ -17,6 +17,8 @@ public final class UI {
 	public static final String carIcon = "/org/group_three/ui/icons/car.png";
 	// The default sphere collision color of world objects.
 	public static final Color sphereCollisionColor = new Color(1,0,0,0.1);
+	// The default box collision color of world objects.
+	public static final Color boxCollisionColor = new Color(0,0,1,0.1);
 
 
 	// The minimal window width.

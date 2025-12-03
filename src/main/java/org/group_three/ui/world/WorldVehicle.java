@@ -2,9 +2,6 @@ package org.group_three.ui.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
 import org.group_three.ui.ColoredIconManager;
@@ -21,6 +18,7 @@ public class WorldVehicle extends WorldObject {
 	 */
 	public WorldVehicle() {
 		super();
+		remove();
 	}
 
 	/**
@@ -43,6 +41,7 @@ public class WorldVehicle extends WorldObject {
 	}
 
 	private Color imageTint = new Color(1, 1, 1, 1);
+	private double worldSize = 1; // in meters
 
 
 	/**
@@ -53,7 +52,8 @@ public class WorldVehicle extends WorldObject {
 	@Override
 	public void update() {
 		drawCollision();
-		Vector2D rect = new Vector2D(getVisualImage().getWidth(), getVisualImage().getHeight());
+		Image visualImage = iconManager.getIcon(getImageTint());
+		Vector2D rect = new Vector2D(visualImage.getWidth(), visualImage.getHeight());
 		rect = rect.div(10);
 		getGraphicsContext().save();
 		//graphicsContext.setFill(Color.BLUE);
@@ -61,7 +61,7 @@ public class WorldVehicle extends WorldObject {
 
 		getGraphicsContext().translate(drawLoc.x + getWorld().getViewerPositionOffset().x, drawLoc.y + getWorld().getViewerPositionOffset().y); // Object Location
 		getGraphicsContext().rotate(Meth.addRelativeRotation(getWorld().getViewerRotation(), getRotation()));
-		getGraphicsContext().drawImage(iconManager.getIcon(getImageTint()), (rect.x/2) * getWorld().getViewerZoom() * -1, (rect.y/2) * getWorld().getViewerZoom() * -1, rect.x * getWorld().getViewerZoom(), rect.y * getWorld().getViewerZoom());
+		getGraphicsContext().drawImage(visualImage, (rect.x/2) * getWorld().getViewerZoom() * -1, (rect.y/2) * getWorld().getViewerZoom() * -1, rect.x * getWorld().getViewerZoom(), rect.y * getWorld().getViewerZoom());
 		//graphicsContext.fillRect((rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
 		getGraphicsContext().restore();
 	}

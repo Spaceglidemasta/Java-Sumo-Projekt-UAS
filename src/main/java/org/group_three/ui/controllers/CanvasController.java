@@ -15,6 +15,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import org.group_three.ui.world.World;
 import org.group_three.ui.world.WorldObject;
+import org.group_three.ui.world.WorldPoint;
 import org.group_three.ui.world.WorldVehicle;
 
 /**
@@ -57,10 +58,7 @@ public class CanvasController {
 				worldStaticRenderTarget,
 				"Object TestCar"
 		);
-		Image testImage = new Image(getClass().getResourceAsStream("/org/group_three/ui/icons/car.png"));
-		Debug.print("ImageNull: " + (testImage == null));
-		test.setVisualImage(testImage);
-		test.setImageTint(new Color(0,1,0,1));
+		test.setImageTint(new Color(0,1,1,1));
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(0);
 
@@ -69,7 +67,6 @@ public class CanvasController {
 				worldStaticRenderTarget,
 				"Object TestCar2"
 		);
-		test2.setVisualImage(testImage);
 		test2.setPosition(new Vector2D(128, -64));
 		test2.setRotation(30);
 
@@ -78,9 +75,14 @@ public class CanvasController {
 				worldStaticRenderTarget,
 				"Object TestCar3"
 		);
-		test3.setVisualImage(testImage);
 		test3.setPosition(new Vector2D(-64, -64));
 		test3.setRotation(90);
+
+		WorldPoint point0 = new WorldPoint(
+				world,
+				worldStaticRenderTarget,
+				"WorldPoint"
+		);
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
