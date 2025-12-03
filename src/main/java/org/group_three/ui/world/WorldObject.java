@@ -19,54 +19,73 @@ import org.group_three.ui.Vector2D;
 public class WorldObject {
 	/**
 	 * @author Joel
-	 */private final World world;
+	 */
+	private final World world;
 	/**
 	 * @author Joel
-	 */private final Canvas renderTarget;
+	 */
+	private final Canvas renderTarget;
 	/**
 	 * is the same across all canvas users
+	 *
 	 * @author Joel
-	 */private final GraphicsContext graphicsContext;
+	 */
+	private final GraphicsContext graphicsContext;
 
 	/**
 	 * not unique
+	 *
 	 * @author Joel
-	 */private final String displayName;
+	 */
+	private final String displayName;
 	/**
 	 * unique
+	 *
 	 * @author Joel
-	 */private final String id;
+	 */
+	private final String id;
 	/**
 	 * keeps track of all instances ever created, will always be the count of created objects and not the index of the last created object
+	 *
 	 * @author Joel
-	 */private static int idCounter = 0;
+	 */
+	private static int idCounter = 0;
 
 	/**
 	 * @author Joel
-	 */private Vector2D position = new Vector2D();
+	 */
+	private Vector2D position = new Vector2D();
 	/**
 	 * @author Joel
-	 */private double rotation = 0;
+	 */
+	private double rotation = 0;
 
 	/**
 	 * @author Joel
-	 */private boolean interactable = false;
+	 */
+	private boolean interactable = false;
 	/**
 	 * Radius in meters?
+	 *
 	 * @author Joel
-	 */private double sphereCollision = 32;
+	 */
+	private double sphereCollision = 32;
 	/**
 	 * @author Joel
-	 */private final Color sphereCollisionColor = UI.sphereCollisionColor;
+	 */
+	private final Color sphereCollisionColor = UI.sphereCollisionColor;
 	/**
 	 * @author Joel
-	 */private boolean useBoxCollision = false;
+	 */
+	private boolean useBoxCollision = false;
 	/**
 	 * @author Joel
-	 */private Vector2D boxCollision = new Vector2D();
+	 */
+	private Vector2D boxCollision = new Vector2D();
 	/**
 	 * @author Joel
-	 */ private final Color boxCollisionColor = UI.boxCollisionColor;
+	 */
+	private final Color boxCollisionColor = UI.boxCollisionColor;
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructor++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -103,15 +122,13 @@ public class WorldObject {
 	//--------------------------------------------------Constructor--------------------------------------------------
 
 
-
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Getter++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Comment
 	 *
-	 * @author Joel
-	 *
 	 * @return
+	 * @author Joel
 	 */
 	public double getSphereCollision() {
 		return sphereCollision;
@@ -120,9 +137,8 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
-	 * @author Joel
-	 *
 	 * @return
+	 * @author Joel
 	 */
 	public World getWorld() {
 		return world;
@@ -131,9 +147,8 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
-	 * @author Joel
-	 *
 	 * @return
+	 * @author Joel
 	 */
 	protected GraphicsContext getGraphicsContext() {
 		return graphicsContext;
@@ -142,33 +157,32 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
-	 * @author Joel
-	 *
 	 * @return
+	 * @author Joel
 	 */
 	public Canvas getRenderTarget() {
 		return renderTarget;
 	}
 
 	/**
-	 * @author Joel
 	 * @return
+	 * @author Joel
 	 */
 	public String getDisplayName() {
 		return displayName;
 	}
 
 	/**
-	 * @author Joel
 	 * @return
+	 * @author Joel
 	 */
 	public String getId() {
 		return id;
 	}
 
 	/**
-	 * @author Joel
 	 * @return
+	 * @author Joel
 	 */
 	public String getIdName() {
 		//return "WorldObject";
@@ -178,10 +192,8 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public Vector2D getPosition() {
 		return position;
@@ -190,18 +202,16 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public double getRotation() {
 		return rotation;
 	}
 
 	/**
-	 * @author Joel
 	 * @return
+	 * @author Joel
 	 */
 	public boolean isInteractable() {
 		return interactable;
@@ -214,10 +224,8 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
+	 * @param position Param-Comment
 	 * @author Joel
-	 *
-	 * @param position
-	 * Param-Comment
 	 */
 	public void setPosition(Vector2D position) {
 		/*double worldSizeX = world.getWorldSize().x - sphereCollision / 2;
@@ -243,10 +251,8 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
+	 * @param rotation Param-Comment
 	 * @author Joel
-	 *
-	 * @param rotation
-	 * Param-Comment
 	 */
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
@@ -263,8 +269,8 @@ public class WorldObject {
 	}
 
 	/**
-	 * @author Joel
 	 * @param interactable
+	 * @author Joel
 	 */
 	public void setInteractable(boolean interactable) {
 		this.interactable = interactable;
@@ -277,10 +283,8 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
+	 * @param position Param-Comment
 	 * @author Joel
-	 *
-	 * @param position
-	 * Param-Comment
 	 */
 	public void addPosition(Vector2D position) {
 		Vector2D pos = getPosition();
@@ -292,10 +296,8 @@ public class WorldObject {
 	/**
 	 * Comment
 	 *
+	 * @param rotation Param-Comment
 	 * @author Joel
-	 *
-	 * @param rotation
-	 * Param-Comment
 	 */
 	public void addRotation(double rotation) {
 		setRotation(getRotation() + rotation);
@@ -304,12 +306,11 @@ public class WorldObject {
 	//--------------------------------------------------Adder--------------------------------------------------
 
 
-
 	//++++++++++++++++++++++++++++++++++++++++++++++++++#####++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * @author Joel
 	 * @return
+	 * @author Joel
 	 */
 	private String createId() {
 		return getIdName() + "_" + idCounter++;
@@ -341,7 +342,7 @@ public class WorldObject {
 
 		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
 		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
-		graphicsContext.fillOval ((sphereCollision) * world.getViewerZoom() * -1, (sphereCollision) * world.getViewerZoom() * -1, sphereCollision*2 * world.getViewerZoom(), sphereCollision*2 * world.getViewerZoom());
+		graphicsContext.fillOval((sphereCollision) * world.getViewerZoom() * -1, (sphereCollision) * world.getViewerZoom() * -1, sphereCollision * 2 * world.getViewerZoom(), sphereCollision * 2 * world.getViewerZoom());
 		graphicsContext.restore();
 	}
 	/*
