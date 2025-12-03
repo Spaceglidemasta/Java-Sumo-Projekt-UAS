@@ -2,7 +2,6 @@ package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.group_three.ui.*;
 import org.group_three.debug.Debug;
@@ -14,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import org.group_three.ui.world.World;
-import org.group_three.ui.world.WorldObject;
 import org.group_three.ui.world.WorldPoint;
 import org.group_three.ui.world.WorldVehicle;
 
@@ -58,7 +56,7 @@ public class CanvasController {
 				worldStaticRenderTarget,
 				"Object TestCar"
 		);
-		test.setImageTint(new Color(0,1,1,1));
+		test.setColor(new Color(0,1,1,1));
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(0);
 

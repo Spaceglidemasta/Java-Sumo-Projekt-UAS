@@ -42,22 +42,22 @@ public class WorldVehicle extends WorldObject {
 	 * @return
 	 * @author Joel
 	 */
-	public Color getImageTint() {
-		return imageTint;
+	public Color getColor() {
+		return color;
 	}
 
 	/**
-	 * @param imageTint
+	 * @param color
 	 * @author Joel
 	 */
-	public void setImageTint(Color imageTint) {
-		this.imageTint = imageTint;
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	/**
 	 * @author Joel
 	 */
-	private Color imageTint = new Color(1, 1, 1, 1);
+	private Color color = new Color(1, 1, 1, 1);
 	/**
 	 * @author Joel
 	 */
@@ -72,7 +72,7 @@ public class WorldVehicle extends WorldObject {
 	@Override
 	public void update() {
 		drawCollision();
-		Image visualImage = iconManager.getIcon(getImageTint());
+		Image visualImage = iconManager.getIcon(getColor());
 		Vector2D rect = new Vector2D(visualImage.getWidth(), visualImage.getHeight());
 		rect = rect.div(10);
 		getGraphicsContext().save();
