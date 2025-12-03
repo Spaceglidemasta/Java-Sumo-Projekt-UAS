@@ -1,16 +1,14 @@
-package org.group_three.ui;
+package org.group_three.ui.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Effect;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 
 import javafx.scene.image.Image;
+import org.group_three.ui.Meth;
+import org.group_three.ui.Vector2D;
 
 /**
  * a class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
@@ -19,76 +17,29 @@ import javafx.scene.image.Image;
  * @author Joel
  */
 public class WorldObject {
+	private final World world;
+	private final Canvas renderTarget;
+	private final GraphicsContext graphicsContext; // is the same across all canvas users
+
+	private final String displayName; // not unique
+	private final String id; // unique
+	private static int idCounter = 0; // keeps track of all instances ever created, will always be the count of created objects and not the index of the last created object
+
 	private Vector2D position = new Vector2D();
 	private double rotation = 0;
 
-	public double getSphereCollision() {
-		return sphereCollision;
-	}
-
+	private boolean interactable = false;
 	private double sphereCollision = 32; // Radius
 	private Color sphereCollisionColor = UI.sphereCollisionColor;
 	private Vector2D boxCollision = new Vector2D();
 	private boolean useBoxCollision = false;
 
-	public Image getVisualImage() {
-		return visualImage;
-	}
-
-	public void setVisualImage(Image visualImage) {
-		this.visualImage = visualImage;
-	}
-
 	private Image visualImage;
 
-	public void setImageTint(Color imageTint) {
-		this.imageTint = imageTint;
-	}
-
-	private Color imageTint = new Color(1, 1, 1, 1);
-	private boolean interactable = false;
-
-	public World getWorld() {
-		return world;
-	}
-
-	public void setWorld(World world) {
-		this.world = world;
-	}
-
-	private World world;
-
-	public GraphicsContext getGraphicsContext() {
-		return graphicsContext;
-	}
-
-	public void setGraphicsContext(GraphicsContext graphicsContext) {
-		this.graphicsContext = graphicsContext;
-	}
-
-	private GraphicsContext graphicsContext;
-
-	public Canvas getRenderTarget() {
-		return renderTarget;
-	}
-
-	public void setRenderTarget(Canvas renderTarget) {
-		this.renderTarget = renderTarget;
-	}
-
-	private Canvas renderTarget;
-
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
-	private String displayName = "";
-	private String id = "";
 	private double worldSize = 1; // in meters
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructor++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Comment
@@ -96,18 +47,67 @@ public class WorldObject {
 	 * @author Joel
 	 */
 	public WorldObject() {
+		world = null;
+		renderTarget = null;
+		graphicsContext = null;
+		displayName = "None";
+		id = createId();
+		Debug.print(getId());
+		getWorld().addWorldObject(this);
 	}
 
 	/**
 	 * Comment
 	 *
 	 * @author Joel
-	 *
-	 * @param sphereCollision
-	 * Param-Comment
 	 */
-	public WorldObject(double sphereCollision) {
-		this.sphereCollision = sphereCollision;
+	public WorldObject(World world, Canvas canvas, String displayName) {
+		this.world = world;
+		this.renderTarget = canvas;
+		graphicsContext = canvas.getGraphicsContext2D();
+		this.displayName = displayName;
+		id = createId();
+		Debug.print(getId());
+		getWorld().addWorldObject(this);
+	}
+
+	//--------------------------------------------------Constructor--------------------------------------------------
+
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++Getter++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	public double getSphereCollision() {
+		return sphereCollision;
+	}
+
+	public Image getVisualImage() {
+		return visualImage;
+	}
+
+	public World getWorld() {
+		return world;
+	}
+
+	public GraphicsContext getGraphicsContext() {
+		return graphicsContext;
+	}
+
+	public Canvas getRenderTarget() {
+		return renderTarget;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getIdName() {
+		//return "WorldObject";
+		return getClass().getSimpleName();
 	}
 
 	/**
@@ -120,6 +120,30 @@ public class WorldObject {
 	 */
 	public Vector2D getPosition() {
 		return position;
+	}
+
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @return
+	 * Return-Comment
+	 */
+	public double getRotation() {
+		return rotation;
+	}
+
+	public boolean isInteractable() {
+		return interactable;
+	}
+
+	//--------------------------------------------------Getter--------------------------------------------------
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++Setter++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	public void setVisualImage(Image visualImage) {
+		this.visualImage = visualImage;
 	}
 
 	/**
@@ -156,33 +180,6 @@ public class WorldObject {
 	 *
 	 * @author Joel
 	 *
-	 * @param position
-	 * Param-Comment
-	 */
-	public void addPosition(Vector2D position) {
-		Vector2D pos = getPosition();
-		pos.x += position.x;
-		pos.y *= position.y;
-		setPosition(pos);
-	}
-
-	/**
-	 * Comment
-	 *
-	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
-	 */
-	public double getRotation() {
-		return rotation;
-	}
-
-	/**
-	 * Comment
-	 *
-	 * @author Joel
-	 *
 	 * @param rotation
 	 * Param-Comment
 	 */
@@ -200,6 +197,29 @@ public class WorldObject {
 		Debug.toConsole(rotation);
 	}
 
+	public void setInteractable(boolean interactable) {
+		this.interactable = interactable;
+	}
+
+	//--------------------------------------------------Setter--------------------------------------------------
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++Adder++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param position
+	 * Param-Comment
+	 */
+	public void addPosition(Vector2D position) {
+		Vector2D pos = getPosition();
+		pos.x += position.x;
+		pos.y *= position.y;
+		setPosition(pos);
+	}
+
 	/**
 	 * Comment
 	 *
@@ -212,6 +232,28 @@ public class WorldObject {
 		setRotation(getRotation() + rotation);
 	}
 
+	//--------------------------------------------------Adder--------------------------------------------------
+
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++#####++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+	public void remove() {
+		getWorld().removeWorldObject(this);
+	}
+
+	private String createId() {
+		return getIdName() + "_" + idCounter++;
+	}
+
+
+
+
+
+
+
 	/**
 	 * Comment
 	 *
@@ -219,7 +261,7 @@ public class WorldObject {
 	 */
 	public void update() {
 		drawCollision();
-		Vector2D rect = new Vector2D(visualImage.getWidth(), visualImage.getHeight());
+		/*Vector2D rect = new Vector2D(visualImage.getWidth(), visualImage.getHeight());
 		rect = rect.div(10);
 		graphicsContext.save();
 		//graphicsContext.setFill(Color.BLUE);
@@ -229,8 +271,7 @@ public class WorldObject {
 		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
 		graphicsContext.drawImage(addImageTint(visualImage), (rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
 		//graphicsContext.fillRect((rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
-		graphicsContext.restore();
-        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("Updated WorldObject");
+		graphicsContext.restore();*/
 	}
 
 	public void drawCollision() {
@@ -254,37 +295,4 @@ public class WorldObject {
 		graphicsContext.fillOval ((sphereCollision/2) * world.getViewerZoom() * -1, (sphereCollision/2) * world.getViewerZoom() * -1, sphereCollision * world.getViewerZoom(), sphereCollision * world.getViewerZoom());
 		graphicsContext.restore();
 	}*/
-
-	private Image addImageTint(Image input) {
-		//GPT
-		int w = (int) input.getWidth();
-		int h = (int) input.getHeight();
-
-		WritableImage tinted = new WritableImage(w, h);
-		PixelReader reader = input.getPixelReader();
-		PixelWriter writer = tinted.getPixelWriter();
-
-		Color tintColor = imageTint;
-
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				Color c = reader.getColor(x, y);
-
-				if (c.getOpacity() > 0) {
-					Color newColor = new Color(
-							tintColor.getRed(),
-							tintColor.getGreen(),
-							tintColor.getBlue(),
-							c.getOpacity()
-					);
-					writer.setColor(x, y, newColor);
-				} else {
-					writer.setColor(x, y, c);
-				}
-			}
-		}
-
-		return  tinted;
-
-	}
 }

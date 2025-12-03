@@ -1,9 +1,10 @@
-package org.group_three.ui;
+package org.group_three.ui.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.group_three.debug.Debug;
+import org.group_three.ui.Vector2D;
 
 import java.util.*;
 
@@ -273,6 +274,10 @@ public class World {
 		worldObjects.add(object);
 	}
 
+	public void removeWorldObject(WorldObject object) {
+		worldObjects.remove(object);
+	}
+
 	/**
 	 * Is missing a render check to only test objects that are currently rendered on the canvas. aka not outside of the frame
 	 * @author Joel
@@ -286,6 +291,8 @@ public class World {
 		List<WorldObject> interactableObjects = new ArrayList<>() {};
 
 		for (WorldObject worldObject : worldObjects) {
+			if (!worldObject.isInteractable()) continue;
+
 			double distanceToObject = worldObject.getPosition().sub(worldPosition).length();
 
 			if (distanceToObject <= worldObject.getSphereCollision()) {

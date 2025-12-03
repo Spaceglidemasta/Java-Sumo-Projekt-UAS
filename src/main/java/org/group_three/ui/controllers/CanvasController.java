@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import org.group_three.constants.UI;
 import org.group_three.ui.*;
 import org.group_three.debug.Debug;
 
@@ -14,6 +13,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import org.group_three.ui.world.World;
+import org.group_three.ui.world.WorldObject;
+import org.group_three.ui.world.WorldVehicle;
 
 /**
  * current controller for the 2d view, name needs to be changed later
@@ -50,28 +52,28 @@ public class CanvasController {
 		world.worldStaticRenderTarget = worldStaticRenderTarget;
 		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 
-		WorldObject test = new WorldObject();
-		test.setWorld(world);
-		test.setGraphicsContext(worldStaticRenderTarget_GraphicsContext);
-		test.setRenderTarget(worldStaticRenderTarget);
-		test.setDisplayName("Object TestCar");
+		WorldVehicle test = new WorldVehicle(
+				world,
+				worldStaticRenderTarget,
+				"Object TestCar"
+		);
 		Image testImage = new Image(getClass().getResourceAsStream("/org/group_three/ui/icons/car.png"));
 		Debug.print("ImageNull: " + (testImage == null));
 		test.setVisualImage(testImage);
 		test.setImageTint(new Color(0,1,0,1));
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(0);
-		world.addWorldObject(test);
 
-		WorldObject test2 = new WorldObject();
-		test2.setWorld(world);
-		test2.setGraphicsContext(worldStaticRenderTarget_GraphicsContext);
-		test2.setRenderTarget(worldStaticRenderTarget);
-		test2.setDisplayName("Object TestCar2");
+		WorldObject test2 = new WorldObject(
+				world,
+				worldStaticRenderTarget,
+				"Object TestCar2"
+		);
 		test2.setVisualImage(testImage);
 		test2.setPosition(new Vector2D(128, -64));
 		test2.setRotation(30);
-		world.addWorldObject(test2);
+
+		Debug.print("GraphicsContextUnique: " + (test.getGraphicsContext() == test2.getGraphicsContext()));
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
