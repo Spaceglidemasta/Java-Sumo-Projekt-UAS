@@ -70,13 +70,13 @@
             </AnchorPane>
             <AnchorPane>
                <children>
-                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                      <AnchorPane>
                            <children>
                               <TitledPane animated="false" collapsible="false" stylesheets="@../css/style.css" text="Outliner" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                  <AnchorPane>
                                        <children>
                                           <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
@@ -85,18 +85,21 @@
                               </TitledPane>
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+                      <AnchorPane>
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" styleClass="tail" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox styleClass="tail" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <TitledPane animated="false" expanded="false" stylesheets="@../css/style.css" text="Details">
+                                    <TitledPane animated="false" text="Details" VBox.vgrow="ALWAYS">
                                       <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                        <AnchorPane>
+                                             <children>
+                                                <fx:include source="designer/DataPanelEntryExamples.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children></AnchorPane>
                                       </content>
                                     </TitledPane>
-                                    <TitledPane animated="false" layoutX="10.0" layoutY="10.0" styleClass="tail" stylesheets="@../css/style.css" text="Statistics &amp; Analytics">
+                                    <TitledPane animated="false" expanded="false" layoutX="10.0" layoutY="10.0" styleClass="tail" stylesheets="@../css/style.css" text="Statistics &amp; Analytics">
                                        <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                          <AnchorPane>
                                              <children>
                                                 <SplitPane dividerPositions="0.5" styleClass="tail" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                   <items>
@@ -148,7 +151,7 @@
                                           </AnchorPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane animated="false" styleClass="tail" stylesheets="@../css/style.css" text="Filters">
+                                    <TitledPane animated="false" expanded="false" styleClass="tail" stylesheets="@../css/style.css" text="Filters">
                                        <content>
                                           <AnchorPane>
                                              <children>
