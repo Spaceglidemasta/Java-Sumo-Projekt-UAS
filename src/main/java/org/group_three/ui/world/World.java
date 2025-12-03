@@ -14,16 +14,49 @@ import java.util.*;
  * @author Joel
  */
 public class World {
+	/**
+	 * @author Joel
+	 */
 	private Vector2D viewerPositionOffset = new Vector2D();
-	private Vector2D viewerPosition = new Vector2D(0,0);
+	/**
+	 * @author Joel
+	 */
+	private Vector2D viewerPosition = new Vector2D(0, 0);
+	/**
+	 * @author Joel
+	 */
 	private double viewerRotation = 0;
+	/**
+	 * @author Joel
+	 */
 	private double viewerZoom = 1;
+	/**
+	 * @author Joel
+	 */
 	private Vector2D viewerZoomLimit = new Vector2D(0.1, 2);
+	/**
+	 * @author Joel
+	 */
 	private Vector2D worldSize = new Vector2D(512, 256);
+	/**
+	 * @author Joel
+	 */
 	private List<WorldObject> worldObjects = new ArrayList<WorldObject>();
+	/**
+	 * @author Joel
+	 */
 	private Color worldColor = Color.GREY;
+	/**
+	 * @author Joel
+	 */
 	private Color backgroundColor = Color.BLACK;
+	/**
+	 * @author Joel
+	 */
 	public GraphicsContext graphicsContext;
+	/**
+	 * @author Joel
+	 */
 	public Canvas worldStaticRenderTarget;
 
 	/**
@@ -37,10 +70,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public double getViewerRotation() {
 		return viewerRotation;
@@ -49,10 +80,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @param rotation Param-Comment
 	 * @author Joel
-	 *
-	 * @param rotation
-	 * Param-Comment
 	 */
 	public void setViewerRotation(double rotation) {
 		// Clamp rotation from 0 to 359.99...
@@ -65,7 +94,7 @@ public class World {
 
 		viewerRotation = rotation;
 
-        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(rotation);
+		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(rotation);
 
 		requestUpdate();
 	}
@@ -73,10 +102,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @param rotation Param-Comment
 	 * @author Joel
-	 *
-	 * @param rotation
-	 * Param-Comment
 	 */
 	public void addViewerRotation(double rotation) {
 		setViewerRotation(getViewerRotation() + rotation);
@@ -85,10 +112,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public double getViewerZoom() {
 		return viewerZoom;
@@ -97,10 +122,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @param zoom Param-Comment
 	 * @author Joel
-	 *
-	 * @param zoom
-	 * Param-Comment
 	 */
 	public void setViewerZoom(double zoom) {
 		if (zoom < viewerZoomLimit.x) {
@@ -111,7 +134,7 @@ public class World {
 			viewerZoom = zoom;
 		}
 
-        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(zoom);
+		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(zoom);
 
 		requestUpdate();
 	}
@@ -119,10 +142,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @param zoom Param-Comment
 	 * @author Joel
-	 *
-	 * @param zoom
-	 * Param-Comment
 	 */
 	public void addViewerZoom(double zoom) {
 		setViewerZoom(getViewerZoom() + zoom);
@@ -131,10 +152,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public Vector2D getViewerPositionOffset() {
 		return viewerPositionOffset;
@@ -143,10 +162,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @param positionOffset Param-Comment
 	 * @author Joel
-	 *
-	 * @param positionOffset
-	 * Param-Comment
 	 */
 	public void setViewerPositionOffset(Vector2D positionOffset) {
 		viewerPositionOffset = positionOffset;
@@ -157,10 +174,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public Vector2D getViewerPosition() {
 		return viewerPosition;
@@ -169,10 +184,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @param position Param-Comment
 	 * @author Joel
-	 *
-	 * @param position
-	 * Param-Comment
 	 */
 	public void setViewerPosition(Vector2D position) {
 		/*if (position.x < -(worldSize.x/2)) {
@@ -199,10 +212,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @param position Param-Comment
 	 * @author Joel
-	 *
-	 * @param position
-	 * Param-Comment
 	 */
 	public void addViewerPosition(Vector2D position) {
 		Vector2D pos = getViewerPosition();
@@ -210,16 +221,14 @@ public class World {
 		pos.y += position.y;
 		setViewerPosition(pos);
 
-        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(getViewerPosition().x + " " + getViewerPosition().y);
+		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(getViewerPosition().x + " " + getViewerPosition().y);
 	}
 
 	/**
 	 * Comment
 	 *
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public Vector2D getWorldSize() {
 		return worldSize;
@@ -229,7 +238,6 @@ public class World {
 	 * Comment
 	 *
 	 * @author Joel
-	 *
 	 * @see #update()
 	 */
 	public void requestUpdate() {
@@ -240,7 +248,6 @@ public class World {
 	 * Comment
 	 *
 	 * @author Joel
-	 *
 	 * @see #requestUpdate()
 	 */
 	private void update() {
@@ -254,7 +261,7 @@ public class World {
 		graphicsContext.setFill(worldColor);
 		graphicsContext.translate(getViewerPosition().x + getViewerPositionOffset().x, getViewerPosition().y + getViewerPositionOffset().y); // Object Location
 		graphicsContext.rotate(getViewerRotation());
-		graphicsContext.fillRect((getWorldSize().x/2) * getViewerZoom() * -1, (getWorldSize().y/2) * getViewerZoom() * -1, getWorldSize().x * getViewerZoom(), getWorldSize().y * getViewerZoom());
+		graphicsContext.fillRect((getWorldSize().x / 2) * getViewerZoom() * -1, (getWorldSize().y / 2) * getViewerZoom() * -1, getWorldSize().x * getViewerZoom(), getWorldSize().y * getViewerZoom());
 		graphicsContext.restore();
 
 		for (WorldObject object : worldObjects) {
@@ -265,10 +272,8 @@ public class World {
 	/**
 	 * Comment
 	 *
+	 * @param object Param-Comment
 	 * @author Joel
-	 *
-	 * @param object
-	 * Param-Comment
 	 */
 	public void addWorldObject(WorldObject object) {
 		worldObjects.add(object);
@@ -278,9 +283,8 @@ public class World {
 	/**
 	 * Comment
 	 *
-	 * @author Joel
-	 *
 	 * @param object
+	 * @author Joel
 	 */
 	public void removeWorldObject(WorldObject object) {
 		worldObjects.remove(object);
@@ -288,15 +292,18 @@ public class World {
 
 	/**
 	 * Is missing a render check to only test objects that are currently rendered on the canvas. aka not outside of the frame
-	 * @author Joel
+	 *
 	 * @param worldPosition
 	 * @return
+	 * @author Joel
 	 */
 	public WorldObject interact(Vector2D worldPosition) {
 		if (worldObjects.isEmpty()) return null;
 
-		List<Double> distances = new ArrayList<>() {};
-		List<WorldObject> interactableObjects = new ArrayList<>() {};
+		List<Double> distances = new ArrayList<>() {
+		};
+		List<WorldObject> interactableObjects = new ArrayList<>() {
+		};
 
 		for (WorldObject worldObject : worldObjects) {
 			if (!worldObject.isInteractable()) continue;

@@ -8,7 +8,13 @@ import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
+/**
+ * @author Joel
+ */
 public class WorldVehicle extends WorldObject {
+	/**
+	 * @author Joel
+	 */
 	public static ColoredIconManager iconManager = new ColoredIconManager(UI.carIcon);
 
 	/**
@@ -32,15 +38,29 @@ public class WorldVehicle extends WorldObject {
 	}
 
 
+	/**
+	 * @return
+	 * @author Joel
+	 */
 	public Color getImageTint() {
 		return imageTint;
 	}
 
+	/**
+	 * @param imageTint
+	 * @author Joel
+	 */
 	public void setImageTint(Color imageTint) {
 		this.imageTint = imageTint;
 	}
 
+	/**
+	 * @author Joel
+	 */
 	private Color imageTint = new Color(1, 1, 1, 1);
+	/**
+	 * @author Joel
+	 */
 	private double worldSize = 1; // in meters
 
 
@@ -61,7 +81,7 @@ public class WorldVehicle extends WorldObject {
 
 		getGraphicsContext().translate(drawLoc.x + getWorld().getViewerPositionOffset().x, drawLoc.y + getWorld().getViewerPositionOffset().y); // Object Location
 		getGraphicsContext().rotate(Meth.addRelativeRotation(getWorld().getViewerRotation(), getRotation()));
-		getGraphicsContext().drawImage(visualImage, (rect.x/2) * getWorld().getViewerZoom() * -1, (rect.y/2) * getWorld().getViewerZoom() * -1, rect.x * getWorld().getViewerZoom(), rect.y * getWorld().getViewerZoom());
+		getGraphicsContext().drawImage(visualImage, (rect.x / 2) * getWorld().getViewerZoom() * -1, (rect.y / 2) * getWorld().getViewerZoom() * -1, rect.x * getWorld().getViewerZoom(), rect.y * getWorld().getViewerZoom());
 		//graphicsContext.fillRect((rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
 		getGraphicsContext().restore();
 	}

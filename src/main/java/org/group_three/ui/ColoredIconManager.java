@@ -11,14 +11,31 @@ import org.group_three.debug.Debug;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Joel
+ */
 public class ColoredIconManager {
+	/**
+	 * @author Joel
+	 */
 	private Image image = null;
-	private Map<Color, Image> icons = new HashMap<>() {};
+	/**
+	 * @author Joel
+	 */
+	private Map<Color, Image> icons = new HashMap<>() {
+	};
 
+	/**
+	 * @author Joel
+	 */
 	public ColoredIconManager() {
 		Debug.print("ColoredIconManager created.");
 	}
 
+	/**
+	 * @param iconPath
+	 * @author Joel
+	 */
 	public ColoredIconManager(String iconPath) {
 		try {
 			image = new Image(getClass().getResourceAsStream(iconPath));
@@ -29,6 +46,11 @@ public class ColoredIconManager {
 		}
 	}
 
+	/**
+	 * @param color
+	 * @return
+	 * @author Joel
+	 */
 	public Image getIcon(Color color) {
 		// Check if icon with specified color already exists
 		Image icon = icons.get(color);
@@ -43,6 +65,12 @@ public class ColoredIconManager {
 		return icon;
 	}
 
+	/**
+	 * @param icon
+	 * @param color
+	 * @return
+	 * @author Joel
+	 */
 	private Image addImageTint(Image icon, Color color) {
 		int w = (int) icon.getWidth();
 		int h = (int) icon.getHeight();
@@ -70,7 +98,7 @@ public class ColoredIconManager {
 			}
 		}
 
-		return  tinted;
+		return tinted;
 
 	}
 }

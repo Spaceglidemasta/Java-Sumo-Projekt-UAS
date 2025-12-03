@@ -9,19 +9,11 @@ public class Meth {
 	/**
 	 * Just uses linear interpolation to lerp between two vectors.
 	 *
+	 * @param v0   Param-Comment
+	 * @param v1   Param-Comment
+	 * @param lerp Param-Comment
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @param v0
-	 * Param-Comment
-	 *
-	 * @param v1
-	 * Param-Comment
-	 *
-	 * @param lerp
-	 * Param-Comment
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public static Vector2D lerp(Vector2D v0, Vector2D v1, double lerp) {
 		return v0.add(v0.sub(v1).mul(lerp));
@@ -30,20 +22,11 @@ public class Meth {
 	/**
 	 * A method to get the relative location(vector) of two vectors in world (non-relative) space.
 	 *
+	 * @param location         Param-Comment
+	 * @param rotation         Param-Comment
+	 * @param relativeLocation Param-Comment
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @param location
-	 * Param-Comment
-	 *
-	 * @param rotation
-	 * Param-Comment
-	 *
-	 * @param relativeLocation
-	 * Param-Comment
-	 *
-	 * @return
-	 * Return-Comment
-	 *
 	 * @see #addRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation)
 	 */
 	public static Vector2D getRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation) {
@@ -63,20 +46,11 @@ public class Meth {
 	/**
 	 * A method to add a relative location to a world space vector.
 	 *
+	 * @param location         Param-Comment
+	 * @param rotation         Param-Comment
+	 * @param relativeLocation Param-Comment
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @param location
-	 * Param-Comment
-	 *
-	 * @param rotation
-	 * Param-Comment
-	 *
-	 * @param relativeLocation
-	 * Param-Comment
-	 *
-	 * @return
-	 * Return-Comment
-	 *
 	 * @see #getRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation)
 	 */
 	public static Vector2D addRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation) {
@@ -92,17 +66,10 @@ public class Meth {
 	/**
 	 * basically just does double - double right now, might change
 	 *
+	 * @param rotation         Param-Comment
+	 * @param relativeRotation Param-Comment
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @param rotation
-	 * Param-Comment
-	 *
-	 * @param relativeRotation
-	 * Param-Comment
-	 *
-	 * @return
-	 * Return-Comment
-	 *
 	 * @see #addRelativeRotation(double rotation, double relativeRotation)
 	 */
 	public static double getRelativeRotation(double rotation, double relativeRotation) {
@@ -112,17 +79,10 @@ public class Meth {
 	/**
 	 * basically just does double + double right now, might change
 	 *
+	 * @param rotation         Param-Comment
+	 * @param relativeRotation Param-Comment
+	 * @return Return-Comment
 	 * @author Joel
-	 *
-	 * @param rotation
-	 * Param-Comment
-	 *
-	 * @param relativeRotation
-	 * Param-Comment
-	 *
-	 * @return
-	 * Return-Comment
-	 *
 	 * @see #getRelativeRotation(double rotation, double relativeRotation)
 	 */
 	public static double addRelativeRotation(double rotation, double relativeRotation) {
