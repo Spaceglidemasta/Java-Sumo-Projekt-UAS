@@ -51,24 +51,24 @@ public class CanvasController {
 		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 
 		WorldObject test = new WorldObject();
-		test.world = world;
-		test.graphicsContext = worldStaticRenderTarget_GraphicsContext;
-		test.renderTarget = worldStaticRenderTarget;
-		test.displayName = "Object TestCar";
+		test.setWorld(world);
+		test.setGraphicsContext(worldStaticRenderTarget_GraphicsContext);
+		test.setRenderTarget(worldStaticRenderTarget);
+		test.setDisplayName("Object TestCar");
 		Image testImage = new Image(getClass().getResourceAsStream("/org/group_three/ui/icons/car.png"));
 		Debug.print("ImageNull: " + (testImage == null));
-		test.visualImage = testImage;
-		test.imageTint = new Color(0,1,0,1);
+		test.setVisualImage(testImage);
+		test.setImageTint(new Color(0,1,0,1));
 		test.setPosition(new Vector2D(32, 64));
 		test.setRotation(0);
 		world.addWorldObject(test);
 
 		WorldObject test2 = new WorldObject();
-		test2.world = world;
-		test2.graphicsContext = worldStaticRenderTarget_GraphicsContext;
-		test2.renderTarget = worldStaticRenderTarget;
-		test2.displayName = "Object Test2";
-		test2.visualImage = testImage;
+		test2.setWorld(world);
+		test2.setGraphicsContext(worldStaticRenderTarget_GraphicsContext);
+		test2.setRenderTarget(worldStaticRenderTarget);
+		test2.setDisplayName("Object TestCar2");
+		test2.setVisualImage(testImage);
 		test2.setPosition(new Vector2D(128, -64));
 		test2.setRotation(30);
 		world.addWorldObject(test2);
@@ -126,7 +126,7 @@ public class CanvasController {
 		//world.world
 
 		try {
-			Debug.print(world.interact(worldspaceMousePosition).displayName);
+			Debug.print(world.interact(worldspaceMousePosition).getDisplayName());
 		} catch (Exception e) {
 			//throw new RuntimeException(e);
 			Debug.print("NULL");

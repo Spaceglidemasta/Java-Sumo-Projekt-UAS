@@ -19,26 +19,76 @@ import javafx.scene.image.Image;
  * @author Joel
  */
 public class WorldObject {
-	public Vector2D position = new Vector2D();
-	public double rotation = 0;
-	public double sphereCollision = 32; // Radius
-	public Color sphereCollisionColor = new Color(1,0,0,0.1);
-	public Vector2D boxCollision = new Vector2D();
-	public boolean useBoxCollision = false;
-	public Image visualImage;
-	public Color imageTint = new Color(1, 1, 1, 1);
-	public boolean interactable = false;
-	public World world;
-	public GraphicsContext graphicsContext;
-	public Canvas renderTarget;
-	public String displayName = "";
-	public String id = "";
-	public double worldSize = 1; // in meters
-	//public static ColoredIconManager iconManager = createCIM();
+	private Vector2D position = new Vector2D();
+	private double rotation = 0;
 
-	/*private static ColoredIconManager createCIM() {
-		return (iconManager == null) ? new ColoredIconManager(UI.carIcon) : null;
-	}*/
+	public double getSphereCollision() {
+		return sphereCollision;
+	}
+
+	private double sphereCollision = 32; // Radius
+	private Color sphereCollisionColor = UI.sphereCollisionColor;
+	private Vector2D boxCollision = new Vector2D();
+	private boolean useBoxCollision = false;
+
+	public Image getVisualImage() {
+		return visualImage;
+	}
+
+	public void setVisualImage(Image visualImage) {
+		this.visualImage = visualImage;
+	}
+
+	private Image visualImage;
+
+	public void setImageTint(Color imageTint) {
+		this.imageTint = imageTint;
+	}
+
+	private Color imageTint = new Color(1, 1, 1, 1);
+	private boolean interactable = false;
+
+	public World getWorld() {
+		return world;
+	}
+
+	public void setWorld(World world) {
+		this.world = world;
+	}
+
+	private World world;
+
+	public GraphicsContext getGraphicsContext() {
+		return graphicsContext;
+	}
+
+	public void setGraphicsContext(GraphicsContext graphicsContext) {
+		this.graphicsContext = graphicsContext;
+	}
+
+	private GraphicsContext graphicsContext;
+
+	public Canvas getRenderTarget() {
+		return renderTarget;
+	}
+
+	public void setRenderTarget(Canvas renderTarget) {
+		this.renderTarget = renderTarget;
+	}
+
+	private Canvas renderTarget;
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	private String displayName = "";
+	private String id = "";
+	private double worldSize = 1; // in meters
 
 	/**
 	 * Comment

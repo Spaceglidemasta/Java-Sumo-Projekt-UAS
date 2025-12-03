@@ -1,5 +1,7 @@
 package org.group_three.constants;
 
+import javafx.scene.paint.Color;
+
 public final class UI {
     private UI() {} //prevents init.
 
@@ -11,8 +13,10 @@ public final class UI {
 	// The main FXML class which is loaded into the main window.
 	// Other UI/FXML parts will be loaded into it.
 	public static final String appFXML = "/org/group_three/ui/fxml/MainWindow.fxml";
-	// The base icon to be used and colored for cars
+	// The base icon to be used and colored for cars.
 	public static final String carIcon = "/org/group_three/ui/fxml/car.png";
+	// The default sphere collision color of world objects.
+	public static final Color sphereCollisionColor = new Color(1,0,0,0.1);
 
 
 	// The minimal window width.

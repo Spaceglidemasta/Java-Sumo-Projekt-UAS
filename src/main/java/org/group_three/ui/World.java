@@ -288,7 +288,7 @@ public class World {
 		for (WorldObject worldObject : worldObjects) {
 			double distanceToObject = worldObject.getPosition().sub(worldPosition).length();
 
-			if (distanceToObject <= worldObject.sphereCollision) {
+			if (distanceToObject <= worldObject.getSphereCollision()) {
 				distances.add(distanceToObject);
 				interactableObjects.add(worldObject);
 			}
