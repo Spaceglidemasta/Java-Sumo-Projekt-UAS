@@ -24,6 +24,7 @@ public class Main {
 
 	    SimController simController = new SimController("uascity/osm.sumocfg");
 	    simController.setMainsim(true);
+		//simController.close();
 
         MainApp aMainGui = new MainApp();
         aMainGui.start(args);
