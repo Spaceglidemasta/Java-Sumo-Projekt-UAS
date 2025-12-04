@@ -8,6 +8,7 @@ import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.world.World;
+import org.group_three.ui.world.WorldObject;
 import org.group_three.ui.world.WorldPoint;
 import org.group_three.ui.world.WorldVehicle;
 
@@ -33,6 +34,8 @@ public class SimView2D {
 		renderTargetBounds = rTB;
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 	}
+
+	private static List<String> vehicleIds = new ArrayList<>() {};
 
 	public static void newWorld() {
 		world = new World();
@@ -65,8 +68,6 @@ public class SimView2D {
 		Vector2D rnHeight = new Vector2D();
 		Vector2D rnWidth = new Vector2D();
 
-		List<Vector2D> points = new ArrayList<>();
-
 
 		for (String jid : SimController.getMainsim().getJunctionIDList()) {
 			Vector2D jidV = new Vector2D(SimController.getMainsim().getJunctionPos(jid).x, SimController.getMainsim().getJunctionPos(jid).y);
@@ -91,18 +92,46 @@ public class SimView2D {
 		world.setViewerPosition(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
 		world.setWorldOffset(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)));
 
+
+
 		for (String id : SimController.getMainsim().getVehicleIDList()) {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainsim().get_sumcon());
-			wVehicle.update();
-			new WorldVehicle(
+			WorldVehicle worldVehicle = new WorldVehicle(
 					world,
 					worldStaticRenderTarget,
 					"Object TestCarSim"
-			).setPosition(new Vector2D(wVehicle.getPos()));
+			);
+			worldVehicle.setwVehicle(wVehicle);
+			vehicleIds.add(id);
 		}
 
 		Debug.print(world.getWorldOffset());
+	}
 
-		SimController.getMainsim().close();
+	public static void update() {
+		List<String> currentVehicleList = SimController.getMainsim().getVehicleIDList();
+
+		for (WorldObject worldObject : world.getWorldObjects()) {
+			if (worldObject.getClass() == WorldVehicle.class)
+			{
+				if (currentVehicleList.contains(((WorldVehicle)worldObject).getwVehicle().getID())) worldObject.updateSim();
+				else worldObject.remove();
+			}
+		}
+
+
+		for (String id : currentVehicleList) {
+			if (vehicleIds.contains(id)) continue;
+			WVehicle wVehicle = new WVehicle(id, SimController.getMainsim().get_sumcon());
+			WorldVehicle worldVehicle = new WorldVehicle(
+					world,
+					worldStaticRenderTarget,
+					"Object TestCarSim"
+			);
+			worldVehicle.setwVehicle(wVehicle);
+			vehicleIds.add(id);
+		}
+
+		world.requestUpdate();
 	}
 }

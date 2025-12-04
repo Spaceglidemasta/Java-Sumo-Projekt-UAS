@@ -39,6 +39,15 @@ public class World {
 	 * @author Joel
 	 */
 	private Vector2D worldSize = new Vector2D(512, 256);
+
+	public List<WorldObject> getWorldObjects() {
+		return worldObjects;
+	}
+
+	public void setWorldObjects(List<WorldObject> worldObjects) {
+		this.worldObjects = worldObjects;
+	}
+
 	/**
 	 * @author Joel
 	 */
