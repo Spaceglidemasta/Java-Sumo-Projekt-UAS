@@ -122,7 +122,7 @@ public class CanvasController {
 		world.setWorldOffset(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)));
 
 		for (String id : simController.getVehicleIDList()) {
-			WVehicle wVehicle = new WVehicle(id, simController._sumcon);
+			WVehicle wVehicle = new WVehicle(id, simController.get_sumcon());
 			wVehicle.update();
 			new WorldVehicle(
 					world,
