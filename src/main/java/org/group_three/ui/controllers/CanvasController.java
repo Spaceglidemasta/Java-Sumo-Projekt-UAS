@@ -91,7 +91,7 @@ public class CanvasController {
 		);*/
 
 		//SimController sim = new SimController("speedtest.sumocfg");
-		SimController simController = new SimController("net.net.xml", "net.rou.xml");
+		SimController simController = new SimController("uascity/osm.sumocfg");//new SimController("net.net.xml", "net.rou.xml");
 
 
 		Vector2D rnHeight = new Vector2D();
