@@ -90,7 +90,7 @@ public class CanvasController {
 				"WorldPoint"
 		);*/
 
-		//SimController sim = new SimController("speedtest.sumocfg");
+		/*
 		SimController simController = new SimController("uascity/osm.sumocfg");//new SimController("net.net.xml", "net.rou.xml");
 
 
@@ -132,7 +132,7 @@ public class CanvasController {
 		}
 
 		simController.close();
-
+		*/
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
@@ -172,7 +172,7 @@ public class CanvasController {
 	 */
 	@FXML
 	private void onMouseClicked() {
-		Debug.print("Canvas clicked.");
+		//Debug.print("Canvas clicked.");
 
 		Vector2D nMP = mousePosition.sub(world.getViewerPositionOffset());
 		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), nMP).mul(1/world.getViewerZoom());
@@ -187,10 +187,10 @@ public class CanvasController {
 		//world.world
 
 		try {
-			Debug.print(world.interact(worldspaceMousePosition).getDisplayName());
+			//Debug.print(world.interact(worldspaceMousePosition).getDisplayName());
 		} catch (Exception e) {
 			//throw new RuntimeException(e);
-			Debug.print("NULL");
+			//Debug.print("NULL");
 		}
 
 		world.requestUpdate();
@@ -294,7 +294,7 @@ public class CanvasController {
 		world.addViewerZoom(zoomDelta);
 		//world.setViewerPosition(world.getViewerPosition().mul(world.getViewerZoom()/oldZoom));
 		world.setViewerPosition(world.getViewerPosition().mul(world.getViewerZoom()/oldZoom));
-		Debug.print(world.getViewerPosition());
+		//Debug.print(world.getViewerPosition());
 	}
 
 
