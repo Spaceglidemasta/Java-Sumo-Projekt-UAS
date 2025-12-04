@@ -11,6 +11,9 @@ import org.group_three.ui.world.World;
 import org.group_three.ui.world.WorldPoint;
 import org.group_three.ui.world.WorldVehicle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimView2D {
 	private static Canvas worldStaticRenderTarget;
 	private static Canvas worldDynamicRenderTarget;
@@ -50,8 +53,19 @@ public class SimView2D {
 
 
 
+
+
+
+
+
+
+
+
+
 		Vector2D rnHeight = new Vector2D();
 		Vector2D rnWidth = new Vector2D();
+
+		List<Vector2D> points = new ArrayList<>();
 
 
 		for (String jid : SimController.getMainsim().getJunctionIDList()) {
@@ -86,6 +100,8 @@ public class SimView2D {
 					"Object TestCarSim"
 			).setPosition(new Vector2D(wVehicle.getPos()));
 		}
+
+		Debug.print(world.getWorldOffset());
 
 		SimController.getMainsim().close();
 	}
