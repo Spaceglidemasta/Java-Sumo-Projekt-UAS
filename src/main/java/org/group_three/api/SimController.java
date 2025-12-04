@@ -22,8 +22,13 @@ import java.util.List;
  * @author Luca
  */
 public class SimController {
-    //The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
-    private SumoTraciConnection _sumcon;
+	// added getter to have a reference to pass into wwehicle of sumotraciconnection
+	public SumoTraciConnection get_sumcon() {
+		return _sumcon;
+	}
+
+	//The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
+    private SumoTraciConnection _sumcon; //
     private static final String networkfname = "net.net.xml";
     private static final String routefname = "net.rou.xml";
 

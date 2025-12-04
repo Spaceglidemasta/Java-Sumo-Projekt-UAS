@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.group_three.debug.Console;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
-import org.group_three.ui.idkyet.MenuItem_RecentlyOpend;
 import org.group_three.debug.Debug;
 import org.group_three.ui.FakeInteractions;
 
@@ -19,6 +18,11 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 
+/**
+ * Comment
+ *
+ * @author Joel
+ */
 public class ToolbarController {
 
 	// FX:ID's
@@ -33,7 +37,11 @@ public class ToolbarController {
 
 	// TODO: Fix issues from multi file selection
 
-	// Ini
+	/**
+	 * Ini
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void initialize() { //throws IOException { for what was that?
 		Debug.toConsole("Toolbar loaded.");
@@ -44,7 +52,11 @@ public class ToolbarController {
 		initializeOpenRecentList();
 	}
 
-	// adds the recent simulations to the open recent menu tab
+	/**
+	 * adds the recent simulations to the open recent menu tab
+	 *
+	 * @author Joel
+	 */
 	private void initializeOpenRecentList() {
 		// clear entry list to avoid duplicates
 		simulationOpenRecent.getItems().clear();
@@ -61,8 +73,14 @@ public class ToolbarController {
 		simulationOpenRecent.setDisable(simulationOpenRecent.getItems().isEmpty());
 	}
 
-
-	// func to disable/reactivate the close, reload and export buttons when no simulation is loaded
+	/**
+	 * func to disable/reactivate the close, reload and export buttons when no simulation is loaded
+	 *
+	 * @author Joel
+	 *
+	 * @param disabled
+	 * Param-Comment
+	 */
 	private void setSimulationButtonStates(boolean disabled) {
 		simulationClose.setDisable(disabled);
 		simulationReload.setDisable(disabled);
@@ -72,6 +90,14 @@ public class ToolbarController {
 	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {};
 	private String loadedSimulation = null;
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param path
+	 * Param-Comment
+	 */
 	private void setLoadedSimulation(String path) {
 		if (path == null) {
 			loadedSimulation = null;
@@ -91,6 +117,14 @@ public class ToolbarController {
 		Debug.toConsole(recentlyLoadedSimulations.size());
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param paths
+	 * Param-Comment
+	 */
 	private void tryLoadingSimulation(List<String> paths) {
 		validateRecentlyLoadedSimulations();
 
@@ -114,6 +148,11 @@ public class ToolbarController {
 
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	private void validateRecentlyLoadedSimulations() {
 		List<String> fails = new ArrayList<String>() {};
 
@@ -139,7 +178,11 @@ public class ToolbarController {
 	}
 
 
-	// Simulation -> ButtonClicked
+	/**
+	 * Simulation -> ButtonClicked
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onSimulationOpenClicked() {
 		Debug.toConsole("Simulation -> Open...");
@@ -181,32 +224,65 @@ public class ToolbarController {
 		tryLoadingSimulation(item.getPath());
 	}*/
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 *
+	 * @param item
+	 * Param-Comment
+	 */
 	private void onSimulationOpenRecentClicked(MenuItem item) {
 		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText());
 		tryLoadingSimulation(new ArrayList<>());
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onSimulationCloseClicked() {
 		Debug.toConsole("Simulation -> Close");
 		setLoadedSimulation(null);
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onSimulationReloadClicked() {
 		Debug.toConsole("Simulation -> Reload");
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onSimulationExportClicked() {
 		Debug.toConsole("Simulation -> Export");
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onSettingsClicked() {
 		Debug.toConsole("Settings");
 	}
 
+	/**
+	 * Comment
+	 *
+	 * @author Leon
+	 */
     @FXML
     private void onConsoleOpen() {
         Console console = Console.getInstance();  // Get the single instance of the Console
@@ -214,6 +290,11 @@ public class ToolbarController {
         console.log("Debug window opened.");
     }
 
+	/**
+	 * Comment
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onHelpClicked() {
 		Debug.toConsole("Help");
