@@ -1,8 +1,16 @@
 package org.group_three.ui.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import de.tudresden.sumo.cmd.Route;
+import de.tudresden.sumo.cmd.Trafficlight;
+import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.paint.Color;
+import org.group_three.api.SimController;
+import org.group_three.model.WVehicle;
 import org.group_three.ui.*;
 import org.group_three.debug.Debug;
 
@@ -51,7 +59,7 @@ public class CanvasController {
 		world.worldStaticRenderTarget = worldStaticRenderTarget;
 		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 
-		WorldVehicle test = new WorldVehicle(
+		/*WorldVehicle test = new WorldVehicle(
 				world,
 				worldStaticRenderTarget,
 				"Object TestCar"
@@ -80,7 +88,51 @@ public class CanvasController {
 				world,
 				worldStaticRenderTarget,
 				"WorldPoint"
-		);
+		);*/
+
+		//SimController sim = new SimController("speedtest.sumocfg");
+		SimController simController = new SimController("net.net.xml", "net.rou.xml");
+
+
+		Vector2D rnHeight = new Vector2D();
+		Vector2D rnWidth = new Vector2D();
+
+
+		for (String jid : simController.getJunctionIDList()) {
+			Vector2D jidV = new Vector2D(simController.getJunctionPos(jid).x, simController.getJunctionPos(jid).y);
+			boolean firstIteration = jid.equals(simController.getJunctionIDList().getFirst());
+
+			if (rnHeight.x > jidV.x || firstIteration) rnHeight.x = jidV.x;
+			if (rnHeight.y < jidV.x || firstIteration) rnHeight.y = jidV.x;
+			if (rnWidth.x > jidV.y || firstIteration) rnWidth.x = jidV.y;
+			if (rnWidth.y < jidV.y || firstIteration) rnWidth.y = jidV.y;
+
+			new WorldPoint(
+					world,
+					worldStaticRenderTarget,
+					"WorldPoint_" + jid
+			).setPosition(jidV);
+			Debug.print(simController.getJunctionPos(jid));
+		}
+
+		Debug.print(rnHeight + " --- " + rnWidth);
+
+		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128,128)));
+		world.setViewerPosition(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
+		world.setWorldOffset(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)));
+
+		for (String id : simController.getVehicleIDList()) {
+			WVehicle wVehicle = new WVehicle(id, simController._sumcon);
+			wVehicle.update();
+			new WorldVehicle(
+					world,
+					worldStaticRenderTarget,
+					"Object TestCarSim"
+			).setPosition(new Vector2D(wVehicle.getPos()));
+		}
+
+		simController.close();
+
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());

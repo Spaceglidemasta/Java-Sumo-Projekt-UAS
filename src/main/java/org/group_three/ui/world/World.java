@@ -33,7 +33,8 @@ public class World {
 	/**
 	 * @author Joel
 	 */
-	private Vector2D viewerZoomLimit = new Vector2D(0.1, 2);
+	private Vector2D viewerZoomLimit = new Vector2D(0.1, 10);
+
 	/**
 	 * @author Joel
 	 */
@@ -58,6 +59,16 @@ public class World {
 	 * @author Joel
 	 */
 	public Canvas worldStaticRenderTarget;
+
+	public Vector2D getWorldOffset() {
+		return worldOffset;
+	}
+
+	public void setWorldOffset(Vector2D worldOffset) {
+		this.worldOffset = worldOffset;
+	}
+
+	private Vector2D worldOffset = new Vector2D();
 
 	/**
 	 * Comment
@@ -234,6 +245,10 @@ public class World {
 		return worldSize;
 	}
 
+	public void setWorldSize(Vector2D worldSize) {
+		this.worldSize = worldSize;
+	}
+
 	/**
 	 * Comment
 	 *
@@ -259,7 +274,7 @@ public class World {
 
 		graphicsContext.save();
 		graphicsContext.setFill(worldColor);
-		graphicsContext.translate(getViewerPosition().x + getViewerPositionOffset().x, getViewerPosition().y + getViewerPositionOffset().y); // Object Location
+		graphicsContext.translate(getViewerPosition().x + getViewerPositionOffset().x + getWorldOffset().x * getViewerZoom(), getViewerPosition().y + getViewerPositionOffset().y + getWorldOffset().y * getViewerZoom()); // Object Location
 		graphicsContext.rotate(getViewerRotation());
 		graphicsContext.fillRect((getWorldSize().x / 2) * getViewerZoom() * -1, (getWorldSize().y / 2) * getViewerZoom() * -1, getWorldSize().x * getViewerZoom(), getWorldSize().y * getViewerZoom());
 		graphicsContext.restore();

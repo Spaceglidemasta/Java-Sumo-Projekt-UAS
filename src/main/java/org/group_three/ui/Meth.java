@@ -20,6 +20,19 @@ public class Meth {
 	}
 
 	/**
+	 * Just uses linear interpolation to lerp between two doubles.
+	 *
+	 * @param d0   Param-Comment
+	 * @param d1   Param-Comment
+	 * @param lerp Param-Comment
+	 * @return Return-Comment
+	 * @author Joel
+	 */
+	public static double lerp(double d0, double d1, double lerp) {
+		return d0+(d1-d0)*lerp;
+	}
+
+	/**
 	 * A method to get the relative location(vector) of two vectors in world (non-relative) space.
 	 *
 	 * @param location         Param-Comment

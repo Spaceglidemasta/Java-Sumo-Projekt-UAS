@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class SimController {
     //The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
-    private SumoTraciConnection _sumcon;
+    public SumoTraciConnection _sumcon;
     private static final String networkfname = "net.net.xml";
     private static final String routefname = "net.rou.xml";
 

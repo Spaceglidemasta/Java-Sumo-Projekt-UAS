@@ -1,5 +1,7 @@
 package org.group_three.ui;
 
+import de.tudresden.sumo.objects.SumoPosition2D;
+
 /**
  * The Vector2D class contains two double components: x and y.
  * Can be used to represent 2D world coordinates for example.
@@ -24,6 +26,7 @@ public class Vector2D {
 	 * @author Joel
 	 * @see Vector2D
 	 * @see #Vector2D(double x, double y)
+	 * @see #Vector2D(SumoPosition2D)
 	 */
 	public Vector2D() {
 	}
@@ -36,10 +39,25 @@ public class Vector2D {
 	 * @author Joel
 	 * @see Vector2D
 	 * @see #Vector2D()
+	 * @see #Vector2D(SumoPosition2D)
 	 */
 	public Vector2D(double x, double y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	/**
+	 * The constructor to initialize the Vector2D with its x- and y-components based on a SumoPosition2D.
+	 *
+	 * @param sumoPosition2D The SumoPosition2D the Vector2D should be initialized with.
+	 * @author Joel
+	 * @see Vector2D
+	 * @see #Vector2D()
+	 * @see #Vector2D(double x, double y)
+	 */
+	public Vector2D(SumoPosition2D sumoPosition2D) {
+		this.x = sumoPosition2D.x;
+		this.y = sumoPosition2D.y;
 	}
 
 	/**
