@@ -2,6 +2,7 @@ package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.SumoPosition2D;
+import de.tudresden.sumo.objects.SumoStringList;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
@@ -187,6 +188,67 @@ public class SimController {
     }
 
     /**
+     * Does 1 step in the simulation.
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean step(){
+
+        try {
+            _sumcon.do_timestep();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Does n steps in the simulation.
+     * @param n The number of steps to be done
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean step(int n){
+
+        for(int i = 0; i < n; i++){
+            try {
+                _sumcon.do_timestep();
+            } catch (Exception e) {
+                Debug.print("CRITICAL ERROR:");
+                e.printStackTrace();
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Sets the Time of the Simulation to (time), needs to be in the Future.
+     * @param time The time in the future to travel to.
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean timetravel_to(double time){
+
+        try {
+            _sumcon.do_timestep(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+    /**
      * closes the SumoTraciConnection
      * @author Luca
      * */
@@ -269,14 +331,15 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getTrafficLightsIDList(){
+    public SumoStringList getTrafficLightsIDList(){
         try {
-            return (List<String>) _sumcon.do_job_get(Trafficlight.getIDList());
+            return (SumoStringList) _sumcon.do_job_get(Trafficlight.getIDList());
         }
         catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return new ArrayList<String>();
+
     }
 
     //Funny no template Language incoming
@@ -285,11 +348,11 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getVehicleIDList() {
+    public SumoStringList getVehicleIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Vehicle.getIDList());
+            return (SumoStringList) _sumcon.do_job_get(Vehicle.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -302,11 +365,11 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getRouteIDList() {
+    public SumoStringList getRouteIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Route.getIDList());
+            return (SumoStringList) _sumcon.do_job_get(Route.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -319,11 +382,12 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public List<String> getEdgeIDList() {
+    public SumoStringList getEdgeIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Edge.getIDList());
+            return (SumoStringList) _sumcon.do_job_get(Edge.getIDList());
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -337,11 +401,11 @@ public class SimController {
      * @param edgeID The String of the EdgeID you want the number of lanes from.
      * @author Luca
      * */
-    public List<String> getLaneNumOfEdge(String edgeID) {
+    public SumoStringList getLaneNumOfEdge(String edgeID) {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Edge.getLaneNumber(edgeID));
+            return (SumoStringList) _sumcon.do_job_get(Edge.getLaneNumber(edgeID));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -365,16 +429,16 @@ public class SimController {
      * @param lane departing lane. Use .getLaneNum(edgeID) for lane number.
      * @author Luca
      * */
-    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){;
+    public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){
 
         try {
             int newVID = (int) _sumcon.do_job_get(Vehicle.getIDCount()) - 1;
             do {
                 newVID = newVID + 1;
             }
-            while(getVehicleIDList().contains("t_" + newVID));
+            while(getVehicleIDList().contains("wveh_" + newVID));
 
-            String newVIDstr = "t_" + newVID;
+            String newVIDstr = "wveh_" + newVID;
 
             _sumcon.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, (byte)lane));
             return new WVehicle(newVIDstr, _sumcon);

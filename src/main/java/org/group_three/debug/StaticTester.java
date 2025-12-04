@@ -19,7 +19,7 @@ import java.util.List;
 public class StaticTester {
 
     public StaticTester() {
-        SimController sim = new SimController("speedtest.sumocfg");
+        SimController sim = new SimController("uascity/osm.sumocfg");
 
         //Test Scenario
 
@@ -31,7 +31,8 @@ public class StaticTester {
 
         Debug.print("Vehicle Count: " + sim.jobget(Vehicle.getIDCount()));
 
-        List<String> edgelist = new ArrayList<>();
+        /*
+        * List<String> edgelist = new ArrayList<>();
         edgelist.add("-E2");
         edgelist.add("E1.200");
 
@@ -44,6 +45,12 @@ public class StaticTester {
         WVehicle v = sim.addVehicle("DEFAULT_CONTAINERTYPE", "r_1", 2, 0, 1, (byte)0);
 
         Debug.print(v.getPos());
+        *
+        *
+        * */
+
+
+
 
         Debug.print("Junction Positions");
         for(String junc : sim.getJunctionIDList()){

@@ -19,6 +19,13 @@ public class WVehicle {
     private double angle;
     private int lane;
 
+    /// Dont use this! >:(
+    private WVehicle(){
+        //Redundant bs to quiet intelliJ
+        this.vehID = null;
+        this._sumcon = null;
+    }
+
 
     /**
      * Only constructor for this Class, invokes a new Vehicle with just the VehicleID
