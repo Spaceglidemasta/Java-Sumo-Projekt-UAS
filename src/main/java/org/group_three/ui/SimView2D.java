@@ -55,7 +55,7 @@ public class SimView2D {
 
 
 
-
+		if (SimController.getMainsim() == null) return;
 
 
 

@@ -42,6 +42,9 @@ public class WorldVehicle extends WorldObject {
 		return wVehicle;
 	}
 
+	/**
+	 * @param wVehicle
+	 */
 	public void setwVehicle(WVehicle wVehicle) {
 		this.wVehicle = wVehicle;
 		updateSim();

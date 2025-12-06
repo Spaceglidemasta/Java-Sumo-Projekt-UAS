@@ -26,7 +26,7 @@ public class SimControlController {
 		timeline = new Timeline(
 				new KeyFrame(Duration.seconds(0.1), e -> onTick())
 		);
-		timeline.setCycleCount(Timeline.INDEFINITE); // unendlich oft
+		timeline.setCycleCount(Timeline.INDEFINITE);
 	}
 
 	private Timeline timeline;

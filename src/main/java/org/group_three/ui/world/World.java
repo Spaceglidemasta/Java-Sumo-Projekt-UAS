@@ -59,7 +59,7 @@ public class World {
 	/**
 	 * @author Joel
 	 */
-	private Color backgroundColor = Color.GREY;
+	private Color backgroundColor = Color.BLACK;
 	/**
 	 * @author Joel
 	 */
