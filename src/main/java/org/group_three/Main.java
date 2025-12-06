@@ -22,8 +22,8 @@ public class Main {
         //Currently using speedtest.cfg
         //new StaticTester();
 
-	    SimController simController = new SimController("uascity/osm.sumocfg");
-	    simController.setMainsim(true);
+	    //SimController simController = new SimController("uascity/osm.sumocfg");
+	    //simController.setMainsim(true);
 
         MainApp aMainGui = new MainApp();
         aMainGui.start(args);
