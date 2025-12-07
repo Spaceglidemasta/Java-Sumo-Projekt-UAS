@@ -41,7 +41,7 @@ public class CanvasController {
 
 	private GraphicsContext worldStaticRenderTarget_GraphicsContext;
 
-	private World world = new World();
+	//private World world = new World();
 
 	/**
 	 * Comment
@@ -56,8 +56,11 @@ public class CanvasController {
 		Debug.toConsole("Canvas loaded.");
 
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
-		world.worldStaticRenderTarget = worldStaticRenderTarget;
-		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
+
+
+
+		//world.worldStaticRenderTarget = worldStaticRenderTarget;
+		//world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 
 		/*WorldVehicle test = new WorldVehicle(
 				world,
@@ -140,6 +143,7 @@ public class CanvasController {
 		worldDynamicRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldDynamicRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
 
+		/*
 		renderTargetBounds.widthProperty().addListener((observable, oldValue, newValue) -> {
             if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("RenderTargetSize.X: " + newValue);
 
@@ -150,9 +154,9 @@ public class CanvasController {
             if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("RenderTargetSize.Y: " + newValue);
 
 			world.setViewerPositionOffset(new Vector2D((world.getViewerPositionOffset().x), (newValue.doubleValue() / 2)));
-		});
+		});*/
 
-		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth() / 2, worldStaticRenderTarget.getHeight() / 2));
+		//world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth() / 2, worldStaticRenderTarget.getHeight() / 2));
 
 		Debug.toConsole(new Vector2D(0, 10).getRotation()); // 0°
 		Debug.toConsole(new Vector2D(10, 10).getRotation()); // 45°
@@ -163,6 +167,16 @@ public class CanvasController {
 		Debug.toConsole(new Vector2D(-10, 0).getRotation()); // 270°
 		Debug.toConsole(new Vector2D(-10, 10).getRotation()); // 315°
 		Debug.toConsole(new Vector2D(-0.001, 10).getRotation()); // 0/360°
+
+
+
+
+
+		SimView2D simView2D = new SimView2D(worldStaticRenderTarget,
+				worldDynamicRenderTarget,
+				renderTargetBounds);
+
+		SimView2D.newWorld();
 	}
 
 	/**
@@ -174,8 +188,8 @@ public class CanvasController {
 	private void onMouseClicked() {
 		//Debug.print("Canvas clicked.");
 
-		Vector2D nMP = mousePosition.sub(world.getViewerPositionOffset());
-		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), nMP).mul(1/world.getViewerZoom());
+		Vector2D nMP = mousePosition.sub(SimView2D.getWorld().getViewerPositionOffset());
+		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), nMP).mul(1/SimView2D.getWorld().getViewerZoom());
 
 		/*WorldObject test = new WorldObject();
 		test.world = world;
@@ -193,7 +207,7 @@ public class CanvasController {
 			//Debug.print("NULL");
 		}
 
-		world.requestUpdate();
+		SimView2D.getWorld().requestUpdate();
 	}
 
 	/**
@@ -214,13 +228,13 @@ public class CanvasController {
 		deltaX = x - lastX;
 		deltaY = y - lastY;
 
-		double startRot = new Vector2D(lastX, lastY).sub(world.getViewerPositionOffset()).flipY().getRotation();
-		double rot = new Vector2D(x, y).sub(world.getViewerPositionOffset()).flipY().getRotation();
+		double startRot = new Vector2D(lastX, lastY).sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
+		double rot = new Vector2D(x, y).sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
 		double deltaRot = rot-startRot;
 
 		if (/*!Keyboard.isCtrlKeyPressed() && */Keyboard.isAltKeyPressed()) { // start rotation freely, no snapping
-			world.addViewerRotation(deltaRot);
-			world.setViewerPosition(world.getViewerPosition().rotate(deltaRot)); // move to rotate viewer func?!?
+			SimView2D.getWorld().addViewerRotation(deltaRot);
+			SimView2D.getWorld().setViewerPosition(SimView2D.getWorld().getViewerPosition().rotate(deltaRot)); // move to rotate viewer func?!?
 
 		} else if (Keyboard.isCtrlKeyPressed() && Keyboard.isAltKeyPressed() && false) { // start rotation with 45 degree snapping
 			if (((rot >= 0) && (rot < 22.5)) || rot >= 337.5) rot = 0;
@@ -233,10 +247,10 @@ public class CanvasController {
 			else if (rot >= 292.5) rot = 315;
 			else throw new RuntimeException("Rotation reached an impossible value!");
 
-			world.setViewerRotation(rot);
+			SimView2D.getWorld().setViewerRotation(rot);
 
 		} else {
-			world.addViewerPosition(new Vector2D(deltaX, deltaY));
+			SimView2D.getWorld().addViewerPosition(new Vector2D(deltaX, deltaY));
 		}
 
 		lastX = x;
@@ -289,11 +303,11 @@ public class CanvasController {
 
 		double zoomDelta = event.getDeltaY() * 0.01;
 		double mlp = zoomDelta < 0 ? 1 : 1;
-		double oldZoom = world.getViewerZoom();
+		double oldZoom = SimView2D.getWorld().getViewerZoom();
 		//Debug.print(mlp);
-		world.addViewerZoom(zoomDelta);
+		SimView2D.getWorld().addViewerZoom(zoomDelta);
 		//world.setViewerPosition(world.getViewerPosition().mul(world.getViewerZoom()/oldZoom));
-		world.setViewerPosition(world.getViewerPosition().mul(world.getViewerZoom()/oldZoom));
+		SimView2D.getWorld().setViewerPosition(SimView2D.getWorld().getViewerPosition().mul(SimView2D.getWorld().getViewerZoom()/oldZoom));
 		//Debug.print(world.getViewerPosition());
 	}
 

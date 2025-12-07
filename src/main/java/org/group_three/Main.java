@@ -20,7 +20,10 @@ public class Main {
 
         //Tester, so this isn't full of random test calls
         //Currently using speedtest.cfg
-        new StaticTester();
+        //new StaticTester();
+
+	    //SimController simController = new SimController("uascity/osm.sumocfg");
+	    //simController.setMainsim(true);
 
         MainApp aMainGui = new MainApp();
         aMainGui.start(args);
