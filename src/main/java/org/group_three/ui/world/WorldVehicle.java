@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
+import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
@@ -37,6 +38,25 @@ public class WorldVehicle extends WorldObject {
 		setInteractable(true);
 	}
 
+	public WVehicle getwVehicle() {
+		return wVehicle;
+	}
+
+	/**
+	 * @param wVehicle
+	 */
+	public void setwVehicle(WVehicle wVehicle) {
+		this.wVehicle = wVehicle;
+		updateSim();
+	}
+
+	@Override
+	public void updateSim() {
+		wVehicle.update();
+		setPosition(new Vector2D(wVehicle.getPos()));
+	}
+
+	private WVehicle wVehicle;
 
 	/**
 	 * @return

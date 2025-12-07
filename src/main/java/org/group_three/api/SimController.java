@@ -270,7 +270,7 @@ public class SimController {
      * @return the location(FILE) the Project is located in.
      * Knows if the Program is compiled & executed or a jar file
     **/
-    private static File getSumoLoc() {
+    public static File getSumoLoc() {
 
         //the location of this class in the URL format
         URL mainURL = SimController.class.getProtectionDomain().getCodeSource().getLocation();

@@ -39,6 +39,15 @@ public class World {
 	 * @author Joel
 	 */
 	private Vector2D worldSize = new Vector2D(512, 256);
+
+	public List<WorldObject> getWorldObjects() {
+		return worldObjects;
+	}
+
+	public void setWorldObjects(List<WorldObject> worldObjects) {
+		this.worldObjects = worldObjects;
+	}
+
 	/**
 	 * @author Joel
 	 */
@@ -272,12 +281,12 @@ public class World {
 		graphicsContext.restore();
 
 
-		graphicsContext.save();
-		graphicsContext.setFill(worldColor);
-		graphicsContext.translate(getViewerPosition().x + getViewerPositionOffset().x + getWorldOffset().x * getViewerZoom(), getViewerPosition().y + getViewerPositionOffset().y + getWorldOffset().y * getViewerZoom()); // Object Location
-		graphicsContext.rotate(getViewerRotation());
-		graphicsContext.fillRect((getWorldSize().x / 2) * getViewerZoom() * -1, (getWorldSize().y / 2) * getViewerZoom() * -1, getWorldSize().x * getViewerZoom(), getWorldSize().y * getViewerZoom());
-		graphicsContext.restore();
+		//graphicsContext.save();
+		//graphicsContext.setFill(worldColor);
+		//graphicsContext.translate(getViewerPosition().x + getViewerPositionOffset().x + getWorldOffset().x * getViewerZoom(), getViewerPosition().y + getViewerPositionOffset().y + getWorldOffset().y * getViewerZoom()); // Object Location
+		//graphicsContext.rotate(getViewerRotation());
+		//graphicsContext.fillRect((getWorldSize().x / 2) * getViewerZoom() * -1, (getWorldSize().y / 2) * getViewerZoom() * -1, getWorldSize().x * getViewerZoom(), getWorldSize().y * getViewerZoom());
+		//graphicsContext.restore();
 
 		for (WorldObject object : worldObjects) {
 			object.update();
