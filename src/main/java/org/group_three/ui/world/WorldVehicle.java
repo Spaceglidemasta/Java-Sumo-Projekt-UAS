@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
+import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
@@ -54,6 +55,36 @@ public class WorldVehicle extends WorldObject {
 	public void updateSim() {
 		wVehicle.update();
 		setPosition(new Vector2D(wVehicle.getPos()));
+
+		Debug.print(wVehicle.getColor());
+
+		setColor(convertWVColor());
+	}
+
+	public Color convertWVColor() {
+		if (wVehicle.getColor().r == -1 &&
+			wVehicle.getColor().g == -1 &&
+			wVehicle.getColor().b == 0 &&
+			wVehicle.getColor().a == -1
+		) return getColor();
+
+		return new Color(
+				byteToDouble(wVehicle.getColor().r),
+				byteToDouble(wVehicle.getColor().g),
+				byteToDouble(wVehicle.getColor().b),
+				byteToDouble(wVehicle.getColor().a)
+		);
+	}
+
+	public double byteToDouble(byte input) {
+		// byte to double ocnversion
+		double value = (double)input/255;
+
+		// double clamp to 0 - 1
+		if (value < 0) value = 0;
+		else if (value > 1) value = 1;
+
+		return value;
 	}
 
 	private WVehicle wVehicle;
@@ -77,7 +108,7 @@ public class WorldVehicle extends WorldObject {
 	/**
 	 * @author Joel
 	 */
-	private Color color = new Color(1, 1, 1, 1);
+	private Color color = UI.defaultVehicleColor;
 	/**
 	 * @author Joel
 	 */
