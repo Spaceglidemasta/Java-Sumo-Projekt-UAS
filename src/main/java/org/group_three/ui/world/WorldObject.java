@@ -79,6 +79,7 @@ public class WorldObject {
 	 */
 	private boolean useBoxCollision = false;
 	/**
+	 * HalfHeight
 	 * @author Joel
 	 */
 	private Vector2D boxCollision = new Vector2D();
@@ -361,4 +362,24 @@ public class WorldObject {
 
 
 	public void updateSim() {}
+
+	public boolean useBoxCollision() {
+		return useBoxCollision;
+	}
+
+	public void setUseBoxCollision(boolean useBoxCollision) {
+		this.useBoxCollision = useBoxCollision;
+	}
+
+	public Vector2D getBoxCollision() {
+		return boxCollision;
+	}
+
+	public void setBoxCollision(Vector2D boxCollision) {
+		this.boxCollision = boxCollision;
+	}
+
+	public Color getBoxCollisionColor() {
+		return boxCollisionColor;
+	}
 }

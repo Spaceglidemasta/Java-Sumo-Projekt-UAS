@@ -223,4 +223,8 @@ public class Vector2D {
 	public Vector2D rotate(double degrees, Vector2D pivot) {
 		return Meth.addRelativeLocation(pivot, degrees, Meth.getRelativeLocation(pivot, 0, this));
 	}
+
+	public Vector2D abs() {
+		return new Vector2D(Math.abs(x), Math.abs(y));
+	}
 }
