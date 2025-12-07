@@ -3,6 +3,7 @@ package org.group_three.ui.controllers;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.util.Duration;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
@@ -11,6 +12,13 @@ import org.group_three.ui.SimView2D;
 import java.io.IOException;
 
 public class SimControlController {
+
+	@FXML
+	private TextField speedModifier;
+
+	private double speedModValue = 1;
+
+
 	/**
 	 * Comment
 	 *
@@ -24,9 +32,22 @@ public class SimControlController {
 		Debug.print("Controls loaded.");
 
 		timeline = new Timeline(
-				new KeyFrame(Duration.seconds(0.1), e -> onTick())
+				new KeyFrame(Duration.seconds(1), e -> onTick())
 		);
 		timeline.setCycleCount(Timeline.INDEFINITE);
+
+		speedModifier.textProperty().addListener(
+				(obs, oldText, newText) -> {
+					try {
+						speedModValue = Math.abs(Double.parseDouble(newText));
+						speedModifier.textProperty().set(String.valueOf(speedModValue));
+						timeline.setRate(speedModValue);
+
+					} catch (Exception e) {
+						speedModifier.textProperty().set(String.valueOf(speedModValue));
+					}
+
+		});
 	}
 
 	private Timeline timeline;
