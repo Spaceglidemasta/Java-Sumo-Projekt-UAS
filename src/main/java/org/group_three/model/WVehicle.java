@@ -3,6 +3,7 @@ package org.group_three.model;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
+import org.group_three.api.SimController;
 
 /**
  * <h1>WVehicle</h1>
@@ -12,7 +13,8 @@ import it.polito.appeal.traci.SumoTraciConnection;
 public class WVehicle {
 
     private final String vehID;
-    private final SumoTraciConnection _sumcon;
+    private final SumoTraciConnection stc;
+
 
     //Attributes-Attributes
     private SumoPosition2D pos;
@@ -23,7 +25,7 @@ public class WVehicle {
     private WVehicle(){
         //Redundant bs to quiet intelliJ
         this.vehID = null;
-        this._sumcon = null;
+        this.stc = null;
     }
 
 
@@ -34,9 +36,22 @@ public class WVehicle {
      * @author Luca
      *
      */
-    public WVehicle(String id, SumoTraciConnection sc){
+    public WVehicle(String id, SumoTraciConnection stc){
         this.vehID = id;
-        this._sumcon = sc;
+        this.stc = stc;
+    }
+
+
+    /**
+     * Only constructor for this Class, invokes a new Vehicle with just the VehicleID
+     *
+     * @param id VehicleID
+     * @author Luca
+     *
+     */
+    public WVehicle(String id, SimController sumcon){
+        this.vehID = id;
+        this.stc = sumcon.getStc();
     }
 
 
@@ -50,7 +65,7 @@ public class WVehicle {
      * Returns the Sumo Connection
      * @author Luca
      * */
-    public SumoTraciConnection getSumoCon() {return _sumcon;}
+    public SumoTraciConnection getSumoCon() {return stc;}
 
     /**
      * Returns the Angle
@@ -86,7 +101,7 @@ public class WVehicle {
      * */
     public boolean remove(byte reason){
         try {
-            _sumcon.do_job_set(Vehicle.remove(vehID, reason));
+            stc.do_job_set(Vehicle.remove(vehID, reason));
         }
         catch (Exception _){
             return false;
@@ -101,7 +116,7 @@ public class WVehicle {
      * */
     public boolean remove(){
         try {
-            _sumcon.do_job_set(Vehicle.remove(vehID, (byte)0));
+            stc.do_job_set(Vehicle.remove(vehID, (byte)0));
         }
         catch (Exception _){
             return false;
@@ -126,7 +141,7 @@ public class WVehicle {
 
         //position getter
         try {
-            this.pos = (SumoPosition2D) _sumcon.do_job_get(Vehicle.getPosition(vehID));
+            this.pos = (SumoPosition2D) stc.do_job_get(Vehicle.getPosition(vehID));
         }
         catch (Exception _) {
             ipos = false;
@@ -134,7 +149,7 @@ public class WVehicle {
 
         //angle getter
         try {
-            this.angle = (double) _sumcon.do_job_get(Vehicle.getAngle(vehID));
+            this.angle = (double) stc.do_job_get(Vehicle.getAngle(vehID));
         }
         catch (Exception _) {
             iangle = false;
@@ -142,7 +157,7 @@ public class WVehicle {
 
         //lane getter
         try {
-            this.lane = (int) _sumcon.do_job_get(Vehicle.getLaneIndex(vehID));
+            this.lane = (int) stc.do_job_get(Vehicle.getLaneIndex(vehID));
         }
         catch (Exception _) {
             ilane = false;

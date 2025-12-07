@@ -75,11 +75,8 @@ public class FakeInteractions {
 			simcon = new SimController(network, route);
 		}
 
-		//set selected simulation as the main, global / static simulation.
-		simcon.setMainsim(true);
-
-		// Create a new World for the opened simulation
-		SimView2D.newWorld();
+        //set selected simulation as the main, global / static simulation.
+        simcon.setMainstc(true);
 
 		return true;
 	}

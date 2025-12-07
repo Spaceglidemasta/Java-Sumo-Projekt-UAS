@@ -11,7 +11,6 @@ import org.group_three.model.WVehicle;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,18 +21,14 @@ import java.util.List;
  * @author Luca
  */
 public class SimController {
-	// added getter to have a reference to pass into wwehicle of sumotraciconnection
-	public SumoTraciConnection get_sumcon() {
-		return _sumcon;
-	}
 
 	//The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
-    private SumoTraciConnection _sumcon; //
+    private SumoTraciConnection stc; //
     private static final String networkfname = "net.net.xml";
     private static final String routefname = "net.rou.xml";
 
     // Easy mode
-    private static SimController _mainsim = null;
+    private static SimController mainstc = null;
 
 
 /// ******************************************************
@@ -90,18 +85,18 @@ public class SimController {
             }
 
             // establishes the connection to sumo with the route and network via TraaS
-            _sumcon = new SumoTraciConnection(
+            stc = new SumoTraciConnection(
                     sumoExe.getAbsolutePath(),
                     sumocfg.getAbsolutePath()
             );
 
             // options that set sumo to print outputs & errors.
-            _sumcon.printSumoOutput(true);
-            _sumcon.printSumoError(true);
-            _sumcon.runServer(8813);
+            stc.printSumoOutput(true);
+            stc.printSumoError(true);
+            stc.runServer(8813);
 
             // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
-            _sumcon.do_timestep();
+            stc.do_timestep();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,19 +163,19 @@ public class SimController {
             }
 
             // establishes the connection to sumo with the route and network via TraaS
-            _sumcon = new SumoTraciConnection(
+            stc = new SumoTraciConnection(
                     sumoExe.getAbsolutePath(),
                     networknet.getAbsolutePath(),
                     routenet.getAbsolutePath()
             );
 
             // options that set sumo to print outputs & errors.
-            _sumcon.printSumoOutput(true);
-            _sumcon.printSumoError(true);
-            _sumcon.runServer(8813);
+            stc.printSumoOutput(true);
+            stc.printSumoError(true);
+            stc.runServer(8813);
 
             // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
-            _sumcon.do_timestep();
+            stc.do_timestep();
 
 
         } catch (Exception e) {
@@ -200,7 +195,7 @@ public class SimController {
     public boolean step(){
 
         try {
-            _sumcon.do_timestep();
+            stc.do_timestep();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -220,7 +215,7 @@ public class SimController {
 
         for(int i = 0; i < n; i++){
             try {
-                _sumcon.do_timestep();
+                stc.do_timestep();
             } catch (Exception e) {
                 Debug.print("CRITICAL ERROR:");
                 e.printStackTrace();
@@ -242,7 +237,7 @@ public class SimController {
     public boolean timetravel_to(double time){
 
         try {
-            _sumcon.do_timestep(time);
+            stc.do_timestep(time);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -261,7 +256,7 @@ public class SimController {
 
         try {
             // this can actually throw an ISE even tho it's not indicated.
-            _sumcon.close();
+            stc.close();
         }
         catch (IllegalStateException ise){
             ise.printStackTrace();
@@ -309,20 +304,20 @@ public class SimController {
      * Returns the global / static _mainsim.
      * @author Luca
      * */
-    public static SimController getMainsim() {return _mainsim;}
+    public static SimController getMainstc() {return mainstc;}
 
     /**
      * Sets this Simulation as the new, global, main simulation. <br>
      * Beware that this overwrites the old one
      * @author Luca
      * */
-    public void setMainsim(boolean close_old){
+    public void setMainstc(boolean close_old){
 
-        if(_mainsim != null && close_old){
-            _mainsim.close();
+        if(mainstc != null && close_old){
+            mainstc.close();
         }
 
-        _mainsim = this;
+        mainstc = this;
 
         Debug.print("Main SUMO Simulation was overwritten.");
     }
@@ -331,6 +326,14 @@ public class SimController {
     /// **                   Getters                        **
     /// ******************************************************
 
+    /**
+     * Getter for the SumoTraciConnection
+     * @author Luca
+     * */
+    public SumoTraciConnection getStc() {
+        return stc;
+    }
+
 
     /**
      * Beware that this uses unchecked casting and CAN return null.
@@ -338,7 +341,7 @@ public class SimController {
      * */
     public SumoStringList getTrafficLightsIDList(){
         try {
-            return (SumoStringList) _sumcon.do_job_get(Trafficlight.getIDList());
+            return (SumoStringList) stc.do_job_get(Trafficlight.getIDList());
         }
         catch (Exception e){
             e.printStackTrace();
@@ -357,7 +360,7 @@ public class SimController {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (SumoStringList) _sumcon.do_job_get(Vehicle.getIDList());
+            return (SumoStringList) stc.do_job_get(Vehicle.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -374,7 +377,7 @@ public class SimController {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (SumoStringList) _sumcon.do_job_get(Route.getIDList());
+            return (SumoStringList) stc.do_job_get(Route.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -391,7 +394,7 @@ public class SimController {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (SumoStringList) _sumcon.do_job_get(Edge.getIDList());
+            return (SumoStringList) stc.do_job_get(Edge.getIDList());
 
         }
         catch (Exception e) {
@@ -410,7 +413,7 @@ public class SimController {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (SumoStringList) _sumcon.do_job_get(Edge.getLaneNumber(edgeID));
+            return (SumoStringList) stc.do_job_get(Edge.getLaneNumber(edgeID));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -437,7 +440,7 @@ public class SimController {
     public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){
 
         try {
-            int newVID = (int) _sumcon.do_job_get(Vehicle.getIDCount()) - 1;
+            int newVID = (int) stc.do_job_get(Vehicle.getIDCount()) - 1;
             do {
                 newVID = newVID + 1;
             }
@@ -445,8 +448,8 @@ public class SimController {
 
             String newVIDstr = "wveh_" + newVID;
 
-            _sumcon.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, (byte)lane));
-            return new WVehicle(newVIDstr, _sumcon);
+            stc.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, (byte)lane));
+            return new WVehicle(newVIDstr, stc);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -477,7 +480,7 @@ public class SimController {
 
         try {
             Debug.toConsole("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
-            _sumcon.do_job_set(Trafficlight.setPhase(TLID, iPhase));
+            stc.do_job_set(Trafficlight.setPhase(TLID, iPhase));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -496,7 +499,7 @@ public class SimController {
     public int getTLPhase(String TLID) {
         int iphase;
         try {
-            iphase = (int) _sumcon.do_job_get(Trafficlight.getPhase(TLID));
+            iphase = (int) stc.do_job_get(Trafficlight.getPhase(TLID));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -514,7 +517,7 @@ public class SimController {
     public boolean setTLPhaseLen(String TLID, double dur){
 
         try {
-            _sumcon.do_job_set(Trafficlight.setPhaseDuration(TLID, dur));
+            stc.do_job_set(Trafficlight.setPhaseDuration(TLID, dur));
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -533,7 +536,7 @@ public class SimController {
     public String getTLParam(String TLID, String param){
         String retparam = null;
         try {
-            retparam = (String) _sumcon.do_job_get(Trafficlight.getParameter(TLID,param));
+            retparam = (String) stc.do_job_get(Trafficlight.getParameter(TLID,param));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -552,7 +555,7 @@ public class SimController {
      * */
     public boolean setTLParam(String TLID, String param, String value){
         try {
-            _sumcon.do_job_set(Trafficlight.setParameter(TLID, param, value));
+            stc.do_job_set(Trafficlight.setParameter(TLID, param, value));
             return true;
         }
         catch (Exception e){
@@ -574,7 +577,7 @@ public class SimController {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) _sumcon.do_job_get(Junction.getIDList());
+            return (List<String>) stc.do_job_get(Junction.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -596,7 +599,7 @@ public class SimController {
     public SumoPosition2D getJunctionPos(String juncID){
 
         try {
-            return (SumoPosition2D) _sumcon.do_job_get(Junction.getPosition(juncID));
+            return (SumoPosition2D) stc.do_job_get(Junction.getPosition(juncID));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -624,7 +627,7 @@ public class SimController {
      * */
     public Object jobget(SumoCommand scmd){
         try {
-            return _sumcon.do_job_get(scmd);
+            return stc.do_job_get(scmd);
         }
         catch (Exception e){
             Debug.print("GET JOB FAILED: " + scmd.toString());
@@ -644,7 +647,7 @@ public class SimController {
      * */
     public boolean jobset(SumoCommand scmd){
         try {
-            _sumcon.do_job_set(scmd);
+            stc.do_job_set(scmd);
         }
         catch (Exception e){
             Debug.print("DO JOB FAILED: " + scmd.toString());
