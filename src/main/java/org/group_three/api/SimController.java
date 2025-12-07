@@ -55,22 +55,7 @@ public class SimController {
             String sumoHome = System.getenv("SUMO_HOME");
 
             // possible location of sumo.exe in %SUMO_HOME%/bin
-            //A ? B : C <=> if A then B else C
-            File sumoExeHome = (sumoHome != null)
-                    ? new File(sumoHome + "/bin/sumo.exe")
-                    : null;
-
-            // possible location of sumo.exe in resources
-            File sumoExeResources = new File(resourcesDir, "sumo.exe");
-
-            // Decide final path
-            File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
-                    ? sumoExeHome
-                    : sumoExeResources;
-
-            if (!sumoExe.exists()) {
-                throw new Exception("sumo.exe not found");
-            }
+            File sumoExe = decideSumo(sumoHome, resourcesDir);
 
             Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
 
@@ -102,10 +87,35 @@ public class SimController {
             e.printStackTrace();
         }
 
-
-
         Debug.print("SimController startup was successfull");
         Debug.toConsole("SimController startup was successfull");
+    }
+
+    /**
+     * decides where the sumo.exe is.
+     * @param sumoHome The location of env %SUMO_HOME%
+     * @param resourcesDir The location of SumoConfig
+     * @return Which one was decided upon. sumoHome most of the time
+     * @author Luca
+     * */
+    private static File decideSumo(String sumoHome, File resourcesDir) throws Exception {
+        //A ? B : C <=> if A then B else C
+        File sumoExeHome = (sumoHome != null)
+                ? new File(sumoHome + "/bin/sumo.exe")
+                : null;
+
+        // possible location of sumo.exe in resources
+        File sumoExeResources = new File(resourcesDir, "sumo.exe");
+
+        // Decide final path
+        File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
+                ? sumoExeHome
+                : sumoExeResources;
+
+        if (!sumoExe.exists()) {
+            throw new Exception("sumo.exe not found");
+        }
+        return sumoExe;
     }
 
     public SimController(String net, String rou){
@@ -125,21 +135,7 @@ public class SimController {
 
             // possible location of sumo.exe in %SUMO_HOME%/bin
             //A ? B : C <=> if A then B else C
-            File sumoExeHome = (sumoHome != null)
-                    ? new File(sumoHome + "/bin/sumo.exe")
-                    : null;
-
-            // possible location of sumo.exe in resources
-            File sumoExeResources = new File(resourcesDir, "sumo.exe");
-
-            // Decide final path
-            File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
-                            ? sumoExeHome
-                            : sumoExeResources;
-
-            if (!sumoExe.exists()) {
-                throw new Exception("sumo.exe not found");
-            }
+            File sumoExe = decideSumo(sumoHome, resourcesDir);
 
             Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
 
@@ -422,9 +418,9 @@ public class SimController {
         return null;
     }
 
-    /// ******************************************************
-    /// **                   Vehicle                        **
-    /// ******************************************************
+    // ******************************************************
+    // **                   Vehicle                        **
+    // ******************************************************
 
     /**
      * Basicly the normal Vehicle.add(), but it handles the VehicleID setting logic for you.
@@ -459,20 +455,44 @@ public class SimController {
 
     }
 
-    /// ******************************************************
-    ///                  Traffic Lights                     **
-    /// ******************************************************
+    // ******************************************************
+    // **               Traffic Lights                     **
+    // ******************************************************
     /*"Why is this not its own Wrapper-Class like WVehicle?"
      * There simply aren't enough functions & attributes to a TL
      * that we need, that it's worth to build its own class.
      * It would also be too much of a hassle to work with an own
-     * Wrapper-class that needs to be connected to the Sim. via an Attribute.
+     * Wrapper-class, that needs to be connected to the Simulation
+     * via an Attribute.
+     *
+     * Guide on how to use this:
+     * TRAFFIC LIGHTS DO NOT HAVE POSITIONS!
+     * You get their location via their Junctions (.getTLJunctions(TLID))
+     * Logically there are no real Trafficlight-Poles inside the simulation,
+     * there are only TL Logics Applied to each Junction, which is why they are
+     * not bound to a 2D position.
+     * Any Parameters that are not Listed in these methods can be get and set
+     * via .getTLParam() and .setTLParam()
      * */
+
+    /**
+     * @return All junctionID's connected to the TL.
+     * @author Luca
+     * */
+    public List<String> getTLJunctions(String TLID){
+        try {
+            return (SumoStringList) stc.do_job_get(Trafficlight.getControlledJunctions(TLID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * Sets the Phase Index [0:2] of the TL. <br>
      * @param TLID Traffic Light ID
-     * @param iPhase Phase index as int
+     * @param iPhase Phase index as int, starting at 0 (?)
      * @return <code>true</code> if successfull, <code>false</code> if not.
      * @author Luca
      * */
@@ -487,7 +507,6 @@ public class SimController {
             return false;
         }
         return true;
-
     }
 
     /**
@@ -534,7 +553,7 @@ public class SimController {
      * @author Luca
      * */
     public String getTLParam(String TLID, String param){
-        String retparam = null;
+        String retparam;
         try {
             retparam = (String) stc.do_job_get(Trafficlight.getParameter(TLID,param));
         }
@@ -565,9 +584,9 @@ public class SimController {
     }
 
 
-    /// ******************************************************
-    /// **                      Junctions                   **
-    /// ******************************************************
+    // ******************************************************
+    // **                      Junctions                   **
+    // ******************************************************
 
     /**
      * Beware that this uses unchecked casting and CAN return null.
@@ -609,9 +628,9 @@ public class SimController {
 
 
 
-    /// ******************************************************
-    /// **          General Getters and Setters             **
-    /// ******************************************************
+    // ******************************************************
+    // **          General Getters and Setters             **
+    // ******************************************************
 
 
     /**
