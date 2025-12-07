@@ -1,6 +1,7 @@
 package org.group_three.model;
 
 import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
@@ -20,6 +21,8 @@ public class WVehicle {
     private SumoPosition2D pos;
     private double angle;
     private int lane;
+    private SumoColor color;
+    private double speed;
 
     /// Dont use this! >:(
     private WVehicle(){
@@ -90,8 +93,51 @@ public class WVehicle {
      * @return SumoPosition2D
      * @author Luca
      * */
-    public SumoPosition2D getPos(){ return pos;}
+    public SumoPosition2D getPos() { return pos;}
 
+    /**
+     * @return the Color in RGBA format. All values are public.
+     * @author Luca
+     * */
+    public SumoColor getColor() {return color;}
+
+    /**
+     * Sets the Color of the Vehicle.
+     * @param clr the SumoColor of the Vehicle
+     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * */
+    public boolean setColor(SumoColor clr) {
+        try {
+            stc.do_job_set(Vehicle.setColor(vehID, clr));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * @return speed as double.
+     * @author Luca
+     * */
+    public double getSpeed() {return speed;}
+
+    /**
+     * @param v Geschwindigkeit in m/s
+     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @author Luca
+     * */
+    public boolean setSpeed(double v) {
+        try {
+            stc.do_job_set(Vehicle.setSpeed(vehID, v));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * Removes the vehicle from the Simulation.
@@ -138,6 +184,8 @@ public class WVehicle {
         boolean ipos = true;
         boolean iangle = true;
         boolean ilane = true;
+        boolean icolor = true;
+        boolean ispeed = true;
 
         //position getter
         try {
@@ -163,7 +211,26 @@ public class WVehicle {
             ilane = false;
         }
 
-        return new WVehicleUpdateObject(ipos, iangle, ilane);
+        //color getter
+        try {
+            this.color = (SumoColor) stc.do_job_get(Vehicle.getColor(vehID));
+        } catch (Exception _) {
+            icolor = false;
+        }
+
+        //speed getter
+        try {
+            this.speed = (double) stc.do_job_get(Vehicle.getSpeed(vehID));
+        } catch (Exception _) {
+            ispeed = false;
+        }
+
+        return new WVehicleUpdateObject(ipos,
+                                        iangle,
+                                        ilane,
+                                        icolor,
+                                        ispeed
+        );
     }
 
 }
