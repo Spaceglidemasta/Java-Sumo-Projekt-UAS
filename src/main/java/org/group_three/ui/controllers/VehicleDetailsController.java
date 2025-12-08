@@ -44,5 +44,10 @@ public class VehicleDetailsController {
 
 	public void kill() {
 		// disable everything
+		id.setDisable(true);
+		displayName.setDisable(true);
+		sumoId.setDisable(true);
+		speed.setDisable(true);
+		color.setDisable(true);
 	}
 }

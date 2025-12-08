@@ -127,7 +127,7 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		drawCollision();
+		super.update();
 		Image visualImage = iconManager.getIcon(getColor());
 		Vector2D rect = new Vector2D(visualImage.getWidth(), visualImage.getHeight());
 		rect = rect.div(10);
@@ -158,5 +158,11 @@ public class WorldVehicle extends WorldObject {
 		}
 
 		vehicleDetailsController.update();
+	}
+
+	@Override
+	public void remove() {
+		super.remove();
+		vehicleDetailsController.kill();
 	}
 }
