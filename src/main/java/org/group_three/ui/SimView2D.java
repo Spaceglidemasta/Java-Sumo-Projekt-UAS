@@ -61,10 +61,6 @@ public class SimView2D {
 
 
 
-
-
-
-
 		Vector2D rnHeight = new Vector2D();
 		Vector2D rnWidth = new Vector2D();
 
@@ -92,7 +88,7 @@ public class SimView2D {
 		world.setViewerPosition(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
 		world.setWorldOffset(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)));
 
-
+        //TODO add for-loop for spawning traffic lights
 
 		for (String id : SimController.getMainsim().getVehicleIDList()) {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainsim().get_sumcon());
@@ -104,6 +100,7 @@ public class SimView2D {
 			worldVehicle.setwVehicle(wVehicle);
 			vehicleIds.add(id);
 		}
+
 
 		Debug.print(world.getWorldOffset());
 	}

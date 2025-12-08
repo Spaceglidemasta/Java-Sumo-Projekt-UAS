@@ -1,6 +1,7 @@
 package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
+import de.tudresden.sumo.objects.SumoGeometry;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import de.tudresden.sumo.util.SumoCommand;
@@ -400,6 +401,50 @@ public class SimController {
 
         return null;
     }
+
+    /**
+     * Function to return all Lane IDs that are used in getNetworkEdgeParam
+     * @return IDs of all Lanes in a network
+     * @author Leon
+     */
+    public SumoStringList getNetworkIDList() {
+
+        try {
+            // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
+            return (SumoStringList) _sumcon.do_job_get(Lane.getIDList());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Function to return coordinates from the start of the lane to the end, including
+     * the small bevels that make the road slightly curve
+     * @param laneID The ID of the lane
+     * @return coordinates from start to end
+     * @author Leon
+     */
+    public String getNetworkEdgeParam(String laneID) {
+
+        try {
+            SumoGeometry shape = (SumoGeometry) _sumcon.do_job_get(Lane.getShape(laneID));
+            if (shape != null){
+                return shape.toString();
+            }
+            else {
+                return  null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
 
     /**
      * Beware that this uses unchecked casting and CAN return null.
