@@ -403,14 +403,13 @@ public class SimController {
     }
 
     /**
-     * Function to return all Lane IDs that are used in getNetworkEdgeParam
+     * Function to return all Lane IDs
      * @return IDs of all Lanes in a network
      * @author Leon
      */
     public SumoStringList getNetworkIDList() {
 
         try {
-            // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
             return (SumoStringList) _sumcon.do_job_get(Lane.getIDList());
         }
         catch (Exception e) {
