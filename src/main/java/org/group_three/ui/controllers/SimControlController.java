@@ -87,8 +87,14 @@ public class SimControlController {
 	 */
 	@FXML
 	private void onPlayClicked() {
-		Debug.print("Play clicked.");
-		setPlay(!isPlay());
+		//Debug.print("Play clicked.");
+		//setPlay(!isPlay());
+		setPlay(true);
+	}
+
+	@FXML
+	private void onPauseClicked() {
+		setPlay(false);
 	}
 
 	private void onTick() {

@@ -11,7 +11,7 @@
    <children>
       <HBox styleClass="hbox" stylesheets="@../css/style.css">
          <children>
-            <Button maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="pause-button" stylesheets="@../css/style.css" />
+            <Button maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#onPauseClicked" prefHeight="32.0" prefWidth="32.0" styleClass="pause-button" stylesheets="@../css/style.css" />
             <Button maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#onPlayClicked" prefHeight="32.0" prefWidth="32.0" styleClass="play-button" stylesheets="@../css/style.css" />
             <Button maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#onStepClicked" prefHeight="32.0" prefWidth="32.0" styleClass="step-button" stylesheets="@../css/style.css" />
             <TextField fx:id="speedModifier" alignment="CENTER" maxHeight="32.0" maxWidth="64.0" minHeight="32.0" minWidth="64.0" prefHeight="32.0" prefWidth="64.0" promptText="1.0" styleClass="speed-mod" stylesheets="@../css/style.css" text="1.0">

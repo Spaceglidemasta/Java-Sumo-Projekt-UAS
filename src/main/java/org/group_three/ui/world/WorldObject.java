@@ -92,8 +92,7 @@ public class WorldObject {
 
 
 	// ????
-	private final String detailClassPath = "";
-	private Object detailClass;
+	public String detailClassPath = "";
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructor++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -389,4 +388,8 @@ public class WorldObject {
 	public Color getBoxCollisionColor() {
 		return boxCollisionColor;
 	}
+
+	public void setupDetailsPanel(FXMLLoader fxmlLoader) {}
+
+	public void updateDetailsPanel() {}
 }

@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import org.group_three.ui.world.World;
+import org.group_three.ui.world.WorldObject;
 import org.group_three.ui.world.WorldPoint;
 import org.group_three.ui.world.WorldVehicle;
 
@@ -201,10 +202,13 @@ public class CanvasController {
 		//world.world
 
 		try {
-			//Debug.print(world.interact(worldspaceMousePosition).getDisplayName());
+			WorldObject interacted = SimView2D.getWorld().interact(worldspaceMousePosition);
+			SimView2D.setSelected(interacted);
+			Debug.print(interacted.getDisplayName());
 		} catch (Exception e) {
 			//throw new RuntimeException(e);
-			//Debug.print("NULL");
+			Debug.print("NULL");
+			//SimView2D.setSelected(null);
 		}
 
 		SimView2D.getWorld().requestUpdate();

@@ -4,6 +4,8 @@ import java.io.IOException;
 
 //import org.group_three.ui.idkyet.SimulationView2D;
 //import org.group_three.ui.idkyet.SimulationView3D;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
@@ -12,6 +14,8 @@ import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
+import org.group_three.ui.SimView2D;
+import org.group_three.ui.world.WorldObject;
 
 /**
  * basically has no real use yet, is just used as a proxy for the 2d view right now
@@ -25,6 +29,11 @@ public class BodyController {
 
 	@FXML
 	private Pane binder;
+
+	@FXML
+	private AnchorPane detailsAnchor;
+
+	private static AnchorPane detailsPanel;
 
 	//private SimulationView3D sv3d;
 	//private SimulationView2D sv2d;
@@ -40,6 +49,7 @@ public class BodyController {
 	 */
 	@FXML
 	public void initialize() throws IOException {
+		detailsPanel = detailsAnchor;
 		Debug.toConsole("Body loaded.");
 		//Debug.toConsole("SubScene: " + subsceneView);
 
@@ -70,6 +80,38 @@ public class BodyController {
 		}
 
 
+
+	}
+
+	public static FXMLLoader setDetailsPanel(String fxmlPath) {
+		FXMLLoader loader = new FXMLLoader(
+				SimView2D.class.getResource(fxmlPath)
+		);
+
+		Debug.print(loader.getLocation().getPath());
+
+		Node detailsNode;
+		try {
+			detailsNode = loader.load();
+			AnchorPane.setLeftAnchor(detailsNode, 0.0);
+			AnchorPane.setRightAnchor(detailsNode, 0.0);
+			AnchorPane.setTopAnchor(detailsNode, 0.0);
+			AnchorPane.setBottomAnchor(detailsNode, 0.0);
+			Debug.print(detailsNode);
+			Debug.print(detailsPanel);
+			Debug.print(detailsPanel.getChildren().size());
+			detailsPanel.getChildren().clear();
+			Debug.print(detailsPanel.getChildren().size());
+			detailsPanel.getChildren().add(detailsNode);
+			Debug.print(detailsPanel.getChildren().size());
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+
+
+		return loader;
 	}
 
 	/*@FXML

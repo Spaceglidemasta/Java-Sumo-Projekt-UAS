@@ -1,17 +1,21 @@
 package org.group_three.ui;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
+import org.group_three.ui.controllers.BodyController;
 import org.group_three.ui.world.World;
 import org.group_three.ui.world.WorldObject;
 import org.group_three.ui.world.WorldPoint;
 import org.group_three.ui.world.WorldVehicle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,4 +138,20 @@ public class SimView2D {
 
 		world.requestUpdate();
 	}
+
+	private static WorldObject selected;
+
+	public static  WorldObject getSelected() {
+		return selected;
+	}
+
+	public static void setSelected(WorldObject selected) {
+		if (SimView2D.selected == selected) return;
+
+		SimView2D.selected = selected;
+
+		SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+	}
+
+
 }
