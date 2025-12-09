@@ -401,12 +401,14 @@ public class SimController {
         return null;
     }
 
+
+
     /**
      * Function to return all Lane IDs
      * @return IDs of all Lanes in a network
      * @author Leon
      */
-    public SumoStringList getNetworkIDList() {
+    /*public SumoStringList getNetworkIDList() {
 
         try {
             return (SumoStringList) _sumcon.do_job_get(Lane.getIDList());
@@ -416,7 +418,7 @@ public class SimController {
         }
 
         return null;
-    }
+    }*/
 
     /**
      * Function to return coordinates from the start of the lane to the end, including
@@ -425,7 +427,7 @@ public class SimController {
      * @return coordinates from start to end
      * @author Leon
      */
-    public String getNetworkEdgeParam(String laneID) {
+    /*public String getNetworkEdgeParam(String laneID) {
 
         try {
             SumoGeometry shape = (SumoGeometry) _sumcon.do_job_get(Lane.getShape(laneID));
@@ -439,7 +441,9 @@ public class SimController {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
+
+
 
 
 
