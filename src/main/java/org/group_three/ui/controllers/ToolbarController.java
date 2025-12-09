@@ -85,8 +85,8 @@ public class ToolbarController {
 	 */
 	private void setSimulationButtonStates(boolean disabled) {
 		simulationClose.setDisable(disabled);
-		simulationReload.setDisable(disabled);
-		simulationExport.setDisable(disabled);
+		simulationReload.setDisable(true); // not implemented yet
+		simulationExport.setDisable(true); // not implemented yet
 	}
 
 	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {};
