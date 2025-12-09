@@ -16,10 +16,11 @@ import java.util.List;
  */
 public class Keyboard {
 	/**
+	 * A list of all currently pressed KeyCodes.
+	 *
 	 * @author Joel
 	 */
-	private static List<KeyCode> keyCodes = new ArrayList<>() {
-	};
+	private static List<KeyCode> keyCodes = new ArrayList<>();
 
 	/**
 	 * The method to initialize this class.
