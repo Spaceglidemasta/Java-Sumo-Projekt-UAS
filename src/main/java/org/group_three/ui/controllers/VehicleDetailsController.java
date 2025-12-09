@@ -72,6 +72,11 @@ public class VehicleDetailsController {
 		color.setValue(worldVehicle.getColor());
 	}
 
+	/**
+	 * A method to visually kill the details tab. (greyed out and locked controls)
+	 * Should be called when the WorldObject class gets removed.
+	 * @author Joel
+	 */
 	public void kill() {
 		// disable everything
 		id.setDisable(true);
