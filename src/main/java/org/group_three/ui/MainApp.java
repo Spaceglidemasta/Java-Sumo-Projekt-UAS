@@ -18,6 +18,8 @@ import javafx.geometry.Rectangle2D;
  */
 public class MainApp extends Application {
 
+	//++++++++++++++++++++++++++++++++++++++++++++++++++StartMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
 	 * A custom start method, to initialize the UI manually with custom parameters.
 	 *
@@ -60,6 +62,10 @@ public class MainApp extends Application {
 		Keyboard.initialize(mainScene);
 	}
 
+	//--------------------------------------------------StartMethods--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to specify how the window should be spawned.
@@ -104,5 +110,7 @@ public class MainApp extends Application {
 
 		return null;
 	}
+
+	//--------------------------------------------------Methods--------------------------------------------------
 
 }

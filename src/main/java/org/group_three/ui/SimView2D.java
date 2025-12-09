@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
@@ -81,7 +82,8 @@ public class SimView2D {
 			new WorldPoint(
 					world,
 					worldStaticRenderTarget,
-					"WorldPoint_" + jid
+					"WorldPoint_" + jid,
+					Color.RED
 			).setPosition(jidV);
 			Debug.print(SimController.getMainstc().getJunctionPos(jid));
 		}

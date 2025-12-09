@@ -15,12 +15,20 @@ import java.util.List;
  * @see #initialize(Scene)
  */
 public class Keyboard {
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
 	 * A list of all currently pressed KeyCodes.
 	 *
 	 * @author Joel
 	 */
 	private static final List<KeyCode> keyCodes = new ArrayList<>();
+
+	//--------------------------------------------------ClassVariables--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++InitializeClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The method to initialize this class.
@@ -45,6 +53,11 @@ public class Keyboard {
 				}
 		);
 	}
+
+	//--------------------------------------------------InitializeClassMethods--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to check if the given key on the keyboard is currently pressed.
@@ -78,4 +91,7 @@ public class Keyboard {
 	public static boolean isCtrlKeyPressed() {
 		return isKeyPressed(KeyCode.CONTROL);
 	}
+
+	//--------------------------------------------------ClassMethods--------------------------------------------------
+
 }
