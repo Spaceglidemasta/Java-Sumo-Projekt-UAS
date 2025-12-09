@@ -351,6 +351,21 @@ public class WorldObject {
 		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
 		graphicsContext.fillOval((sphereCollision) * world.getViewerZoom() * -1, (sphereCollision) * world.getViewerZoom() * -1, sphereCollision * 2 * world.getViewerZoom(), sphereCollision * 2 * world.getViewerZoom());
 		graphicsContext.restore();
+
+
+		if (!useBoxCollision()) return;
+		graphicsContext.save();
+		graphicsContext.setFill(boxCollisionColor);
+		//Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
+
+		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
+		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
+		graphicsContext.fillRect((boxCollision.x) * world.getViewerZoom() * -1, (boxCollision.y) * world.getViewerZoom() * -1, boxCollision.x * 2 * world.getViewerZoom(), boxCollision.y * 2 * world.getViewerZoom());
+		graphicsContext.restore();
+
+
+
+
 	}
 	/*
 	public void drawCollision() {

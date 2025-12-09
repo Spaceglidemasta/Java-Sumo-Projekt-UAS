@@ -40,6 +40,8 @@ public class WorldVehicle extends WorldObject {
 		super(world, canvas, displayName);
 		setInteractable(true);
 		detailClassPath = "/org/group_three/ui/fxml/VehicleDetails.fxml";
+		setUseBoxCollision(true);
+		setBoxCollision(new Vector2D(16,8));
 	}
 
 	public WVehicle getwVehicle() {

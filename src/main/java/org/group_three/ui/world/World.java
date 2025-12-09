@@ -343,24 +343,31 @@ public class World {
 				if (worldObject.useBoxCollision()) {
 					Vector2D relativeHitPosition = Meth.getRelativeLocation(worldObject.getPosition(), worldObject.getRotation(), worldPosition);
 					Vector2D relativeHalfHeightHit = relativeHitPosition.abs();
+					Debug.print(relativeHalfHeightHit);
 
 					// add only to box collision hit list if hit is inside of collision
-					if (relativeHalfHeightHit.x - worldObject.getBoxCollision().x > 0 &&
-							relativeHalfHeightHit.y - worldObject.getBoxCollision().y > 0
-					) boxCollisionHits.add(worldObject);
-				}
+					if (worldObject.getBoxCollision().x >= relativeHalfHeightHit.x &&
+							worldObject.getBoxCollision().y >= relativeHalfHeightHit.y
+					) {
+						boxCollisionHits.add(worldObject);
+						//Debug.print("BoxCollision");
+					}
 
-				distances.add(distanceToObject);
-				interactableObjects.add(worldObject);
+				} else {
+					distances.add(distanceToObject);
+					interactableObjects.add(worldObject);
+
+					//Debug.print("SphereCollision");
+				}
 			}
 
-			Debug.print(distanceToObject);
+			//Debug.print(distanceToObject);
+			//Debug.print(boxCollisionHits.size());
 		}
 
-		if (interactableObjects.isEmpty()) return null;
-		if (distances.isEmpty()) return null;
-
 		if (!boxCollisionHits.isEmpty()) return boxCollisionHits.getFirst();
+
+		if (interactableObjects.isEmpty() || distances.isEmpty()) return null;
 
 		double shortestDistance = distances.getFirst();
 		int shortestDistanceIndex = 0;

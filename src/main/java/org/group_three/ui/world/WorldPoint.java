@@ -38,7 +38,7 @@ public class WorldPoint extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		drawCollision();
+		super.update();
 		Vector2D rect = new Vector2D(32, 32);
 		getGraphicsContext().save();
 		getGraphicsContext().setFill(Color.RED);
