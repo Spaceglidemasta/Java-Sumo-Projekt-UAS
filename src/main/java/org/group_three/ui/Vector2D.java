@@ -11,14 +11,26 @@ import de.tudresden.sumo.objects.SumoPosition2D;
  * @see #Vector2D(double x, double y)
  */
 public class Vector2D {
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
+	 * The x component of the Vector2D.
+	 *
 	 * @author Joel
 	 */
 	public double x = 0;
 	/**
+	 * The y component of the Vector2D.
+	 *
 	 * @author Joel
 	 */
 	public double y = 0;
+
+	//--------------------------------------------------MemberVariables--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The constructor to initialize the Vector2D with its x- and y-components being 0.
@@ -59,6 +71,23 @@ public class Vector2D {
 		this.x = sumoPosition2D.x;
 		this.y = sumoPosition2D.y;
 	}
+
+	//--------------------------------------------------Constructors--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * Overrides the toString() method to return the Vector2D properly as a string.
+	 *
+	 * @return The Vector2D as a string.
+	 * @author Joel
+	 */
+	@Override
+	public String toString() {
+		return "Vector2D{x=" + x + ", y=" + y + "}";
+	}
+
 
 	/**
 	 * A method to mathematically add another Vector2D to the Vector2D.
@@ -120,48 +149,6 @@ public class Vector2D {
 		return new Vector2D(x / v, y / v);
 	}
 
-	/**
-	 * Overrides the toString() method to return the Vector2D properly as a string.
-	 *
-	 * @return The Vector2D as a string.
-	 * @author Joel
-	 */
-	@Override
-	public String toString() {
-		return "Vector2D{x=" + x + ", y=" + y + "}";
-	}
-
-	/**
-	 * A method to round the x- and y-components of the Vector2D to 9 decimal places.
-	 * Should be used to correct the component values after mathematical operations.
-	 * (because of the imprecise nature of doubles)
-	 *
-	 * @return The Vector2D with its components rounded to 9 decimal places.
-	 * @author Joel
-	 */
-	public Vector2D round() {
-		double x = Math.round(this.x * 1_000_000_000d) / 1_000_000_000d;
-		double y = Math.round(this.y * 1_000_000_000d) / 1_000_000_000d;
-
-		return new Vector2D(x, y);
-	}
-
-	/**
-	 * A method to get the logical rotation of the Vector2D in degrees.
-	 *
-	 * @return The rotation in degrees.
-	 * Up is 0°, Right is 90°, Down is 180° and Left is 270°
-	 * @author Joel
-	 */
-	public double getRotation() {
-		double rotation = Math.toDegrees(Math.atan2(-y, x)) + 90;
-
-		if (rotation < 0) {
-			rotation += 360;
-		}
-
-		return rotation;
-	}
 
 	/**
 	 * A method to negate the y-component of a Vector2D.
@@ -187,16 +174,6 @@ public class Vector2D {
 		return new Vector2D(-x, -y);
 	}
 
-	/**
-	 * A method to get the length of a Vector2D.
-	 * √(x²+y²)
-	 *
-	 * @return The vectors length as a double,
-	 * @author Joel
-	 */
-	public double length() {
-		return Math.sqrt(x * x + y * y);
-	}
 
 	/**
 	 * A method to rotate the Vector2D.
@@ -225,6 +202,50 @@ public class Vector2D {
 	}
 
 	/**
+	 * A method to get the logical rotation of the Vector2D in degrees.
+	 *
+	 * @return The rotation in degrees.
+	 * Up is 0°, Right is 90°, Down is 180° and Left is 270°
+	 * @author Joel
+	 */
+	public double getRotation() {
+		double rotation = Math.toDegrees(Math.atan2(-y, x)) + 90;
+
+		if (rotation < 0) {
+			rotation += 360;
+		}
+
+		return rotation;
+	}
+
+
+	/**
+	 * A method to round the x- and y-components of the Vector2D to 9 decimal places.
+	 * Should be used to correct the component values after mathematical operations.
+	 * (because of the imprecise nature of doubles)
+	 *
+	 * @return The Vector2D with its components rounded to 9 decimal places.
+	 * @author Joel
+	 */
+	public Vector2D round() {
+		double x = Math.round(this.x * 1_000_000_000d) / 1_000_000_000d;
+		double y = Math.round(this.y * 1_000_000_000d) / 1_000_000_000d;
+
+		return new Vector2D(x, y);
+	}
+
+	/**
+	 * A method to get the length of a Vector2D.
+	 * √(x²+y²)
+	 *
+	 * @return The vectors length as a double,
+	 * @author Joel
+	 */
+	public double length() {
+		return Math.sqrt(x * x + y * y);
+	}
+
+	/**
 	 * A method to convert the x and y components of the Vector2D to its absolute values.
 	 *
 	 * @return The Vector2D with always positive components.
@@ -233,4 +254,7 @@ public class Vector2D {
 	public Vector2D abs() {
 		return new Vector2D(Math.abs(x), Math.abs(y));
 	}
+
+	//--------------------------------------------------Methods--------------------------------------------------
+
 }

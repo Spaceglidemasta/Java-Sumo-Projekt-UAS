@@ -20,7 +20,7 @@ public class Keyboard {
 	 *
 	 * @author Joel
 	 */
-	private static List<KeyCode> keyCodes = new ArrayList<>();
+	private static final List<KeyCode> keyCodes = new ArrayList<>();
 
 	/**
 	 * The method to initialize this class.
