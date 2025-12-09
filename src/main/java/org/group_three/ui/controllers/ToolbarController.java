@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 // import java.io.IOException; for what was that?
 
+import org.group_three.api.SimController;
 import org.group_three.debug.Console;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
@@ -17,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
+import org.group_three.ui.SimView2D;
 
 /**
  * Comment
@@ -101,12 +103,12 @@ public class ToolbarController {
 	private void setLoadedSimulation(String path) {
 		if (path == null) {
 			loadedSimulation = null;
-			setSimulationButtonStates(false);
+			setSimulationButtonStates(true);
 			return;
 		}
 
 		loadedSimulation = path;
-		setSimulationButtonStates(true);
+		setSimulationButtonStates(false);
 
 		// try to remove entry first before adding it at the start of the list to always have the newest selection at the first entry
 		recentlyLoadedSimulations.remove(loadedSimulation);
@@ -246,6 +248,8 @@ public class ToolbarController {
 	private void onSimulationCloseClicked() {
 		Debug.toConsole("Simulation -> Close");
 		setLoadedSimulation(null);
+		SimController.getMainstc().close();
+		SimView2D.newWorld();
 	}
 
 	/**

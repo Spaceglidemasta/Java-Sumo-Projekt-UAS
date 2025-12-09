@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.SimControlController;
 
 import java.util.*;
 
@@ -86,6 +87,7 @@ public class World {
 	 * @author Joel
 	 */
 	public World() {
+		SimControlController.setPlay(false);
 	}
 
 	/**
