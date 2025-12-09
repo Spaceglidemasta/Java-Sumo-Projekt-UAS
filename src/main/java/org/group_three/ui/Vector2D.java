@@ -224,6 +224,12 @@ public class Vector2D {
 		return Meth.addRelativeLocation(pivot, degrees, Meth.getRelativeLocation(pivot, 0, this));
 	}
 
+	/**
+	 * A method to convert the x and y components of the Vector2D to its absolute values.
+	 *
+	 * @return The Vector2D with always positive components.
+	 * @author Joel
+	 */
 	public Vector2D abs() {
 		return new Vector2D(Math.abs(x), Math.abs(y));
 	}
