@@ -1,7 +1,6 @@
 package org.group_three.ui;
 
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 
 import javafx.application.Application;
 import javafx.stage.Screen;
@@ -12,75 +11,86 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 
 /**
- * Comment
+ * The MainApp class which is the GUI.
+ * Any UI element will be a part or be referenced in some way here.
  *
  * @author Joel
  */
 public class MainApp extends Application {
 	/**
-	 * Comment
+	 * The applications start method which can be called after the application was created.
 	 *
+	 * @param stage The default stage which is created by the Application class
 	 * @author Joel
-	 *
-	 * @param stage
-	 * Param-Comment
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(UI.appFXML));
-
-		Parent root = loader.load();
-
-		Scene scene = new Scene(root);
+		// Create and Load the FXML based ui into a scene
+		Scene mainScene = new Scene(new FXMLLoader(getClass().getResource(UI.appFXML)).load());
 
 		// set minium app window size
 		stage.setMinWidth(UI.appMinWidth);
 		stage.setMinHeight(UI.appMinHeight);
 
-
 		// Spawn window in the middle of the screen at 60% monitor size
-		// is this even needed?
-		Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+		setWindowSpawnSettings(stage, 0.6, 0.6, true);
 
-		double w = screen.getWidth() * 0.60;
-		double h = screen.getHeight() * 0.60;
-
-		stage.setWidth(w);
-		stage.setHeight(h);
-
-		stage.setX((screen.getWidth() - w) / 2);
-		stage.setY((screen.getHeight() - h) / 2);
-
-        if(Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(stage.getX() + ":" + stage.getY());
-		//-------------------------------------------------------------
-
+		// Set the window title
 		stage.setTitle(UI.appTitle);
+
+		// Set the window icon
 		stage.getIcons().add(getAppIcon());
-		stage.setScene(scene); // can also be used to switch scenes later on
+
+		// Set and show the created FXML scene in the window
+		stage.setScene(mainScene); // can also be used to switch scenes later on
 		stage.show();
 
-		Keyboard.initialize(scene);
+		// Initialize the Keyboard class so it listens to keyboard events
+		Keyboard.initialize(mainScene);
 	}
 
 	/**
-	 * Comment
+	 * A method to specify how the window should be spawned.
+	 * (size and location)
 	 *
+	 * @param stage            The stage which is created by the start method of the Application class.
+	 * @param widthPercentage  A double ranging from 0 to 1. 0 being 0% of the screen and 1 being 100% of the screen.
+	 * @param heightPercentage A double ranging from 0 to 1. 0 being 0% of the screen and 1 being 100% of the screen.
+	 * @param center           A boolean to decide if the window location should be perfectly in the center or if it should use the default spawn lcoation.
 	 * @author Joel
+	 */
+	public void setWindowSpawnSettings(Stage stage, double widthPercentage, double heightPercentage, boolean center) {
+		// Calculate window size values
+		Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+		double w = screen.getWidth() * widthPercentage;
+		double h = screen.getHeight() * heightPercentage;
+
+		// Set window size
+		stage.setWidth(w);
+		stage.setHeight(h);
+
+		// Move window to screen center
+		if (center) {
+			stage.setX((screen.getWidth() - w) / 2);
+			stage.setY((screen.getHeight() - h) / 2);
+		}
+	}
+
+	/**
+	 * A custom start method, to initialize the UI manually with custom parameters.
 	 *
-	 * @param args
-	 * Param-Comment
+	 * @param args The launch/start arguments array.
+	 * @author Joel
 	 */
 	public void start(String[] args) {
 		launch(args);
 	}
 
 	/**
-	 * Comment
+	 * A simple method to load(stream) and get the app icon as an image.
 	 *
+	 * @return The app icon as an image.
 	 * @author Joel
-	 *
-	 * @return
-	 * Return-Comment
 	 */
 	public Image getAppIcon() //add error handling, if no "icons" is found
 	{
