@@ -1,5 +1,8 @@
 package org.group_three.ui;
 
+import de.tudresden.sumo.objects.SumoColor;
+import javafx.scene.paint.Color;
+
 /**
  * Meth, the custom Math class
  *
@@ -100,5 +103,45 @@ public class Meth {
 	 */
 	public static double addRelativeRotation(double rotation, double relativeRotation) {
 		return rotation + relativeRotation;
+	}
+
+	public static Color convertSumoColor(SumoColor sumoColor) {
+		return new Color(
+				byteToDouble(sumoColor.r),
+				byteToDouble(sumoColor.g),
+				byteToDouble(sumoColor.b),
+				byteToDouble(sumoColor.a)
+		);
+	}
+
+	public static double byteToDouble(byte input) {
+		// byte to double conversion
+		double value = (double)input/255;
+
+		// double clamp to 0 - 1
+		if (value < 0) value = 0;
+		else if (value > 1) value = 1;
+
+		return value;
+	}
+
+	public static SumoColor converColorToSumoColor(Color color) {
+		return new SumoColor(
+				doubleToByte(color.getRed()),
+				doubleToByte(color.getGreen()),
+				doubleToByte(color.getBlue()),
+				doubleToByte(color.getOpacity())
+		);
+	}
+
+	public static byte doubleToByte(double input) {
+		//
+		double value = input;
+
+		// double clamp to 0 - 1
+		if (value < 0) value = 0;
+		else if (value > 1) value = 1;
+
+		return (byte) Math.round(value * 255);
 	}
 }

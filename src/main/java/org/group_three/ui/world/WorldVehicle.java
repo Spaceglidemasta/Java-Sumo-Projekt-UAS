@@ -73,23 +73,7 @@ public class WorldVehicle extends WorldObject {
 			wVehicle.getColor().a == -1
 		) return getColor();
 
-		return new Color(
-				byteToDouble(wVehicle.getColor().r),
-				byteToDouble(wVehicle.getColor().g),
-				byteToDouble(wVehicle.getColor().b),
-				byteToDouble(wVehicle.getColor().a)
-		);
-	}
-
-	public double byteToDouble(byte input) {
-		// byte to double ocnversion
-		double value = (double)input/255;
-
-		// double clamp to 0 - 1
-		if (value < 0) value = 0;
-		else if (value > 1) value = 1;
-
-		return value;
+		return Meth.convertSumoColor(wVehicle.getColor());
 	}
 
 	private WVehicle wVehicle;
