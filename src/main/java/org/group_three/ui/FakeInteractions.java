@@ -17,11 +17,18 @@ import java.util.List;
  * @author Joel, Luca
  */
 public class FakeInteractions {
-	public static boolean loadSimulation(List<String> paths) throws InvalidFilesSelected { // change Exception later
 
-		String network = null;
-		String route = null;
-		String config = null;
+    /**
+     * Gets called after selecting one or multiple Files. <br>
+     * Loads the Simulation with the selected files and sets it to main.
+     * @param paths A List of Paths to be opened via SimController(...)
+     * @author Luca, Joel
+     * */
+	public static boolean loadSimulation(List<File> paths) throws InvalidFilesSelected {
+
+        File network = null;
+        File route = null;
+        File config = null;
 
 		switch (paths.size()) {
 			//No files selected => Exception
@@ -32,25 +39,28 @@ public class FakeInteractions {
 				//1 File selected => expect .sumocfg file
 			case 1:
 				//Throw custom exception if not .sumocfg file
-				if (!paths.getFirst().matches(".*\\.sumocfg$")) {
+				if (!paths.getFirst().toString().matches(".*\\.sumocfg$")) {
 					Debug.toConsole("InvalidFilesSelected: Selected File is not of type .sumocfg");
 					throw new InvalidFilesSelected("Selected File is not of type .sumocfg");
 				}
 				//convert path to a relative path based on the SumoConfig path
-				config = getRelativePath(paths.getFirst());
+				config = paths.getFirst();
 				break;
 
 			//2 Files selected => expect route and network file
 			case 2:
-				// check if both filetypes are present
-				if (paths.get(0).matches(".*\\.net\\.xml$") && paths.get(1).matches(".*\\.rou\\.xml$")) {
+				// check if both filetypes are present, and in which order
+				if (       paths.get(0).toString().matches(".*\\.net\\.xml$")
+                        && paths.get(1).toString().matches(".*\\.rou\\.xml$")) {
 					//convert path to a relative path based on the SumoConfig path
-					network = getRelativePath(paths.get(0));
-					route = getRelativePath(paths.get(1));
-				} else if (paths.get(0).matches(".*\\.rou\\.xml$") && paths.get(1).matches(".*\\.net\\.xml$")) {
+					network = paths.get(0);
+					route = paths.get(1);
+
+				} else if (paths.get(0).toString().matches(".*\\.rou\\.xml$")
+                        && paths.get(1).toString().matches(".*\\.net\\.xml$")) {
 					//convert path to a relative path based on the SumoConfig path
-					route = getRelativePath(paths.get(0));
-					network = getRelativePath(paths.get(1));
+					route = paths.get(0);
+					network = paths.get(1);
 				}
 				//throw custom error if they aren't
 				else {
@@ -72,16 +82,15 @@ public class FakeInteractions {
 		SimController simcon = null;
 		//check which constructor needs to be invoked
 		if (config != null) {
-			simcon = new SimController(config);
+			simcon = new SimController(getRelativePath(config.getAbsolutePath()));
 		} else {
-			simcon = new SimController(network, route);
+			simcon = new SimController( getRelativePath(network.getAbsolutePath()),
+                                        getRelativePath(route.getAbsolutePath()));
 		}
 
-		//set selected simulation as the main, global / static simulation.
-		simcon.setMainsim(true);
 
-		// Create a new World for the opened simulation
-		SimView2D.newWorld();
+        //set selected simulation as the main, global / static simulation.
+        simcon.setMainstc(true);
 
         return true;
 	}

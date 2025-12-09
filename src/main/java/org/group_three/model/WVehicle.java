@@ -1,8 +1,10 @@
 package org.group_three.model;
 
 import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
+import org.group_three.api.SimController;
 
 /**
  * <h1>WVehicle</h1>
@@ -12,18 +14,21 @@ import it.polito.appeal.traci.SumoTraciConnection;
 public class WVehicle {
 
     private final String vehID;
-    private final SumoTraciConnection _sumcon;
+    private final SumoTraciConnection stc;
+
 
     //Attributes-Attributes
     private SumoPosition2D pos;
     private double angle;
     private int lane;
+    private SumoColor color;
+    private double speed;
 
     /// Dont use this! >:(
     private WVehicle(){
         //Redundant bs to quiet intelliJ
         this.vehID = null;
-        this._sumcon = null;
+        this.stc = null;
     }
 
 
@@ -34,9 +39,22 @@ public class WVehicle {
      * @author Luca
      *
      */
-    public WVehicle(String id, SumoTraciConnection sc){
+    public WVehicle(String id, SumoTraciConnection stc){
         this.vehID = id;
-        this._sumcon = sc;
+        this.stc = stc;
+    }
+
+
+    /**
+     * Only constructor for this Class, invokes a new Vehicle with just the VehicleID
+     *
+     * @param id VehicleID
+     * @author Luca
+     *
+     */
+    public WVehicle(String id, SimController sumcon){
+        this.vehID = id;
+        this.stc = sumcon.getStc();
     }
 
 
@@ -50,7 +68,7 @@ public class WVehicle {
      * Returns the Sumo Connection
      * @author Luca
      * */
-    public SumoTraciConnection getSumoCon() {return _sumcon;}
+    public SumoTraciConnection getSumoCon() {return stc;}
 
     /**
      * Returns the Angle
@@ -75,8 +93,51 @@ public class WVehicle {
      * @return SumoPosition2D
      * @author Luca
      * */
-    public SumoPosition2D getPos(){ return pos;}
+    public SumoPosition2D getPos() { return pos;}
 
+    /**
+     * @return the Color in RGBA format. All values are public.
+     * @author Luca
+     * */
+    public SumoColor getColor() {return color;}
+
+    /**
+     * Sets the Color of the Vehicle.
+     * @param clr the SumoColor of the Vehicle
+     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * */
+    public boolean setColor(SumoColor clr) {
+        try {
+            stc.do_job_set(Vehicle.setColor(vehID, clr));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * @return speed as double.
+     * @author Luca
+     * */
+    public double getSpeed() {return speed;}
+
+    /**
+     * @param v Geschwindigkeit in m/s
+     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @author Luca
+     * */
+    public boolean setSpeed(double v) {
+        try {
+            stc.do_job_set(Vehicle.setSpeed(vehID, v));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * Removes the vehicle from the Simulation.
@@ -86,7 +147,7 @@ public class WVehicle {
      * */
     public boolean remove(byte reason){
         try {
-            _sumcon.do_job_set(Vehicle.remove(vehID, reason));
+            stc.do_job_set(Vehicle.remove(vehID, reason));
         }
         catch (Exception _){
             return false;
@@ -101,7 +162,7 @@ public class WVehicle {
      * */
     public boolean remove(){
         try {
-            _sumcon.do_job_set(Vehicle.remove(vehID, (byte)0));
+            stc.do_job_set(Vehicle.remove(vehID, (byte)0));
         }
         catch (Exception _){
             return false;
@@ -123,10 +184,12 @@ public class WVehicle {
         boolean ipos = true;
         boolean iangle = true;
         boolean ilane = true;
+        boolean icolor = true;
+        boolean ispeed = true;
 
         //position getter
         try {
-            this.pos = (SumoPosition2D) _sumcon.do_job_get(Vehicle.getPosition(vehID));
+            this.pos = (SumoPosition2D) stc.do_job_get(Vehicle.getPosition(vehID));
         }
         catch (Exception _) {
             ipos = false;
@@ -134,7 +197,7 @@ public class WVehicle {
 
         //angle getter
         try {
-            this.angle = (double) _sumcon.do_job_get(Vehicle.getAngle(vehID));
+            this.angle = (double) stc.do_job_get(Vehicle.getAngle(vehID));
         }
         catch (Exception _) {
             iangle = false;
@@ -142,13 +205,32 @@ public class WVehicle {
 
         //lane getter
         try {
-            this.lane = (int) _sumcon.do_job_get(Vehicle.getLaneIndex(vehID));
+            this.lane = (int) stc.do_job_get(Vehicle.getLaneIndex(vehID));
         }
         catch (Exception _) {
             ilane = false;
         }
 
-        return new WVehicleUpdateObject(ipos, iangle, ilane);
+        //color getter
+        try {
+            this.color = (SumoColor) stc.do_job_get(Vehicle.getColor(vehID));
+        } catch (Exception _) {
+            icolor = false;
+        }
+
+        //speed getter
+        try {
+            this.speed = (double) stc.do_job_get(Vehicle.getSpeed(vehID));
+        } catch (Exception _) {
+            ispeed = false;
+        }
+
+        return new WVehicleUpdateObject(ipos,
+                                        iangle,
+                                        ilane,
+                                        icolor,
+                                        ispeed
+        );
     }
 
 }

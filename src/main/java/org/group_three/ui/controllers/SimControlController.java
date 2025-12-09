@@ -39,7 +39,7 @@ public class SimControlController {
 	@FXML
 	private void onStepClicked() {
 		Debug.print("Step clicked.");
-		SimController.getMainsim().step();
+		SimController.getMainstc().step();
 		SimView2D.update();
 	}
 

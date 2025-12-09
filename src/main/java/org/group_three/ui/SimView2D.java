@@ -55,7 +55,7 @@ public class SimView2D {
 
 
 
-		if (SimController.getMainsim() == null) return;
+		if (SimController.getMainstc() == null) return;
 
 
 
@@ -65,9 +65,9 @@ public class SimView2D {
 		Vector2D rnWidth = new Vector2D();
 
 
-		for (String jid : SimController.getMainsim().getJunctionIDList()) {
-			Vector2D jidV = new Vector2D(SimController.getMainsim().getJunctionPos(jid).x, SimController.getMainsim().getJunctionPos(jid).y);
-			boolean firstIteration = jid.equals(SimController.getMainsim().getJunctionIDList().getFirst());
+		for (String jid : SimController.getMainstc().getJunctionIDList()) {
+			Vector2D jidV = new Vector2D(SimController.getMainstc().getJunctionPos(jid).x, SimController.getMainstc().getJunctionPos(jid).y);
+			boolean firstIteration = jid.equals(SimController.getMainstc().getJunctionIDList().getFirst());
 
 			if (rnHeight.x > jidV.x || firstIteration) rnHeight.x = jidV.x;
 			if (rnHeight.y < jidV.x || firstIteration) rnHeight.y = jidV.x;
@@ -79,7 +79,7 @@ public class SimView2D {
 					worldStaticRenderTarget,
 					"WorldPoint_" + jid
 			).setPosition(jidV);
-			Debug.print(SimController.getMainsim().getJunctionPos(jid));
+			Debug.print(SimController.getMainstc().getJunctionPos(jid));
 		}
 
 		Debug.print(rnHeight + " --- " + rnWidth);
@@ -90,8 +90,8 @@ public class SimView2D {
 
         //TODO add for-loop for spawning traffic lights
 
-		for (String id : SimController.getMainsim().getVehicleIDList()) {
-			WVehicle wVehicle = new WVehicle(id, SimController.getMainsim().get_sumcon());
+		for (String id : SimController.getMainstc().getVehicleIDList()) {
+			WVehicle wVehicle = new WVehicle(id, SimController.getMainstc().getStc());
 			WorldVehicle worldVehicle = new WorldVehicle(
 					world,
 					worldStaticRenderTarget,
@@ -106,7 +106,7 @@ public class SimView2D {
 	}
 
 	public static void update() {
-		List<String> currentVehicleList = SimController.getMainsim().getVehicleIDList();
+		List<String> currentVehicleList = SimController.getMainstc().getVehicleIDList();
 
 		for (WorldObject worldObject : world.getWorldObjects()) {
 			if (worldObject.getClass() == WorldVehicle.class)
@@ -119,7 +119,7 @@ public class SimView2D {
 
 		for (String id : currentVehicleList) {
 			if (vehicleIds.contains(id)) continue;
-			WVehicle wVehicle = new WVehicle(id, SimController.getMainsim().get_sumcon());
+			WVehicle wVehicle = new WVehicle(id, SimController.getMainstc().getStc());
 			WorldVehicle worldVehicle = new WorldVehicle(
 					world,
 					worldStaticRenderTarget,

@@ -38,12 +38,12 @@ public class ToolbarController {
 	// TODO: Fix issues from multi file selection
 
 	/**
-	 * Ini
+	 * Initializes toolbar
 	 *
 	 * @author Joel
 	 */
 	@FXML
-	private void initialize() { //throws IOException { for what was that?
+	private void initialize() { //throws IOException  for what was that?
 		Debug.toConsole("Toolbar loaded.");
 
 		// --> add load recentlyLoadedSimulations from file code here <--
@@ -125,13 +125,13 @@ public class ToolbarController {
 	 * @param paths
 	 * Param-Comment
 	 */
-	private void tryLoadingSimulation(List<String> paths) {
+	private void tryLoadingSimulation(List<File> paths) {
 		validateRecentlyLoadedSimulations();
 
 		StringBuilder mergedPath = new StringBuilder();
 
-		for (String path : paths) {
-			mergedPath.append(path);
+		for (File path : paths) {
+			mergedPath.append(path.getAbsolutePath());
 		}
 
 		// don't attempt to load the same simulation if its currently loaded
@@ -206,16 +206,16 @@ public class ToolbarController {
 
 		List<File> files = fileChooser.showOpenMultipleDialog(null);
 		if (files != null) {
-			List<String> paths = new ArrayList<String>() {};
+			//List<String> paths = new ArrayList<String>() {};
 
 			for (File file : files) {
 				// if a file was selected do something with it here
 				Debug.toConsole("Selected: " + file.getName());
 				Debug.toConsole(file.getPath());
-				paths.add(file.getPath());
+				//paths.add(file.getPath());
 			}
 
-			tryLoadingSimulation(paths);
+			tryLoadingSimulation(files);
 		}
 	}
 
