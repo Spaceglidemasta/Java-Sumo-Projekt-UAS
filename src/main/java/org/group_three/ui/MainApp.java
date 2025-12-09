@@ -17,6 +17,17 @@ import javafx.geometry.Rectangle2D;
  * @author Joel
  */
 public class MainApp extends Application {
+
+	/**
+	 * A custom start method, to initialize the UI manually with custom parameters.
+	 *
+	 * @param args The launch/start arguments array.
+	 * @author Joel
+	 */
+	public void start(String[] args) {
+		launch(args);
+	}
+
 	/**
 	 * The applications start method which can be called after the application was created.
 	 *
@@ -49,6 +60,7 @@ public class MainApp extends Application {
 		Keyboard.initialize(mainScene);
 	}
 
+
 	/**
 	 * A method to specify how the window should be spawned.
 	 * (size and location)
@@ -77,23 +89,13 @@ public class MainApp extends Application {
 	}
 
 	/**
-	 * A custom start method, to initialize the UI manually with custom parameters.
-	 *
-	 * @param args The launch/start arguments array.
-	 * @author Joel
-	 */
-	public void start(String[] args) {
-		launch(args);
-	}
-
-	/**
 	 * A simple method to load(stream) and get the app icon as an image.
 	 *
 	 * @return The app icon as an image.
 	 * @author Joel
 	 */
-	public Image getAppIcon() //add error handling, if no "icons" is found
-	{
+	public Image getAppIcon() {
+		//add error handling, if no "icons" is found
 		try {
 			return new Image(getClass().getResourceAsStream(UI.appIcon));
 		} catch (Exception e) {
@@ -102,4 +104,5 @@ public class MainApp extends Application {
 
 		return null;
 	}
+
 }
