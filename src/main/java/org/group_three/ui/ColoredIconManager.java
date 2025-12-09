@@ -84,7 +84,7 @@ public class ColoredIconManager {
 			for (int x = 0; x < w; x++) {
 				Color c = reader.getColor(x, y);
 
-				if (c.getOpacity() > 0) {
+				if (c == UI.vehicleIconBaseColor) {
 					Color newColor = new Color(
 							color.getRed(),
 							color.getGreen(),

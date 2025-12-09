@@ -21,6 +21,8 @@ public final class UI {
 	public static final Color boxCollisionColor = new Color(0,0,1,0.1);
 	// The default color of vehicles when they are created.
 	public static final Color defaultVehicleColor = new Color(1, 1, 1, 1);
+	// THe color value which should be replaced on runtime to create color coded icons.
+	public static final Color vehicleIconBaseColor = new Color(1, 1, 1, 1);
 
 
 	// The minimal window width.
