@@ -32,7 +32,7 @@ public class Meth {
 	 * @author Joel
 	 */
 	public static double lerp(double d0, double d1, double lerp) {
-		return d0+(d1-d0)*lerp;
+		return d0 + (d1 - d0) * lerp;
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class Meth {
 
 	public static double byteToDouble(byte input) {
 		// byte to double conversion
-		double value = (double)input/255;
+		double value = (double) input / 255;
 
 		// double clamp to 0 - 1
 		if (value < 0) value = 0;
@@ -125,7 +125,7 @@ public class Meth {
 		return value;
 	}
 
-	public static SumoColor converColorToSumoColor(Color color) {
+	public static SumoColor convertColorToSumoColor(Color color) {
 		return new SumoColor(
 				doubleToByte(color.getRed()),
 				doubleToByte(color.getGreen()),

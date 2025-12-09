@@ -22,10 +22,8 @@ public class SimControlController {
 	/**
 	 * Comment
 	 *
+	 * @throws IOException Throw-Comment
 	 * @author Joel
-	 *
-	 * @throws IOException
-	 * Throw-Comment
 	 */
 	@FXML
 	public void initialize() throws IOException {
@@ -47,7 +45,7 @@ public class SimControlController {
 						speedModifier.textProperty().set(String.valueOf(speedModValue));
 					}
 
-		});
+				});
 	}
 
 	private static Timeline timeline;

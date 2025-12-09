@@ -65,7 +65,7 @@ public class CanvasController {
 		worldDynamicRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldDynamicRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
 
-		SimView2D.setup(worldStaticRenderTarget,
+		SimView2D.initialize(worldStaticRenderTarget,
 				worldDynamicRenderTarget,
 				renderTargetBounds);
 	}

@@ -17,19 +17,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimView2D {
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	private static Canvas worldStaticRenderTarget;
 	private static Canvas worldDynamicRenderTarget;
 	private static Pane renderTargetBounds;
 
 	private static GraphicsContext worldStaticRenderTarget_GraphicsContext;
 
-	public static World getWorld() {
-		return world;
-	}
-
 	private static World world;
+	private static WorldObject selected;
+	private static final List<String> vehicleIds = new ArrayList<>();
 
-	public static void setup(Canvas wSRT, Canvas wDRT, Pane rTB) {
+	//--------------------------------------------------ClassVariables--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++InitializeClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	public static void initialize(Canvas wSRT, Canvas wDRT, Pane rTB) {
 		worldStaticRenderTarget = wSRT;
 		worldDynamicRenderTarget = wDRT;
 		renderTargetBounds = rTB;
@@ -38,7 +44,36 @@ public class SimView2D {
 		newWorld();
 	}
 
-	private static final List<String> vehicleIds = new ArrayList<>();
+	//--------------------------------------------------InitializeClassMethods--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	public static WorldObject getSelected() {
+		return selected;
+	}
+
+	public static World getWorld() {
+		return world;
+	}
+
+	//--------------------------------------------------GetterClassMethods--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	public static void setSelected(WorldObject selected) {
+		if (SimView2D.selected == selected) return;
+
+		SimView2D.selected = selected;
+
+		SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+	}
+
+	//--------------------------------------------------SetterClassMethods--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	public static void newWorld() {
 		world = new World();
@@ -57,11 +92,7 @@ public class SimView2D {
 		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth() / 2, worldStaticRenderTarget.getHeight() / 2));
 
 
-
 		if (SimController.getMainstc() == null) return;
-
-
-
 
 
 		Vector2D rnHeight = new Vector2D();
@@ -88,11 +119,11 @@ public class SimView2D {
 
 		Debug.print(rnHeight + " --- " + rnWidth);
 
-		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128,128)));
+		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128, 128)));
 		world.setViewerPosition(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
 		world.setWorldOffset(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)));
 
-        //TODO add for-loop for spawning traffic lights
+		//TODO add for-loop for spawning traffic lights
 
 		for (String id : SimController.getMainstc().getVehicleIDList()) {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainstc().getStc());
@@ -113,9 +144,9 @@ public class SimView2D {
 		List<String> currentVehicleList = SimController.getMainstc().getVehicleIDList();
 
 		for (WorldObject worldObject : world.getWorldObjects()) {
-			if (worldObject.getClass() == WorldVehicle.class)
-			{
-				if (currentVehicleList.contains(((WorldVehicle)worldObject).getwVehicle().getID())) worldObject.updateSim();
+			if (worldObject.getClass() == WorldVehicle.class) {
+				if (currentVehicleList.contains(((WorldVehicle) worldObject).getwVehicle().getID()))
+					worldObject.updateSim();
 				else worldObject.remove();
 			}
 		}
@@ -136,19 +167,6 @@ public class SimView2D {
 		world.requestUpdate();
 	}
 
-	private static WorldObject selected;
-
-	public static  WorldObject getSelected() {
-		return selected;
-	}
-
-	public static void setSelected(WorldObject selected) {
-		if (SimView2D.selected == selected) return;
-
-		SimView2D.selected = selected;
-
-		SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
-	}
-
+	//--------------------------------------------------ClassMethods--------------------------------------------------
 
 }

@@ -41,7 +41,7 @@ public class WorldVehicle extends WorldObject {
 		setInteractable(true);
 		detailClassPath = "/org/group_three/ui/fxml/VehicleDetails.fxml";
 		setUseBoxCollision(true);
-		setBoxCollision(new Vector2D(16,8));
+		setBoxCollision(new Vector2D(16, 8));
 	}
 
 	public WVehicle getwVehicle() {
@@ -70,9 +70,9 @@ public class WorldVehicle extends WorldObject {
 
 	public Color convertWVColor() {
 		if (wVehicle.getColor().r == -1 &&
-			wVehicle.getColor().g == -1 &&
-			wVehicle.getColor().b == 0 &&
-			wVehicle.getColor().a == -1
+				wVehicle.getColor().g == -1 &&
+				wVehicle.getColor().b == 0 &&
+				wVehicle.getColor().a == -1
 		) return getColor();
 
 		return Meth.convertSumoColor(wVehicle.getColor());

@@ -78,10 +78,8 @@ public class ToolbarController {
 	/**
 	 * func to disable/reactivate the close, reload and export buttons when no simulation is loaded
 	 *
+	 * @param disabled Param-Comment
 	 * @author Joel
-	 *
-	 * @param disabled
-	 * Param-Comment
 	 */
 	private void setSimulationButtonStates(boolean disabled) {
 		simulationClose.setDisable(disabled);
@@ -89,16 +87,15 @@ public class ToolbarController {
 		simulationExport.setDisable(true); // not implemented yet
 	}
 
-	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {};
+	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {
+	};
 	private String loadedSimulation = null;
 
 	/**
 	 * Comment
 	 *
+	 * @param path Param-Comment
 	 * @author Joel
-	 *
-	 * @param path
-	 * Param-Comment
 	 */
 	private void setLoadedSimulation(String path) {
 		if (path == null) {
@@ -122,10 +119,8 @@ public class ToolbarController {
 	/**
 	 * Comment
 	 *
+	 * @param paths Param-Comment
 	 * @author Joel
-	 *
-	 * @param paths
-	 * Param-Comment
 	 */
 	private void tryLoadingSimulation(List<File> paths) {
 		validateRecentlyLoadedSimulations();
@@ -137,16 +132,16 @@ public class ToolbarController {
 		}
 
 		// don't attempt to load the same simulation if its currently loaded
-		if (mergedPath.toString().equals(loadedSimulation)) return; // ----------- add a check to not display the currently loaded file in recently opend
+		if (mergedPath.toString().equals(loadedSimulation))
+			return; // ----------- add a check to not display the currently loaded file in recently opend
 
-        // Normally we would handle errors with booleans (like every professional C lib), but apparently we need custom Exceptions.
-        try {
-            FakeInteractions.loadSimulation(paths);
-            setLoadedSimulation(mergedPath.toString());
-        }
-        catch (InvalidFilesSelected ifs){
-            ifs.printStackTrace();
-        }
+		// Normally we would handle errors with booleans (like every professional C lib), but apparently we need custom Exceptions.
+		try {
+			FakeInteractions.loadSimulation(paths);
+			setLoadedSimulation(mergedPath.toString());
+		} catch (InvalidFilesSelected ifs) {
+			ifs.printStackTrace();
+		}
 
 	}
 
@@ -156,7 +151,8 @@ public class ToolbarController {
 	 * @author Joel
 	 */
 	private void validateRecentlyLoadedSimulations() {
-		List<String> fails = new ArrayList<String>() {};
+		List<String> fails = new ArrayList<String>() {
+		};
 
 		for (String path : recentlyLoadedSimulations) {
 			try {
@@ -229,10 +225,8 @@ public class ToolbarController {
 	/**
 	 * Comment
 	 *
+	 * @param item Param-Comment
 	 * @author Joel
-	 *
-	 * @param item
-	 * Param-Comment
 	 */
 	private void onSimulationOpenRecentClicked(MenuItem item) {
 		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText());
@@ -287,12 +281,12 @@ public class ToolbarController {
 	 *
 	 * @author Leon
 	 */
-    @FXML
-    private void onConsoleOpen() {
-        Console console = Console.getInstance();  // Get the single instance of the Console
-        console.show();  // Show the debug window
-        console.log("Debug window opened.");
-    }
+	@FXML
+	private void onConsoleOpen() {
+		Console console = Console.getInstance();  // Get the single instance of the Console
+		console.show();  // Show the debug window
+		console.log("Debug window opened.");
+	}
 
 	/**
 	 * Comment

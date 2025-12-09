@@ -82,6 +82,7 @@ public class WorldObject {
 	private boolean useBoxCollision = false;
 	/**
 	 * HalfHeight
+	 *
 	 * @author Joel
 	 */
 	private Vector2D boxCollision = new Vector2D();
@@ -129,7 +130,7 @@ public class WorldObject {
 	//--------------------------------------------------Constructor--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Getter++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Comment
@@ -224,9 +225,9 @@ public class WorldObject {
 		return interactable;
 	}
 
-	//--------------------------------------------------Getter--------------------------------------------------
+	//--------------------------------------------------GetterMethods--------------------------------------------------
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Setter++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Comment
@@ -283,9 +284,9 @@ public class WorldObject {
 		this.interactable = interactable;
 	}
 
-	//--------------------------------------------------Setter--------------------------------------------------
+	//--------------------------------------------------SetterMethods--------------------------------------------------
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Adder++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++AdderMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Comment
@@ -310,7 +311,7 @@ public class WorldObject {
 		setRotation(getRotation() + rotation);
 	}
 
-	//--------------------------------------------------Adder--------------------------------------------------
+	//--------------------------------------------------AdderMethods--------------------------------------------------
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++#####++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -364,8 +365,6 @@ public class WorldObject {
 		graphicsContext.restore();
 
 
-
-
 	}
 	/*
 	public void drawCollision() {
@@ -382,7 +381,8 @@ public class WorldObject {
 	//--------------------------------------------------#####--------------------------------------------------
 
 
-	public void updateSim() {}
+	public void updateSim() {
+	}
 
 	public boolean useBoxCollision() {
 		return useBoxCollision;
@@ -404,7 +404,9 @@ public class WorldObject {
 		return boxCollisionColor;
 	}
 
-	public void setupDetailsPanel(FXMLLoader fxmlLoader) {}
+	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
+	}
 
-	public void updateDetailsPanel() {}
+	public void updateDetailsPanel() {
+	}
 }

@@ -44,17 +44,17 @@ public class VehicleDetailsController {
 				});
 
 		color.valueProperty().addListener(
-				(obs,oldColor,newColor) -> {
+				(obs, oldColor, newColor) -> {
 					try {
 						//if (color.getValue() != worldVehicle.getColor()) {
-							//worldVehicle.getwVehicle().setColor(Meth.converColorToSumoColor(color.getValue()));
+						//worldVehicle.getwVehicle().setColor(Meth.convertColorToSumoColor(color.getValue()));
 						//}
-						worldVehicle.getwVehicle().setColor(new SumoColor(255,0,0,255));//Meth.converColorToSumoColor(new Color(1,0,0,1)));
+						worldVehicle.getwVehicle().setColor(new SumoColor(255, 0, 0, 255));//Meth.convertColorToSumoColor(new Color(1,0,0,1)));
 					} catch (Exception e) {
 						//throw new RuntimeException(e);
 					}
 					Debug.print("Color changed.");
-		});
+				});
 	}
 
 	public void setup(WorldVehicle worldVehicle) {
@@ -75,6 +75,7 @@ public class VehicleDetailsController {
 	/**
 	 * A method to visually kill the details tab. (greyed out and locked controls)
 	 * Should be called when the WorldObject class gets removed.
+	 *
 	 * @author Joel
 	 */
 	public void kill() {
