@@ -19,6 +19,8 @@ public final class UI {
 	public static final Color sphereCollisionColor = new Color(1,0,0,0.1);
 	// The default box collision color of world objects.
 	public static final Color boxCollisionColor = new Color(0,0,1,0.1);
+	// The default color of vehicles when they are created.
+	public static final Color defaultVehicleColor = new Color(1, 1, 1, 1);
 
 
 	// The minimal window width.

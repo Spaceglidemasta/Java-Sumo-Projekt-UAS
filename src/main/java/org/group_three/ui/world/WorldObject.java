@@ -1,5 +1,7 @@
 package org.group_three.ui.world;
 
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -79,6 +81,7 @@ public class WorldObject {
 	 */
 	private boolean useBoxCollision = false;
 	/**
+	 * HalfHeight
 	 * @author Joel
 	 */
 	private Vector2D boxCollision = new Vector2D();
@@ -86,6 +89,10 @@ public class WorldObject {
 	 * @author Joel
 	 */
 	private final Color boxCollisionColor = UI.boxCollisionColor;
+
+
+	// ????
+	public String detailClassPath = "";
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructor++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -361,4 +368,28 @@ public class WorldObject {
 
 
 	public void updateSim() {}
+
+	public boolean useBoxCollision() {
+		return useBoxCollision;
+	}
+
+	public void setUseBoxCollision(boolean useBoxCollision) {
+		this.useBoxCollision = useBoxCollision;
+	}
+
+	public Vector2D getBoxCollision() {
+		return boxCollision;
+	}
+
+	public void setBoxCollision(Vector2D boxCollision) {
+		this.boxCollision = boxCollision;
+	}
+
+	public Color getBoxCollisionColor() {
+		return boxCollisionColor;
+	}
+
+	public void setupDetailsPanel(FXMLLoader fxmlLoader) {}
+
+	public void updateDetailsPanel() {}
 }

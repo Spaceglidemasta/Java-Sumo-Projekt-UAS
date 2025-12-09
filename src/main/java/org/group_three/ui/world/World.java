@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.group_three.debug.Debug;
+import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
 import java.util.*;
@@ -328,6 +329,68 @@ public class World {
 		};
 		List<WorldObject> interactableObjects = new ArrayList<>() {
 		};
+		List<WorldObject> boxCollisionHits = new ArrayList<>() {
+		};
+
+		for (WorldObject worldObject : worldObjects) {
+			if (!worldObject.isInteractable()) continue;
+
+			double distanceToObject = worldObject.getPosition().sub(worldPosition).length();
+
+			if (distanceToObject <= worldObject.getSphereCollision()) {
+				if (worldObject.useBoxCollision()) {
+					Vector2D relativeHitPosition = Meth.getRelativeLocation(worldObject.getPosition(), worldObject.getRotation(), worldPosition);
+					Vector2D relativeHalfHeightHit = relativeHitPosition.abs();
+
+					// add only to box collision hit list if hit is inside of collision
+					if (relativeHalfHeightHit.x - worldObject.getBoxCollision().x > 0 &&
+							relativeHalfHeightHit.y - worldObject.getBoxCollision().y > 0
+					) boxCollisionHits.add(worldObject);
+				}
+
+				distances.add(distanceToObject);
+				interactableObjects.add(worldObject);
+			}
+
+			Debug.print(distanceToObject);
+		}
+
+		if (interactableObjects.isEmpty()) return null;
+		if (distances.isEmpty()) return null;
+
+		if (!boxCollisionHits.isEmpty()) return boxCollisionHits.getFirst();
+
+		double shortestDistance = distances.getFirst();
+		int shortestDistanceIndex = 0;
+		int index = 0;
+
+		for (double distance : distances) {
+			if (distance < shortestDistance) {
+				shortestDistance = distance;
+				shortestDistanceIndex = index;
+			}
+			index++;
+		}
+
+		return interactableObjects.get(shortestDistanceIndex);
+	}
+
+
+		/**
+	 * Is missing a render check to only test objects that are currently rendered on the canvas. aka not outside of the frame
+	 *
+	 * @param worldPosition
+	 * @return
+	 * @author Joel
+	 */
+		/*
+	public WorldObject interact(Vector2D worldPosition) {
+		if (worldObjects.isEmpty()) return null;
+
+		List<Double> distances = new ArrayList<>() {
+		};
+		List<WorldObject> interactableObjects = new ArrayList<>() {
+		};
 
 		for (WorldObject worldObject : worldObjects) {
 			if (!worldObject.isInteractable()) continue;
@@ -359,4 +422,5 @@ public class World {
 
 		return interactableObjects.get(shortestDistanceIndex);
 	}
+	 */
 }
