@@ -5,7 +5,7 @@ import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
 /**
- * @author Joel
+ * @author Leon
  */
 public class WorldTrafficLight extends WorldObject {
 //    public void update() {

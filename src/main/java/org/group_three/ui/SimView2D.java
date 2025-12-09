@@ -1,8 +1,5 @@
 package org.group_three.ui;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -16,7 +13,6 @@ import org.group_three.ui.world.WorldObject;
 import org.group_three.ui.world.WorldPoint;
 import org.group_three.ui.world.WorldVehicle;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,14 +29,16 @@ public class SimView2D {
 
 	private static World world;
 
-	public SimView2D(Canvas wSRT, Canvas wDRT, Pane rTB) {
+	public static void setup(Canvas wSRT, Canvas wDRT, Pane rTB) {
 		worldStaticRenderTarget = wSRT;
 		worldDynamicRenderTarget = wDRT;
 		renderTargetBounds = rTB;
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
+
+		newWorld();
 	}
 
-	private static List<String> vehicleIds = new ArrayList<>() {};
+	private static final List<String> vehicleIds = new ArrayList<>();
 
 	public static void newWorld() {
 		world = new World();
