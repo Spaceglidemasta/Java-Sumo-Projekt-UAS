@@ -8,12 +8,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
+import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.controllers.BodyController;
-import org.group_three.ui.world.World;
-import org.group_three.ui.world.WorldObject;
-import org.group_three.ui.world.WorldPoint;
-import org.group_three.ui.world.WorldVehicle;
+import org.group_three.ui.world.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +38,8 @@ public class SimView2D {
 	}
 
 	private static List<String> vehicleIds = new ArrayList<>() {};
+    private static List<String> trafficLightIds = new ArrayList<>() {};
+
 
 	public static void newWorld() {
 		world = new World();
@@ -93,6 +93,16 @@ public class SimView2D {
 		world.setWorldOffset(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)));
 
         //TODO add for-loop for spawning traffic lights
+//        for (String id : SimController.getMainstc().getTrafficLightsIDList()) {
+//            WorldTrafficLight wtl = new WorldTrafficLight(
+//                    world,
+//                    worldStaticRenderTarget,
+//                    "Object TestLightSim"
+//            );
+//            wtl.setwTrafficLight(wVehicle);
+//            trafficLightIds.add(id);
+//        }
+
 
 		for (String id : SimController.getMainstc().getVehicleIDList()) {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainstc().getStc());

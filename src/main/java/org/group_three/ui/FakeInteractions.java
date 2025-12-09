@@ -1,6 +1,8 @@
 package org.group_three.ui;
 
 import de.tudresden.sumo.cmd.Edge;
+import de.tudresden.sumo.cmd.Trafficlight;
+import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
@@ -8,6 +10,7 @@ import org.group_three.debug.exceptions.InvalidFilesSelected;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -94,6 +97,13 @@ public class FakeInteractions {
 
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
+
+        //!This is all testing
+        //Remove when done
+        Debug.print(simcon.getJunctionIDList());
+        Debug.print(simcon.getEdgeIDList());
+        Debug.print(simcon.getLaneIDList());
+        Debug.print(simcon.getLaneEdgeParam("clusterJ4_J5_0_0"));
 
 		return true;
 	}

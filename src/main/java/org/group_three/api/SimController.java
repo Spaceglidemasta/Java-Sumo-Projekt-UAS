@@ -2,17 +2,21 @@ package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.SumoGeometry;
+import de.tudresden.sumo.objects.SumoLinkList;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
+import org.group_three.utils.Sumo2DVector;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>SimController</h1>
@@ -406,10 +410,9 @@ public class SimController {
      * @return IDs of all Lanes in a network
      * @author Leon
      */
-    public SumoStringList getNetworkIDList() {
-
+    public SumoStringList getLaneIDList() {
         try {
-            return (SumoStringList) _sumcon.do_job_get(Lane.getIDList());
+            return (SumoStringList) stc.do_job_get(Lane.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -425,10 +428,10 @@ public class SimController {
      * @return coordinates from start to end
      * @author Leon
      */
-    public String getNetworkEdgeParam(String laneID) {
+    public String getLaneEdgeParam(String laneID) {
 
         try {
-            SumoGeometry shape = (SumoGeometry) _sumcon.do_job_get(Lane.getShape(laneID));
+            SumoGeometry shape = (SumoGeometry) stc.do_job_get(Lane.getShape(laneID));
             if (shape != null){
                 return shape.toString();
             }
@@ -441,6 +444,21 @@ public class SimController {
         }
     }
 
+    public String getJunctionShape(String laneID) {
+
+        try {
+            SumoGeometry shape = (SumoGeometry) stc.do_job_get(Junction.getShape(laneID));
+            if (shape != null){
+                return shape.toString();
+            }
+            else {
+                return  null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 
@@ -532,6 +550,17 @@ public class SimController {
             return null;
         }
     }
+
+    public SumoLinkList getControlledLinks(String linkID) {
+        try {
+            return (SumoLinkList) stc.do_job_get(Trafficlight.getControlledLinks(linkID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /**
      * Sets the Phase Index [0:2] of the TL. <br>
@@ -627,6 +656,73 @@ public class SimController {
         }
     }
 
+
+    public List<Sumo2DVector> getHaltelinenVector() {
+
+        List<Sumo2DVector> matches = new ArrayList<>();
+        List<String> clusterJunctions = new ArrayList<>();
+        List<String> allJunctions = getJunctionIDList();
+
+        for (String junction : allJunctions) {
+            if (junction.startsWith("cluster")) {
+                clusterJunctions.add(junction);
+            }
+        }
+
+        List<String> allLanes = getLaneIDList();
+        List<String> filteredLanes = new ArrayList<>();
+        for (String lane : allLanes) {
+            if (lane.matches("^E\\d+_\\d+$")) {
+                filteredLanes.add(lane);
+            }
+        }
+
+        for (String clusterId : clusterJunctions) {
+            String junctionShapeStr = getJunctionShape(clusterId);
+            String cleanedJunctionStr = junctionShapeStr.replaceAll("[^0-9.,\\s-]", "").trim();
+            String[] junctionPoints = cleanedJunctionStr.split("\\s+");
+
+            List<Double> junctionXCoords = new ArrayList<>();
+            List<Double> junctionYCoords = new ArrayList<>();
+
+            for (String point : junctionPoints) {
+                String[] coords = point.split(",");
+                if (coords.length == 2) {
+                    try {
+                        double x = Double.parseDouble(coords[0]);
+                        double y = Double.parseDouble(coords[1]);
+                        junctionXCoords.add(x);
+                        junctionYCoords.add(y);
+                    } catch (NumberFormatException e) {
+                        // Handle parse error if needed
+                    }
+                }
+            }
+
+            for (String laneId : filteredLanes) {
+                String laneEdgeParam = getLaneEdgeParam(laneId); // assuming you have a method to get this
+                if (laneEdgeParam != null) {
+                    String[] laneCoords = laneEdgeParam.split(" ");
+                    String lastLaneCoord = laneCoords[laneCoords.length - 1];
+                    String[] lastLaneXY = lastLaneCoord.split(",");
+                    String lastLaneX = lastLaneXY[0];
+
+                    for (int i = 0; i < junctionXCoords.size(); i++) {
+                        String junctionXStr = junctionXCoords.get(i).toString();
+                        if (junctionXStr.equals(lastLaneX)) {
+                            double yCoord = junctionYCoords.get(i);
+                            matches.add(new Sumo2DVector(Double.parseDouble(lastLaneX), yCoord));
+                            Debug.print("Matching x coordinate: " + lastLaneX);
+                            Debug.print("Corresponding y coordinate: " + junctionYCoords.get(i));
+
+
+                        }
+                    }
+                }
+            }
+        }
+        return matches;
+    }
 
     // ******************************************************
     // **                      Junctions                   **
