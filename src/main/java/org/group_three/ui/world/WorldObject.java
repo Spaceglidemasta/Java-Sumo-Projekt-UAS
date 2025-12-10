@@ -340,43 +340,111 @@ public class WorldObject {
 		drawCollision();
 	}
 
+	public Vector2D getDrawLocation() {
+		return Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
+	}
+
+	public void setDrawTransform() {
+		graphicsContext.translate(getDrawLocation().x + world.getViewerPositionOffset().x, getDrawLocation().y + world.getViewerPositionOffset().y); // Object Location
+		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
+	}
+
+	public Vector2D getDrawCenterOffset(Vector2D objectHalfSize) {
+		return new Vector2D(
+				getDrawCenterOffset(objectHalfSize.x),
+				getDrawCenterOffset(objectHalfSize.y)
+		);
+	}
+
+	public double getDrawCenterOffset(double objectHalfSize) {
+		return objectHalfSize * world.getViewerZoom() * -1;
+	}
+
+	public Vector2D getDrawSize(Vector2D objectHalfSize) {
+		return new Vector2D(
+				getDrawSize(objectHalfSize.x),
+				getDrawSize(objectHalfSize.y)
+		);
+	}
+
+	public double getDrawSize(double objectHalfSize) {
+		return objectHalfSize * 2 * world.getViewerZoom();
+	}
+
+	public void drawSphere(double radius, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillOval(
+				getDrawCenterOffset(radius),
+				getDrawCenterOffset(radius),
+				getDrawSize(radius),
+				getDrawSize(radius)
+		);
+		graphicsContext.restore();
+	}
+
+	public void drawOval(Vector2D halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillOval(
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
+	public void drawSquare(double halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillRect(
+				getDrawCenterOffset(halfSize),
+				getDrawCenterOffset(halfSize),
+				getDrawSize(halfSize),
+				getDrawSize(halfSize)
+		);
+		graphicsContext.restore();
+	}
+
+	public void drawRectangle(Vector2D halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillRect(
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
+	public void drawImage(Vector2D halfSize, Image image) {
+		graphicsContext.save();
+		setDrawTransform();
+		graphicsContext.drawImage(
+				image,
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
 	/**
 	 * @author Joel
 	 */
 	public void drawCollision() {
-		graphicsContext.save();
-		graphicsContext.setFill(sphereCollisionColor);
-		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
-
-		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
-		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
-		graphicsContext.fillOval((sphereCollision) * world.getViewerZoom() * -1, (sphereCollision) * world.getViewerZoom() * -1, sphereCollision * 2 * world.getViewerZoom(), sphereCollision * 2 * world.getViewerZoom());
-		graphicsContext.restore();
-
+		drawSphere(sphereCollision, sphereCollisionColor);
 
 		if (!useBoxCollision()) return;
-		graphicsContext.save();
-		graphicsContext.setFill(boxCollisionColor);
-		//Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
-
-		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
-		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
-		graphicsContext.fillRect((boxCollision.x) * world.getViewerZoom() * -1, (boxCollision.y) * world.getViewerZoom() * -1, boxCollision.x * 2 * world.getViewerZoom(), boxCollision.y * 2 * world.getViewerZoom());
-		graphicsContext.restore();
-
-
+		drawRectangle(boxCollision, boxCollisionColor);
 	}
-	/*
-	public void drawCollision() {
-		graphicsContext.save();
-		graphicsContext.setFill(Color.RED);
-		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
-
-		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
-		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
-		graphicsContext.fillOval ((sphereCollision/2) * world.getViewerZoom() * -1, (sphereCollision/2) * world.getViewerZoom() * -1, sphereCollision * world.getViewerZoom(), sphereCollision * world.getViewerZoom());
-		graphicsContext.restore();
-	}*/
 
 	//--------------------------------------------------#####--------------------------------------------------
 
