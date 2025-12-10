@@ -12,6 +12,9 @@ import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * a class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
  * will be divided into static and dynamic for rendering efficiency
@@ -445,6 +448,23 @@ public class WorldObject {
 				getDrawSize(halfSize.x),
 				getDrawSize(halfSize.y)
 		);
+		graphicsContext.restore();
+	}
+
+	public void drawPolygon(List<Vector2D> points) {
+		graphicsContext.save();
+		setDrawTransform();
+
+		// convert Vector2D list to x and y double arrays
+		double[] xPoints = new double[points.size()];
+		double[] yPoints = new double[points.size()];
+
+		for (int i = 0; i < points.size(); i++) {
+			xPoints[i] = points.get(i).x;
+			yPoints[i] = points.get(i).y;
+		}
+
+		graphicsContext.fillPolygon(xPoints, yPoints, points.size());
 		graphicsContext.restore();
 	}
 
