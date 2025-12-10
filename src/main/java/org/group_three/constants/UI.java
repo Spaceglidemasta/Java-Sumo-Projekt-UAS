@@ -14,15 +14,13 @@ public final class UI {
 	// Other UI/FXML parts will be loaded into it.
 	public static final String appFXML = "/org/group_three/ui/fxml/MainWindow.fxml";
 	// The base icon to be used and colored for cars.
-	public static final String carIcon = "/org/group_three/ui/icons/car.png";
+	public static final String carIcon = "/org/group_three/ui/icons/carCustom.png";
 	// The default sphere collision color of world objects.
 	public static final Color sphereCollisionColor = new Color(1,0,0,0.1);
 	// The default box collision color of world objects.
 	public static final Color boxCollisionColor = new Color(0,1,1,0.1);
 	// The default color of vehicles when they are created.
 	public static final Color defaultVehicleColor = new Color(1, 1, 1, 1);
-	// THe color value which should be replaced on runtime to create color coded icons.
-	public static final Color vehicleIconBaseColor = new Color(1, 1, 1, 1);
 
 
 	// The minimal window width.

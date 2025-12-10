@@ -73,8 +73,9 @@ public class WorldVehicle extends WorldObject {
 		wVehicle.update();
 		setPosition(new Vector2D(wVehicle.getPos()));
 		//setRotation(wVehicle.getAngle());
+		setColor(wVehicle.getColor());
 
-		Debug.print(wVehicle.getColor());
+		//Debug.print(wVehicle.getColor());
 
 		//setColor(convertWVColor());
 		updateDetailsPanel();
