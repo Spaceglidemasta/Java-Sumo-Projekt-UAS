@@ -317,6 +317,138 @@ public class WorldObject {
 	//--------------------------------------------------AdderMethods--------------------------------------------------
 
 
+	//++++++++++++++++++++++++++++++++++++++++++++++++++DrawMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	//--------------------------------------------------DrawMethods--------------------------------------------------
+
+	/**
+	 * A method to draw a Sphere at the center of the WorldObject.
+	 *
+	 * @param radius The radius of the sphere.
+	 * @param color  The color of the sphere.
+	 * @author Joel
+	 * @see #drawOval(Vector2D, Color)
+	 */
+	public void drawSphere(double radius, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillOval(
+				getDrawCenterOffset(radius),
+				getDrawCenterOffset(radius),
+				getDrawSize(radius),
+				getDrawSize(radius)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw an Oval at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the oval (x,y).
+	 * @param color    The color of the oval.
+	 * @author Joel
+	 * @see #drawSphere(double, Color)
+	 */
+	public void drawOval(Vector2D halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillOval(
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw a Square at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the square.
+	 *                 (The square side length divided by 2)
+	 * @param color    The color of the square.
+	 * @author Joel
+	 * @see #drawRectangle(Vector2D, Color)
+	 */
+	public void drawSquare(double halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillRect(
+				getDrawCenterOffset(halfSize),
+				getDrawCenterOffset(halfSize),
+				getDrawSize(halfSize),
+				getDrawSize(halfSize)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw a Rectangle at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the rectangle.
+	 * @param color    The color of the rectangle.
+	 * @author Joel
+	 * @see #drawSquare(double, Color)
+	 */
+	public void drawRectangle(Vector2D halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillRect(
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw an Image at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the image.
+	 * @param image    The image which should be drawn.
+	 * @author Joel
+	 */
+	public void drawImage(Vector2D halfSize, Image image) {
+		graphicsContext.save();
+		setDrawTransform();
+		graphicsContext.drawImage(
+				image,
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw a Polygon at the center of the WorldObject.
+	 *
+	 * @param points A list of Vector2D's which contains all the points of the polygon.
+	 * @author Joel
+	 */
+	public void drawPolygon(List<Vector2D> points) {
+		graphicsContext.save();
+		setDrawTransform();
+
+		// convert Vector2D list to x and y double arrays
+		double[] xPoints = new double[points.size()];
+		double[] yPoints = new double[points.size()];
+
+		for (int i = 0; i < points.size(); i++) {
+			xPoints[i] = points.get(i).x;
+			yPoints[i] = points.get(i).y;
+		}
+
+		graphicsContext.fillPolygon(xPoints, yPoints, points.size());
+		graphicsContext.restore();
+	}
+
 	//++++++++++++++++++++++++++++++++++++++++++++++++++#####++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
@@ -384,88 +516,6 @@ public class WorldObject {
 
 	public double getDrawSize(double objectHalfSize) {
 		return objectHalfSize * 2 * world.getViewerZoom();
-	}
-
-	public void drawSphere(double radius, Color color) {
-		graphicsContext.save();
-		graphicsContext.setFill(color);
-		setDrawTransform();
-		graphicsContext.fillOval(
-				getDrawCenterOffset(radius),
-				getDrawCenterOffset(radius),
-				getDrawSize(radius),
-				getDrawSize(radius)
-		);
-		graphicsContext.restore();
-	}
-
-	public void drawOval(Vector2D halfSize, Color color) {
-		graphicsContext.save();
-		graphicsContext.setFill(color);
-		setDrawTransform();
-		graphicsContext.fillOval(
-				getDrawCenterOffset(halfSize.x),
-				getDrawCenterOffset(halfSize.y),
-				getDrawSize(halfSize.x),
-				getDrawSize(halfSize.y)
-		);
-		graphicsContext.restore();
-	}
-
-	public void drawSquare(double halfSize, Color color) {
-		graphicsContext.save();
-		graphicsContext.setFill(color);
-		setDrawTransform();
-		graphicsContext.fillRect(
-				getDrawCenterOffset(halfSize),
-				getDrawCenterOffset(halfSize),
-				getDrawSize(halfSize),
-				getDrawSize(halfSize)
-		);
-		graphicsContext.restore();
-	}
-
-	public void drawRectangle(Vector2D halfSize, Color color) {
-		graphicsContext.save();
-		graphicsContext.setFill(color);
-		setDrawTransform();
-		graphicsContext.fillRect(
-				getDrawCenterOffset(halfSize.x),
-				getDrawCenterOffset(halfSize.y),
-				getDrawSize(halfSize.x),
-				getDrawSize(halfSize.y)
-		);
-		graphicsContext.restore();
-	}
-
-	public void drawImage(Vector2D halfSize, Image image) {
-		graphicsContext.save();
-		setDrawTransform();
-		graphicsContext.drawImage(
-				image,
-				getDrawCenterOffset(halfSize.x),
-				getDrawCenterOffset(halfSize.y),
-				getDrawSize(halfSize.x),
-				getDrawSize(halfSize.y)
-		);
-		graphicsContext.restore();
-	}
-
-	public void drawPolygon(List<Vector2D> points) {
-		graphicsContext.save();
-		setDrawTransform();
-
-		// convert Vector2D list to x and y double arrays
-		double[] xPoints = new double[points.size()];
-		double[] yPoints = new double[points.size()];
-
-		for (int i = 0; i < points.size(); i++) {
-			xPoints[i] = points.get(i).x;
-			yPoints[i] = points.get(i).y;
-		}
-
-		graphicsContext.fillPolygon(xPoints, yPoints, points.size());
-		graphicsContext.restore();
 	}
 
 	/**
