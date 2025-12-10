@@ -341,12 +341,24 @@ public class WorldObject {
 	}
 
 	public Vector2D getDrawLocation() {
-		return Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
+		return Meth.addRelativeLocation(
+				world.getViewerPosition(),
+				world.getViewerRotation(),
+				getPosition().mul(world.getViewerZoom()
+				)
+		);
 	}
 
 	public void setDrawTransform() {
-		graphicsContext.translate(getDrawLocation().x + world.getViewerPositionOffset().x, getDrawLocation().y + world.getViewerPositionOffset().y); // Object Location
-		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
+		graphicsContext.translate(
+				getDrawLocation().x + world.getViewerPositionOffset().x,
+				getDrawLocation().y + world.getViewerPositionOffset().y
+		); // Object Location
+		graphicsContext.rotate(
+				Meth.addRelativeRotation(world.getViewerRotation(),
+						getRotation()
+				)
+		);
 	}
 
 	public Vector2D getDrawCenterOffset(Vector2D objectHalfSize) {
