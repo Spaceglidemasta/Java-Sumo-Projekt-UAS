@@ -90,16 +90,8 @@ public class WorldPoint extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		//super.update();
-		Vector2D rect = new Vector2D(16, 16);
-		getGraphicsContext().save();
-		getGraphicsContext().setFill(color);
-		Vector2D drawLoc = Meth.addRelativeLocation(getWorld().getViewerPosition(), getWorld().getViewerRotation(), getPosition().mul(getWorld().getViewerZoom()));
-
-		getGraphicsContext().translate(drawLoc.x + getWorld().getViewerPositionOffset().x, drawLoc.y + getWorld().getViewerPositionOffset().y); // Object Location
-		getGraphicsContext().rotate(Meth.addRelativeRotation(getWorld().getViewerRotation(), getRotation()));
-		getGraphicsContext().fillOval((rect.x / 2) * getWorld().getViewerZoom() * -1, (rect.y / 2) * getWorld().getViewerZoom() * -1, rect.x * getWorld().getViewerZoom(), rect.y * getWorld().getViewerZoom());
-		getGraphicsContext().restore();
+		super.update();
+		drawSphere(8, color);
 	}
 
 	//--------------------------------------------------Methods--------------------------------------------------

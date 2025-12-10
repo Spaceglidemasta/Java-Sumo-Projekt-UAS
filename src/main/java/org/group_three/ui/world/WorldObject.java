@@ -69,12 +69,13 @@ public class WorldObject {
 	 * @author Joel
 	 */
 	private boolean interactable = false;
+
 	/**
 	 * Radius in meters?
 	 *
 	 * @author Joel
 	 */
-	private double sphereCollision = 32;
+	private double sphereCollision = 0;
 	/**
 	 * @author Joel
 	 */
@@ -231,6 +232,10 @@ public class WorldObject {
 	//--------------------------------------------------GetterMethods--------------------------------------------------
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	public void setSphereCollision(double sphereCollision) {
+		this.sphereCollision = sphereCollision;
+	}
 
 	/**
 	 * Comment
@@ -523,9 +528,12 @@ public class WorldObject {
 	 * @author Joel
 	 */
 	public void drawCollision() {
+		// skip if object has no collision enabled or collision size is 0
+		if (!isInteractable() || getSphereCollision() <= 0) return;
 		drawSphere(sphereCollision, sphereCollisionColor);
 
-		if (!useBoxCollision()) return;
+		// skip if box collision is not enabled or collision component sizes are 0
+		if (!useBoxCollision() || getBoxCollision().x <= 0 || getBoxCollision().y <= 0) return;
 		drawRectangle(boxCollision, boxCollisionColor);
 	}
 
@@ -549,6 +557,9 @@ public class WorldObject {
 
 	public void setBoxCollision(Vector2D boxCollision) {
 		this.boxCollision = boxCollision;
+
+		// update sphere collision size
+		setSphereCollision(boxCollision.length());
 	}
 
 	public Color getBoxCollisionColor() {
