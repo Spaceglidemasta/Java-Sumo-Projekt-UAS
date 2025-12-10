@@ -1,5 +1,6 @@
 package org.group_three.ui.world;
 
+import de.tudresden.sumo.objects.SumoColor;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
@@ -12,10 +13,20 @@ import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.controllers.VehicleDetailsController;
 
+import static org.group_three.ui.Meth.ClrToSumoClr;
+import static org.group_three.ui.Meth.SumoClrToClr;
+
 /**
+ * Vehicle to be Rendered on the Canvas
  * @author Joel
  */
 public class WorldVehicle extends WorldObject {
+
+    private static double scale_size = 1;
+    private static double y_size = 1 * scale_size;
+    private static double x_size = 2 * scale_size;
+
+
 	/**
 	 * @author Joel
 	 */
@@ -41,7 +52,7 @@ public class WorldVehicle extends WorldObject {
 		setInteractable(true);
 		detailClassPath = "/org/group_three/ui/fxml/VehicleDetails.fxml";
 		setUseBoxCollision(true);
-		setBoxCollision(new Vector2D(16, 8));
+		setBoxCollision(new Vector2D(x_size, y_size));
 	}
 
 	public WVehicle getwVehicle() {
@@ -64,7 +75,7 @@ public class WorldVehicle extends WorldObject {
 
 		Debug.print(wVehicle.getColor());
 
-		setColor(convertWVColor());
+		//setColor(convertWVColor());
 		updateDetailsPanel();
 	}
 
@@ -75,7 +86,7 @@ public class WorldVehicle extends WorldObject {
 				wVehicle.getColor().a == -1
 		) return getColor();
 
-		return Meth.convertSumoColor(wVehicle.getColor());
+		return Meth.SumoClrToClr(wVehicle.getColor());
 	}
 
 	private WVehicle wVehicle;
@@ -89,12 +100,36 @@ public class WorldVehicle extends WorldObject {
 	}
 
 	/**
-	 * @param color
-	 * @author Joel
+     * Sets the color via wVehicle
+	 * @param color in Color (JavaFX)
+	 * @author Luca
 	 */
-	public void setColor(Color color) {
-		this.color = color;
+	public boolean setColor(Color color) {
+
+        if(wVehicle.setColor(ClrToSumoClr(color))){
+            this.color = color;
+            return true;
+        }
+        else{
+            return false;
+        }
 	}
+
+
+    /**
+     * Sets the color via wVehicle
+     * @param color in SumoColor
+     * @author Luca
+     */
+    public boolean setColor(SumoColor color){
+        if(wVehicle.setColor(color)){
+            this.color = SumoClrToClr(color);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 	/**
 	 * @author Joel

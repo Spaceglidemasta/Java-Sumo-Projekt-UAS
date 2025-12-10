@@ -105,14 +105,33 @@ public class Meth {
 		return rotation + relativeRotation;
 	}
 
-	public static Color convertSumoColor(SumoColor sumoColor) {
+    /**
+     * Converts SumoColor to JavaFX's Color
+     * @param sumoColor SumoColor to be converted. (RGBA)
+     * @return Color, also in RGBA but normalized.
+     * @author Luca
+     * */
+	public static Color SumoClrToClr(SumoColor sumoColor) {
 		return new Color(
-				byteToDouble(sumoColor.r),
-				byteToDouble(sumoColor.g),
-				byteToDouble(sumoColor.b),
-				byteToDouble(sumoColor.a)
+                // &0xFF doesn't change numbers, but returns a signed byte:
+                // (signed) 1111 1111 (=-1) => (signed) 0 1111 1111(=255)
+                // then, JavaFX's Color needs values in [0:1] => / 255.0d
+				(sumoColor.r & 0xFF) / 255.0d,
+                (sumoColor.g & 0xFF) / 255.0d,
+                (sumoColor.b & 0xFF) / 255.0d,
+                (sumoColor.a & 0xFF) / 255.0d
 		);
 	}
+
+    public static SumoColor ClrToSumoClr(Color clr) {
+        return new SumoColor(
+                (int) (clr.getRed() * 255),
+                (int) (clr.getBlue() * 255),
+                (int) (clr.getGreen() * 255),
+                (int) (clr.getOpacity() * 255)
+        );
+    }
+
 
 	public static double byteToDouble(byte input) {
 		// byte to double conversion
