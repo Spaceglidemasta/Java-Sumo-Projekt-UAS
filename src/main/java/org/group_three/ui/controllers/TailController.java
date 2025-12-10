@@ -7,13 +7,13 @@ import org.group_three.debug.Debug;
 import javafx.fxml.FXML;
 
 /**
- * No functionality yet
+ * The small bar at the bottom of the window.
  *
  * @author Joel
  */
 public class TailController {
 	/**
-	 * Comment
+	 * The default initialize method.
 	 *
 	 * @throws IOException Throw-Comment
 	 * @author Joel

@@ -19,12 +19,15 @@ public class Vector2D {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	public double x = 0;
+
 	/**
 	 * The y component of the Vector2D.
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	public double y = 0;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------

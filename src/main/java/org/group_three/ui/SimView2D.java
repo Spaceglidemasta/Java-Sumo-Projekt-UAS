@@ -21,6 +21,7 @@ public class SimView2D {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	private static Canvas worldStaticRenderTarget;
+	@SuppressWarnings({"unused", "FieldCanBeLocal"})
 	private static Canvas worldDynamicRenderTarget;
 	private static Pane renderTargetBounds;
 
@@ -49,6 +50,7 @@ public class SimView2D {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	@SuppressWarnings("unused")
 	public static WorldObject getSelected() {
 		return selected;
 	}
@@ -81,13 +83,11 @@ public class SimView2D {
 		world.worldStaticRenderTarget = worldStaticRenderTarget;
 		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
 
-		renderTargetBounds.widthProperty().addListener((observable, oldValue, newValue) -> {
-			world.setViewerPositionOffset(new Vector2D((newValue.doubleValue() / 2), (world.getViewerPositionOffset().y)));
-		});
+		renderTargetBounds.widthProperty().addListener((_, _, newValue) ->
+				world.setViewerPositionOffset(new Vector2D((newValue.doubleValue() / 2), (world.getViewerPositionOffset().y))));
 
-		renderTargetBounds.heightProperty().addListener((observable, oldValue, newValue) -> {
-			world.setViewerPositionOffset(new Vector2D((world.getViewerPositionOffset().x), (newValue.doubleValue() / 2)));
-		});
+		renderTargetBounds.heightProperty().addListener((_, _, newValue) ->
+				world.setViewerPositionOffset(new Vector2D((world.getViewerPositionOffset().x), (newValue.doubleValue() / 2))));
 
 		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth() / 2, worldStaticRenderTarget.getHeight() / 2));
 
@@ -103,10 +103,14 @@ public class SimView2D {
 			Vector2D jidV = new Vector2D(SimController.getMainstc().getJunctionPos(jid).x, SimController.getMainstc().getJunctionPos(jid).y);
 			boolean firstIteration = jid.equals(SimController.getMainstc().getJunctionIDList().getFirst());
 
-			if (rnHeight.x > jidV.x || firstIteration) rnHeight.x = jidV.x;
-			if (rnHeight.y < jidV.x || firstIteration) rnHeight.y = jidV.x;
-			if (rnWidth.x > jidV.y || firstIteration) rnWidth.x = jidV.y;
-			if (rnWidth.y < jidV.y || firstIteration) rnWidth.y = jidV.y;
+			if (rnHeight.x > jidV.x || firstIteration)
+				rnHeight.x = jidV.x;
+			if (rnHeight.y < jidV.x || firstIteration) //noinspection SuspiciousNameCombination
+				rnHeight.y = jidV.x;
+			if (rnWidth.x > jidV.y || firstIteration) //noinspection SuspiciousNameCombination
+				rnWidth.x = jidV.y;
+			if (rnWidth.y < jidV.y || firstIteration)
+				rnWidth.y = jidV.y;
 
 			new WorldPoint(
 					world,

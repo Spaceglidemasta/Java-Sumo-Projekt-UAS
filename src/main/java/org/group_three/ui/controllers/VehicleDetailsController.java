@@ -30,31 +30,28 @@ public class VehicleDetailsController {
 	private void initialize() throws IOException {
 		Debug.print("VehicleDetails Controller loaded.");
 
-		speed.textProperty().addListener(
-				(obs, oldText, newText) -> {
-					String oldSpeedValue = speed.textProperty().getValue();
-					try {
-						worldVehicle.getwVehicle().setSpeed(Math.abs(Double.parseDouble(newText)));
-						//speed.textProperty().set(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
-						speed.textProperty().set(String.valueOf(Math.abs(Double.parseDouble(newText))));
-					} catch (Exception e) {
-						speed.textProperty().set(oldSpeedValue);
-					}
-					Debug.print("Speed changed.");
-				});
+		speed.textProperty().addListener((_, oldText, newText) -> {
+			try {
+				worldVehicle.getwVehicle().setSpeed(Math.abs(Double.parseDouble(newText)));
+				//speed.textProperty().set(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
+				speed.textProperty().set(String.valueOf(Math.abs(Double.parseDouble(newText))));
+			} catch (Exception e) {
+				speed.textProperty().set(oldText);
+			}
+			Debug.print("Speed changed.");
+		});
 
-		color.valueProperty().addListener(
-				(obs, oldColor, newColor) -> {
-					try {
-						//if (color.getValue() != worldVehicle.getColor()) {
-						//worldVehicle.getwVehicle().setColor(Meth.convertColorToSumoColor(color.getValue()));
-						//}
-						worldVehicle.getwVehicle().setColor(new SumoColor(255, 0, 0, 255));//Meth.convertColorToSumoColor(new Color(1,0,0,1)));
-					} catch (Exception e) {
-						//throw new RuntimeException(e);
-					}
-					Debug.print("Color changed.");
-				});
+		color.valueProperty().addListener((_, oldColor, newColor) -> {
+			try {
+				//if (color.getValue() != worldVehicle.getColor()) {
+				//worldVehicle.getwVehicle().setColor(Meth.convertColorToSumoColor(color.getValue()));
+				//}
+				worldVehicle.getwVehicle().setColor(new SumoColor(255, 0, 0, 255));//Meth.convertColorToSumoColor(new Color(1,0,0,1)));
+			} catch (Exception e) {
+				//throw new RuntimeException(e);
+			}
+			Debug.print("Color changed.");
+		});
 	}
 
 	public void setup(WorldVehicle worldVehicle) {

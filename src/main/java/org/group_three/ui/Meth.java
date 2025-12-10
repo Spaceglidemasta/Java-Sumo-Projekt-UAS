@@ -18,6 +18,7 @@ public class Meth {
 	 * @return Return-Comment
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public static Vector2D lerp(Vector2D v0, Vector2D v1, double lerp) {
 		return v0.add(v0.sub(v1).mul(lerp));
 	}
@@ -88,6 +89,7 @@ public class Meth {
 	 * @author Joel
 	 * @see #addRelativeRotation(double rotation, double relativeRotation)
 	 */
+	@SuppressWarnings("unused")
 	public static double getRelativeRotation(double rotation, double relativeRotation) {
 		return rotation - relativeRotation;
 	}
@@ -125,6 +127,7 @@ public class Meth {
 		return value;
 	}
 
+	@SuppressWarnings("unused")
 	public static SumoColor convertColorToSumoColor(Color color) {
 		return new SumoColor(
 				doubleToByte(color.getRed()),

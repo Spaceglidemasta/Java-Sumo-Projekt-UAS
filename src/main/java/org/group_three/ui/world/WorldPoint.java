@@ -16,7 +16,11 @@ public class WorldPoint extends WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	private final Color color;
+	/**
+	 * The color of the point which is being drawn.
+	 * @author Joel
+	 */
+	private Color color;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -29,6 +33,7 @@ public class WorldPoint extends WorldObject {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public WorldPoint() {
 		super();
 		this.color = null;
@@ -49,6 +54,31 @@ public class WorldPoint extends WorldObject {
 	}
 
 	//--------------------------------------------------Constructors--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The getter methode for the color of the WorldPoint.
+	 * @return The current color of the WorldPoint.
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	//--------------------------------------------------GetterMethods--------------------------------------------------
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The setter method for the color of the WorldPoint.
+	 * @param color The new color of the WorldPoint.
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	//--------------------------------------------------SetterMethods--------------------------------------------------
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++

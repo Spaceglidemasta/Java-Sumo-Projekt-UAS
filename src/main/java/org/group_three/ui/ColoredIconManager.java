@@ -18,10 +18,12 @@ public class ColoredIconManager {
 	/**
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Image image = null;
 	/**
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Map<Color, Image> icons = new HashMap<>() {
 	};
 

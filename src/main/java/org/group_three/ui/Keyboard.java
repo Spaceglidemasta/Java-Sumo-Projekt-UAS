@@ -23,6 +23,7 @@ public class Keyboard {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private static final List<KeyCode> keyCodes = new ArrayList<>();
 
 	//--------------------------------------------------ClassVariables--------------------------------------------------
