@@ -41,17 +41,19 @@ public class VehicleDetailsController {
 			Debug.print("Speed changed.");
 		});
 
-		color.valueProperty().addListener((_, oldColor, newColor) -> {
-			try {
-				//if (color.getValue() != worldVehicle.getColor()) {
-				//worldVehicle.getwVehicle().setColor(Meth.convertColorToSumoColor(color.getValue()));
-				//}
-				worldVehicle.getwVehicle().setColor(new SumoColor(255, 0, 0, 255));//Meth.convertColorToSumoColor(new Color(1,0,0,1)));
-			} catch (Exception e) {
-				//throw new RuntimeException(e);
-			}
-			Debug.print("Color changed.");
-		});
+		color.valueProperty().addListener(
+				(_, _, newColor) -> {
+					try {
+						//if (color.getValue() != worldVehicle.getColor()) {
+						//worldVehicle.getwVehicle().setColor(Meth.convertColorToSumoColor(color.getValue()));
+						//}
+						worldVehicle.getwVehicle().setColor(new SumoColor(0, 255, 0, 255));//Meth.convertColorToSumoColor(new Color(1,0,0,1)));
+                        worldVehicle.getwVehicle().update();
+					} catch (Exception e) {
+						//throw new RuntimeException(e);
+					}
+					Debug.print("Color changed.");
+				});
 	}
 
 	public void setup(WorldVehicle worldVehicle) {

@@ -1,9 +1,12 @@
 package org.group_three.ui;
 
 import de.tudresden.sumo.cmd.Edge;
+import de.tudresden.sumo.cmd.Simulation;
+import de.tudresden.sumo.objects.SumoColor;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
+import org.group_three.model.WVehicle;
 
 import java.io.File;
 import java.nio.file.Path;
