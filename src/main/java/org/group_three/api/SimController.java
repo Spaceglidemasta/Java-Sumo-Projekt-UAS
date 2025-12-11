@@ -567,11 +567,10 @@ public class SimController {
         return null;
     }
 
-    /**@param laneID ID of the chosen lane with format:("E1_0")
+    /**This function supposedly returns it in meters but since one meter
+     * equals one coordinate unit, they can just be used as the width in coordinates)
+     * @param laneID ID of the chosen lane with format:("E1_0")
      * @return Returns the width of a chosen lane.
-     * (It supposedly prints it in meters but since one meter
-     * equals one coordinate unit, they can just be used
-     * as the width in coords)
      * @author Leon
      * */
     public Double getLaneWidth(String laneID) {
