@@ -12,6 +12,9 @@ import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * a class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
  * will be divided into static and dynamic for rendering efficiency
@@ -66,12 +69,13 @@ public class WorldObject {
 	 * @author Joel
 	 */
 	private boolean interactable = false;
+
 	/**
 	 * Radius in meters?
 	 *
 	 * @author Joel
 	 */
-	private double sphereCollision = 32;
+	private double sphereCollision = 0;
 	/**
 	 * @author Joel
 	 */
@@ -82,6 +86,7 @@ public class WorldObject {
 	private boolean useBoxCollision = false;
 	/**
 	 * HalfHeight
+	 *
 	 * @author Joel
 	 */
 	private Vector2D boxCollision = new Vector2D();
@@ -129,7 +134,7 @@ public class WorldObject {
 	//--------------------------------------------------Constructor--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Getter++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Comment
@@ -224,9 +229,13 @@ public class WorldObject {
 		return interactable;
 	}
 
-	//--------------------------------------------------Getter--------------------------------------------------
+	//--------------------------------------------------GetterMethods--------------------------------------------------
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Setter++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	public void setSphereCollision(double sphereCollision) {
+		this.sphereCollision = sphereCollision;
+	}
 
 	/**
 	 * Comment
@@ -283,9 +292,9 @@ public class WorldObject {
 		this.interactable = interactable;
 	}
 
-	//--------------------------------------------------Setter--------------------------------------------------
+	//--------------------------------------------------SetterMethods--------------------------------------------------
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Adder++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++AdderMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Comment
@@ -310,7 +319,140 @@ public class WorldObject {
 		setRotation(getRotation() + rotation);
 	}
 
-	//--------------------------------------------------Adder--------------------------------------------------
+	//--------------------------------------------------AdderMethods--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++DrawMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * A method to draw a Sphere at the center of the WorldObject.
+	 *
+	 * @param radius The radius of the sphere.
+	 * @param color  The color of the sphere.
+	 * @author Joel
+	 * @see #drawOval(Vector2D, Color)
+	 */
+	public void drawSphere(double radius, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillOval(
+				getDrawCenterOffset(radius),
+				getDrawCenterOffset(radius),
+				getDrawSize(radius),
+				getDrawSize(radius)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw an Oval at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the oval (x,y).
+	 * @param color    The color of the oval.
+	 * @author Joel
+	 * @see #drawSphere(double, Color)
+	 */
+	public void drawOval(Vector2D halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillOval(
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw a Square at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the square.
+	 *                 (The square side length divided by 2)
+	 * @param color    The color of the square.
+	 * @author Joel
+	 * @see #drawRectangle(Vector2D, Color)
+	 */
+	public void drawSquare(double halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillRect(
+				getDrawCenterOffset(halfSize),
+				getDrawCenterOffset(halfSize),
+				getDrawSize(halfSize),
+				getDrawSize(halfSize)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw a Rectangle at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the rectangle.
+	 * @param color    The color of the rectangle.
+	 * @author Joel
+	 * @see #drawSquare(double, Color)
+	 */
+	public void drawRectangle(Vector2D halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillRect(
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw an Image at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the image.
+	 * @param image    The image which should be drawn.
+	 * @author Joel
+	 */
+	public void drawImage(Vector2D halfSize, Image image) {
+		graphicsContext.save();
+		setDrawTransform();
+		graphicsContext.drawImage(
+				image,
+				getDrawCenterOffset(halfSize.x),
+				getDrawCenterOffset(halfSize.y),
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
+	/**
+	 * A method to draw a Polygon at the center of the WorldObject.
+	 *
+	 * @param points A list of Vector2D's which contains all the points of the polygon.
+	 * @author Joel
+	 */
+	public void drawPolygon(List<Vector2D> points) {
+		graphicsContext.save();
+		setDrawTransform();
+
+		// convert Vector2D list to x and y double arrays
+		double[] xPoints = new double[points.size()];
+		double[] yPoints = new double[points.size()];
+
+		for (int i = 0; i < points.size(); i++) {
+			xPoints[i] = points.get(i).x;
+			yPoints[i] = points.get(i).y;
+		}
+
+		graphicsContext.fillPolygon(xPoints, yPoints, points.size());
+		graphicsContext.restore();
+	}
+
+	//--------------------------------------------------DrawMethods--------------------------------------------------
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++#####++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -339,35 +481,67 @@ public class WorldObject {
 		drawCollision();
 	}
 
+	public Vector2D getDrawLocation() {
+		return Meth.addRelativeLocation(
+				world.getViewerPosition(),
+				world.getViewerRotation(),
+				getPosition().mul(world.getViewerZoom()
+				)
+		);
+	}
+
+	public void setDrawTransform() {
+		graphicsContext.translate(
+				getDrawLocation().x + world.getViewerPositionOffset().x,
+				getDrawLocation().y + world.getViewerPositionOffset().y
+		); // Object Location
+		graphicsContext.rotate(
+				Meth.addRelativeRotation(world.getViewerRotation(),
+						getRotation()
+				)
+		);
+	}
+
+	public Vector2D getDrawCenterOffset(Vector2D objectHalfSize) {
+		return new Vector2D(
+				getDrawCenterOffset(objectHalfSize.x),
+				getDrawCenterOffset(objectHalfSize.y)
+		);
+	}
+
+	public double getDrawCenterOffset(double objectHalfSize) {
+		return objectHalfSize * world.getViewerZoom() * -1;
+	}
+
+	public Vector2D getDrawSize(Vector2D objectHalfSize) {
+		return new Vector2D(
+				getDrawSize(objectHalfSize.x),
+				getDrawSize(objectHalfSize.y)
+		);
+	}
+
+	public double getDrawSize(double objectHalfSize) {
+		return objectHalfSize * 2 * world.getViewerZoom();
+	}
+
 	/**
 	 * @author Joel
 	 */
 	public void drawCollision() {
-		graphicsContext.save();
-		graphicsContext.setFill(sphereCollisionColor);
-		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
+		// skip if object has no collision enabled or collision size is 0
+		if (!isInteractable() || getSphereCollision() <= 0) return;
+		drawSphere(sphereCollision, sphereCollisionColor);
 
-		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
-		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
-		graphicsContext.fillOval((sphereCollision) * world.getViewerZoom() * -1, (sphereCollision) * world.getViewerZoom() * -1, sphereCollision * 2 * world.getViewerZoom(), sphereCollision * 2 * world.getViewerZoom());
-		graphicsContext.restore();
+		// skip if box collision is not enabled or collision component sizes are 0
+		if (!useBoxCollision() || getBoxCollision().x <= 0 || getBoxCollision().y <= 0) return;
+		drawRectangle(boxCollision, boxCollisionColor);
 	}
-	/*
-	public void drawCollision() {
-		graphicsContext.save();
-		graphicsContext.setFill(Color.RED);
-		Vector2D drawLoc = Meth.addRelativeLocation(world.getViewerPosition(), world.getViewerRotation(), getPosition().mul(world.getViewerZoom()));
-
-		graphicsContext.translate(drawLoc.x + world.getViewerPositionOffset().x, drawLoc.y + world.getViewerPositionOffset().y); // Object Location
-		graphicsContext.rotate(Meth.addRelativeRotation(world.getViewerRotation(), getRotation()));
-		graphicsContext.fillOval ((sphereCollision/2) * world.getViewerZoom() * -1, (sphereCollision/2) * world.getViewerZoom() * -1, sphereCollision * world.getViewerZoom(), sphereCollision * world.getViewerZoom());
-		graphicsContext.restore();
-	}*/
 
 	//--------------------------------------------------#####--------------------------------------------------
 
 
-	public void updateSim() {}
+	public void updateSim() {
+	}
 
 	public boolean useBoxCollision() {
 		return useBoxCollision;
@@ -383,13 +557,18 @@ public class WorldObject {
 
 	public void setBoxCollision(Vector2D boxCollision) {
 		this.boxCollision = boxCollision;
+
+		// update sphere collision size
+		setSphereCollision(boxCollision.length());
 	}
 
 	public Color getBoxCollisionColor() {
 		return boxCollisionColor;
 	}
 
-	public void setupDetailsPanel(FXMLLoader fxmlLoader) {}
+	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
+	}
 
-	public void updateDetailsPanel() {}
+	public void updateDetailsPanel() {
+	}
 }

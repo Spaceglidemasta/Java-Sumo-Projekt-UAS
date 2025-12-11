@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.SimControlController;
 
 import java.util.*;
 
@@ -16,67 +17,88 @@ import java.util.*;
  */
 public class World {
 	/**
+	 * The offset in pixel from the top left corner of the simulation view towards the center of the simulation view.
+	 * The x and y components will always be positive.
+	 *
 	 * @author Joel
 	 */
 	private Vector2D viewerPositionOffset = new Vector2D();
+
 	/**
+	 * The position of the world viewer.
+	 * Can also be described as the world offset towards the middle of the screen.
+	 *
 	 * @author Joel
 	 */
 	private Vector2D viewerPosition = new Vector2D(0, 0);
+
 	/**
+	 * The rotation of the world viewer. (0 to <360 in degrees)
+	 *
 	 * @author Joel
 	 */
 	private double viewerRotation = 0;
+
 	/**
+	 * The world viewers zoom.
+	 * Will always be positive.
+	 *
 	 * @author Joel
 	 */
 	private double viewerZoom = 1;
+
 	/**
+	 * The zoom limit of the world viewers zoom.
+	 * To limit how far the world view can be zoomed in and out.
+	 *
 	 * @author Joel
 	 */
 	private Vector2D viewerZoomLimit = new Vector2D(0.1, 10);
 
 	/**
+	 * The world size itself.
+	 * Will be calculated based on the loaded simulation.
+	 * Always positive.
+	 *
 	 * @author Joel
 	 */
 	private Vector2D worldSize = new Vector2D(512, 256);
 
-	public List<WorldObject> getWorldObjects() {
-		return worldObjects;
-	}
-
-	public void setWorldObjects(List<WorldObject> worldObjects) {
-		this.worldObjects = worldObjects;
-	}
-
 	/**
+	 * The list of WorldObjects in the world.
+	 * Is used to decide what to render in the world for example.
+	 *
 	 * @author Joel
 	 */
 	private List<WorldObject> worldObjects = new ArrayList<WorldObject>();
+
 	/**
+	 * The worlds base color.
+	 * Visualizes the world bounds.
+	 *
 	 * @author Joel
 	 */
 	private Color worldColor = Color.GREY;
+
 	/**
+	 * The background color of the world view.
+	 * Visualizes out of bounds.
+	 *
 	 * @author Joel
 	 */
 	private Color backgroundColor = Color.BLACK;
+
+
 	/**
 	 * @author Joel
 	 */
 	public GraphicsContext graphicsContext;
+
 	/**
 	 * @author Joel
 	 */
 	public Canvas worldStaticRenderTarget;
 
-	public Vector2D getWorldOffset() {
-		return worldOffset;
-	}
-
-	public void setWorldOffset(Vector2D worldOffset) {
-		this.worldOffset = worldOffset;
-	}
 
 	private Vector2D worldOffset = new Vector2D();
 
@@ -86,6 +108,7 @@ public class World {
 	 * @author Joel
 	 */
 	public World() {
+		SimControlController.setPlay(false);
 	}
 
 	/**
@@ -294,6 +317,22 @@ public class World {
 		}
 	}
 
+	public Vector2D getWorldOffset() {
+		return worldOffset;
+	}
+
+	public void setWorldOffset(Vector2D worldOffset) {
+		this.worldOffset = worldOffset;
+	}
+
+	public List<WorldObject> getWorldObjects() {
+		return worldObjects;
+	}
+
+	public void setWorldObjects(List<WorldObject> worldObjects) {
+		this.worldObjects = worldObjects;
+	}
+
 	/**
 	 * Comment
 	 *
@@ -341,24 +380,31 @@ public class World {
 				if (worldObject.useBoxCollision()) {
 					Vector2D relativeHitPosition = Meth.getRelativeLocation(worldObject.getPosition(), worldObject.getRotation(), worldPosition);
 					Vector2D relativeHalfHeightHit = relativeHitPosition.abs();
+					Debug.print(relativeHalfHeightHit);
 
 					// add only to box collision hit list if hit is inside of collision
-					if (relativeHalfHeightHit.x - worldObject.getBoxCollision().x > 0 &&
-							relativeHalfHeightHit.y - worldObject.getBoxCollision().y > 0
-					) boxCollisionHits.add(worldObject);
-				}
+					if (worldObject.getBoxCollision().x >= relativeHalfHeightHit.x &&
+							worldObject.getBoxCollision().y >= relativeHalfHeightHit.y
+					) {
+						boxCollisionHits.add(worldObject);
+						//Debug.print("BoxCollision");
+					}
 
-				distances.add(distanceToObject);
-				interactableObjects.add(worldObject);
+				} else {
+					distances.add(distanceToObject);
+					interactableObjects.add(worldObject);
+
+					//Debug.print("SphereCollision");
+				}
 			}
 
-			Debug.print(distanceToObject);
+			//Debug.print(distanceToObject);
+			//Debug.print(boxCollisionHits.size());
 		}
 
-		if (interactableObjects.isEmpty()) return null;
-		if (distances.isEmpty()) return null;
-
 		if (!boxCollisionHits.isEmpty()) return boxCollisionHits.getFirst();
+
+		if (interactableObjects.isEmpty() || distances.isEmpty()) return null;
 
 		double shortestDistance = distances.getFirst();
 		int shortestDistanceIndex = 0;
@@ -376,7 +422,7 @@ public class World {
 	}
 
 
-		/**
+	/**
 	 * Is missing a render check to only test objects that are currently rendered on the canvas. aka not outside of the frame
 	 *
 	 * @param worldPosition

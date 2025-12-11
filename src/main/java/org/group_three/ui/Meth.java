@@ -1,5 +1,8 @@
 package org.group_three.ui;
 
+import de.tudresden.sumo.objects.SumoColor;
+import javafx.scene.paint.Color;
+
 /**
  * Meth, the custom Math class
  *
@@ -15,6 +18,7 @@ public class Meth {
 	 * @return Return-Comment
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public static Vector2D lerp(Vector2D v0, Vector2D v1, double lerp) {
 		return v0.add(v0.sub(v1).mul(lerp));
 	}
@@ -29,7 +33,7 @@ public class Meth {
 	 * @author Joel
 	 */
 	public static double lerp(double d0, double d1, double lerp) {
-		return d0+(d1-d0)*lerp;
+		return d0 + (d1 - d0) * lerp;
 	}
 
 	/**
@@ -85,6 +89,7 @@ public class Meth {
 	 * @author Joel
 	 * @see #addRelativeRotation(double rotation, double relativeRotation)
 	 */
+	@SuppressWarnings("unused")
 	public static double getRelativeRotation(double rotation, double relativeRotation) {
 		return rotation - relativeRotation;
 	}
@@ -100,5 +105,39 @@ public class Meth {
 	 */
 	public static double addRelativeRotation(double rotation, double relativeRotation) {
 		return rotation + relativeRotation;
+	}
+
+	/**
+	 * Converts SumoColor to JavaFX's Color
+	 *
+	 * @param sumoColor SumoColor to be converted. (RGBA)
+	 * @return Color, also in RGBA but normalized.
+	 * @author Luca
+	 *
+	 */
+	public static Color SumoClrToClr(SumoColor sumoColor) {
+		return new Color(
+				// &0xFF doesn't change numbers, but returns a signed byte:
+				// (signed) 1111 1111 (=-1) => (signed) 0 1111 1111(=255)
+				// then, JavaFX's Color needs values in [0:1] => / 255.0d
+				(sumoColor.r & 0xFF) / 255.0d,
+				(sumoColor.g & 0xFF) / 255.0d,
+				(sumoColor.b & 0xFF) / 255.0d,
+				(sumoColor.a & 0xFF) / 255.0d
+		);
+	}
+
+	/**
+	 * @param clr
+	 * @return
+	 * @author Luca
+	 */
+	public static SumoColor ClrToSumoClr(Color clr) {
+		return new SumoColor(
+				(int) (clr.getRed() * 255),
+				(int) (clr.getGreen() * 255),
+				(int) (clr.getBlue() * 255),
+				(int) (clr.getOpacity() * 255)
+		);
 	}
 }
