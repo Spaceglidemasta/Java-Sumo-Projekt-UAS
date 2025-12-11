@@ -42,10 +42,8 @@ public class BodyController {
 	 * Comment
 	 * Code-Snippet: {@code code}
 	 *
+	 * @throws IOException Throw-Comment
 	 * @author Joel
-	 *
-	 * @throws IOException
-	 * Throw-Comment
 	 */
 	@FXML
 	public void initialize() throws IOException {
@@ -80,7 +78,6 @@ public class BodyController {
 		}
 
 
-
 	}
 
 	public static FXMLLoader setDetailsPanel(String fxmlPath) {
@@ -108,7 +105,6 @@ public class BodyController {
 			e.printStackTrace();
 			return null;
 		}
-
 
 
 		return loader;

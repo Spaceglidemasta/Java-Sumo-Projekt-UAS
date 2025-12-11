@@ -1,5 +1,6 @@
 package org.group_three.ui.world;
 
+import de.tudresden.sumo.objects.SumoColor;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
@@ -12,10 +13,21 @@ import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.controllers.VehicleDetailsController;
 
+import static org.group_three.ui.Meth.ClrToSumoClr;
+import static org.group_three.ui.Meth.SumoClrToClr;
+
 /**
+ * Vehicle to be Rendered on the Canvas
  * @author Joel
  */
 public class WorldVehicle extends WorldObject {
+
+    //adjust this to change size
+    private static double scale_size = 8;
+    private static double y_size = 1 * scale_size;
+    private static double x_size = 2 * scale_size;
+
+
 	/**
 	 * @author Joel
 	 */
@@ -38,8 +50,10 @@ public class WorldVehicle extends WorldObject {
 	 */
 	public WorldVehicle(World world, Canvas canvas, String displayName) {
 		super(world, canvas, displayName);
-		setInteractable(true);
 		detailClassPath = "/org/group_three/ui/fxml/VehicleDetails.fxml";
+		setInteractable(true);
+		setUseBoxCollision(true);
+		setBoxCollision(new Vector2D(x_size, y_size));
 	}
 
 	public WVehicle getwVehicle() {
@@ -59,37 +73,22 @@ public class WorldVehicle extends WorldObject {
 		wVehicle.update();
 		setPosition(new Vector2D(wVehicle.getPos()));
 		//setRotation(wVehicle.getAngle());
+		setColor(wVehicle.getColor());
 
-		Debug.print(wVehicle.getColor());
+		//Debug.print(wVehicle.getColor());
 
-		setColor(convertWVColor());
+		//setColor(convertWVColor());
 		updateDetailsPanel();
 	}
 
 	public Color convertWVColor() {
 		if (wVehicle.getColor().r == -1 &&
-			wVehicle.getColor().g == -1 &&
-			wVehicle.getColor().b == 0 &&
-			wVehicle.getColor().a == -1
+				wVehicle.getColor().g == -1 &&
+				wVehicle.getColor().b == 0 &&
+				wVehicle.getColor().a == -1
 		) return getColor();
 
-		return new Color(
-				byteToDouble(wVehicle.getColor().r),
-				byteToDouble(wVehicle.getColor().g),
-				byteToDouble(wVehicle.getColor().b),
-				byteToDouble(wVehicle.getColor().a)
-		);
-	}
-
-	public double byteToDouble(byte input) {
-		// byte to double ocnversion
-		double value = (double)input/255;
-
-		// double clamp to 0 - 1
-		if (value < 0) value = 0;
-		else if (value > 1) value = 1;
-
-		return value;
+		return Meth.SumoClrToClr(wVehicle.getColor());
 	}
 
 	private WVehicle wVehicle;
@@ -103,12 +102,36 @@ public class WorldVehicle extends WorldObject {
 	}
 
 	/**
-	 * @param color
-	 * @author Joel
+     * Sets the color via wVehicle
+	 * @param color in Color (JavaFX)
+	 * @author Luca
 	 */
-	public void setColor(Color color) {
-		this.color = color;
+	public boolean setColor(Color color) {
+
+        if(wVehicle.setColor(ClrToSumoClr(color))){
+            this.color = color;
+            return true;
+        }
+        else{
+            return false;
+        }
 	}
+
+
+    /**
+     * Sets the color via wVehicle
+     * @param color in SumoColor
+     * @author Luca
+     */
+    public boolean setColor(SumoColor color){
+        if(wVehicle.setColor(color)){
+            this.color = SumoClrToClr(color);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 	/**
 	 * @author Joel
@@ -129,17 +152,9 @@ public class WorldVehicle extends WorldObject {
 	public void update() {
 		super.update();
 		Image visualImage = iconManager.getIcon(getColor());
-		Vector2D rect = new Vector2D(visualImage.getWidth(), visualImage.getHeight());
-		rect = rect.div(10);
-		getGraphicsContext().save();
-		//graphicsContext.setFill(Color.BLUE);
-		Vector2D drawLoc = Meth.addRelativeLocation(getWorld().getViewerPosition(), getWorld().getViewerRotation(), getPosition().mul(getWorld().getViewerZoom()));
+		Vector2D imageSize = new Vector2D(visualImage.getWidth(), visualImage.getHeight()).div(80 / scale_size);
 
-		getGraphicsContext().translate(drawLoc.x + getWorld().getViewerPositionOffset().x, drawLoc.y + getWorld().getViewerPositionOffset().y); // Object Location
-		getGraphicsContext().rotate(Meth.addRelativeRotation(getWorld().getViewerRotation(), getRotation()));
-		getGraphicsContext().drawImage(visualImage, (rect.x / 2) * getWorld().getViewerZoom() * -1, (rect.y / 2) * getWorld().getViewerZoom() * -1, rect.x * getWorld().getViewerZoom(), rect.y * getWorld().getViewerZoom());
-		//graphicsContext.fillRect((rect.x/2) * world.getViewerZoom() * -1, (rect.y/2) * world.getViewerZoom() * -1, rect.x * world.getViewerZoom(), rect.y * world.getViewerZoom());
-		getGraphicsContext().restore();
+		drawImage(imageSize.div(2), visualImage);
 	}
 
 	VehicleDetailsController vehicleDetailsController;

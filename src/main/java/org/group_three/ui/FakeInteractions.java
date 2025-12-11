@@ -1,6 +1,7 @@
 package org.group_three.ui;
 
 import de.tudresden.sumo.cmd.Edge;
+import de.tudresden.sumo.util.SumoCommand;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;

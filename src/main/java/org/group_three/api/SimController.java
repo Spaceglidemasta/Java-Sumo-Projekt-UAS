@@ -1,18 +1,21 @@
 package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
-import de.tudresden.sumo.objects.SumoGeometry;
-import de.tudresden.sumo.objects.SumoPosition2D;
-import de.tudresden.sumo.objects.SumoStringList;
+import de.tudresden.sumo.objects.*;
+import de.tudresden.sumo.subscription.SubscribtionVariable;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
+import org.group_three.utils.Sumo2DVector;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>SimController</h1>
@@ -401,15 +404,16 @@ public class SimController {
         return null;
     }
 
+
+
     /**
      * Function to return all Lane IDs
      * @return IDs of all Lanes in a network
      * @author Leon
      */
-    public SumoStringList getNetworkIDList() {
-
+    public SumoStringList getLaneIDList() {
         try {
-            return (SumoStringList) _sumcon.do_job_get(Lane.getIDList());
+            return (SumoStringList) stc.do_job_get(Lane.getIDList());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -425,10 +429,10 @@ public class SimController {
      * @return coordinates from start to end
      * @author Leon
      */
-    public String getNetworkEdgeParam(String laneID) {
+    public String getLaneEdgeParam(String laneID) {
 
         try {
-            SumoGeometry shape = (SumoGeometry) _sumcon.do_job_get(Lane.getShape(laneID));
+            SumoGeometry shape = (SumoGeometry) stc.do_job_get(Lane.getShape(laneID));
             if (shape != null){
                 return shape.toString();
             }
@@ -440,9 +444,6 @@ public class SimController {
             return null;
         }
     }
-
-
-
 
     /**
      * Beware that this uses unchecked casting and CAN return null.
@@ -532,6 +533,17 @@ public class SimController {
             return null;
         }
     }
+
+    public SumoLinkList getControlledLinks(String linkID) {
+        try {
+            return (SumoLinkList) stc.do_job_get(Trafficlight.getControlledLinks(linkID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /**
      * Sets the Phase Index [0:2] of the TL. <br>
@@ -669,6 +681,28 @@ public class SimController {
             return null;
         }
     }
+
+    /**
+     * Gets you the String of the corner points (of the polygon) of the junction.<br>
+     * @return String, or <code>null</code> if failed.
+     * @author Leon
+     * */
+    public String getJunctionShape(String laneID) {
+
+        try {
+            SumoGeometry shape = (SumoGeometry) stc.do_job_get(Junction.getShape(laneID));
+            if (shape != null){
+                return shape.toString();
+            }
+            else {
+                return  null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
 

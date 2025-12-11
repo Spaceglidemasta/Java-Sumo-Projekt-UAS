@@ -16,16 +16,14 @@ public class SimControlController {
 	@FXML
 	private TextField speedModifier;
 
-	private double speedModValue = 1;
+	private static double speedModValue = 1;
 
 
 	/**
 	 * Comment
 	 *
+	 * @throws IOException Throw-Comment
 	 * @author Joel
-	 *
-	 * @throws IOException
-	 * Throw-Comment
 	 */
 	@FXML
 	public void initialize() throws IOException {
@@ -47,10 +45,10 @@ public class SimControlController {
 						speedModifier.textProperty().set(String.valueOf(speedModValue));
 					}
 
-		});
+				});
 	}
 
-	private Timeline timeline;
+	private static Timeline timeline;
 
 	/**
 	 * Comment
@@ -64,12 +62,12 @@ public class SimControlController {
 		SimView2D.update();
 	}
 
-	public boolean isPlay() {
+	public static boolean isPlay() {
 		return play;
 	}
 
-	public void setPlay(boolean play) {
-		this.play = play;
+	public static void setPlay(boolean play) {
+		SimControlController.play = play;
 
 		if (play) {
 			timeline.play();
@@ -78,7 +76,7 @@ public class SimControlController {
 		}
 	}
 
-	private boolean play = false;
+	private static boolean play = false;
 
 	/**
 	 * Comment

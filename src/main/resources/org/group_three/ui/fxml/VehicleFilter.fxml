@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.VehicleFilterController">
+   <children>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <SplitPane dividerPositions="0.29797979797979796" prefWidth="285.0">
+              <items>
+                <AnchorPane minWidth="64.0" prefWidth="82.0">
+                     <children>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Speed" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Position" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Radius" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minWidth="128.0">
+                     <children>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <HBox layoutX="3.4285714626312256" layoutY="3.4285714626312256" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5">
+                                       <children>
+                                          <TextField fx:id="speedMin" promptText="speedMin" />
+                                          <TextField fx:id="speedMax" promptText="speedMax" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <HBox fx:id="posXYContainer" layoutX="3.4285714626312256" layoutY="3.4285714626312256" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5">
+                                       <children>
+                                          <TextField fx:id="posX" editable="false" promptText="posX" />
+                                          <TextField fx:id="posY" editable="false" promptText="posY" />
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="selectPosButton" mnemonicParsing="false" text="Select" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <TextField fx:id="id" editable="false" promptText="radius" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <VBox fx:id="colorFilterList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
+                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
+                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
+                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
+                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
+                                          <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" text="Add" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

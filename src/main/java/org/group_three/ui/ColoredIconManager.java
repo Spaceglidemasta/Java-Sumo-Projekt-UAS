@@ -18,10 +18,12 @@ public class ColoredIconManager {
 	/**
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Image image = null;
 	/**
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Map<Color, Image> icons = new HashMap<>() {
 	};
 
@@ -84,12 +86,12 @@ public class ColoredIconManager {
 			for (int x = 0; x < w; x++) {
 				Color c = reader.getColor(x, y);
 
-				if (c.getOpacity() > 0) {
+				if (c.getOpacity() >= 0.5) {
 					Color newColor = new Color(
-							color.getRed(),
-							color.getGreen(),
-							color.getBlue(),
-							c.getOpacity()
+							c.getRed() * color.getRed(),
+							c.getGreen() * color.getGreen(),
+							c.getBlue() * color.getBlue(),
+							c.getOpacity() * color.getOpacity()
 					);
 					writer.setColor(x, y, newColor);
 				} else {
