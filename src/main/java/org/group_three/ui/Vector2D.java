@@ -221,6 +221,18 @@ public class Vector2D {
 		return rotation;
 	}
 
+	/**
+	 * A method to calculate a rotation angle based on the direction of two points.
+	 * This object is from.
+	 *
+	 * @param to The target location.
+	 * @return The rotation angle from the direction.
+	 * @author Joel
+	 */
+	public double getDirectionAngle(Vector2D to) {
+		return Math.toDegrees(Math.atan2(this.sub(to).y, this.sub(to).x));
+	}
+
 
 	/**
 	 * A method to round the x- and y-components of the Vector2D to 9 decimal places.
