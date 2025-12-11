@@ -24,8 +24,8 @@ public class WorldVehicle extends WorldObject {
 
     //adjust this to change size
     private static double scale_size = 1;
-	private static double x_size = 16 * scale_size;
-    private static double y_size = 8 * scale_size;
+	private static double x_size = 5 * scale_size;
+    private static double y_size = 2.5 * scale_size;
 
 
 	/**
@@ -53,7 +53,7 @@ public class WorldVehicle extends WorldObject {
 		detailClassPath = "/org/group_three/ui/fxml/VehicleDetails.fxml";
 		setInteractable(true);
 		setUseBoxCollision(true);
-		setBoxCollision(new Vector2D(x_size, y_size));
+		setBoxCollision(new Vector2D(x_size, y_size).div(2));
 	}
 
 	public WVehicle getwVehicle() {
