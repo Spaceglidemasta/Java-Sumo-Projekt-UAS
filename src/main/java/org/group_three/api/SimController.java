@@ -1,10 +1,8 @@
 package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
-import de.tudresden.sumo.objects.SumoGeometry;
-import de.tudresden.sumo.objects.SumoLinkList;
-import de.tudresden.sumo.objects.SumoPosition2D;
-import de.tudresden.sumo.objects.SumoStringList;
+import de.tudresden.sumo.objects.*;
+import de.tudresden.sumo.subscription.SubscribtionVariable;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
@@ -15,6 +13,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -446,26 +445,6 @@ public class SimController {
         }
     }
 
-    public String getJunctionShape(String laneID) {
-
-        try {
-            SumoGeometry shape = (SumoGeometry) stc.do_job_get(Junction.getShape(laneID));
-            if (shape != null){
-                return shape.toString();
-            }
-            else {
-                return  null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-
-
-
     /**
      * Beware that this uses unchecked casting and CAN return null.
      * @param edgeID The String of the EdgeID you want the number of lanes from.
@@ -661,73 +640,6 @@ public class SimController {
     }
 
 
-    public List<Sumo2DVector> getHaltelinenVector() {
-
-        List<Sumo2DVector> matches = new ArrayList<>();
-        List<String> clusterJunctions = new ArrayList<>();
-        List<String> allJunctions = getJunctionIDList();
-
-        for (String junction : allJunctions) {
-            if (junction.startsWith("cluster")) {
-                clusterJunctions.add(junction);
-            }
-        }
-
-        List<String> allLanes = getLaneIDList();
-        List<String> filteredLanes = new ArrayList<>();
-        for (String lane : allLanes) {
-            if (lane.matches("^E\\d+_\\d+$")) {
-                filteredLanes.add(lane);
-            }
-        }
-
-        for (String clusterId : clusterJunctions) {
-            String junctionShapeStr = getJunctionShape(clusterId);
-            String cleanedJunctionStr = junctionShapeStr.replaceAll("[^0-9.,\\s-]", "").trim();
-            String[] junctionPoints = cleanedJunctionStr.split("\\s+");
-
-            List<Double> junctionXCoords = new ArrayList<>();
-            List<Double> junctionYCoords = new ArrayList<>();
-
-            for (String point : junctionPoints) {
-                String[] coords = point.split(",");
-                if (coords.length == 2) {
-                    try {
-                        double x = Double.parseDouble(coords[0]);
-                        double y = Double.parseDouble(coords[1]);
-                        junctionXCoords.add(x);
-                        junctionYCoords.add(y);
-                    } catch (NumberFormatException e) {
-                        // Handle parse error if needed
-                    }
-                }
-            }
-
-            for (String laneId : filteredLanes) {
-                String laneEdgeParam = getLaneEdgeParam(laneId); // assuming you have a method to get this
-                if (laneEdgeParam != null) {
-                    String[] laneCoords = laneEdgeParam.split(" ");
-                    String lastLaneCoord = laneCoords[laneCoords.length - 1];
-                    String[] lastLaneXY = lastLaneCoord.split(",");
-                    String lastLaneX = lastLaneXY[0];
-
-                    for (int i = 0; i < junctionXCoords.size(); i++) {
-                        String junctionXStr = junctionXCoords.get(i).toString();
-                        if (junctionXStr.equals(lastLaneX)) {
-                            double yCoord = junctionYCoords.get(i);
-                            matches.add(new Sumo2DVector(Double.parseDouble(lastLaneX), yCoord));
-                            Debug.print("Matching x coordinate: " + lastLaneX);
-                            Debug.print("Corresponding y coordinate: " + junctionYCoords.get(i));
-
-
-                        }
-                    }
-                }
-            }
-        }
-        return matches;
-    }
-
     // ******************************************************
     // **                      Junctions                   **
     // ******************************************************
@@ -769,6 +681,28 @@ public class SimController {
             return null;
         }
     }
+
+    /**
+     * Gets you the String of the corner points (of the polygon) of the junction.<br>
+     * @return String, or <code>null</code> if failed.
+     * @author Leon
+     * */
+    public String getJunctionShape(String laneID) {
+
+        try {
+            SumoGeometry shape = (SumoGeometry) stc.do_job_get(Junction.getShape(laneID));
+            if (shape != null){
+                return shape.toString();
+            }
+            else {
+                return  null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
 
