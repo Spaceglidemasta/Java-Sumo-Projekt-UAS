@@ -538,6 +538,25 @@ public class SimController {
         }
     }
 
+    /**
+     * @return All LaneID's controlled by the TL.
+     * @author Leon
+     * */
+    public SumoStringList getControlledLanes(String TLID) {
+        try {
+            return (SumoStringList) stc.do_job_get(Trafficlight.getControlledLanes(TLID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @return All Link's controlled by the TL.
+     * (Weird format "E1_0#:clusterJ4_J5_0_0#E0.16_0")
+     * @author Leon
+     * */
     public SumoLinkList getControlledLinks(String linkID) {
         try {
             return (SumoLinkList) stc.do_job_get(Trafficlight.getControlledLinks(linkID));
@@ -548,6 +567,122 @@ public class SimController {
         return null;
     }
 
+    /**This function supposedly returns it in meters but since one meter
+     * equals one coordinate unit, they can just be used as the width in coordinates)
+     * @param laneID ID of the chosen lane with format:("E1_0")
+     * @return Returns the width of a chosen lane.
+     * @author Leon
+     * */
+    public Double getLaneWidth(String laneID) {
+        try {
+            return (Double) stc.do_job_get(Lane.getWidth(laneID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**This function can return <code>null</code> <br>
+     * This function is used in tandem with the getStopLineCoords function.
+     * This function passes the second to last and the last coordinate
+     * of all Lanes that are controlled by the chosen TL and then returns
+     * the stop line coordinates.
+     * @param TLID ID of the chosen TL with format:("clusterJ4_J5")
+     * @return returns the data as Sumo2DVector
+     * @author Leon
+     * */
+    public List<Sumo2DVector> getStopLineVector(String TLID){
+        List<SumoPosition2D> stopLinePositions = new ArrayList<>();
+        try {
+            SumoStringList linkedLanes = getControlledLanes(TLID);
+
+            for(String laneID: linkedLanes){
+
+                String edgeShape = getLaneEdgeParam(laneID);
+                String[] coordinates = edgeShape.split(" ");
+
+                String secondToLastCoordinate = coordinates[coordinates.length - 2];
+                String lastCoordinate = coordinates[coordinates.length - 1];
+
+                String[] secondToLastCoord = secondToLastCoordinate.split(",");
+                String[] lastCoord = lastCoordinate.split(",");
+
+                double x1 = Double.parseDouble(secondToLastCoord[0]);
+                double y1 = Double.parseDouble(secondToLastCoord[1]);
+                double x2 = Double.parseDouble(lastCoord[0]);
+                double y2 = Double.parseDouble(lastCoord[1]);
+
+                stopLinePositions.add(new SumoPosition2D(x1, y1));
+                stopLinePositions.add(new SumoPosition2D(x2, y2));
+
+
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return stopLineCalculation(stopLinePositions);
+    }
+
+    /**This is a function that calculates the two positions of the Stop line
+     * (Start and end) using the two positions from the previous function.
+     * It first calculates the direction vector and makes it perpendicular to the
+     * direction that the lane is.
+     * It uses the last position of the lane as a middle and calculates two points, 1.6
+     * units in each direction, since the standard width is 3.2.
+     * @param stopLinePositions Takes in the List that was made with getStopLinePos()
+     * @return returns the data as Sumo2DVector.
+     * @author Leon
+     * */
+    public List<Sumo2DVector> stopLineCalculation(List<SumoPosition2D> stopLinePositions) {
+        List<Sumo2DVector> perpendicularPoints = new ArrayList<>();
+        final double OFFSET = 1.6;  // Half the lane
+
+        // Iterate (second-to-last, last) for each lane
+        for (int i = 0; i < stopLinePositions.size(); i += 2) {
+            if (i + 1 >= stopLinePositions.size()) break; // safety check
+
+            SumoPosition2D point1 = stopLinePositions.get(i);
+            SumoPosition2D point2 = stopLinePositions.get(i + 1);
+
+            // Direction vector of the street
+            double dx = point2.x - point1.x;
+            double dy = point2.y - point1.y;
+
+            // Normalize
+            double magnitude = Math.sqrt(dx * dx + dy * dy);
+            if (magnitude == 0) continue; // avoid division by zero
+
+            // Perpendicular vector
+            double perpX = dy / magnitude;
+            double perpY = -dx / magnitude;
+
+            // Scale by offset
+            perpX *= OFFSET;
+            perpY *= OFFSET;
+
+            // Use the LAST coordinate (point2) as center
+            double xLeft = point2.x - perpX;
+            double yLeft = point2.y - perpY;
+            double xRight = point2.x + perpX;
+            double yRight = point2.y + perpY;
+
+            //Add both points
+            SumoPosition2D leftPoint = new SumoPosition2D(xLeft, yLeft);
+            SumoPosition2D rightPoint = new SumoPosition2D(xRight, yRight);
+
+            // Create a line segment from left to right
+            Sumo2DVector stopLine = new Sumo2DVector(leftPoint, rightPoint);
+            perpendicularPoints.add(stopLine);
+
+            //Debug.print("Stop line: " + stopLine);
+
+        }
+
+        return perpendicularPoints;
+    }
 
     /**
      * Sets the Phase Index [0:2] of the TL. <br>
