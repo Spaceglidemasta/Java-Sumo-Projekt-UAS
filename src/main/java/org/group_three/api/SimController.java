@@ -6,6 +6,7 @@ import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
+
 import org.group_three.utils.LaneStopLineData;
 import org.group_three.utils.Sumo2DVector;
 
@@ -30,7 +31,7 @@ public class SimController {
     private static final String routefname = "net.rou.xml";
 
     // Easy mode
-    private static SimController mainstc = null;
+    private static SimController mainsimcon = null;
 
 
 /// ******************************************************
@@ -82,7 +83,7 @@ public class SimController {
             stc.printSumoError(true);
             stc.runServer(8813);
 
-            // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
+            // THIS SINGULAR TIMESTEP IS NECESSARY TO -LOAD ALL VEHICLES-; DO NOT REMOVE
             stc.do_timestep();
 
         } catch (Exception e) {
@@ -302,7 +303,7 @@ public class SimController {
      * Returns the global / static _mainsim.
      * @author Luca
      * */
-    public static SimController getMainstc() {return mainstc;}
+    public static SimController getMainsimcon() {return mainsimcon;}
 
     /**
      * Sets this Simulation as the new, global, main simulation. <br>
@@ -311,11 +312,11 @@ public class SimController {
      * */
     public void setMainstc(boolean close_old){
 
-        if(mainstc != null && close_old){
-            mainstc.close();
+        if(mainsimcon != null && close_old){
+            mainsimcon.close();
         }
 
-        mainstc = this;
+        mainsimcon = this;
 
         Debug.print("Main SUMO Simulation was overwritten.");
     }

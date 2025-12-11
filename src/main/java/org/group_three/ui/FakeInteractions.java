@@ -1,6 +1,7 @@
 package org.group_three.ui;
 
 import org.group_three.api.SimController;
+import org.group_three.api.Statistics;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.SumoRoad;
@@ -108,14 +109,13 @@ public class FakeInteractions {
             SumoRoad.loadRoads(network);
         }
 
-
-
         //set selected simulation as the main, global / static simulation.
         simcon.setMainstc(true);
 
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
 
+        //Statistics.exportState(PathUtils.outputgen());
 
 
 		return true;

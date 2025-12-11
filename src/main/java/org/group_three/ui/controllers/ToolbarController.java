@@ -242,7 +242,7 @@ public class ToolbarController {
 	private void onSimulationCloseClicked() {
 		Debug.toConsole("Simulation -> Close");
 		setLoadedSimulation(null);
-		SimController.getMainstc().close();
+		SimController.getMainsimcon().close();
 		SimView2D.newWorld();
 	}
 

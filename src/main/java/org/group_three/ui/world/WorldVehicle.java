@@ -22,7 +22,7 @@ import static org.group_three.ui.Meth.SumoClrToClr;
  */
 public class WorldVehicle extends WorldObject {
 
-    //adjust this to change size
+    //adjust this to change size. Default ist 8
     private static double scale_size = 8;
     private static double y_size = 1 * scale_size;
     private static double x_size = 2 * scale_size;
