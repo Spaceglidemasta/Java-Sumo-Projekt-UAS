@@ -322,9 +322,9 @@ public class SimController {
         Debug.print("Main SUMO Simulation was overwritten.");
     }
 
-    /// ******************************************************
-    /// **                   Getters                        **
-    /// ******************************************************
+    // ******************************************************
+    // **                   Getters                        **
+    // ******************************************************
 
     /**
      * Getter for the SumoTraciConnection
@@ -421,6 +421,10 @@ public class SimController {
 
         return null;
     }
+
+    //
+
+
 
     /**
      * Function to return coordinates from the start of the lane to the end, including
