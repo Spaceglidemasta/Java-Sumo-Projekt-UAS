@@ -4,6 +4,8 @@ package org.group_three.api;
 import de.tudresden.sumo.cmd.Simulation;
 import it.polito.appeal.traci.SumoTraciConnection;
 
+import java.util.List;
+
 /**
  * Class for collecting statistics.
  * Can be instantiated to collect stats of one Simulation,
@@ -14,7 +16,7 @@ public class Statistics {
 
 
     private SimController simcon;
-
+    private List<String> content;
 
 
     /**
