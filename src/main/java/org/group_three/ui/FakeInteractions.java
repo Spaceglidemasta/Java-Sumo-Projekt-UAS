@@ -4,6 +4,7 @@ import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.SumoRoad;
+import org.group_three.utils.PathUtils;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -90,7 +91,19 @@ public class FakeInteractions {
 
         //load road network
         if(config != null){
-            //config parser
+
+            try {
+                //you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
+                File net = PathUtils.getNetfromSConfig(config);
+                SumoRoad.loadRoads(net);
+                //SumoRoad.printAll();
+                //SumoRoad.getRoad("132964154").print();
+            }
+            catch (Exception e){
+                Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
+                e.printStackTrace();
+            }
+
         }  else {
             SumoRoad.loadRoads(network);
         }
