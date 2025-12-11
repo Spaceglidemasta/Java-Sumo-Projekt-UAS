@@ -6,8 +6,9 @@ import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
+
 import org.group_three.utils.LaneStopLineData;
-import org.group_three.utils.Sumo2DVector;
+import org.group_three.utils.Sumo2DLine;
 
 import java.io.File;
 import java.net.URI;
@@ -30,7 +31,7 @@ public class SimController {
     private static final String routefname = "net.rou.xml";
 
     // Easy mode
-    private static SimController mainstc = null;
+    private static SimController mainsimcon = null;
 
 
 /// ******************************************************
@@ -82,7 +83,7 @@ public class SimController {
             stc.printSumoError(true);
             stc.runServer(8813);
 
-            // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
+            // THIS SINGULAR TIMESTEP IS NECESSARY TO -LOAD ALL VEHICLES-; DO NOT REMOVE
             stc.do_timestep();
 
         } catch (Exception e) {
@@ -302,7 +303,7 @@ public class SimController {
      * Returns the global / static _mainsim.
      * @author Luca
      * */
-    public static SimController getMainstc() {return mainstc;}
+    public static SimController getMainsimcon() {return mainsimcon;}
 
     /**
      * Sets this Simulation as the new, global, main simulation. <br>
@@ -311,11 +312,11 @@ public class SimController {
      * */
     public void setMainstc(boolean close_old){
 
-        if(mainstc != null && close_old){
-            mainstc.close();
+        if(mainsimcon != null && close_old){
+            mainsimcon.close();
         }
 
-        mainstc = this;
+        mainsimcon = this;
 
         Debug.print("Main SUMO Simulation was overwritten.");
     }
@@ -597,10 +598,10 @@ public class SimController {
      * id of the Lane that are controlled by the chosen TL into a array and then returns
      * the stop line coordinates.
      * @param TLID ID of the chosen TL with format:("clusterJ4_J5")
-     * @return returns the data as Sumo2DVector
+     * @return returns the data as Sumo2DLine
      * @author Leon
      * */
-    public List<Sumo2DVector> getStopLineVector(String TLID){
+    public List<Sumo2DLine> getStopLineVector(String TLID){
         List<LaneStopLineData> laneStopLines  = new ArrayList<>();
         try {
             SumoStringList linkedLanes = getControlledLanes(TLID);
@@ -642,11 +643,11 @@ public class SimController {
      * It uses the last position of the lane as a middle and calculates two points, using
      * the width, derived from the getLaneWidth function. (It divides it by 2 and adds it to the coordinates)
      * @param stopLinePositions Takes in the List that was made with getStopLinePos()
-     * @return returns the data as Sumo2DVector.
+     * @return returns the data as Sumo2DLine.
      * @author Leon
      * */
-    public List<Sumo2DVector> stopLineCalculation(List<LaneStopLineData> stopLinePositions) {
-        List<Sumo2DVector> stopLinePoints = new ArrayList<>();
+    public List<Sumo2DLine> stopLineCalculation(List<LaneStopLineData> stopLinePositions) {
+        List<Sumo2DLine> stopLinePoints = new ArrayList<>();
 
         // Iterate (second-to-last, last)
         for (LaneStopLineData laneData : stopLinePositions) {
@@ -681,7 +682,7 @@ public class SimController {
             SumoPosition2D leftPoint = new SumoPosition2D(xLeft, yLeft);
             SumoPosition2D rightPoint = new SumoPosition2D(xRight, yRight);
 
-            Sumo2DVector stopLine = new Sumo2DVector(leftPoint, rightPoint);
+            Sumo2DLine stopLine = new Sumo2DLine(leftPoint, rightPoint);
             stopLinePoints.add(stopLine);
 
             //Debug.print("Lane " + laneData.laneID + " stop line: " + stopLine);
