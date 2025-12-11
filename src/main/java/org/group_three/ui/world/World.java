@@ -11,17 +11,21 @@ import org.group_three.ui.controllers.SimControlController;
 import java.util.*;
 
 /**
- * a class that represents the 2d world
+ * A class that represents the 2d world.
  *
  * @author Joel
  */
 public class World {
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
 	 * The offset in pixel from the top left corner of the simulation view towards the center of the simulation view.
 	 * The x and y components will always be positive.
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Vector2D viewerPositionOffset = new Vector2D();
 
 	/**
@@ -30,6 +34,7 @@ public class World {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Vector2D viewerPosition = new Vector2D(0, 0);
 
 	/**
@@ -37,6 +42,7 @@ public class World {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private double viewerRotation = 0;
 
 	/**
@@ -45,6 +51,7 @@ public class World {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private double viewerZoom = 1;
 
 	/**
@@ -53,6 +60,7 @@ public class World {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Vector2D viewerZoomLimit = new Vector2D(0.1, 10);
 
 	/**
@@ -62,7 +70,16 @@ public class World {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Vector2D worldSize = new Vector2D(512, 256);
+
+	/**
+	 * The world offset to display non-zero center worlds properly.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private Vector2D worldOffset = new Vector2D();
 
 	/**
 	 * The list of WorldObjects in the world.
@@ -70,6 +87,7 @@ public class World {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private List<WorldObject> worldObjects = new ArrayList<WorldObject>();
 
 	/**
@@ -78,6 +96,7 @@ public class World {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Color worldColor = Color.GREY;
 
 	/**
@@ -86,24 +105,33 @@ public class World {
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private Color backgroundColor = Color.BLACK;
 
 
 	/**
+	 * The graphics context of the canvas which is being used to drawn on it.
+	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	public GraphicsContext graphicsContext;
 
 	/**
+	 * The canvas to draw on.
+	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	public Canvas worldStaticRenderTarget;
 
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
-	private Vector2D worldOffset = new Vector2D();
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * Comment
+	 * The default constructor for thw World class.
+	 * Disables play on the simulation controls, so it doesn't autoplay the simulation on world swap.
 	 *
 	 * @author Joel
 	 */
@@ -111,10 +139,15 @@ public class World {
 		SimControlController.setPlay(false);
 	}
 
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
-	 * Comment
+	 * Gets the world viewers current rotation.
 	 *
-	 * @return Return-Comment
+	 * @return The rotation in degrees. (0 to <360)
 	 * @author Joel
 	 */
 	public double getViewerRotation() {
@@ -122,9 +155,75 @@ public class World {
 	}
 
 	/**
-	 * Comment
+	 * Gets the world viewer's current zoom.
 	 *
-	 * @param rotation Param-Comment
+	 * @return The zoom value as a double.
+	 * @author Joel
+	 */
+	public double getViewerZoom() {
+		return viewerZoom;
+	}
+
+	/**
+	 * Gets the current world viewer's position offset.
+	 * Aka the offset from the top left corner of the canvas towards the center of it.
+	 *
+	 * @return The offset as a Vector2D.
+	 * @author Joel
+	 */
+	public Vector2D getViewerPositionOffset() {
+		return viewerPositionOffset;
+	}
+
+	/**
+	 * Gets the world viewer's position.
+	 *
+	 * @return The position as a Vector2D.
+	 * @author Joel
+	 */
+	public Vector2D getViewerPosition() {
+		return viewerPosition;
+	}
+
+	/**
+	 * Gets the world (bound) size.
+	 *
+	 * @return The world size as a half Vector2D.
+	 * @author Joel
+	 */
+	public Vector2D getWorldSize() {
+		return worldSize;
+	}
+
+	/**
+	 * Gets the world offset, to properly display non-zero center worlds.
+	 *
+	 * @return The world's bounds center offset.
+	 * @author Joel
+	 */
+	public Vector2D getWorldOffset() {
+		return worldOffset;
+	}
+
+	/**
+	 * Gets the world object list.
+	 *
+	 * @return The world object.
+	 * @author Joel
+	 */
+	public List<WorldObject> getWorldObjects() {
+		return worldObjects;
+	}
+
+	//--------------------------------------------------GetterMethods---------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * Sets the world viewers current rotation.
+	 *
+	 * @param rotation The rotation in degrees. (0 to <360)
 	 * @author Joel
 	 */
 	public void setViewerRotation(double rotation) {
@@ -138,35 +237,13 @@ public class World {
 
 		viewerRotation = rotation;
 
-		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(rotation);
-
 		requestUpdate();
 	}
 
 	/**
-	 * Comment
+	 * Sets the world viewer's zoom.
 	 *
-	 * @param rotation Param-Comment
-	 * @author Joel
-	 */
-	public void addViewerRotation(double rotation) {
-		setViewerRotation(getViewerRotation() + rotation);
-	}
-
-	/**
-	 * Comment
-	 *
-	 * @return Return-Comment
-	 * @author Joel
-	 */
-	public double getViewerZoom() {
-		return viewerZoom;
-	}
-
-	/**
-	 * Comment
-	 *
-	 * @param zoom Param-Comment
+	 * @param zoom The zoom value as a double.
 	 * @author Joel
 	 */
 	public void setViewerZoom(double zoom) {
@@ -178,35 +255,13 @@ public class World {
 			viewerZoom = zoom;
 		}
 
-		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(zoom);
-
 		requestUpdate();
 	}
 
 	/**
-	 * Comment
+	 * Sets the world viewer's offset.
 	 *
-	 * @param zoom Param-Comment
-	 * @author Joel
-	 */
-	public void addViewerZoom(double zoom) {
-		setViewerZoom(getViewerZoom() + zoom);
-	}
-
-	/**
-	 * Comment
-	 *
-	 * @return Return-Comment
-	 * @author Joel
-	 */
-	public Vector2D getViewerPositionOffset() {
-		return viewerPositionOffset;
-	}
-
-	/**
-	 * Comment
-	 *
-	 * @param positionOffset Param-Comment
+	 * @param positionOffset The offset as a Vector2D.
 	 * @author Joel
 	 */
 	public void setViewerPositionOffset(Vector2D positionOffset) {
@@ -216,19 +271,10 @@ public class World {
 	}
 
 	/**
-	 * Comment
+	 * Sets the world viewer's position.
+	 * <br> world bounds limit doesn't account for rotation yet, well or scale, disabled for now
 	 *
-	 * @return Return-Comment
-	 * @author Joel
-	 */
-	public Vector2D getViewerPosition() {
-		return viewerPosition;
-	}
-
-	/**
-	 * Comment
-	 *
-	 * @param position Param-Comment
+	 * @param position The position as a Vector2D.
 	 * @author Joel
 	 */
 	public void setViewerPosition(Vector2D position) {
@@ -251,12 +297,67 @@ public class World {
 		viewerPosition = position;
 
 		requestUpdate();
-	} // world bounds limit doesn't account for rotation yet, well or scale, disabled for now
+	}
 
 	/**
-	 * Comment
+	 * Sets the world (bound) size.
 	 *
-	 * @param position Param-Comment
+	 * @param worldSize The new half world size.
+	 * @author Joel
+	 */
+	public void setWorldSize(Vector2D worldSize) {
+		this.worldSize = worldSize;
+	}
+
+	/**
+	 * Sets the world offset, to properly display non-zero center worlds.
+	 *
+	 * @param worldOffset The world offset as a Vector2D.
+	 * @author Joel
+	 */
+	public void setWorldOffset(Vector2D worldOffset) {
+		this.worldOffset = worldOffset;
+	}
+
+	/**
+	 * Sets the world object list.
+	 *
+	 * @param worldObjects The new world object list.
+	 * @author Joel
+	 */
+	public void setWorldObjects(List<WorldObject> worldObjects) {
+		this.worldObjects = worldObjects;
+	}
+
+	//--------------------------------------------------SetterMethods---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++AdderMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * Add a rotation value to the world viewer's rotation.
+	 *
+	 * @param rotation The rotation in degrees.
+	 * @author Joel
+	 */
+	public void addViewerRotation(double rotation) {
+		setViewerRotation(getViewerRotation() + rotation);
+	}
+
+	/**
+	 * Adds a zoom value to the current world viewer's zoom.
+	 *
+	 * @param zoom The zoom amount to increase as a double.
+	 * @author Joel
+	 */
+	public void addViewerZoom(double zoom) {
+		setViewerZoom(getViewerZoom() + zoom);
+	}
+
+	/**
+	 * Adds a world viewer's position.
+	 *
+	 * @param position The offset position as a Vector2D.
 	 * @author Joel
 	 */
 	public void addViewerPosition(Vector2D position) {
@@ -264,26 +365,41 @@ public class World {
 		pos.x += position.x;
 		pos.y += position.y;
 		setViewerPosition(pos);
-
-		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole(getViewerPosition().x + " " + getViewerPosition().y);
 	}
 
 	/**
-	 * Comment
+	 * Add's a world object to the world object list.
 	 *
-	 * @return Return-Comment
+	 * @param object The world object to add.
 	 * @author Joel
 	 */
-	public Vector2D getWorldSize() {
-		return worldSize;
+	public void addWorldObject(WorldObject object) {
+		worldObjects.add(object);
 	}
 
-	public void setWorldSize(Vector2D worldSize) {
-		this.worldSize = worldSize;
-	}
+	//---------------------------------------------------AdderMethods---------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++RemoverMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * Comment
+	 * Removes a world object to the world object list.
+	 *
+	 * @param object The world object to remove.
+	 * @author Joel
+	 */
+	public void removeWorldObject(WorldObject object) {
+		worldObjects.remove(object);
+	}
+
+	//--------------------------------------------------RemoverMethods--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * A method to request render updates.
+	 * Not really implemented yet and just forwards the request directly to render it.
 	 *
 	 * @author Joel
 	 * @see #update()
@@ -293,7 +409,7 @@ public class World {
 	}
 
 	/**
-	 * Comment
+	 * A method to render the world bounds.
 	 *
 	 * @author Joel
 	 * @see #requestUpdate()
@@ -317,48 +433,12 @@ public class World {
 		}
 	}
 
-	public Vector2D getWorldOffset() {
-		return worldOffset;
-	}
-
-	public void setWorldOffset(Vector2D worldOffset) {
-		this.worldOffset = worldOffset;
-	}
-
-	public List<WorldObject> getWorldObjects() {
-		return worldObjects;
-	}
-
-	public void setWorldObjects(List<WorldObject> worldObjects) {
-		this.worldObjects = worldObjects;
-	}
-
 	/**
-	 * Comment
+	 * A method to interact/select a world object when clicking into the simulation view.
+	 * Is missing a render check to only test objects that are currently rendered on the canvas. aka not outside the frame
 	 *
-	 * @param object Param-Comment
-	 * @author Joel
-	 */
-	public void addWorldObject(WorldObject object) {
-		worldObjects.add(object);
-	}
-
-
-	/**
-	 * Comment
-	 *
-	 * @param object
-	 * @author Joel
-	 */
-	public void removeWorldObject(WorldObject object) {
-		worldObjects.remove(object);
-	}
-
-	/**
-	 * Is missing a render check to only test objects that are currently rendered on the canvas. aka not outside of the frame
-	 *
-	 * @param worldPosition
-	 * @return
+	 * @param worldPosition The interacted world position.
+	 * @return The hit world object.
 	 * @author Joel
 	 */
 	public WorldObject interact(Vector2D worldPosition) {
@@ -421,52 +501,6 @@ public class World {
 		return interactableObjects.get(shortestDistanceIndex);
 	}
 
+	//-----------------------------------------------------Methods------------------------------------------------------
 
-	/**
-	 * Is missing a render check to only test objects that are currently rendered on the canvas. aka not outside of the frame
-	 *
-	 * @param worldPosition
-	 * @return
-	 * @author Joel
-	 */
-		/*
-	public WorldObject interact(Vector2D worldPosition) {
-		if (worldObjects.isEmpty()) return null;
-
-		List<Double> distances = new ArrayList<>() {
-		};
-		List<WorldObject> interactableObjects = new ArrayList<>() {
-		};
-
-		for (WorldObject worldObject : worldObjects) {
-			if (!worldObject.isInteractable()) continue;
-
-			double distanceToObject = worldObject.getPosition().sub(worldPosition).length();
-
-			if (distanceToObject <= worldObject.getSphereCollision()) {
-				distances.add(distanceToObject);
-				interactableObjects.add(worldObject);
-			}
-
-			Debug.print(distanceToObject);
-		}
-
-		if (interactableObjects.isEmpty()) return null;
-		if (distances.isEmpty()) return null;
-
-		double shortestDistance = distances.getFirst();
-		int shortestDistanceIndex = 0;
-		int index = 0;
-
-		for (double distance : distances) {
-			if (distance < shortestDistance) {
-				shortestDistance = distance;
-				shortestDistanceIndex = index;
-			}
-			index++;
-		}
-
-		return interactableObjects.get(shortestDistanceIndex);
-	}
-	 */
 }
