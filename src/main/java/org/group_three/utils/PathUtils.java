@@ -43,4 +43,13 @@ public class PathUtils {
         return new File(parent, netpathstr);
     }
 
+    /**
+     * Generates a unique name for the output file.
+     * @return "out" + System.currentTimeMillis() + ".txt"
+     * @author Luca
+     * */
+    public static String outputgen(){
+        return "out" + System.currentTimeMillis() + ".txt";
+    }
+
 }

@@ -2,20 +2,17 @@ package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
-import de.tudresden.sumo.subscription.SubscribtionVariable;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
-import org.group_three.utils.Sumo2DVector;
+import org.group_three.utils.Sumo2DLine;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <h1>SimController</h1>
@@ -84,7 +81,7 @@ public class SimController {
             stc.printSumoError(true);
             stc.runServer(8813);
 
-            // THIS SINGULAR TIMESTEP IS NECESSARY TO LOAD ALL VEHICLES; DO NOT REMOVE
+            // THIS SINGULAR TIMESTEP IS NECESSARY TO -LOAD ALL VEHICLES-; DO NOT REMOVE
             stc.do_timestep();
 
         } catch (Exception e) {
@@ -600,7 +597,7 @@ public class SimController {
      * @return returns the data as Sumo2DVector
      * @author Leon
      * */
-    public List<Sumo2DVector> getStopLineVector(String TLID){
+    public List<Sumo2DLine> getStopLineVector(String TLID){
         List<SumoPosition2D> stopLinePositions = new ArrayList<>();
         try {
             SumoStringList linkedLanes = getControlledLanes(TLID);
@@ -644,8 +641,8 @@ public class SimController {
      * @return returns the data as Sumo2DVector.
      * @author Leon
      * */
-    public List<Sumo2DVector> stopLineCalculation(List<SumoPosition2D> stopLinePositions) {
-        List<Sumo2DVector> perpendicularPoints = new ArrayList<>();
+    public List<Sumo2DLine> stopLineCalculation(List<SumoPosition2D> stopLinePositions) {
+        List<Sumo2DLine> perpendicularPoints = new ArrayList<>();
         final double OFFSET = 1.6;  // Half the lane
 
         // Iterate (second-to-last, last) for each lane
@@ -682,7 +679,7 @@ public class SimController {
             SumoPosition2D rightPoint = new SumoPosition2D(xRight, yRight);
 
             // Create a line segment from left to right
-            Sumo2DVector stopLine = new Sumo2DVector(leftPoint, rightPoint);
+            Sumo2DLine stopLine = new Sumo2DLine(leftPoint, rightPoint);
             perpendicularPoints.add(stopLine);
 
             //Debug.print("Stop line: " + stopLine);
