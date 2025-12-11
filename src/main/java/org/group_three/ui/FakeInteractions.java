@@ -1,10 +1,10 @@
 package org.group_three.ui;
 
-import de.tudresden.sumo.cmd.Edge;
-import de.tudresden.sumo.util.SumoCommand;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
+import org.group_three.model.SumoRoad;
+import org.group_three.utils.PathUtils;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -89,12 +89,34 @@ public class FakeInteractions {
                                         getRelativePath(route.getAbsolutePath()));
 		}
 
+        //load road network
+        if(config != null){
+
+            try {
+                //you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
+                File net = PathUtils.getNetfromSConfig(config);
+                SumoRoad.loadRoads(net);
+                //SumoRoad.printAll();
+                //SumoRoad.getRoad("132964154").print();
+            }
+            catch (Exception e){
+                Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
+                e.printStackTrace();
+            }
+
+        }  else {
+            SumoRoad.loadRoads(network);
+        }
+
+
 
         //set selected simulation as the main, global / static simulation.
         simcon.setMainstc(true);
 
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
+
+
 
 		return true;
 	}
