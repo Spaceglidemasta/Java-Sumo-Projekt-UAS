@@ -2,20 +2,18 @@ package org.group_three.api;
 
 import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
-import de.tudresden.sumo.subscription.SubscribtionVariable;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
+import org.group_three.utils.LaneStopLineData;
 import org.group_three.utils.Sumo2DVector;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <h1>SimController</h1>
@@ -591,17 +589,19 @@ public class SimController {
         return null;
     }
 
+
+
     /**This function can return <code>null</code> <br>
      * This function is used in tandem with the getStopLineCoords function.
-     * This function passes the second to last and the last coordinate
-     * of all Lanes that are controlled by the chosen TL and then returns
+     * This function passes the second to last coordinate, the last coordinate and the
+     * id of the Lane that are controlled by the chosen TL into a array and then returns
      * the stop line coordinates.
      * @param TLID ID of the chosen TL with format:("clusterJ4_J5")
      * @return returns the data as Sumo2DVector
      * @author Leon
      * */
     public List<Sumo2DVector> getStopLineVector(String TLID){
-        List<SumoPosition2D> stopLinePositions = new ArrayList<>();
+        List<LaneStopLineData> laneStopLines  = new ArrayList<>();
         try {
             SumoStringList linkedLanes = getControlledLanes(TLID);
 
@@ -621,9 +621,10 @@ public class SimController {
                 double x2 = Double.parseDouble(lastCoord[0]);
                 double y2 = Double.parseDouble(lastCoord[1]);
 
-                stopLinePositions.add(new SumoPosition2D(x1, y1));
-                stopLinePositions.add(new SumoPosition2D(x2, y2));
+                SumoPosition2D point1 = new SumoPosition2D(x1, y1);
+                SumoPosition2D point2 = new SumoPosition2D(x2, y2);
 
+                laneStopLines.add(new LaneStopLineData(laneID, point1, point2));
 
             }
         }
@@ -631,65 +632,62 @@ public class SimController {
             e.printStackTrace();
             return null;
         }
-        return stopLineCalculation(stopLinePositions);
+        return stopLineCalculation(laneStopLines);
     }
 
     /**This is a function that calculates the two positions of the Stop line
-     * (Start and end) using the two positions from the previous function.
+     * (Start and end) using the two positions and the lane id from the previous function.
      * It first calculates the direction vector and makes it perpendicular to the
      * direction that the lane is.
-     * It uses the last position of the lane as a middle and calculates two points, 1.6
-     * units in each direction, since the standard width is 3.2.
+     * It uses the last position of the lane as a middle and calculates two points, using
+     * the width, derived from the getLaneWidth function. (It divides it by 2 and adds it to the coordinates)
      * @param stopLinePositions Takes in the List that was made with getStopLinePos()
      * @return returns the data as Sumo2DVector.
      * @author Leon
      * */
-    public List<Sumo2DVector> stopLineCalculation(List<SumoPosition2D> stopLinePositions) {
-        List<Sumo2DVector> perpendicularPoints = new ArrayList<>();
-        final double OFFSET = 1.6;  // Half the lane
+    public List<Sumo2DVector> stopLineCalculation(List<LaneStopLineData> stopLinePositions) {
+        List<Sumo2DVector> stopLinePoints = new ArrayList<>();
 
-        // Iterate (second-to-last, last) for each lane
-        for (int i = 0; i < stopLinePositions.size(); i += 2) {
-            if (i + 1 >= stopLinePositions.size()) break; // safety check
+        // Iterate (second-to-last, last)
+        for (LaneStopLineData laneData : stopLinePositions) {
+            SumoPosition2D point1 = laneData.point1;
+            SumoPosition2D point2 = laneData.point2;
 
-            SumoPosition2D point1 = stopLinePositions.get(i);
-            SumoPosition2D point2 = stopLinePositions.get(i + 1);
+            // Get lane width
+            Double laneWidth = getLaneWidth(laneData.laneID);
+            if (laneWidth == null) continue;
 
-            // Direction vector of the street
+            // half width
+            double offset = laneWidth / 2.0;
+
+            // Direction vector
             double dx = point2.x - point1.x;
             double dy = point2.y - point1.y;
 
-            // Normalize
-            double magnitude = Math.sqrt(dx * dx + dy * dy);
-            if (magnitude == 0) continue; // avoid division by zero
+
+            double length = Math.sqrt(dx * dx + dy * dy);
+            if (length == 0) continue;
 
             // Perpendicular vector
-            double perpX = dy / magnitude;
-            double perpY = -dx / magnitude;
+            double perpX = (dy / length) * offset;
+            double perpY = (-dx / length) * offset;
 
-            // Scale by offset
-            perpX *= OFFSET;
-            perpY *= OFFSET;
-
-            // Use the LAST coordinate (point2) as center
+            // Center at last coordinate
             double xLeft = point2.x - perpX;
             double yLeft = point2.y - perpY;
             double xRight = point2.x + perpX;
             double yRight = point2.y + perpY;
 
-            //Add both points
             SumoPosition2D leftPoint = new SumoPosition2D(xLeft, yLeft);
             SumoPosition2D rightPoint = new SumoPosition2D(xRight, yRight);
 
-            // Create a line segment from left to right
             Sumo2DVector stopLine = new Sumo2DVector(leftPoint, rightPoint);
-            perpendicularPoints.add(stopLine);
+            stopLinePoints.add(stopLine);
 
-            //Debug.print("Stop line: " + stopLine);
-
+            //Debug.print("Lane " + laneData.laneID + " stop line: " + stopLine);
         }
 
-        return perpendicularPoints;
+        return stopLinePoints;
     }
 
     /**
