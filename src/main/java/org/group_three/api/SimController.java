@@ -35,9 +35,9 @@ public class SimController {
     private static SimController mainsimcon = null;
 
 
-/// ******************************************************
-/// **                   SIMULATION                     **
-/// ******************************************************
+// ******************************************************
+//                      SIMULATION
+// ******************************************************
 
     public SimController(){
         this(networkfname, routefname);

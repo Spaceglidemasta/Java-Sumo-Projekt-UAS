@@ -1,6 +1,5 @@
 package org.group_three.ui.world;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,98 +11,160 @@ import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * a class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
- * will be divided into static and dynamic for rendering efficiency
+ * A class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
+ * will be divided into static and dynamic for rendering efficiency~~~~~~~~~~~
  *
  * @author Joel
  */
 public class WorldObject {
-	/**
-	 * @author Joel
-	 */
-	private final World world;
-	/**
-	 * @author Joel
-	 */
-	private final Canvas renderTarget;
-	/**
-	 * is the same across all canvas users
-	 *
-	 * @author Joel
-	 */
-	private final GraphicsContext graphicsContext;
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * not unique
+	 * The id counter for all world objects.
+	 * Keeps track of all instances ever created,
+	 * will always be the count of created objects and
+	 * not the index of the last created object.
 	 *
 	 * @author Joel
 	 */
-	private final String displayName;
-	/**
-	 * unique
-	 *
-	 * @author Joel
-	 */
-	private final String id;
-	/**
-	 * keeps track of all instances ever created, will always be the count of created objects and not the index of the last created object
-	 *
-	 * @author Joel
-	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private static int idCounter = 0;
 
-	/**
-	 * @author Joel
-	 */
-	private Vector2D position = new Vector2D();
-	/**
-	 * @author Joel
-	 */
-	private double rotation = 0;
+	//--------------------------------------------------ClassVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
+	 * The world of which this object is a part of.
+	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final World world;
+
+	/**
+	 * The canvas on which this object should be drawn on.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final Canvas renderTarget;
+
+	/**
+	 * The Graphics Context of the canvas on which this object should be drawn on.
+	 * (is the same across all canvas users)
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final GraphicsContext graphicsContext;
+
+
+	/**
+	 * The DisplayName of this object.
+	 * Is not unique.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final String displayName;
+
+	/**
+	 * The id of this object.
+	 * Is unique.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final String id;
+
+
+	/**
+	 * The absolute position of the object in the world.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private Vector2D position = new Vector2D();
+
+	/**
+	 * The absolute rotation of the object in the world.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private double rotation = 0;
+
+
+	/**
+	 * If the object should be interactable.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private boolean interactable = false;
 
 	/**
-	 * Radius in meters?
+	 * The sphere collision radius in meters.
 	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private double sphereCollision = 0;
+
 	/**
-	 * @author Joel
-	 */
-	private final Color sphereCollisionColor = UI.sphereCollisionColor;
-	/**
-	 * @author Joel
-	 */
-	private boolean useBoxCollision = false;
-	/**
-	 * HalfHeight
+	 * The sphere collision color.
 	 *
 	 * @author Joel
 	 */
-	private Vector2D boxCollision = new Vector2D();
+	@SuppressWarnings("JavadocDeclaration")
+	private final Color sphereCollisionColor = UI.sphereCollisionColor;
+
 	/**
+	 * If box collision should be used.
+	 *
 	 * @author Joel
 	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private boolean useBoxCollision = false;
+
+	/**
+	 * The HalfHeight of the box collision.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private Vector2D boxCollision = new Vector2D();
+
+	/**
+	 * The box collision color.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private final Color boxCollisionColor = UI.boxCollisionColor;
 
-
-	// ????
+	/**
+	 * The FXML path of the interactable details panel.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	public String detailClassPath = "";
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructor++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * Comment
+	 * The empty default constructor.
+	 * It's an invalid creation type so its gets removed on creation.
 	 *
 	 * @author Joel
 	 */
@@ -117,7 +178,8 @@ public class WorldObject {
 	}
 
 	/**
-	 * Comment
+	 * The default constructor to create this object.
+	 * Requires a world, canvas and displayName reference.
 	 *
 	 * @author Joel
 	 */
@@ -127,7 +189,6 @@ public class WorldObject {
 		graphicsContext = canvas.getGraphicsContext2D();
 		this.displayName = displayName;
 		id = createId();
-		Debug.print(getId());
 		getWorld().addWorldObject(this);
 	}
 
@@ -299,9 +360,9 @@ public class WorldObject {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++AdderMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * Comment
+	 * Adder to add a relative position to the object.
 	 *
-	 * @param position Param-Comment
+	 * @param position The relative position to add.
 	 * @author Joel
 	 */
 	public void addPosition(Vector2D position) {
@@ -312,9 +373,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * Comment
+	 * Adder to add a rotation to the object.
 	 *
-	 * @param rotation Param-Comment
+	 * @param rotation The rotation to add in degrees.
 	 * @author Joel
 	 */
 	public void addRotation(double rotation) {
@@ -530,8 +591,7 @@ public class WorldObject {
 	 * @author Joel
 	 */
 	public void drawCollision() {
-		if (useBoxCollision())
-		{
+		if (useBoxCollision()) {
 			// skip if box collision is not enabled or collision component sizes are 0
 			if (!useBoxCollision() || getBoxCollision().x <= 0 || getBoxCollision().y <= 0) return;
 			drawRectangle(boxCollision, boxCollisionColor);

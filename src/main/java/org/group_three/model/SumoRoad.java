@@ -23,6 +23,7 @@ public class SumoRoad {
     private String from;
     private String to;
     private String edgeID;
+    private List<String> laneIDs;
     private static HashMap<String, SumoRoad> allroads;
 
     private SumoRoad() {};
@@ -31,6 +32,7 @@ public class SumoRoad {
         from = f;
         to = t;
         edgeID = id;
+        laneIDs = new ArrayList<>();
     }
 
     public String getFrom() {
@@ -45,6 +47,26 @@ public class SumoRoad {
         return edgeID;
     }
 
+    /**
+     * Adds a Lane to the laneIDlist
+     * @param LID Lane id
+     * @return true if successfull, false if the array is null
+     * @author Luca
+     * */
+    public boolean addLane(String LID) {
+        if(laneIDs != null) {
+            laneIDs.add(LID);
+            return true;
+        }
+        else return false;
+    }
+
+    /**
+     * @return the laneIDs list
+     * @author Luca
+     * */
+    public List<String> getLaneIDs() {return laneIDs; }
+
     public static List<SumoRoad> getAllroads() {
         return new ArrayList<>(allroads.values());
     }
@@ -57,6 +79,11 @@ public class SumoRoad {
         System.out.println("RoadID: " + edgeID);
         System.out.println("    from: " + from);
         System.out.println("    to: " + to);
+        System.out.println("    Lanes:");
+        for(String laneid : laneIDs){
+            System.out.println("        laneid: " + laneid);
+        }
+
     }
 
     /**
@@ -106,9 +133,29 @@ public class SumoRoad {
                     String _from = edgeElement.getAttribute("from");
                     String _to   = edgeElement.getAttribute("to");
 
-                    if (!_from.isEmpty() && !_to.isEmpty()) {
-                        allroads.put(id, new SumoRoad(_from, _to, id));
+                    if (_from.isEmpty() || _to.isEmpty()) {
+                        continue;
                     }
+
+                    SumoRoad sr = new SumoRoad(_from, _to, id);
+
+                    NodeList lanelist = edgeElement.getElementsByTagName("lane");
+
+                    for(int j = 0; j < lanelist.getLength(); j++){
+                        Node lanenode = lanelist.item(j);
+
+                        if(lanenode.getNodeType() == Node.ELEMENT_NODE){
+
+                            Element laneelement = (Element) lanenode;
+
+                            String _laneid = laneelement.getAttribute("id");
+
+                            sr.addLane(_laneid);
+
+                        }
+                    }
+
+                    allroads.put(id, sr);
                 }
             }
 

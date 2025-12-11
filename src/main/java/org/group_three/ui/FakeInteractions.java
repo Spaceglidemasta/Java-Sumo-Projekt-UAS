@@ -97,8 +97,8 @@ public class FakeInteractions {
                 //you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
                 File net = PathUtils.getNetfromSConfig(config);
                 SumoRoad.loadRoads(net);
-                //SumoRoad.printAll();
-                //SumoRoad.getRoad("132964154").print();
+                SumoRoad.printAll();
+                SumoRoad.getRoad("132964154").print();
             }
             catch (Exception e){
                 Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
