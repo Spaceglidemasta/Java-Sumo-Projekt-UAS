@@ -66,8 +66,8 @@ public class WorldRoad extends WorldObject {
 		this.color = color;
 		this.sumoRoad = sumoRoad;
 
-		from = new Vector2D(SimController.getMainstc().getJunctionPos(sumoRoad.getFrom()));
-		to = new Vector2D(SimController.getMainstc().getJunctionPos(sumoRoad.getTo()));
+		from = new Vector2D(SimController.getMainsimcon().getJunctionPos(sumoRoad.getFrom()));
+		to = new Vector2D(SimController.getMainsimcon().getJunctionPos(sumoRoad.getTo()));
 
 		Vector2D a = Meth.getRelativeLocation(from, 0, to);
 		setPosition(
