@@ -15,4 +15,10 @@ public class LaneStopLineData {
         this.point1 = point1;
         this.point2 = point2;
     }
+
+    public LaneStopLineData(SumoPosition2D point1, SumoPosition2D point2) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.laneID = "null";
+    }
 }

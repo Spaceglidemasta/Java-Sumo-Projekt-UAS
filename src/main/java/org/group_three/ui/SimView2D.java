@@ -1,5 +1,7 @@
 package org.group_three.ui;
 
+import de.tudresden.sumo.cmd.Trafficlight;
+import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -7,9 +9,11 @@ import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.model.SumoRoad;
+import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.controllers.BodyController;
 import org.group_three.ui.world.*;
+import org.group_three.api.SimController;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -135,8 +139,14 @@ public class SimView2D {
 			);
 		}
 
+        SumoStringList tls = SimController.getMainsimcon().getTrafficLightsIDList();
 
-        //TODO add for-loop for spawning traffic lights
+        for(String tl: tls){
+            new WorldTrafficLight(world,
+                    worldStaticRenderTarget,
+                    "WorldTrafficLight",
+                    tl);
+        }
 
 
 		Debug.print(rnHeight + " --- " + rnWidth);
