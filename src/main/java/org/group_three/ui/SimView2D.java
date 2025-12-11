@@ -99,6 +99,7 @@ public class SimView2D {
 		Vector2D rnWidth = new Vector2D();
 
 
+        //rendering Junctions
 		for (String jid : SimController.getMainstc().getJunctionIDList()) {
 			Vector2D jidV = new Vector2D(SimController.getMainstc().getJunctionPos(jid).x, SimController.getMainstc().getJunctionPos(jid).y);
 			boolean firstIteration = jid.equals(SimController.getMainstc().getJunctionIDList().getFirst());
@@ -121,6 +122,11 @@ public class SimView2D {
 			Debug.print(SimController.getMainstc().getJunctionPos(jid));
 		}
 
+        //render Streets (prototype)
+        List<String> alreadyRendered = new ArrayList<>();
+
+
+
 		Debug.print(rnHeight + " --- " + rnWidth);
 
 		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128, 128)));
@@ -129,6 +135,7 @@ public class SimView2D {
 
 		//TODO add for-loop for spawning traffic lights
 
+        //rendering cars
 		for (String id : SimController.getMainstc().getVehicleIDList()) {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainstc().getStc());
 			WorldVehicle worldVehicle = new WorldVehicle(

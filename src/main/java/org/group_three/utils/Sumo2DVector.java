@@ -7,9 +7,13 @@ public class Sumo2DVector {
     public SumoPosition2D start;
     public SumoPosition2D end;
 
-    public Sumo2DVector(double x, double y) {
-        this.start = new SumoPosition2D(x, y);
-        this.end = new SumoPosition2D(x, y);
+    public Sumo2DVector(SumoPosition2D start, SumoPosition2D end) {
+        this.start = start;
+        this.end = end;
     }
 
+    @Override
+    public String toString() {
+        return "(" + start + " -> " + end + ")";
+    }
 }
