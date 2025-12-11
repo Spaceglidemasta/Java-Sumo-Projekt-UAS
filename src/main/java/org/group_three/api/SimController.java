@@ -14,6 +14,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -438,18 +439,13 @@ public class SimController {
      * the small bevels that make the road slightly curve
      * @param laneID The ID of the lane
      * @return coordinates from start to end
-     * @author Leon
+     * @author Leon, Luca
      */
-    public String getLaneEdgeParam(String laneID) {
+    public LinkedList<SumoPosition2D> getLaneShape(String laneID) {
 
         try {
-            SumoGeometry shape = (SumoGeometry) stc.do_job_get(Lane.getShape(laneID));
-            if (shape != null){
-                return shape.toString();
-            }
-            else {
-                return  null;
-            }
+            return ((SumoGeometry) stc.do_job_get(Lane.getShape(laneID))).coords;
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -608,7 +604,7 @@ public class SimController {
 
             for(String laneID: linkedLanes){
 
-                String edgeShape = getLaneEdgeParam(laneID);
+                String edgeShape = getLaneShape(laneID).toString();
                 String[] coordinates = edgeShape.split(" ");
 
                 String secondToLastCoordinate = coordinates[coordinates.length - 2];
@@ -734,6 +730,7 @@ public class SimController {
      * @param TLID Traffic Light ID
      * @param dur new Duration in seconds(?)( <- This not my questionmark, the TraaS doc also has a "?")
      * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
      * */
     public boolean setTLPhaseLen(String TLID, double dur){
 
