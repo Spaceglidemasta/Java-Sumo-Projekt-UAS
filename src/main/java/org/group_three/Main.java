@@ -28,5 +28,7 @@ public class Main {
         MainApp aMainGui = new MainApp();
         aMainGui.start(args);
 
+		// Close main simulation on program end to make sure all threads get killed
+	    SimController.getMainstc().close();
     }
 }
