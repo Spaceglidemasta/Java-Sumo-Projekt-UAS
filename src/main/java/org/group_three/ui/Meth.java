@@ -140,37 +140,4 @@ public class Meth {
 				(int) (clr.getOpacity() * 255)
 		);
 	}
-
-
-	public static double byteToDouble(byte input) {
-		// byte to double conversion
-		double value = (double) input / 255;
-
-		// double clamp to 0 - 1
-		if (value < 0) value = 0;
-		else if (value > 1) value = 1;
-
-		return value;
-	}
-
-	@SuppressWarnings("unused")
-	public static SumoColor convertColorToSumoColor(Color color) {
-		return new SumoColor(
-				doubleToByte(color.getRed()),
-				doubleToByte(color.getGreen()),
-				doubleToByte(color.getBlue()),
-				doubleToByte(color.getOpacity())
-		);
-	}
-
-	public static byte doubleToByte(double input) {
-		//
-		double value = input;
-
-		// double clamp to 0 - 1
-		if (value < 0) value = 0;
-		else if (value > 1) value = 1;
-
-		return (byte) Math.round(value * 255);
-	}
 }
