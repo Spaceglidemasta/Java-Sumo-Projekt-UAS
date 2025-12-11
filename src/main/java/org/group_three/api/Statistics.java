@@ -6,9 +6,15 @@ import it.polito.appeal.traci.SumoTraciConnection;
 
 /**
  * Class for collecting statistics.
+ * Can be instantiated to collect stats of one Simulation,
+ * but also has plenty of Static functions.
  * @author Luca
  * */
 public class Statistics {
+
+
+    private SimController simcon;
+
 
 
     /**
