@@ -66,6 +66,8 @@ public class WorldRoad extends WorldObject {
 		this.color = color;
 		this.sumoRoad = sumoRoad;
 
+		detailClassPath = "/org/group_three/ui/fxml/RoadDetails.fxml";
+
 		from = new Vector2D(SimController.getMainsimcon().getJunctionPos(sumoRoad.getFrom()));
 		to = new Vector2D(SimController.getMainsimcon().getJunctionPos(sumoRoad.getTo()));
 
