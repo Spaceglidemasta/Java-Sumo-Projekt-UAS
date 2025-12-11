@@ -1,7 +1,10 @@
 package org.group_three.utils;
 
 import de.tudresden.sumo.objects.SumoPosition2D;
-
+/**
+ *
+ * @author Leon
+ */
 public class LaneStopLineData {
     public String laneID;
     public SumoPosition2D point1;
