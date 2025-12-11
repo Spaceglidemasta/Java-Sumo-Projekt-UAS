@@ -1,7 +1,13 @@
 package org.group_three.ui;
 
 import de.tudresden.sumo.objects.SumoColor;
+import de.tudresden.sumo.objects.SumoGeometry;
+import de.tudresden.sumo.objects.SumoPosition2D;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Meth, the custom Math class
@@ -139,5 +145,23 @@ public class Meth {
 				(int) (clr.getBlue() * 255),
 				(int) (clr.getOpacity() * 255)
 		);
+	}
+
+	/**
+	 * A method to convert Sumo Coordinates to a list of Vector2D's.
+	 * Can be used to convert a SumoGeometry for example.
+	 *
+	 * @param sumoPosition2DS The input coordinate list.
+	 * @return A list of Vector2D points.
+	 * @author Joel
+	 */
+	public static List<Vector2D> convertSumoCoords(LinkedList<SumoPosition2D> sumoPosition2DS) {
+		List<Vector2D> vector2DS = new ArrayList<>();
+
+		for (SumoPosition2D sumoPosition2D : sumoPosition2DS) {
+			vector2DS.add(new Vector2D(sumoPosition2D));
+		}
+
+		return vector2DS;
 	}
 }

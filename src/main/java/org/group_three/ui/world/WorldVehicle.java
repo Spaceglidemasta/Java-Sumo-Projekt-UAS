@@ -24,8 +24,8 @@ public class WorldVehicle extends WorldObject {
 
     //adjust this to change size
     private static double scale_size = 1;
+	private static double x_size = 16 * scale_size;
     private static double y_size = 8 * scale_size;
-    private static double x_size = 16 * scale_size;
 
 
 	/**
@@ -152,7 +152,9 @@ public class WorldVehicle extends WorldObject {
 	public void update() {
 		super.update();
 		Image visualImage = iconManager.getIcon(getColor());
-		Vector2D imageSize = new Vector2D(visualImage.getWidth(), visualImage.getHeight()).div(80 / scale_size);
+		Vector2D imageSize = new Vector2D(x_size, y_size);
+
+		//setRotation(wVehicle.getAngle());
 
 		drawImage(imageSize.div(2), visualImage);
 	}

@@ -826,20 +826,13 @@ public class SimController {
     }
 
     /**
-     * Gets you the String of the corner points (of the polygon) of the junction.<br>
-     * @return String, or <code>null</code> if failed.
+     * Gets you the coordinates of the corner points of the junction.
+     * @return coords, or <code>null</code> if failed.
      * @author Leon
      * */
-    public String getJunctionShape(String laneID) {
-
+    public LinkedList<SumoPosition2D> getJunctionShape(String laneID) {
         try {
-            SumoGeometry shape = (SumoGeometry) stc.do_job_get(Junction.getShape(laneID));
-            if (shape != null){
-                return shape.toString();
-            }
-            else {
-                return  null;
-            }
+            return ((SumoGeometry) stc.do_job_get(Junction.getShape(laneID))).coords;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

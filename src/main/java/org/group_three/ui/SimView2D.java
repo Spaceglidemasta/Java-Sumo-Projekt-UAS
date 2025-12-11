@@ -136,10 +136,7 @@ public class SimView2D {
 		}
 
 
-
-        //render Streets (prototype)
-        List<String> alreadyRendered = new ArrayList<>();
-
+        //TODO add for-loop for spawning traffic lights
 
 
 		Debug.print(rnHeight + " --- " + rnWidth);
@@ -148,7 +145,6 @@ public class SimView2D {
 		world.setViewerPosition(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
 		world.setWorldOffset(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)));
 
-		//TODO add for-loop for spawning traffic lights
 
         //rendering cars
 		for (String id : SimController.getMainsimcon().getVehicleIDList()) {
