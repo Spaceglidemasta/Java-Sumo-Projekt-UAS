@@ -6,7 +6,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
@@ -23,9 +22,9 @@ import static org.group_three.ui.Meth.SumoClrToClr;
 public class WorldVehicle extends WorldObject {
 
     //adjust this to change size
-    private static double scale_size = 1;
-	private static double x_size = 5 * scale_size;
-    private static double y_size = 2.5 * scale_size;
+    private static double scale_size = 8;
+	private static double sizeX = 5 * scale_size;
+    private static double sizeY = 2.5 * scale_size;
 
 
 	/**
@@ -53,7 +52,7 @@ public class WorldVehicle extends WorldObject {
 		detailClassPath = "/org/group_three/ui/fxml/VehicleDetails.fxml";
 		setInteractable(true);
 		setUseBoxCollision(true);
-		setBoxCollision(new Vector2D(x_size, y_size).div(2));
+		setBoxCollision(new Vector2D(sizeX, sizeY).div(2));
 	}
 
 	public WVehicle getwVehicle() {
@@ -152,9 +151,9 @@ public class WorldVehicle extends WorldObject {
 	public void update() {
 		super.update();
 		Image visualImage = iconManager.getIcon(getColor());
-		Vector2D imageSize = new Vector2D(x_size, y_size);
+		Vector2D imageSize = new Vector2D(sizeX, sizeY);
 
-		//setRotation(wVehicle.getAngle());
+		setRotation(360 - wVehicle.getAngle() + 90);
 
 		drawImage(imageSize.div(2), visualImage);
 	}
