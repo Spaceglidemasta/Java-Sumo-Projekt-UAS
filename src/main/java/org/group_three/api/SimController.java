@@ -29,7 +29,7 @@ public class SimController {
     private static final String routefname = "net.rou.xml";
 
     // Easy mode
-    private static SimController mainstc = null;
+    private static SimController mainsimcon = null;
 
 
 /// ******************************************************
@@ -301,7 +301,7 @@ public class SimController {
      * Returns the global / static _mainsim.
      * @author Luca
      * */
-    public static SimController getMainstc() {return mainstc;}
+    public static SimController getMainsimcon() {return mainsimcon;}
 
     /**
      * Sets this Simulation as the new, global, main simulation. <br>
@@ -310,11 +310,11 @@ public class SimController {
      * */
     public void setMainstc(boolean close_old){
 
-        if(mainstc != null && close_old){
-            mainstc.close();
+        if(mainsimcon != null && close_old){
+            mainsimcon.close();
         }
 
-        mainstc = this;
+        mainsimcon = this;
 
         Debug.print("Main SUMO Simulation was overwritten.");
     }

@@ -19,7 +19,7 @@ public class Statistics {
      * */
     public static boolean exportState(String filename) {
 
-        return SimController.getMainstc().jobset(Simulation.saveState("output/" + filename));
+        return SimController.getMainsimcon().jobset(Simulation.saveState("output/" + filename));
 
     }
 
