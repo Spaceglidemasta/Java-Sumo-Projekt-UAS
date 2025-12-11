@@ -530,13 +530,16 @@ public class WorldObject {
 	 * @author Joel
 	 */
 	public void drawCollision() {
-		// skip if object has no collision enabled or collision size is 0
-		if (!isInteractable() || getSphereCollision() <= 0) return;
-		drawSphere(sphereCollision, sphereCollisionColor);
-
-		// skip if box collision is not enabled or collision component sizes are 0
-		if (!useBoxCollision() || getBoxCollision().x <= 0 || getBoxCollision().y <= 0) return;
-		drawRectangle(boxCollision, boxCollisionColor);
+		if (useBoxCollision())
+		{
+			// skip if box collision is not enabled or collision component sizes are 0
+			if (!useBoxCollision() || getBoxCollision().x <= 0 || getBoxCollision().y <= 0) return;
+			drawRectangle(boxCollision, boxCollisionColor);
+		} else {
+			// skip if object has no collision enabled or collision size is 0
+			if (!isInteractable() || getSphereCollision() <= 0) return;
+			drawSphere(sphereCollision, sphereCollisionColor);
+		}
 	}
 
 	//--------------------------------------------------#####--------------------------------------------------

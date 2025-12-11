@@ -6,15 +6,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
+import org.group_three.model.SumoRoad;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.controllers.BodyController;
-import org.group_three.ui.world.World;
-import org.group_three.ui.world.WorldObject;
-import org.group_three.ui.world.WorldPoint;
-import org.group_three.ui.world.WorldVehicle;
+import org.group_three.ui.world.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.group_three.ui.Meth.lerp;
 
 public class SimView2D {
 
@@ -122,6 +123,20 @@ public class SimView2D {
 			Debug.print(SimController.getMainstc().getJunctionPos(jid));
 		}
 
+
+
+		for (SumoRoad sumoRoad : SumoRoad.getAllroads()) {
+			new WorldRoad(
+					world,
+					worldStaticRenderTarget,
+					"WorldRoad" + sumoRoad.getEdgeID(),
+					Color.WHITE,
+					sumoRoad
+			);
+		}
+
+
+
         //render Streets (prototype)
         List<String> alreadyRendered = new ArrayList<>();
 
@@ -130,8 +145,8 @@ public class SimView2D {
 		Debug.print(rnHeight + " --- " + rnWidth);
 
 		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128, 128)));
-		world.setViewerPosition(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
-		world.setWorldOffset(new Vector2D(Meth.lerp(rnHeight.x, rnHeight.y, 0.5), Meth.lerp(rnWidth.x, rnWidth.y, 0.5)));
+		world.setViewerPosition(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
+		world.setWorldOffset(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)));
 
 		//TODO add for-loop for spawning traffic lights
 
