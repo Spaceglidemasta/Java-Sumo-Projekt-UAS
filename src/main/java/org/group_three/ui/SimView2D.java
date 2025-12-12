@@ -100,7 +100,7 @@ public class SimView2D {
 		Vector2D rnWidth = new Vector2D();
 
 
-        //rendering Junctions
+		//rendering Junctions
 		for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
 			Vector2D jidV = new Vector2D(SimController.getMainsimcon().getJunctionPos(jid).x, SimController.getMainsimcon().getJunctionPos(jid).y);
 			boolean firstIteration = jid.equals(SimController.getMainsimcon().getJunctionIDList().getFirst());
@@ -124,7 +124,6 @@ public class SimView2D {
 		}
 
 
-
 		for (SumoRoad sumoRoad : SumoRoad.getAllroads()) {
 			new WorldRoad(
 					world,
@@ -136,17 +135,17 @@ public class SimView2D {
 		}
 
 
-        //TODO add for-loop for spawning traffic lights
+		//TODO add for-loop for spawning traffic lights
 
 
-		Debug.print(rnHeight + " --- " + rnWidth);
+		//Debug.print(rnHeight + " --- " + rnWidth);
 
 		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128, 128)));
 		world.setViewerPosition(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
 		world.setWorldOffset(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)));
 
 
-        //rendering cars
+		//rendering cars
 		for (String id : SimController.getMainsimcon().getVehicleIDList()) {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainsimcon().getStc());
 			WorldVehicle worldVehicle = new WorldVehicle(
@@ -164,13 +163,18 @@ public class SimView2D {
 
 	public static void update() {
 		List<String> currentVehicleList = SimController.getMainsimcon().getVehicleIDList();
+		List<WorldObject> removeVehicleList = new ArrayList<>();
 
 		for (WorldObject worldObject : world.getWorldObjects()) {
 			if (worldObject.getClass() == WorldVehicle.class) {
 				if (currentVehicleList.contains(((WorldVehicle) worldObject).getwVehicle().getID()))
 					worldObject.updateSim();
-				else worldObject.remove();
+				else removeVehicleList.add(worldObject);
 			}
+		}
+
+		for (WorldObject worldObject : removeVehicleList) {
+			worldObject.remove();
 		}
 
 

@@ -63,7 +63,12 @@ public class WorldRoad extends WorldObject {
 				from.add(a.div(2))
 		);
 		setRotation(from.getDirectionAngle(to));
-		size = new Vector2D(a.length()/2, 3);
+
+		size = new Vector2D(a.length()/2, 0);
+
+		for (String laneId : sumoRoad.getLaneIDs()) {
+			size.y += SimController.getMainsimcon().getLaneWidth(laneId);
+		}
 
 		setInteractable(true);
 		setUseBoxCollision(true);
