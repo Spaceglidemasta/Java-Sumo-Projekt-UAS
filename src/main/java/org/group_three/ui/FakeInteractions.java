@@ -9,8 +9,6 @@ import org.group_three.utils.PathUtils;
 
 import java.awt.*;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.group_three.utils.PathUtils.getRelativePath;

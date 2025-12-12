@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Meth, the custom Math class
  *
- * @author Joel
+ * @author Joel, Luca
  */
 public class Meth {
 

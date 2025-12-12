@@ -1,6 +1,7 @@
 package org.group_three.constants;
 
 import javafx.scene.paint.Color;
+import org.group_three.ui.Vector2D;
 
 public final class UI {
     private UI() {} //prevents init.
@@ -31,6 +32,8 @@ public final class UI {
 	public static final Color roadColor = new Color(0.1,0.1,0.1,1);
 	// A bool to decide if misc polygons should be rendered.
 	public static final boolean showPolys = false;
+	// A Vector2D to decide how far one can zoom in and out of the UI. (x = min, y = max)
+	public static final Vector2D zoomLimit = new Vector2D(0.1, 10);
 
 
 	// The minimal window width.

@@ -5,52 +5,85 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * A class to create and manage colored icon variants.
+ * Avoids creating the same colored variant more than once,
+ * saving computing power and memory.
+ *
  * @author Joel
  */
 public class ColoredIconManager {
-	/**
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private Image image = null;
-	/**
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private Map<Color, Image> icons = new HashMap<>() {
-	};
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
+	 * The image which should be colored.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final Image baseIcon;
+
+	/**
+	 * A list of all previously colored image variants.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final Map<Color, Image> icons = new HashMap<>();
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The default empty constructor.
+	 * Creates an invalid object.
+	 *
 	 * @author Joel
 	 */
 	public ColoredIconManager() {
-		Debug.print("ColoredIconManager created.");
+		this.baseIcon = null;
 	}
 
 	/**
-	 * @param iconPath
+	 * The default constructor for this class.
+	 *
+	 * @param iconPath The icon path of the image that should be modified in this class.
 	 * @author Joel
 	 */
 	public ColoredIconManager(String iconPath) {
+		Image loadedImage = null;
+
+		// try loading the image from its path,
+		// can fail if the path is incorrect
 		try {
-			image = new Image(getClass().getResourceAsStream(iconPath));
-			Debug.print("ColoredIconManager created.");
+			loadedImage = new Image(getClass().getResourceAsStream(iconPath));
 		} catch (Exception e) {
 			//throw new RuntimeException(e);
-			Debug.print("ColoredIconManager failed to create!");
 		}
+
+		this.baseIcon = loadedImage;
 	}
 
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
-	 * @param color
-	 * @return
+	 * The method to get a colored icon.
+	 * If the colored icon doesn't exist yet,
+	 * it will be created.
+	 *
+	 * @param color The color which the icon should be modified with.
+	 * @return The colored icon image.
 	 * @author Joel
 	 */
 	public Image getIcon(Color color) {
@@ -59,7 +92,7 @@ public class ColoredIconManager {
 
 		if (icon == null) {
 			// Create icon with specified color if icon doesn't exist yet and add it to map
-			icon = addImageTint(image, color);
+			icon = addImageTint(color);
 			icons.put(color, icon);
 			Debug.print("IconCount: " + icons.size());
 		}
@@ -68,17 +101,18 @@ public class ColoredIconManager {
 	}
 
 	/**
-	 * @param icon
-	 * @param color
-	 * @return
+	 * The method to create colored variants of an icon.
+	 *
+	 * @param color The color which the icon should be modified with.
+	 * @return The colored icon image.
 	 * @author Joel
 	 */
-	private Image addImageTint(Image icon, Color color) {
-		int w = (int) icon.getWidth();
-		int h = (int) icon.getHeight();
+	private Image addImageTint(Color color) {
+		int w = (int) baseIcon.getWidth();
+		int h = (int) baseIcon.getHeight();
 
 		WritableImage tinted = new WritableImage(w, h);
-		PixelReader reader = icon.getPixelReader();
+		PixelReader reader = baseIcon.getPixelReader();
 		PixelWriter writer = tinted.getPixelWriter();
 
 
@@ -101,6 +135,8 @@ public class ColoredIconManager {
 		}
 
 		return tinted;
-
 	}
+
+	//-----------------------------------------------------Methods------------------------------------------------------
+
 }

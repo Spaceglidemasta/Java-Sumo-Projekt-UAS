@@ -180,9 +180,6 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addPolygons(Canvas renderLayer) {
-		// load polys
-		WPolygon.loadAllPolys();
-
 		// add all polys to world
 		for ( WPolygon poly : WPolygon.getAllPolys()) {
 			new WorldPoly(
