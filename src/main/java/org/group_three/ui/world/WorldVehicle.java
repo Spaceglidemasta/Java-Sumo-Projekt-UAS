@@ -179,6 +179,6 @@ public class WorldVehicle extends WorldObject {
 	@Override
 	public void remove() {
 		super.remove();
-		vehicleDetailsController.kill();
+		if (vehicleDetailsController != null) vehicleDetailsController.kill();
 	}
 }
