@@ -14,7 +14,6 @@ import java.util.List;
  * */
 public class Statistics {
 
-
     private SimController simcon;
     private List<String> content;
 

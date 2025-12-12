@@ -1,7 +1,6 @@
 package org.group_three.ui;
 
 import org.group_three.api.SimController;
-import org.group_three.api.Statistics;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.SumoRoad;
@@ -11,6 +10,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+
+import static org.group_three.utils.PathUtils.getRelativePath;
 
 
 /**
@@ -95,10 +96,10 @@ public class FakeInteractions {
 
             try {
                 //you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
-                File net = PathUtils.getNetfromSConfig(config);
+                File net = PathUtils.getNetFromSCFG(config);
                 SumoRoad.loadRoads(net);
-                SumoRoad.printAll();
-                SumoRoad.getRoad("132964154").print();
+                //SumoRoad.printAll();
+                //SumoRoad.getRoad("132964154").print();
             }
             catch (Exception e){
                 Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
@@ -121,26 +122,7 @@ public class FakeInteractions {
 		return true;
 	}
 
-	/**
-	 * A method to convert an absolute path to a relative path based on the SumoConfig path.
-	 * <br>
-	 * AI was used for help on the path conversion.
-	 *
-	 * @param absolutePath The absolute path which should be converted to a relative path.
-	 * @return The relative path which was created.
-	 * @author Joel
-	 */
-	public static String getRelativePath(String absolutePath) {
-		// get SumoConfig path
-		Path sumoConfigPath = Paths.get(new File(SimController.getSumoLoc(), "SumoConfig").getPath());
 
-		// create and return a relative path based on the SumoConfig path
-		return sumoConfigPath.relativize(Paths.get(absolutePath)).toString();
-
-		// Used AI code part explanations
-		// Paths.get(String)        <-- converts a string to a Path
-		// path0.relativize(path1)  <--returns the relative path of path1 relative to path0
-	}
 
 
 }
