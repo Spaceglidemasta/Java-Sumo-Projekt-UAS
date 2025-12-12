@@ -489,7 +489,7 @@ public class SimController {
     }
 
     // ******************************************************
-    // **                   Vehicle                        **
+    // **                 Vehicle  & Route                 **
     // ******************************************************
 
     /**
@@ -523,6 +523,42 @@ public class SimController {
 
         return null;
 
+    }
+
+    /**
+     * Adds a Route to the Simulation with a given SumoStringList of edges
+     * @param edges The edges of the Route
+     * @return The created Route ID, or null if failed.
+     * @author Luca
+     * */
+    public String addRoute(SumoStringList edges){
+        try {
+            String RID = "r_" + System.currentTimeMillis();
+
+            stc.do_job_set(Route.add(RID, edges));
+
+            return RID;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Returns all the Edges inside a Route
+     * @param RID RouteID
+     * @return The edges as a SumoStringList, or null if failed
+     * @author Luca
+     * */
+    public SumoStringList getRouteEdges(String RID){
+        try {
+            return (SumoStringList) stc.do_job_get(Route.getEdges(RID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // ******************************************************

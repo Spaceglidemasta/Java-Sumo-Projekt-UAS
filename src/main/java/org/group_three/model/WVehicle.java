@@ -3,6 +3,7 @@ package org.group_three.model;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoPosition2D;
+import de.tudresden.sumo.objects.SumoStringList;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
 
@@ -169,6 +170,99 @@ public class WVehicle {
         }
         return true;
     }
+
+    /**
+     * Set Route of the Vehilce via a SumoStringList of edges
+     * @param edges edges String list
+     * @return true if successfull, false if not
+     * @author Luca
+     * */
+    public boolean setRoute(SumoStringList edges){
+        try {
+            stc.do_job_set(Vehicle.setRoute(vehID, edges));
+        }
+        catch (Exception _){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Set Route of the Vehilce via a Route ID
+     * @param RID Route iD
+     * @return true if successfull, false if not
+     * @author Luca
+     * */
+    public boolean setRoute(String RID){
+        try {
+            stc.do_job_set(Vehicle.setRouteID(vehID, RID));
+        }
+        catch (Exception _){
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Get the RouteID of the Vehicle
+     * @return RouteID
+     * @author Luca
+     * */
+    public String getRouteID(){
+        try {
+            return (String) stc.do_job_get(Vehicle.getRouteID(vehID));
+        }
+        catch (Exception _){
+            return null;
+        }
+    }
+
+    /**
+     * Get the Route Edges of the Vehicle
+     * @return RouteID
+     * @author Luca
+     * */
+    public SumoStringList getRouteEdges(){
+        try {
+            return (SumoStringList) stc.do_job_get(Vehicle.getRoute(vehID));
+        }
+        catch (Exception _){
+            return null;
+        }
+    }
+
+    /**
+     * @return Validity of the Route of the Vehicle as String. Test this.
+     * @author Luca
+     * */
+    public String isRouteValid(){
+        try {
+            return (String) stc.do_job_get(Vehicle.isRouteValid(vehID));
+        }
+        catch (Exception _){
+            return null;
+        }
+    }
+
+    /**
+     * Move the Vehicle to a new Position.
+     * @param LID Lane ID
+     * @param pos The position of the Vehicle relative to the lane. I Assume this m from start of the lane.
+     * @return <code>true</code> if successfull, <code>false</code> if not
+     * @author Luca
+     * */
+    public boolean moveTo(String LID, double pos){
+        try {
+            stc.do_job_set(Vehicle.moveTo(vehID,LID, pos));
+        }
+        catch (Exception _){
+            return false;
+        }
+        return true;
+    }
+
+
 
 
 
