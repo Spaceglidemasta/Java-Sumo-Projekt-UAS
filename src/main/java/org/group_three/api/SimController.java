@@ -404,6 +404,24 @@ public class SimController {
         return null;
     }
 
+    /**
+     * Beware that this uses unchecked casting and CAN return null.
+     * @author Luca
+     * */
+    public SumoStringList getPolygonIDList() {
+
+        try {
+            // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
+            return (SumoStringList) stc.do_job_get(Polygon.getIDList());
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     // ******************************************************
     // **                   Edges                          **
@@ -833,6 +851,16 @@ public class SimController {
     public LinkedList<SumoPosition2D> getJunctionShape(String laneID) {
         try {
             return ((SumoGeometry) stc.do_job_get(Junction.getShape(laneID))).coords;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public SumoGeometry getPolyType(String pid){
+        try {
+            return (SumoGeometry) stc.do_job_get(Polygon.getShape(pid));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
