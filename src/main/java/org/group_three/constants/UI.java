@@ -29,6 +29,8 @@ public final class UI {
 	public static final Color worldColor = new Color(0.2,0.5,0.2,1);
 	// The default road color.
 	public static final Color roadColor = new Color(0.1,0.1,0.1,1);
+	// A bool to decide if misc polygons should be rendered.
+	public static final boolean showPolys = false;
 
 
 	// The minimal window width.
