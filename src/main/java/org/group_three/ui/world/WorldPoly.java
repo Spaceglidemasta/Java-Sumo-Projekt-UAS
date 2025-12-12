@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The WorldPoint class is a simple class, which extends the WorldObject class.
- * It's only purpose is to easily be able to draw a dot in the simulation view.
- * Good for debugging, coordination visualization.
+ * The WorldPoly class is a class to render polygons in the world.
+ * Main use is to render sumo polys such as buildings and more,
+ * which are not needed for the actual simulation itself.
  *
  * @author Joel
  */
@@ -24,11 +24,20 @@ public class WorldPoly extends WorldObject {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * The color of the point which is being drawn.
+	 * The color of the poly which is being drawn.
+	 *
 	 * @author Joel
 	 */
-	private Color color;
-	List<Vector2D> shape;
+	@SuppressWarnings("JavadocDeclaration")
+	private final Color color;
+
+	/**
+	 * The shape of the poly to draw.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final List<Vector2D> shape;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -45,73 +54,61 @@ public class WorldPoly extends WorldObject {
 	public WorldPoly() {
 		super();
 		this.color = null;
+		this.shape = new ArrayList<>();
 		remove();
 	}
 
 	/**
-	 * The default WorldPoint constructor to spawn a new WorldPoint in a world.
+	 * The default WorldPoly constructor to spawn a new WorldPoly in a world.
 	 *
-	 * @param world       The world to which the WorldPoint should be added.
-	 * @param canvas      The canvas of the world.
-	 * @param displayName The display name which should show up on selection.
+	 * @param world  The world to which the WorldPoly should be added.
+	 * @param canvas The canvas of the world.
 	 * @author Joel
 	 */
-	public WorldPoly(World world, Canvas canvas, String displayName, WPolygon poly) {
-		super(world, canvas, displayName);
+	public WorldPoly(World world, Canvas canvas, WPolygon poly) {
+		// call super and set the display name to the poly type
+		super(world, canvas, poly.getType());
+
+		// convert the sumo color value from the poly to a javafx color value and set it
 		this.color = Meth.SumoClrToClr(poly.getColor());
 
-		shape = Meth.convertSumoCoords(poly.getShape().coords);
-
-
-		List<Vector2D> relativeShape = new ArrayList<>();
-
-		for (Vector2D point : shape) {
-			relativeShape.add(Meth.getRelativeLocation(getPosition(), 0, point));
-		}
-
-		shape = relativeShape;
-
+		// set the shape of the poly, by first converting it to a relative shape
+		this.shape = getRelativeShape(Meth.convertSumoCoords(poly.getShape().coords));
 	}
 
 	//--------------------------------------------------Constructors--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	/**
-	 * The getter methode for the color of the WorldPoint.
-	 * @return The current color of the WorldPoint.
-	 */
-	public Color getColor() {
-		return color;
-	}
-
-	//--------------------------------------------------GetterMethods--------------------------------------------------
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	/**
-	 * The setter method for the color of the WorldPoint.
-	 * @param color The new color of the WorldPoint.
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	//--------------------------------------------------SetterMethods--------------------------------------------------
-
-
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * The update method which is used to draw the WorldPoint in the world.
+	 * A method to convert a shape, with absolute world coordinates,
+	 * to a shape with to its own base relative coordinates.
+	 *
+	 * @param absoluteShape The absolute shape positions from SUMO.
+	 * @return The relative shape positions.
+	 * @author Joel
+	 */
+	private List<Vector2D> getRelativeShape(List<Vector2D> absoluteShape) {
+		List<Vector2D> relativeShape = new ArrayList<>();
+
+		// get the relativ position of the shape point to its base and add it to the return list
+		for (Vector2D point : shape) {
+			relativeShape.add(Meth.getRelativeLocation(getPosition(), 0, point));
+		}
+
+		return relativeShape;
+	}
+
+	/**
+	 * The update method which is used to draw the WorldPoly in the world.
 	 *
 	 * @author Joel
 	 */
 	@Override
 	public void update() {
 		super.update();
-		//drawSphere(8, color);
+
 		if (UI.showPolys) drawPolygon(shape, color);
 	}
 
