@@ -1,7 +1,5 @@
 package org.group_three.ui;
 
-import de.tudresden.sumo.cmd.Trafficlight;
-import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,9 +12,8 @@ import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.controllers.BodyController;
 import org.group_three.ui.world.*;
-import org.group_three.api.SimController;
+import org.group_three.utils.TLStopLine;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -181,15 +178,15 @@ public class SimView2D {
 
         for(String tl: tls){
             WTrafficLight wtl = new WTrafficLight(tl);
-            List<SumoPosition2D> stopLinePoints = wtl.getStopLinePoint(tl);
-            if (stopLinePoints != null) {
-                List<Vector2D> uiPoints = Meth.convertSumoCoords(new LinkedList<>(stopLinePoints));
-                for (Vector2D uiPos : uiPoints) {
-                    Debug.print("Drawing rectangle at: " + uiPos.x + ", " + uiPos.y);
-                    new WorldTrafficLight(world,
+            List<TLStopLine> laneDataList = wtl.getStopLineData(tl);
+            if (laneDataList != null) {
+                for (TLStopLine data : laneDataList) {
+                        Debug.print(data.laneID);
+                        new WorldTrafficLight(world,
                             worldStaticRenderTarget,
                             "WorldTrafficLight", wtl
-                    ).setPosition(uiPos);
+                                ,laneDataList.indexOf(data)
+                    );
                 }
             }
         }
