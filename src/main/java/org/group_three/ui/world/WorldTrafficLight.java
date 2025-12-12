@@ -13,6 +13,7 @@ import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,8 +24,7 @@ public class WorldTrafficLight extends WorldObject {
 
 
     //--------------------------------------------------MemberVariables--------------------------------------------------
-    public Vector2D rechteck = new Vector2D(10,10);
-    private List<SumoPosition2D> stopLinePoints;
+    public Vector2D rechteck = new Vector2D(5,10);
     //++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -35,12 +35,9 @@ public class WorldTrafficLight extends WorldObject {
     }
 
 
-    public WorldTrafficLight(World world, Canvas canvas, String displayName, String trafficLightID) {
+    public WorldTrafficLight(World world, Canvas canvas, String displayName, WTrafficLight trafficLight) {
         super(world, canvas, displayName);
-        WTrafficLight wtl = new WTrafficLight(trafficLightID);
-        this.stopLinePoints = wtl.getStopLinePoint(trafficLightID);
-
-        Debug.print("Traffic light created with " + stopLinePoints.size() + " stop line points");;
+        WTrafficLight wtl = trafficLight;
     }
     //--------------------------------------------------Constructors--------------------------------------------------
 
@@ -69,12 +66,6 @@ public class WorldTrafficLight extends WorldObject {
     @Override
     public void update() {
         super.update();
-
-        if (stopLinePoints != null) {
-            for (SumoPosition2D point : stopLinePoints) {
-                Vector2D uiPos = new Vector2D(point.x, point.y);
-                drawRectangle(uiPos, Color.AQUA);
-            }
-        }
+        drawRectangle(rechteck, Color.AQUA);
     }
 }

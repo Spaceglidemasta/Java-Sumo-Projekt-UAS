@@ -143,8 +143,8 @@ public class WTrafficLight {
 
             //SumoPosition2D point2 = new SumoPosition2D(x2, y2);
 
-            SumoPosition2D point1 = new SumoPosition2D(x, y);
-            laneStopLines.add(point1);
+            SumoPosition2D point = new SumoPosition2D(x, y);
+            laneStopLines.add(point);
             Debug.print("Lane " + laneID + " last point: " + x + "," + y);
         }
         return laneStopLines;

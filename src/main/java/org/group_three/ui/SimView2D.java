@@ -1,6 +1,7 @@
 package org.group_three.ui;
 
 import de.tudresden.sumo.cmd.Trafficlight;
+import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,6 +18,7 @@ import org.group_three.api.SimController;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.group_three.ui.Meth.lerp;
@@ -142,10 +144,18 @@ public class SimView2D {
         SumoStringList tls = SimController.getMainsimcon().getTrafficLightsIDList();
 
         for(String tl: tls){
-            new WorldTrafficLight(world,
-                    worldStaticRenderTarget,
-                    "WorldTrafficLight",
-                    tl);
+            WTrafficLight wtl = new WTrafficLight(tl);
+            List<SumoPosition2D> stopLinePoints = wtl.getStopLinePoint(tl);
+            if (stopLinePoints != null) {
+                List<Vector2D> uiPoints = Meth.convertSumoCoords(new LinkedList<>(stopLinePoints));
+                for (Vector2D uiPos : uiPoints) {
+                    Debug.print("Drawing rectangle at: " + uiPos.x + ", " + uiPos.y);
+                    new WorldTrafficLight(world,
+                            worldStaticRenderTarget,
+                            "WorldTrafficLight", wtl
+                    ).setPosition(uiPos);
+                }
+            }
         }
 
 
