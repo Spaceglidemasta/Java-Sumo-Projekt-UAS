@@ -2,6 +2,7 @@ package org.group_three.utils;
 
 import org.group_three.api.SimController;
 import org.group_three.debug.exceptions.SumoCfgParsingError;
+import org.group_three.debug.exceptions.XMLEmptyAttributeError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -45,7 +46,7 @@ public class PathUtils {
 
         String netpathstr =  netelement.getAttribute("value");
 
-        if(netpathstr.isEmpty()) return null;
+        if(netpathstr.isEmpty()) throw new XMLEmptyAttributeError("Value of network element is empty");
 
         return new File(parent, netpathstr);
     }
@@ -55,7 +56,7 @@ public class PathUtils {
     /**
      * Reads out the relative path / filename of the route file via XML parsing the .sumocfg file.
      * @param scfg The location of the .sumocfg file
-     * @return The location of the route file as File, or null if failed.
+     * @return The location of the route file as File
      * @author Luca
      * */
     public static File getRouFromSCFG(File scfg) throws Exception {
@@ -81,7 +82,7 @@ public class PathUtils {
 
         String routepathstr =  routeelement.getAttribute("value");
 
-        if(routepathstr.isEmpty()) return null;
+        if(routepathstr.isEmpty()) throw new XMLEmptyAttributeError("Value of route element is empty");
 
         return new File(parent, routepathstr);
     }
