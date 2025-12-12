@@ -6,8 +6,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
+import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.model.SumoRoad;
+import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.controllers.BodyController;
@@ -127,14 +129,18 @@ public class SimView2D {
 			//Debug.print(SimController.getMainsimcon().getJunctionPos(jid));
 		}*/
 
-		/*for ( String polyId : SimController.getMainsimcon().getPolygonIDList()) {
+		WPolygon.loadAllPolys();
+
+
+
+		for ( WPolygon poly : WPolygon.getAllPolys()) {
 			new WorldPoly(
 					world,
 					worldStaticRenderTarget,
 					"WorldPoly",
-					polyId
+					poly
 			);
-		}*/
+		}
 
 
 		for (String junctionId : SimController.getMainsimcon().getJunctionIDList()) {
@@ -142,7 +148,7 @@ public class SimView2D {
 					world,
 					worldStaticRenderTarget,
 					"WorldJunction",
-					Color.WHITE,
+					UI.roadColor,
 					junctionId
 			);
 		}
@@ -164,7 +170,7 @@ public class SimView2D {
 								world,
 								worldStaticRenderTarget,
 								"SubPoint",
-								Color.WHITE,
+								UI.roadColor,
 								list.get(list.indexOf(subPoint) -1),
 								subPoint,
 								SimController.getMainsimcon().getLaneWidth(laneId)/2

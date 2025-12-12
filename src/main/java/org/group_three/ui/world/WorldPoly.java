@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
+import org.group_three.model.WPolygon;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
@@ -54,11 +55,11 @@ public class WorldPoly extends WorldObject {
 	 * @param displayName The display name which should show up on selection.
 	 * @author Joel
 	 */
-	public WorldPoly(World world, Canvas canvas, String displayName, String polyId) {
+	public WorldPoly(World world, Canvas canvas, String displayName, WPolygon poly) {
 		super(world, canvas, displayName);
-		this.color = color;
+		this.color = Meth.SumoClrToClr(poly.getColor());
 
-		//SimController.getMainsimcon().
+		shape = Meth.convertSumoCoords(poly.getShape().coords);
 
 
 		List<Vector2D> relativeShape = new ArrayList<>();

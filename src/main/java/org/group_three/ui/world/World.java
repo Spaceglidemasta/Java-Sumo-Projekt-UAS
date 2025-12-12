@@ -3,6 +3,7 @@ package org.group_three.ui.world;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
@@ -97,7 +98,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private Color worldColor = Color.GREY;
+	private Color worldColor = UI.worldColor;
 
 	/**
 	 * The background color of the world view.
@@ -106,7 +107,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private Color backgroundColor = Color.BLACK;
+	private Color backgroundColor = UI.worldColor;
 
 
 	/**
