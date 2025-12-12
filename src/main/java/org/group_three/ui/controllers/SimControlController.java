@@ -1,5 +1,6 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.objects.SumoStringList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ public class SimControlController {
 
 	private static double speedModValue = 1;
 
+	private static double time = 1;
 
 	/**
 	 * Comment
@@ -64,6 +66,8 @@ public class SimControlController {
 	private void onStepClicked() {
 		//Debug.print("Step clicked.");
 		SimController.getMainsimcon().step();
+		time++;
+		//Debug.print((int) time);
 		SimView2D.update();
 	}
 
@@ -102,12 +106,17 @@ public class SimControlController {
 
 	private void onTick() {
 		onStepClicked();
-		/*List<SumoRoad> roads = SumoRoad.getAllroads();
+		/*
+		List<SumoRoad> roads = SumoRoad.getAllroads();
 		int randomIndex = ThreadLocalRandom.current().nextInt(roads.size());
+
+		SumoStringList strings = new SumoStringList();
+		strings.add(roads.get(randomIndex).getLaneIDs().getFirst());
+
 		SimController.getMainsimcon().addVehicle(
 				"DEFAULT_VEHTYPE",
-				roads.get(randomIndex).getLaneIDs().getFirst(),
-				0,
+				SimController.getMainsimcon().addRoute(strings),
+				(int) time+1,
 				0,
 				10
 				,0
