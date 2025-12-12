@@ -1,5 +1,8 @@
 package org.group_three.ui;
 
+import de.tudresden.sumo.cmd.Trafficlight;
+import de.tudresden.sumo.objects.SumoPosition2D;
+import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -7,12 +10,15 @@ import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.model.SumoRoad;
+import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.controllers.BodyController;
 import org.group_three.ui.world.*;
+import org.group_three.api.SimController;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.group_three.ui.Meth.lerp;
@@ -134,8 +140,22 @@ public class SimView2D {
 			);
 		}
 
+        SumoStringList tls = SimController.getMainsimcon().getTrafficLightsIDList();
 
-		//TODO add for-loop for spawning traffic lights
+        for(String tl: tls){
+            WTrafficLight wtl = new WTrafficLight(tl);
+            List<SumoPosition2D> stopLinePoints = wtl.getStopLinePoint(tl);
+            if (stopLinePoints != null) {
+                List<Vector2D> uiPoints = Meth.convertSumoCoords(new LinkedList<>(stopLinePoints));
+                for (Vector2D uiPos : uiPoints) {
+                    Debug.print("Drawing rectangle at: " + uiPos.x + ", " + uiPos.y);
+                    new WorldTrafficLight(world,
+                            worldStaticRenderTarget,
+                            "WorldTrafficLight", wtl
+                    ).setPosition(uiPos);
+                }
+            }
+        }
 
 
 		//Debug.print(rnHeight + " --- " + rnWidth);

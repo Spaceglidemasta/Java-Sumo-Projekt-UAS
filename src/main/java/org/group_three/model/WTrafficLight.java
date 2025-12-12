@@ -1,10 +1,17 @@
 package org.group_three.model;
 
 import de.tudresden.sumo.cmd.Trafficlight;
+import de.tudresden.sumo.objects.SumoPosition2D;
+import de.tudresden.sumo.objects.SumoStringList;
 import de.tudresden.sumo.objects.SumoTLSProgram;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
+import org.group_three.debug.Debug;
+import org.group_three.utils.LaneStopLineData;
 import org.group_three.utils.Sumo2DLine;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WTrafficLight {
 
@@ -13,7 +20,7 @@ public class WTrafficLight {
     private final SimController simcon;
 
 
-    private Sumo2DLine pos;
+    private List<SumoPosition2D>  pos;
     private int phaseState;
     private String phaseName;
     private double phaseDuration;
@@ -21,77 +28,88 @@ public class WTrafficLight {
     private String state;
 
 
-
-    public WTrafficLight(String id, SimController simcon){
+    public WTrafficLight(String id) {
         this.trafficLightID = id;
-        this.simcon = simcon;
+        this.simcon = SimController.getMainsimcon();
     }
 
 
-    public String getID() {return trafficLightID;}
+    public String getID() {
+        return trafficLightID;
+    }
 
-    public SimController getSumoCon() {return simcon;}
+    public SimController getSumoCon() {
+        return simcon;
+    }
 
-    public double getPhaseState() {return phaseState;}
+    public double getPhaseState() {
+        return phaseState;
+    }
 
-    public Sumo2DLine getPos() {return pos;}
+    public List<SumoPosition2D>  getPos() {
+        return pos;
+    }
 
-    public String getPhaseName() {return phaseName;}
+    public String getPhaseName() {
+        return phaseName;
+    }
 
-    public double getPhaseDuration() {return phaseDuration;}
+    public double getPhaseDuration() {
+        return phaseDuration;
+    }
 
-    public String getProgramID() {return programID;}
+    public String getProgramID() {
+        return programID;
+    }
 
-    public String getState() {return state;}
+    public String getState() {
+        return state;
+    }
 
 
-    public boolean setCompleteRYGDefinition(String trafficLightID, SumoTLSProgram prgm){
-        try{
-            simcon.jobset(Trafficlight.setCompleteRedYellowGreenDefinition(trafficLightID,prgm));
+    public boolean setCompleteRYGDefinition(String trafficLightID, SumoTLSProgram prgm) {
+        try {
+            simcon.jobset(Trafficlight.setCompleteRedYellowGreenDefinition(trafficLightID, prgm));
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean setPhase(String trafficLightID, int index){
-        try{
-            simcon.jobset(Trafficlight.setPhase(trafficLightID,index));
+    public boolean setPhase(String trafficLightID, int index) {
+        try {
+            simcon.jobset(Trafficlight.setPhase(trafficLightID, index));
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean steRYGState (String trafficLightID, String state){
-        try{
-            simcon.jobset(Trafficlight.setRedYellowGreenState(trafficLightID,state));
+    public boolean steRYGState(String trafficLightID, String state) {
+        try {
+            simcon.jobset(Trafficlight.setRedYellowGreenState(trafficLightID, state));
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean setProgram (String trafficLightID, String prgmID){
-        try{
-            simcon.jobset(Trafficlight.setProgram(trafficLightID,prgmID));
+    public boolean setProgram(String trafficLightID, String prgmID) {
+        try {
+            simcon.jobset(Trafficlight.setProgram(trafficLightID, prgmID));
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public void update() throws Exception{
+    public void update() throws Exception {
 
-        this.pos = (Sumo2DLine) simcon.getStopLineVector(trafficLightID);
+        this.pos = getStopLinePoint(trafficLightID);
 
         this.phaseState = (int) simcon.jobget(Trafficlight.getPhase(trafficLightID));
 
@@ -105,4 +123,30 @@ public class WTrafficLight {
 
     }
 
+    public List<SumoPosition2D> getStopLinePoint(String TLID) {
+        List<SumoPosition2D> laneStopLines = new ArrayList<>();
+        SumoStringList linkedLanes = simcon.getControlledLanes(TLID);
+
+        for (String laneID : linkedLanes) {
+            String edgeShape = simcon.getLaneShape(laneID).toString();
+            String[] coordinates = edgeShape.split(" ");
+
+//            String secondToLastCoordinate = coordinates[coordinates.length - 2];
+            String lastCoordinate = coordinates[coordinates.length - 1];
+//            String[] secondToLastCoord = secondToLastCoordinate.split(",");
+            String[] lastCoord = lastCoordinate.split(",");
+
+//            double x1 = Double.parseDouble(secondToLastCoord[0]);
+//            double y1 = Double.parseDouble(secondToLastCoord[1]);
+            double x = Double.parseDouble(lastCoord[0].replaceAll("[^0-9.-]", ""));
+            double y = Double.parseDouble(lastCoord[1].replaceAll("[^0-9.-]", ""));
+
+            //SumoPosition2D point2 = new SumoPosition2D(x2, y2);
+
+            SumoPosition2D point = new SumoPosition2D(x, y);
+            laneStopLines.add(point);
+            Debug.print("Lane " + laneID + " last point: " + x + "," + y);
+        }
+        return laneStopLines;
+    }
 }

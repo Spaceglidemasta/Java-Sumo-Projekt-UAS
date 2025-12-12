@@ -451,7 +451,8 @@ public class World {
 		List<WorldObject> boxCollisionHits = new ArrayList<>() {
 		};
 
-		for (WorldObject worldObject : worldObjects) {
+		// reversed WorldObject list so you always select newer objects over older, so you can select cars over roads etc
+		for (WorldObject worldObject : worldObjects.reversed()) {
 			if (!worldObject.isInteractable()) continue;
 
 			double distanceToObject = worldObject.getPosition().sub(worldPosition).length();

@@ -1,11 +1,13 @@
 package org.group_three.ui.world;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.model.SumoRoad;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.RoadDetailsController;
 
 public class WorldRoad extends WorldObject {
 
@@ -17,7 +19,7 @@ public class WorldRoad extends WorldObject {
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	Color color;
-	SumoRoad sumoRoad;
+	public SumoRoad sumoRoad;
 	Vector2D from;
 	Vector2D to;
 	Vector2D size;
@@ -73,6 +75,8 @@ public class WorldRoad extends WorldObject {
 		setInteractable(true);
 		setUseBoxCollision(true);
 		setBoxCollision(size.add(new Vector2D(5,5)));
+
+
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------
@@ -89,6 +93,14 @@ public class WorldRoad extends WorldObject {
 
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	RoadDetailsController roadDetailsController;
+
+	@Override
+	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
+		roadDetailsController = fxmlLoader.getController();
+		roadDetailsController.setup(this);
+	}
 
 	/**
 	 * The update method which is used to draw the WorldPoint in the world.
