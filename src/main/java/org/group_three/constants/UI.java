@@ -25,7 +25,7 @@ public final class UI {
 	// A bool to decide if WorldObject collision should be visible or not.
 	public static final boolean showCollision = false;
 	// A bool to decide if sphere collision should always be visible when WorldObject collision is visible.
-	public static final boolean forceShowSphereCollision = true;
+	public static final boolean forceShowSphereCollision = false;
 	// The default world color.
 	public static final Color worldColor = new Color(0.2,0.5,0.2,1);
 	// The default road color.

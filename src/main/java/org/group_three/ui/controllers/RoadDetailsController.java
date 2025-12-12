@@ -63,6 +63,6 @@ public class RoadDetailsController {
 
 		id.setText(worldRoad.getId());
 		displayName.setText(worldRoad.getDisplayName());
-		sumoId.setText(worldRoad.sumoRoad.getEdgeID());
+		sumoId.setText(worldRoad.id);
 	}
 }
