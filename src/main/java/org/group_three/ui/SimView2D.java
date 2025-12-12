@@ -205,7 +205,6 @@ public class SimView2D {
 					world,
 					renderLayer,
 					"WorldJunction",
-					UI.roadColor,
 					junctionId
 			);
 		}

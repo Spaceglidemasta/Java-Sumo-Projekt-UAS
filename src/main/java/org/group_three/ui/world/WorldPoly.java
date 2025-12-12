@@ -2,9 +2,7 @@ package org.group_three.ui.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
-import org.group_three.api.SimController;
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 import org.group_three.model.WPolygon;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
@@ -63,6 +61,7 @@ public class WorldPoly extends WorldObject {
 	 *
 	 * @param world  The world to which the WorldPoly should be added.
 	 * @param canvas The canvas of the world.
+	 * @param poly   The WPolygon wrapper object.
 	 * @author Joel
 	 */
 	public WorldPoly(World world, Canvas canvas, WPolygon poly) {
@@ -71,6 +70,20 @@ public class WorldPoly extends WorldObject {
 
 		// convert the sumo color value from the poly to a javafx color value and set it
 		this.color = Meth.SumoClrToClr(poly.getColor());
+
+
+		// get poly shape points
+		List<Vector2D> shapePoints = Meth.convertSumoCoords(poly.getShape().coords);
+
+		// add all shape points together and then divide by shape count to get middle point
+		Vector2D polyCenterPosition = new Vector2D();
+		for (Vector2D vector2D : shapePoints) {
+			polyCenterPosition = polyCenterPosition.add(vector2D);
+		}
+		polyCenterPosition = polyCenterPosition.div(shapePoints.size());
+
+		// set WorldPoly position to center of poly
+		setPosition(polyCenterPosition);
 
 		// set the shape of the poly, by first converting it to a relative shape
 		this.shape = getRelativeShape(Meth.convertSumoCoords(poly.getShape().coords));

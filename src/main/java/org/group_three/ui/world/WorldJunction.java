@@ -3,17 +3,15 @@ package org.group_three.ui.world;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
-import org.group_three.debug.Debug;
+import org.group_three.constants.UI;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The WorldPoint class is a simple class, which extends the WorldObject class.
- * It's only purpose is to easily be able to draw a dot in the simulation view.
- * Good for debugging, coordination visualization.
+ * The WorldJunction class is a class that represents sumo junctions and
+ * is displayed as a polygon.
  *
  * @author Joel
  */
@@ -22,11 +20,21 @@ public class WorldJunction extends WorldObject {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * The color of the point which is being drawn.
+	 * The color of the junction which is being drawn.
+	 * Bound to be UI.roadColor.
+	 *
 	 * @author Joel
 	 */
-	private Color color;
-	List<Vector2D> shape;
+	@SuppressWarnings("JavadocDeclaration")
+	private final Color color = UI.roadColor;
+
+	/**
+	 * The shape of the junction to draw.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final List<Vector2D> shape;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -42,87 +50,42 @@ public class WorldJunction extends WorldObject {
 	@SuppressWarnings("unused")
 	public WorldJunction() {
 		super();
-		this.color = null;
+		shape = null;
 		remove();
 	}
 
 	/**
-	 * The default WorldPoint constructor to spawn a new WorldPoint in a world.
+	 * The default WorldJunction constructor to spawn a new WorldJunction in a world.
 	 *
-	 * @param world       The world to which the WorldPoint should be added.
+	 * @param world       The world to which the WorldJunction should be added.
 	 * @param canvas      The canvas of the world.
 	 * @param displayName The display name which should show up on selection.
+	 * @param junctionId  The sumo junction id.
 	 * @author Joel
 	 */
-	public WorldJunction(World world, Canvas canvas, String displayName, Color color, String junctionId) {
+	public WorldJunction(World world, Canvas canvas, String displayName, String junctionId) {
 		super(world, canvas, displayName);
-		this.color = color;
-		shape = Meth.convertSumoCoords(SimController.getMainsimcon().getJunctionShape(junctionId));
+
+		// set the position of the junction
 		setPosition(new Vector2D(SimController.getMainsimcon().getJunctionPos(junctionId)));
 
-
-		/*Debug.print("StartJV");
-		for (Vector2D vector2D : shape) {
-			Debug.print(vector2D);
-			new WorldPoint(
-					getWorld(),
-					getRenderTarget(),
-					"IDK",
-					Color.LIGHTCYAN,
-					0.5
-			).setPosition(vector2D);
-		}
-		Debug.print("EndJV");*/
-
-		List<Vector2D> relativeShape = new ArrayList<>();
-
-		for (Vector2D point : shape) {
-			relativeShape.add(Meth.getRelativeLocation(getPosition(), 0, point));
-		}
-
-		shape = relativeShape;
-
+		// set the shape of the junction
+		shape = getRelativeShape(Meth.convertSumoCoords(SimController.getMainsimcon().getJunctionShape(junctionId)));
 	}
 
 	//--------------------------------------------------Constructors--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	/**
-	 * The getter methode for the color of the WorldPoint.
-	 * @return The current color of the WorldPoint.
-	 */
-	public Color getColor() {
-		return color;
-	}
-
-	//--------------------------------------------------GetterMethods--------------------------------------------------
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	/**
-	 * The setter method for the color of the WorldPoint.
-	 * @param color The new color of the WorldPoint.
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	//--------------------------------------------------SetterMethods--------------------------------------------------
-
-
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * The update method which is used to draw the WorldPoint in the world.
+	 * The update method which is used to draw the WorldJunction in the world.
 	 *
 	 * @author Joel
 	 */
 	@Override
 	public void update() {
 		super.update();
-		//drawSphere(8, color);
 
 		drawPolygon(shape, color);
 	}
