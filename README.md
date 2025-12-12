@@ -10,7 +10,11 @@ By Luca De Simone, Joel Stark, Leon Chimentchik and David Cornelius.
 
 ## Features
 
-_list future features here_
+- Visually Display SUMO Simulations
+- Edit The SUMO Simulation
+  - Inject & edit vehicles & routes
+  - Control traffic lights
+  - Interact with polygons around the map
 
 ## Dependencies
 
@@ -76,4 +80,24 @@ in the SumoConfig folder, although this is redundant, as TraaS needs SUMO_HOME a
 
 ## Usage
 
-_add GUI examples with pictures here_
+### Start the Program
+
+This can be done via compiling it with [maven](#Installation) or when double-clicking on the [.jar](#Installation) file.
+
+### Start the Simulation
+
+After the Window opens, navigate to the toolbar on the top and press
+
+`Simulation` -> `Open...`
+
+and select either a network (.net.xml) and route (.rou.xml) file, or a config (.sumocfg) file.
+
+### Edit and View the Simulation
+
+After the Simulation has loaded, you can play single steps with the Skip button at the bottom, or play the Simulation
+with a given Speed with the Play button. The pause button pauses the simulation.
+
+On the right side of the screen, you will find a lot of tools to edit the Simulation. Most of these require to select the element
+you want to edit on the Map first.
+
+!["Example Img"](documentation_images/guiusage.png)
