@@ -7,7 +7,7 @@ import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 
-import org.group_three.utils.LaneStopLineData;
+import org.group_three.utils.TLStopLine;
 import org.group_three.utils.Sumo2DLine;
 
 import java.io.File;
@@ -489,7 +489,7 @@ public class SimController {
     }
 
     // ******************************************************
-    // **                   Vehicle                        **
+    // **                 Vehicle  & Route                 **
     // ******************************************************
 
     /**
@@ -523,6 +523,42 @@ public class SimController {
 
         return null;
 
+    }
+
+    /**
+     * Adds a Route to the Simulation with a given SumoStringList of edges
+     * @param edges The edges of the Route
+     * @return The created Route ID, or null if failed.
+     * @author Luca
+     * */
+    public String addRoute(SumoStringList edges){
+        try {
+            String RID = "r_" + System.currentTimeMillis();
+
+            stc.do_job_set(Route.add(RID, edges));
+
+            return RID;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Returns all the Edges inside a Route
+     * @param RID RouteID
+     * @return The edges as a SumoStringList, or null if failed
+     * @author Luca
+     * */
+    public SumoStringList getRouteEdges(String RID){
+        try {
+            return (SumoStringList) stc.do_job_get(Route.getEdges(RID));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // ******************************************************
@@ -616,31 +652,14 @@ public class SimController {
      * @author Leon
      * */
     public List<Sumo2DLine> getStopLineVector(String TLID){
-        List<LaneStopLineData> laneStopLines  = new ArrayList<>();
+        List<TLStopLine> laneStopLines  = new ArrayList<>();
         try {
             SumoStringList linkedLanes = getControlledLanes(TLID);
+            for (String laneID : linkedLanes) {
+                LinkedList<SumoPosition2D> edgeShape = getLaneShape(laneID);
 
-            for(String laneID: linkedLanes){
-
-                String edgeShape = getLaneShape(laneID).toString();
-                String[] coordinates = edgeShape.split(" ");
-
-                String secondToLastCoordinate = coordinates[coordinates.length - 2];
-                String lastCoordinate = coordinates[coordinates.length - 1];
-
-                String[] secondToLastCoord = secondToLastCoordinate.split(",");
-                String[] lastCoord = lastCoordinate.split(",");
-
-                double x1 = Double.parseDouble(secondToLastCoord[0]);
-                double y1 = Double.parseDouble(secondToLastCoord[1]);
-                double x2 = Double.parseDouble(lastCoord[0]);
-                double y2 = Double.parseDouble(lastCoord[1]);
-
-                SumoPosition2D point1 = new SumoPosition2D(x1, y1);
-                SumoPosition2D point2 = new SumoPosition2D(x2, y2);
-
-                laneStopLines.add(new LaneStopLineData(laneID, point1, point2));
-
+                TLStopLine data = new TLStopLine(laneID, edgeShape.get(edgeShape.size() - 2), edgeShape.getLast());
+                laneStopLines.add(data);
             }
         }
         catch (Exception e){
@@ -660,11 +679,11 @@ public class SimController {
      * @return returns the data as Sumo2DLine.
      * @author Leon
      * */
-    public List<Sumo2DLine> stopLineCalculation(List<LaneStopLineData> stopLinePositions) {
+    public List<Sumo2DLine> stopLineCalculation(List<TLStopLine> stopLinePositions) {
         List<Sumo2DLine> stopLinePoints = new ArrayList<>();
 
         // Iterate (second-to-last, last)
-        for (LaneStopLineData laneData : stopLinePositions) {
+        for (TLStopLine laneData : stopLinePositions) {
             SumoPosition2D point1 = laneData.point1;
             SumoPosition2D point2 = laneData.point2;
 

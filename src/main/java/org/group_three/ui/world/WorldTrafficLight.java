@@ -1,6 +1,7 @@
 package org.group_three.ui.world;
 
 import de.tudresden.sumo.objects.SumoPosition2D;
+import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -12,6 +13,7 @@ import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.utils.Sumo2DLine;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,11 +26,12 @@ public class WorldTrafficLight extends WorldObject {
 
 
     //--------------------------------------------------MemberVariables--------------------------------------------------
-    public Vector2D rechteck = new Vector2D(5,10);
+    public Vector2D rechteck = new Vector2D(2,6);
     private WTrafficLight wtl;
     private Vector2D position;
     private double rotation;
     private Vector2D size;
+    private int index;
     //++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -39,10 +42,10 @@ public class WorldTrafficLight extends WorldObject {
     }
 
 
-    public WorldTrafficLight(World world, Canvas canvas, String displayName, WTrafficLight trafficLight) {
+    public WorldTrafficLight(World world, Canvas canvas, String displayName, WTrafficLight trafficLight, int index) {
         super(world, canvas, displayName);
         this.wtl = trafficLight;
-        initGeometry(wtl.getID());
+        render();
     }
     //--------------------------------------------------Constructors--------------------------------------------------
 
@@ -62,39 +65,24 @@ public class WorldTrafficLight extends WorldObject {
 
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
+    public void render(){
+        Sumo2DLine line = SimController.getMainsimcon().getStopLineVector(wtl.getID()).get(index);
+        Vector2D start = new Vector2D(line.start);
+        Vector2D end = new Vector2D(line.end);
 
+        Vector2D relStart = Meth.getRelativeLocation(start,0,end);
+        setPosition(
+                start.add(relStart.div(2))
+        );
+        setRotation(start.getDirectionAngle(end));
+        Debug.print(start);
+        Debug.print(end);
+    }
     /**
      * The update method which is used to draw the WorldPoint in the world.
      *
      * @author Joel
      */
-
-    private void initGeometry(String tlId) {
-        // last point = position
-        List<SumoPosition2D> lastPoints = wtl.getStopLinePoint(tlId);
-        List<SumoPosition2D> secondPoints = wtl.getSecondToLast(tlId);
-
-        if (lastPoints != null && !lastPoints.isEmpty() &&
-                secondPoints != null && !secondPoints.isEmpty()) {
-
-            SumoPosition2D last = lastPoints.get(0);
-            SumoPosition2D second = secondPoints.get(0);
-
-            Vector2D pLast = Meth.convertSumoCoords(new LinkedList<>(List.of(last))).get(0);
-            Vector2D pSecond = Meth.convertSumoCoords(new LinkedList<>(List.of(second))).get(0);
-
-            this.position = pLast;
-            setPosition(position);
-            // rotation from vector
-            Vector2D dir = pLast.sub(pSecond);
-            this.rotation = Math.toDegrees(Math.atan2(dir.y, dir.x));
-            setRotation(rotation);
-            // size from lane width
-            //double laneWidth = SimController.getMainsimcon().getLaneWidth();
-            //this.size = new Vector2D(laneWidth / 2.0, 3);
-        }
-    }
-
     @Override
     public void update() {
         super.update();
