@@ -374,9 +374,9 @@ public class WVehicle {
 
 
     /**
-     * Move the Vehicle to a new Position.
-     * @param LID Lane ID
-     * @param pos The position of the Vehicle relative to the lane. I Assume this m from start of the lane.
+     * Move the Vehicle to a new Lane
+     * @param laneIndex lane index
+     * @param duration duration of this proccess
      * @return <code>true</code> if successfull, <code>false</code> if not
      * @author Luca
      * */
