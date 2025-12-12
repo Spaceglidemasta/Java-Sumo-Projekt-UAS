@@ -107,7 +107,7 @@ public class SimView2D {
 
 
 		//rendering Junctions
-		for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
+		/*for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
 			Vector2D jidV = new Vector2D(SimController.getMainsimcon().getJunctionPos(jid).x, SimController.getMainsimcon().getJunctionPos(jid).y);
 			boolean firstIteration = jid.equals(SimController.getMainsimcon().getJunctionIDList().getFirst());
 
@@ -124,20 +124,57 @@ public class SimView2D {
 					world,
 					worldStaticRenderTarget,
 					"WorldPoint_" + jid,
-					Color.RED
+					Color.RED,
+					8
 			).setPosition(jidV);
 			//Debug.print(SimController.getMainsimcon().getJunctionPos(jid));
+		}*/
+
+		/*for ( String polyId : SimController.getMainsimcon().getPolygonIDList()) {
+			new WorldPoly(
+					world,
+					worldStaticRenderTarget,
+					"WorldPoly",
+					polyId
+			);
+		}*/
+
+
+		for (String junctionId : SimController.getMainsimcon().getJunctionIDList()) {
+			new WorldJunction(
+					world,
+					worldStaticRenderTarget,
+					"WorldJunction",
+					Color.WHITE,
+					junctionId
+			);
 		}
 
-
 		for (SumoRoad sumoRoad : SumoRoad.getAllroads()) {
-			new WorldRoad(
+			/*new WorldRoad(
 					world,
 					worldStaticRenderTarget,
 					"WorldRoad" + sumoRoad.getEdgeID(),
 					Color.WHITE,
 					sumoRoad
-			);
+			);*/
+			for (String laneId : sumoRoad.getLaneIDs())
+			{
+				List<Vector2D> list = Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(laneId));
+				for (Vector2D subPoint : list) {
+					if (list.indexOf(subPoint) > 0) {
+						new WorldRoad(
+								world,
+								worldStaticRenderTarget,
+								"SubPoint",
+								Color.WHITE,
+								list.get(list.indexOf(subPoint) -1),
+								subPoint,
+								SimController.getMainsimcon().getLaneWidth(laneId)/2
+						);
+					}
+				}
+			}
 		}
 
         SumoStringList tls = SimController.getMainsimcon().getTrafficLightsIDList();
