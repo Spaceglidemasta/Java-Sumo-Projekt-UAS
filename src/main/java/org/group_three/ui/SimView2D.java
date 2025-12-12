@@ -1,22 +1,21 @@
 package org.group_three.ui;
 
-import de.tudresden.sumo.cmd.Trafficlight;
-import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
+import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.model.SumoRoad;
+import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.controllers.BodyController;
 import org.group_three.ui.world.*;
-import org.group_three.api.SimController;
+import org.group_three.utils.TLStopLine;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -107,7 +106,7 @@ public class SimView2D {
 
 
 		//rendering Junctions
-		for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
+		/*for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
 			Vector2D jidV = new Vector2D(SimController.getMainsimcon().getJunctionPos(jid).x, SimController.getMainsimcon().getJunctionPos(jid).y);
 			boolean firstIteration = jid.equals(SimController.getMainsimcon().getJunctionIDList().getFirst());
 
@@ -124,35 +123,76 @@ public class SimView2D {
 					world,
 					worldStaticRenderTarget,
 					"WorldPoint_" + jid,
-					Color.RED
+					Color.RED,
+					8
 			).setPosition(jidV);
 			//Debug.print(SimController.getMainsimcon().getJunctionPos(jid));
+		}*/
+
+		WPolygon.loadAllPolys();
+
+
+
+		for ( WPolygon poly : WPolygon.getAllPolys()) {
+			new WorldPoly(
+					world,
+					worldStaticRenderTarget,
+					"WorldPoly",
+					poly
+			);
 		}
 
 
+		for (String junctionId : SimController.getMainsimcon().getJunctionIDList()) {
+			new WorldJunction(
+					world,
+					worldStaticRenderTarget,
+					"WorldJunction",
+					UI.roadColor,
+					junctionId
+			);
+		}
+
 		for (SumoRoad sumoRoad : SumoRoad.getAllroads()) {
-			new WorldRoad(
+			/*new WorldRoad(
 					world,
 					worldStaticRenderTarget,
 					"WorldRoad" + sumoRoad.getEdgeID(),
 					Color.WHITE,
 					sumoRoad
-			);
+			);*/
+			for (String laneId : sumoRoad.getLaneIDs())
+			{
+				List<Vector2D> list = Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(laneId));
+				for (Vector2D subPoint : list) {
+					if (list.indexOf(subPoint) > 0) {
+						new WorldRoad(
+								world,
+								worldStaticRenderTarget,
+								"SubPoint",
+								UI.roadColor,
+								list.get(list.indexOf(subPoint) -1),
+								subPoint,
+								SimController.getMainsimcon().getLaneWidth(laneId)/2
+						);
+					}
+				}
+			}
 		}
 
         SumoStringList tls = SimController.getMainsimcon().getTrafficLightsIDList();
 
         for(String tl: tls){
             WTrafficLight wtl = new WTrafficLight(tl);
-            List<SumoPosition2D> stopLinePoints = wtl.getStopLinePoint(tl);
-            if (stopLinePoints != null) {
-                List<Vector2D> uiPoints = Meth.convertSumoCoords(new LinkedList<>(stopLinePoints));
-                for (Vector2D uiPos : uiPoints) {
-                    Debug.print("Drawing rectangle at: " + uiPos.x + ", " + uiPos.y);
-                    new WorldTrafficLight(world,
+            List<TLStopLine> laneDataList = wtl.getStopLineData(tl);
+            if (laneDataList != null) {
+                for (TLStopLine data : laneDataList) {
+                        Debug.print(data.laneID);
+                        new WorldTrafficLight(world,
                             worldStaticRenderTarget,
                             "WorldTrafficLight", wtl
-                    ).setPosition(uiPos);
+                                ,laneDataList.indexOf(data)
+                    );
                 }
             }
         }
