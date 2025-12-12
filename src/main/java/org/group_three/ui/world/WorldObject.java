@@ -529,6 +529,25 @@ public class WorldObject {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++#####++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
+	 * A method to convert a shape, with absolute world coordinates,
+	 * to a shape with to its own base relative coordinates.
+	 *
+	 * @param absoluteShape The absolute shape positions from SUMO.
+	 * @return The relative shape positions.
+	 * @author Joel
+	 */
+	public List<Vector2D> getRelativeShape(List<Vector2D> absoluteShape) {
+		List<Vector2D> relativeShape = new ArrayList<>();
+
+		// get the relativ position of the shape point to its base and add it to the return list
+		for (Vector2D point : absoluteShape) {
+			relativeShape.add(Meth.getRelativeLocation(getPosition(), 0, point));
+		}
+
+		return relativeShape;
+	}
+
+	/**
 	 * @return
 	 * @author Joel
 	 */

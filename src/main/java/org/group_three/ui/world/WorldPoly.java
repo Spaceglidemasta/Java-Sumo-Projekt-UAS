@@ -82,25 +82,6 @@ public class WorldPoly extends WorldObject {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * A method to convert a shape, with absolute world coordinates,
-	 * to a shape with to its own base relative coordinates.
-	 *
-	 * @param absoluteShape The absolute shape positions from SUMO.
-	 * @return The relative shape positions.
-	 * @author Joel
-	 */
-	private List<Vector2D> getRelativeShape(List<Vector2D> absoluteShape) {
-		List<Vector2D> relativeShape = new ArrayList<>();
-
-		// get the relativ position of the shape point to its base and add it to the return list
-		for (Vector2D point : shape) {
-			relativeShape.add(Meth.getRelativeLocation(getPosition(), 0, point));
-		}
-
-		return relativeShape;
-	}
-
-	/**
 	 * The update method which is used to draw the WorldPoly in the world.
 	 *
 	 * @author Joel

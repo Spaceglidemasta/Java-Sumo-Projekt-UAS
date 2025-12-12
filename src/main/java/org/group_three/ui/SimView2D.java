@@ -83,6 +83,11 @@ public class SimView2D {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	/**
+	 * COMMENT!
+	 *
+	 * @author Joel
+	 */
 	public static void newWorld() {
 		world = new World();
 
@@ -108,7 +113,7 @@ public class SimView2D {
 
 		// TODO: following out-commented code is kinda important, but the junction adding logic itself can be nuked
 		//rendering Junctions
-		/*for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
+		for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
 			Vector2D jidV = new Vector2D(SimController.getMainsimcon().getJunctionPos(jid).x, SimController.getMainsimcon().getJunctionPos(jid).y);
 			boolean firstIteration = jid.equals(SimController.getMainsimcon().getJunctionIDList().getFirst());
 
@@ -121,15 +126,15 @@ public class SimView2D {
 			if (rnWidth.y < jidV.y || firstIteration)
 				rnWidth.y = jidV.y;
 
-			new WorldPoint(
+			/*new WorldPoint(
 					world,
 					worldStaticRenderTarget,
 					"WorldPoint_" + jid,
 					Color.RED,
 					8
-			).setPosition(jidV);
+			).setPosition(jidV);*/
 			//Debug.print(SimController.getMainsimcon().getJunctionPos(jid));
-		}*/
+		}
 		//Debug.print(rnHeight + " --- " + rnWidth);
 
 
@@ -293,6 +298,11 @@ public class SimView2D {
 		}
 	}
 
+	/**
+	 * A method to tell the renderer to update.
+	 *
+	 * @author Joel
+	 */
 	public static void update() {
 		updateVehicles(worldStaticRenderTarget);
 
