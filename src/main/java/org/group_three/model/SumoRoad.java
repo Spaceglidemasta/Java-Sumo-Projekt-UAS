@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Simple class for storing a "road"<br>
+ * <h1>Sumo Road</h1>
+ * <s>Simple</s> class for storing a "road"<br>
  * => A connection between 2 junctions
  * @author Luca
  * */
@@ -97,6 +98,7 @@ public class SumoRoad {
     }
 
     /**
+     * <h2>loadRoads</h2>
      * loads all Edges in a given network file into a SumoRoad. <br>
      * This has the contents "from", "to" and "edgeID". This gets stored in
      * the static variable "allroads" (List< SumoRoads >). You may retrieve this

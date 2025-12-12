@@ -4,8 +4,10 @@ import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.SumoRoad;
+import org.group_three.model.WPolygon;
 import org.group_three.utils.PathUtils;
 
+import java.awt.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -113,8 +115,11 @@ public class FakeInteractions {
         //set selected simulation as the main, global / static simulation.
         simcon.setMainstc(true);
 
+        WPolygon.loadAllPolys();
+
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
+
 
         //Statistics.exportState(PathUtils.outputgen());
 
