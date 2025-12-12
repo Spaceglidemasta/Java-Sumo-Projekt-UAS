@@ -120,7 +120,7 @@ public class SimView2D {
 					"WorldPoint_" + jid,
 					Color.RED
 			).setPosition(jidV);
-			Debug.print(SimController.getMainsimcon().getJunctionPos(jid));
+			//Debug.print(SimController.getMainsimcon().getJunctionPos(jid));
 		}
 
 
@@ -159,7 +159,7 @@ public class SimView2D {
 		}
 
 
-		Debug.print(world.getWorldOffset());
+		//Debug.print(world.getWorldOffset());
 	}
 
 	public static void update() {

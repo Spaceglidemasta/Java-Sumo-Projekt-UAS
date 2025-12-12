@@ -1,23 +1,28 @@
 package org.group_three.utils;
 
-import org.group_three.debug.exceptions.InvalidFilesSelected;
+import org.group_three.api.SimController;
 import org.group_three.debug.exceptions.SumoCfgParsingError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class PathUtils {
     private PathUtils(){}
 
 
-    public static File getNetfromSConfig(File scfg) throws Exception {
+    /**
+     * Reads out the relative path / filename of the network file via XML parsing the .sumocfg file.
+     * @param scfg The location of the .sumocfg file
+     * @return The location of the network file as File, or null if failed.
+     * @author Luca
+     * */
+    public static File getNetFromSCFG(File scfg) throws Exception {
 
         NodeList nets;
 
@@ -40,7 +45,66 @@ public class PathUtils {
 
         String netpathstr =  netelement.getAttribute("value");
 
+        if(netpathstr.isEmpty()) return null;
+
         return new File(parent, netpathstr);
+    }
+
+
+
+    /**
+     * Reads out the relative path / filename of the route file via XML parsing the .sumocfg file.
+     * @param scfg The location of the .sumocfg file
+     * @return The location of the route file as File, or null if failed.
+     * @author Luca
+     * */
+    public static File getRouFromSCFG(File scfg) throws Exception {
+
+        NodeList routes;
+
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder(); //this may throw
+        Document doc = dBuilder.parse(scfg); //this too
+
+        doc.getDocumentElement().normalize();
+
+        routes = doc.getElementsByTagName("route-file");
+
+
+        if(routes.getLength() == 0){
+            throw new SumoCfgParsingError("No network value found in SumoConfig");
+        }
+
+        String parent = scfg.getParent();
+
+        Element routeelement = (Element) routes.item(0);
+
+        String routepathstr =  routeelement.getAttribute("value");
+
+        if(routepathstr.isEmpty()) return null;
+
+        return new File(parent, routepathstr);
+    }
+
+    /**
+     * A method to convert an absolute path to a relative path based on the SumoConfig path.
+     * <br>
+     * AI was used for help on the path conversion.
+     *
+     * @param absolutePath The absolute path which should be converted to a relative path.
+     * @return The relative path which was created.
+     * @author Joel
+     */
+    public static String getRelativePath(String absolutePath) {
+        // get SumoConfig path
+        Path sumoConfigPath = Paths.get(new File(SimController.getSumoLoc(), "SumoConfig").getPath());
+
+        // create and return a relative path based on the SumoConfig path
+        return sumoConfigPath.relativize(Paths.get(absolutePath)).toString();
+
+        // Used AI code part explanations
+        // Paths.get(String)        <-- converts a string to a Path
+        // path0.relativize(path1)  <--returns the relative path of path1 relative to path0
     }
 
     /**
