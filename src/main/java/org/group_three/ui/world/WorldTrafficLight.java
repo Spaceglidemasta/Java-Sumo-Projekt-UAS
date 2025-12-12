@@ -25,6 +25,10 @@ public class WorldTrafficLight extends WorldObject {
 
     //--------------------------------------------------MemberVariables--------------------------------------------------
     public Vector2D rechteck = new Vector2D(5,10);
+    private WTrafficLight wtl;
+    private Vector2D position;
+    private double rotation;
+    private Vector2D size;
     //++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -37,7 +41,8 @@ public class WorldTrafficLight extends WorldObject {
 
     public WorldTrafficLight(World world, Canvas canvas, String displayName, WTrafficLight trafficLight) {
         super(world, canvas, displayName);
-        WTrafficLight wtl = trafficLight;
+        this.wtl = trafficLight;
+        initGeometry(wtl.getID());
     }
     //--------------------------------------------------Constructors--------------------------------------------------
 
@@ -63,9 +68,36 @@ public class WorldTrafficLight extends WorldObject {
      *
      * @author Joel
      */
+
+    private void initGeometry(String tlId) {
+        // last point = position
+        List<SumoPosition2D> lastPoints = wtl.getStopLinePoint(tlId);
+        List<SumoPosition2D> secondPoints = wtl.getSecondToLast(tlId);
+
+        if (lastPoints != null && !lastPoints.isEmpty() &&
+                secondPoints != null && !secondPoints.isEmpty()) {
+
+            SumoPosition2D last = lastPoints.get(0);
+            SumoPosition2D second = secondPoints.get(0);
+
+            Vector2D pLast = Meth.convertSumoCoords(new LinkedList<>(List.of(last))).get(0);
+            Vector2D pSecond = Meth.convertSumoCoords(new LinkedList<>(List.of(second))).get(0);
+
+            this.position = pLast;
+            setPosition(position);
+            // rotation from vector
+            Vector2D dir = pLast.sub(pSecond);
+            this.rotation = Math.toDegrees(Math.atan2(dir.y, dir.x));
+            setRotation(rotation);
+            // size from lane width
+            //double laneWidth = SimController.getMainsimcon().getLaneWidth();
+            //this.size = new Vector2D(laneWidth / 2.0, 3);
+        }
+    }
+
     @Override
     public void update() {
         super.update();
-        drawRectangle(rechteck, Color.AQUA);
+            drawRectangle(rechteck, Color.AQUA);
     }
 }

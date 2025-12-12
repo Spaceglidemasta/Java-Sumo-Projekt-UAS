@@ -152,7 +152,7 @@ public class SimView2D {
                     new WorldTrafficLight(world,
                             worldStaticRenderTarget,
                             "WorldTrafficLight", wtl
-                    ).setPosition(uiPos);
+                    );
                 }
             }
         }

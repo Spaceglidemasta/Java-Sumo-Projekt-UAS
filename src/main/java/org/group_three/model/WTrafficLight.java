@@ -21,6 +21,7 @@ public class WTrafficLight {
 
 
     private List<SumoPosition2D>  pos;
+    private List<SumoPosition2D>  secondtolastpos;
     private int phaseState;
     private String phaseName;
     private double phaseDuration;
@@ -46,9 +47,14 @@ public class WTrafficLight {
         return phaseState;
     }
 
-    public List<SumoPosition2D>  getPos() {
+    public List<SumoPosition2D> getPos() {
         return pos;
     }
+
+    public List<SumoPosition2D> getSecondtolastpos() {
+        return secondtolastpos;
+    }
+
 
     public String getPhaseName() {
         return phaseName;
@@ -111,6 +117,8 @@ public class WTrafficLight {
 
         this.pos = getStopLinePoint(trafficLightID);
 
+        this.secondtolastpos = getSecondToLast(trafficLightID);
+
         this.phaseState = (int) simcon.jobget(Trafficlight.getPhase(trafficLightID));
 
         this.phaseName = (String) simcon.jobget(Trafficlight.getPhaseName(trafficLightID));
@@ -131,17 +139,12 @@ public class WTrafficLight {
             String edgeShape = simcon.getLaneShape(laneID).toString();
             String[] coordinates = edgeShape.split(" ");
 
-//            String secondToLastCoordinate = coordinates[coordinates.length - 2];
             String lastCoordinate = coordinates[coordinates.length - 1];
-//            String[] secondToLastCoord = secondToLastCoordinate.split(",");
             String[] lastCoord = lastCoordinate.split(",");
 
-//            double x1 = Double.parseDouble(secondToLastCoord[0]);
-//            double y1 = Double.parseDouble(secondToLastCoord[1]);
             double x = Double.parseDouble(lastCoord[0].replaceAll("[^0-9.-]", ""));
             double y = Double.parseDouble(lastCoord[1].replaceAll("[^0-9.-]", ""));
 
-            //SumoPosition2D point2 = new SumoPosition2D(x2, y2);
 
             SumoPosition2D point = new SumoPosition2D(x, y);
             laneStopLines.add(point);
@@ -149,4 +152,26 @@ public class WTrafficLight {
         }
         return laneStopLines;
     }
+
+    public List<SumoPosition2D> getSecondToLast(String TLID) {
+        List<SumoPosition2D> laneStopLines = new ArrayList<>();
+        SumoStringList linkedLanes = simcon.getControlledLanes(TLID);
+
+        for (String laneID : linkedLanes) {
+            String edgeShape = simcon.getLaneShape(laneID).toString();
+            String[] coordinates = edgeShape.split(" ");
+
+            String secondToLastCoordinate = coordinates[coordinates.length - 2];
+            String[] secondToLastCoord = secondToLastCoordinate.split(",");
+
+            double x = Double.parseDouble(secondToLastCoord[0].replaceAll("[^0-9.-]", ""));
+            double y = Double.parseDouble(secondToLastCoord[1].replaceAll("[^0-9.-]", ""));
+
+            SumoPosition2D point = new SumoPosition2D(x, y);
+            laneStopLines.add(point);
+            Debug.print("Lane " + laneID + " second to last point: " + x + "," + y);
+        }
+        return laneStopLines;
+    }
+
 }
