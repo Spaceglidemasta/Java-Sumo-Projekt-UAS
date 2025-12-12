@@ -124,7 +124,67 @@ public class WVehicle {
      * */
     public double getSpeed() {return speed;}
 
-    /**
+
+    /**TraaS: "Returns the maximum speed(in m/s) of the named vehicle."
+     * @return the MaxSpeed as double, or -1 if failed
+     * @author Luca
+     * */
+    public double getMaxSpeed() {
+        try {
+            return (double) stc.do_job_get(Vehicle.getMaxSpeed(vehID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1.0d;
+        }
+    }
+
+    /**TraaS: "Returns the standard deviation of the estimated maximum speed (see speed factor) divided by this speed."
+     * @return the Speed Deviation as double, or -1 if failed
+     * @author Luca
+     * */
+    public double getSpeedDeviation() {
+        try {
+            return (double) stc.do_job_get(Vehicle.getSpeedDeviation(vehID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1.0d;
+        }
+    }
+
+    /**TraaS: "Returns the factor by which the driver multiplies the speed read from street signs to estimate "real" maximum allowed speed."
+     * @return the Speed Factor as double, or -1 if failed
+     * @author Luca
+     * */
+    public double getSpeedFactor() {
+        try {
+            return (double) stc.do_job_get(Vehicle.getSpeedFactor(vehID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1.0d;
+        }
+    }
+
+
+    /**TraaS: "Returns the maximum allowed speed on the current lane regarding speed factor in m/s for this vehicle."
+     * @return the Allowed Speed as double, or -1 if failed
+     * @author Luca
+     * */
+    public double getAllowedSpeed() {
+        try {
+            return (double) stc.do_job_get(Vehicle.getAllowedSpeed(vehID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1.0d;
+        }
+    }
+
+
+
+    /**TraaS: "Sets the speed (in m/s) of the named vehicle."
      * @param v Geschwindigkeit in m/s
      * @return <code>true</code> if successfull, <code>false</code> if failed
      * @author Luca
@@ -132,6 +192,55 @@ public class WVehicle {
     public boolean setSpeed(double v) {
         try {
             stc.do_job_set(Vehicle.setSpeed(vehID, v));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**TraaS: "Sets the maximum speed (in m/s) of the named vehicle."
+     * @param v Geschwindigkeit in m/s
+     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @author Luca
+     * */
+    public boolean setMaxSpeed(double v) {
+        try {
+            stc.do_job_set(Vehicle.setMaxSpeed(vehID, v));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**TraaS: "Sets the standard deviation of the estimated maximum speed."
+     * @param v Geschwindigkeit in m/s
+     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @author Luca
+     * */
+    public boolean setSpeedDeviation(double v) {
+        try {
+            stc.do_job_set(Vehicle.setSpeedDeviation(vehID, v));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**TraaS: "
+     Sets the factor by which the driver multiplies the speed read from street signs to estimate "real" maximum allowed speed."
+     * @param v Geschwindigkeit in m/s
+     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @author Luca
+     * */
+    public boolean setSpeedFactor(double v) {
+        try {
+            stc.do_job_set(Vehicle.setSpeedFactor(vehID, v));
             return true;
         }
         catch (Exception e){
@@ -149,11 +258,12 @@ public class WVehicle {
     public boolean remove(byte reason){
         try {
             stc.do_job_set(Vehicle.remove(vehID, reason));
+            return true;
         }
         catch (Exception _){
             return false;
         }
-        return true;
+
     }
 
     /**
@@ -255,6 +365,24 @@ public class WVehicle {
     public boolean moveTo(String LID, double pos){
         try {
             stc.do_job_set(Vehicle.moveTo(vehID,LID, pos));
+        }
+        catch (Exception _){
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Move the Vehicle to a new Position.
+     * @param LID Lane ID
+     * @param pos The position of the Vehicle relative to the lane. I Assume this m from start of the lane.
+     * @return <code>true</code> if successfull, <code>false</code> if not
+     * @author Luca
+     * */
+    public boolean changeLane(byte laneIndex, double duration){
+        try {
+            stc.do_job_set(Vehicle.changeLane(vehID, laneIndex, duration));
         }
         catch (Exception _){
             return false;
