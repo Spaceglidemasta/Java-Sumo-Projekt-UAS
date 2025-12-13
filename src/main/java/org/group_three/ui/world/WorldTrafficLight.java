@@ -1,25 +1,16 @@
 package org.group_three.ui.world;
 
-import de.tudresden.sumo.objects.SumoPosition2D;
-import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import org.group_three.api.SimController;
-import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
+import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
-import org.group_three.model.WVehicle;
-import org.group_three.ui.ColoredIconManager;
-import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.utils.Sumo2DLine;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
- * @author Leon
+ * The class to render TrafficLights.
+ *
+ * @author Joel
  */
 public class WorldTrafficLight extends WorldObject {
 //++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -28,6 +19,8 @@ public class WorldTrafficLight extends WorldObject {
     //--------------------------------------------------MemberVariables--------------------------------------------------
 
     private WTrafficLight wtl;
+	private WLink wL;
+	private Vector2D size = new Vector2D();
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -39,10 +32,27 @@ public class WorldTrafficLight extends WorldObject {
     }
 
 
-    public WorldTrafficLight(World world, Canvas canvas, String displayName, WTrafficLight trafficLight, int index) {
+	/**
+	 * @param world A
+	 * @param canvas A
+	 * @param displayName A
+	 * @param wTrafficLight A
+	 * @param wLink A
+	 * @author Joel
+	 */
+    public WorldTrafficLight(World world, Canvas canvas, String displayName, WTrafficLight wTrafficLight, WLink wLink) {
         super(world, canvas, displayName);
-        this.wtl = trafficLight;
+        this.wtl = wTrafficLight;
+		this.wL = wLink;
 
+		setPosition(wL.mid);
+		setRotation(wL.angle);
+		size = new Vector2D(wL.getLen(), wL.getWidth());
+
+		setInteractable(true);
+		setUseBoxCollision(true);
+		setBoxCollision(size.div(2));
+		detailClassPath = "";
     }
     //--------------------------------------------------Constructors--------------------------------------------------
 
@@ -64,7 +74,7 @@ public class WorldTrafficLight extends WorldObject {
     //++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
 
     /**
-     * The update method which is used to draw the WorldPoint in the world.
+     * The update method which is used to draw the WorldTrafficLight in the world.
      *
      * @author Joel
      */
@@ -72,5 +82,7 @@ public class WorldTrafficLight extends WorldObject {
     public void update() {
         super.update();
 
+		//drawSphere(2,Color.RED);
+		drawRectangle(size.div(2), Color.ALICEBLUE);
     }
 }

@@ -155,6 +155,8 @@ public class WorldVehicle extends WorldObject {
 
 		setRotation(360 - wVehicle.getAngle() + 90);
 
+		//wVehicle.boogieWonderland();
+
 		drawImage(imageSize.div(2), visualImage);
 	}
 
