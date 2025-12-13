@@ -7,6 +7,7 @@ import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
+import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
 import java.util.ArrayList;
@@ -199,11 +200,12 @@ public class WTrafficLight {
                 Vector2D last = new Vector2D(shape.getLast());
                 Vector2D stlast = new Vector2D(shape.get(shape.size() - 2));
 
-                Vector2D mid = last.add(stlast).div(2);
+	            double angle = last.getDirectionAngle(stlast);
+
+                Vector2D mid = Meth.addRelativeLocation(last, angle, new Vector2D(-5,0));//last.add(stlast).div(2);
 
                 double width = msc.getLaneWidth(LID);
-                double len = mid.length();
-                double angle = last.getDirectionAngle(stlast);
+                double len = Meth.getRelativeLocation(last, angle ,mid).length();//mid.length();
 
                 WLink wlink = new WLink(mid, width, len, angle, LID);
 

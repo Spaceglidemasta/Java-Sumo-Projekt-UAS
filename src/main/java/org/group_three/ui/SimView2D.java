@@ -5,9 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
-import org.group_three.model.WEdge;
-import org.group_three.model.WPolygon;
-import org.group_three.model.WVehicle;
+import org.group_three.model.*;
 import org.group_three.ui.controllers.BodyController;
 import org.group_three.ui.world.*;
 
@@ -296,7 +294,17 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addTrafficLights(Canvas renderLayer) {
-
+		for (WTrafficLight wTrafficLight : WTrafficLight.getAllWTLs()) {
+			for (WLink wLink : wTrafficLight.getAllWlinks()) {
+				new WorldTrafficLight(
+						world,
+						renderLayer,
+						"WorldTrafficLight",
+						wTrafficLight,
+						wLink
+				);
+			}
+		}
 	}
 
 	/**
