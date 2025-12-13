@@ -23,7 +23,6 @@ public class WorldRoad extends WorldObject {
 	Vector2D from;
 	Vector2D to;
 	Vector2D size;
-	public String id = "";
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -89,7 +88,6 @@ public class WorldRoad extends WorldObject {
 	public WorldRoad(World world, Canvas canvas, String displayName, Color color, Vector2D start, Vector2D end, double width) {
 		super(world, canvas, displayName);
 		this.color = color;
-		this.id = id;
 
 		detailClassPath = "/org/group_three/ui/fxml/RoadDetails.fxml";
 
@@ -110,7 +108,7 @@ public class WorldRoad extends WorldObject {
 
 		setInteractable(true);
 		setUseBoxCollision(true);
-		setBoxCollision(size);
+		setBoxCollision(size.add(new Vector2D(5,5)));
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------

@@ -10,8 +10,11 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.zip.GZIPInputStream;
 
 public class PathUtils {
     private PathUtils(){}
@@ -29,7 +32,20 @@ public class PathUtils {
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder(); //this may throw
-        Document doc = dBuilder.parse(scfg); //this too
+
+        Document doc;
+
+        //tests if the .sumocfg file is zipped into .gz
+        //this was originally intended for the zipped network file, but i accidentally also implemented it here.
+        if (scfg.getName().endsWith(".gz")) {
+            try (InputStream fis = new FileInputStream(scfg);
+                 InputStream gis = new GZIPInputStream(fis)) {
+
+                doc = dBuilder.parse(gis);
+            }
+        } else {
+            doc = dBuilder.parse(scfg);
+        }
 
         doc.getDocumentElement().normalize();
 

@@ -651,7 +651,7 @@ public class SimController {
      * @return returns the data as Sumo2DLine
      * @author Leon
      * */
-    public List<TLStopLine> getStopLineVector(String TLID){
+    public List<Sumo2DLine> getStopLineVector(String TLID){
         List<TLStopLine> laneStopLines  = new ArrayList<>();
         try {
             SumoStringList linkedLanes = getControlledLanes(TLID);
@@ -679,8 +679,8 @@ public class SimController {
      * @return returns the data as Sumo2DLine.
      * @author Leon
      * */
-    public List<TLStopLine> stopLineCalculation(List<TLStopLine> stopLinePositions) {
-        List<TLStopLine> stopLinePoints = new ArrayList<>();
+    public List<Sumo2DLine> stopLineCalculation(List<TLStopLine> stopLinePositions) {
+        List<Sumo2DLine> stopLinePoints = new ArrayList<>();
 
         // Iterate (second-to-last, last)
         for (TLStopLine laneData : stopLinePositions) {
@@ -715,10 +715,10 @@ public class SimController {
             SumoPosition2D leftPoint = new SumoPosition2D(xLeft, yLeft);
             SumoPosition2D rightPoint = new SumoPosition2D(xRight, yRight);
 
-            TLStopLine enriched = new TLStopLine(laneData.laneID, leftPoint, rightPoint);
-            stopLinePoints.add(enriched);
+            Sumo2DLine stopLine = new Sumo2DLine(leftPoint, rightPoint);
+            stopLinePoints.add(stopLine);
 
-            //Debug.print("Lane " + laneData.laneID + " stop line: " + leftPoint + rightPoint);
+            //Debug.print("Lane " + laneData.laneID + " stop line: " + stopLine);
         }
 
         return stopLinePoints;

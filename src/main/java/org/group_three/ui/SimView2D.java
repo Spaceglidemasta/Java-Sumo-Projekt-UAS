@@ -81,11 +81,6 @@ public class SimView2D {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	/**
-	 * COMMENT!
-	 *
-	 * @author Joel
-	 */
 	public static void newWorld() {
 		world = new World();
 
@@ -101,7 +96,6 @@ public class SimView2D {
 		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth() / 2, worldStaticRenderTarget.getHeight() / 2));
 
 
-		// skip if simulation is null
 		if (SimController.getMainsimcon() == null) return;
 
 
@@ -109,9 +103,8 @@ public class SimView2D {
 		Vector2D rnWidth = new Vector2D();
 
 
-		// TODO: following out-commented code is kinda important, but the junction adding logic itself can be nuked
 		//rendering Junctions
-		for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
+		/*for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
 			Vector2D jidV = new Vector2D(SimController.getMainsimcon().getJunctionPos(jid).x, SimController.getMainsimcon().getJunctionPos(jid).y);
 			boolean firstIteration = jid.equals(SimController.getMainsimcon().getJunctionIDList().getFirst());
 
@@ -124,119 +117,66 @@ public class SimView2D {
 			if (rnWidth.y < jidV.y || firstIteration)
 				rnWidth.y = jidV.y;
 
-			/*new WorldPoint(
+			new WorldPoint(
 					world,
 					worldStaticRenderTarget,
 					"WorldPoint_" + jid,
 					Color.RED,
 					8
-			).setPosition(jidV);*/
+			).setPosition(jidV);
 			//Debug.print(SimController.getMainsimcon().getJunctionPos(jid));
-		}
-		//Debug.print(rnHeight + " --- " + rnWidth);
+		}*/
+
+		WPolygon.loadAllPolys();
 
 
 
-		addPolygons(worldStaticRenderTarget);
-		addJunctions(worldStaticRenderTarget);
-		addRoads(worldStaticRenderTarget);
-
-
-		// TODO:    move all the traffic light adding code here to its own function,
-		//          as it is above for example with the addRoads function
-		//          @Leon
-        SumoStringList tls = SimController.getMainsimcon().getTrafficLightsIDList();
-
-        for(String tl: tls){
-            WTrafficLight wtl = new WTrafficLight(tl);
-            List<TLStopLine> laneDataList = wtl.getStopLineData(tl);
-            if (laneDataList != null) {
-                for (TLStopLine data : laneDataList) {
-                        Debug.print(data.laneID);
-                        new WorldTrafficLight(world,
-                            worldStaticRenderTarget,
-                            "WorldTrafficLight", wtl
-                                ,laneDataList.indexOf(data)
-                    );
-                }
-            }
-        }
-		// TODO:    ----------------------------------------------------------------
-
-		addVehicles(worldStaticRenderTarget);
-
-
-		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128, 128)));
-		world.setViewerPosition(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
-		world.setWorldOffset(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)));
-	}
-
-	/**
-	 * A method to add all SUMO polygons to the world.
-	 *
-	 * @param renderLayer The render layer to which the object should be added.
-	 * @author Joel
-	 */
-	private static void addPolygons(Canvas renderLayer) {
-		// add all polys to world
 		for ( WPolygon poly : WPolygon.getAllPolys()) {
 			new WorldPoly(
 					world,
-					renderLayer,
+					worldStaticRenderTarget,
+					"WorldPoly",
 					poly
 			);
 		}
-	}
 
-	/**
-	 * A method to add all SUMO junctions to the world.
-	 *
-	 * @param renderLayer The render layer to which the object should be added.
-	 * @author Joel
-	 */
-	private static void addJunctions(Canvas renderLayer) {
+
 		for (String junctionId : SimController.getMainsimcon().getJunctionIDList()) {
 			new WorldJunction(
 					world,
-					renderLayer,
+					worldStaticRenderTarget,
 					"WorldJunction",
+					UI.roadColor,
 					junctionId
 			);
 		}
-	}
 
-	/**
-	 * A method to add all SUMO roads to the world.
-	 *
-	 * @param renderLayer The render layer to which the object should be added.
-	 * @author Joel
-	 */
-	private static void addRoads(Canvas renderLayer) {
-		// loop through all roads
-		for (SumoRoad sumoRoad : SumoRoad.getAllroads()) {
-			// loop through all lanes
-			for (String laneId : sumoRoad.getLaneIDs()) {
-				// create lane sub point list
+		for (WEdge wEdge : WEdge.getAllroads()) {
+			/*new WorldRoad(
+					world,
+					worldStaticRenderTarget,
+					"WorldRoad" + wEdge.getEdgeID(),
+					Color.WHITE,
+					wEdge
+			);*/
+			for (String laneId : wEdge.getLaneIDs())
+			{
 				List<Vector2D> list = Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(laneId));
-
-				// loop through all lane sub points
 				for (Vector2D subPoint : list) {
 					if (list.indexOf(subPoint) > 0) {
 						new WorldRoad(
 								world,
-								renderLayer,
-								"WorldRoad",
+								worldStaticRenderTarget,
+								"SubPoint",
 								UI.roadColor,
 								list.get(list.indexOf(subPoint) -1),
 								subPoint,
-								SimController.getMainsimcon().getLaneWidth(laneId)/2,
-								laneId + " (" + (list.indexOf(subPoint) -1) + ")"
+								SimController.getMainsimcon().getLaneWidth(laneId)/2
 						);
 					}
 				}
 			}
 		}
-	}
 
         SumoStringList tls = SimController.getMainsimcon().getTLIDList();
 
@@ -268,21 +208,18 @@ public class SimView2D {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainsimcon().getStc());
 			WorldVehicle worldVehicle = new WorldVehicle(
 					world,
-					renderLayer,
+					worldStaticRenderTarget,
 					"Object TestCarSim"
 			);
 			worldVehicle.setwVehicle(wVehicle);
 			vehicleIds.add(id);
 		}
+
+
+		//Debug.print(world.getWorldOffset());
 	}
 
-	/**
-	 * A method to add and update all SUMO vehicles in the world.
-	 *
-	 * @param renderLayer The render layer to which the object to update is.
-	 * @author Joel
-	 */
-	private static void updateVehicles(Canvas renderLayer) {
+	public static void update() {
 		List<String> currentVehicleList = SimController.getMainsimcon().getVehicleIDList();
 		List<WorldObject> removeVehicleList = new ArrayList<>();
 
@@ -304,21 +241,12 @@ public class SimView2D {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainsimcon().getStc());
 			WorldVehicle worldVehicle = new WorldVehicle(
 					world,
-					renderLayer,
+					worldStaticRenderTarget,
 					"Object TestCarSim"
 			);
 			worldVehicle.setwVehicle(wVehicle);
 			vehicleIds.add(id);
 		}
-	}
-
-	/**
-	 * A method to tell the renderer to update.
-	 *
-	 * @author Joel
-	 */
-	public static void update() {
-		updateVehicles(worldStaticRenderTarget);
 
 		world.requestUpdate();
 	}
