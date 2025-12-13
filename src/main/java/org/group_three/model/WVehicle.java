@@ -5,7 +5,9 @@ import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import it.polito.appeal.traci.SumoTraciConnection;
+import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
+import org.group_three.ui.Meth;
 
 /**
  * <h1>WVehicle</h1>
@@ -404,6 +406,58 @@ public class WVehicle {
             return false;
         }
         return true;
+    }
+
+    /**
+     * <h1>Boogie Wonderland - Earth, Wind & Fire, The Emotions</h1>
+     * Dance, Boogie Wonderland, hey, hey <br>
+     * Dance, Boogie Wonderland<br>
+     * Midnight creeps so slowly into hearts of men<br>
+     * Who need more than they get<br>
+     * Daylight deals a bad hand to a woman<br>
+     * Who has laid too many bets<br>
+     * The mirror stares you in the face and says<br>
+     * "Baby, uh, uh, it don't work"<br>
+     * You say your prayers though you don't care<br>
+     * You dance and shake the hat<br>
+     * Dance, Boogie Wonderland, hey, hey<br>
+     * Dance, Boogie Wonderland<br>
+     * Sound fly through the night<br>
+     * I chase my vinyl dreams to Boogie Wonderland<br>
+     * I find romance when I start to dance in Boogie Wonderland<br>
+     * I find romance when I start to dance in Boogie Wonderland<br>
+     * All the love in the world can't be gone<br>
+     * All the need to be loved can't be wrong<br>
+     * All the records are playing and my heart keeps saying<br>
+     * "Boogie Wonderland, Wonderland"<br>
+     * Dance, Boogie Wonderland, hey, hey<br>
+     * Dance, Boogie Wonderland, hey, hey<br>
+     * I find romance when I start to dance in Boogie Wonderland<br>
+     * I find romance when I start to dance in Boogie Wonderland<br>
+     * Dance, dance (Boogie Wonderland), dance, dance<br>
+     * Dance, dance (Boogie Wonderland), dance, dance<br>
+     * Wonderland<br>
+     * Wonderland<br>
+     * All the love in the world can't be gone (love in the world can't be gone)<br>
+     * All the need to be loved can't be wrong (need to be loved can't be wrong)<br>
+     * All the records are playing and my heart keeps saying<br>
+     * Boogie Wonderland, Wonderland<br>
+     * Dance, Boogie Wonderland, hey, hey<br>
+     * Dance, Boogie Wonderland, hey, hey<br>
+     * I find romance when I start to dance in Boogie Wonderland<br>
+     * I find romance when I start to dance in Boogie Wonderland<br>
+     * Dance, dance, dance (Boogie Wonderland), dance, dance, dance, dance<br>
+     * Dance, dance (Boogie Wonderland), dance<br>
+     * */
+    public static void boogieWonderland(){
+        for(String VID : SimController.getMainsimcon().getVehicleIDList()){
+            SimController.getMainsimcon().jobset(Vehicle.setColor(VID, Meth.ClrToSumoClr(new Color(
+                    Math.random(),
+                    Math.random(),
+                    Math.random(),
+                    1
+            ))));
+        }
     }
 
 
