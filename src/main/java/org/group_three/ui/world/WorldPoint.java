@@ -2,6 +2,8 @@ package org.group_three.ui.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
+import org.group_three.ui.Meth;
+import org.group_three.ui.Vector2D;
 
 /**
  * The WorldPoint class is a simple class, which extends the WorldObject class.
@@ -10,26 +12,16 @@ import javafx.scene.paint.Color;
  *
  * @author Joel
  */
-@SuppressWarnings("unused")
 public class WorldPoint extends WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The color of the point which is being drawn.
-	 *
 	 * @author Joel
 	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private final Color color;
-
-	/**
-	 * The radius of the WorldPoint.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private final double radius;
+	private Color color;
+	private double radius;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -53,17 +45,43 @@ public class WorldPoint extends WorldObject {
 	/**
 	 * The default WorldPoint constructor to spawn a new WorldPoint in a world.
 	 *
-	 * @param world  The world to which the WorldPoint should be added.
-	 * @param canvas The canvas of the world.
+	 * @param world       The world to which the WorldPoint should be added.
+	 * @param canvas      The canvas of the world.
+	 * @param displayName The display name which should show up on selection.
 	 * @author Joel
 	 */
-	public WorldPoint(World world, Canvas canvas, Color color, double radius) {
-		super(world, canvas, "WorldPoint");
+	public WorldPoint(World world, Canvas canvas, String displayName, Color color, double radius) {
+		super(world, canvas, displayName);
 		this.color = color;
 		this.radius = radius;
 	}
 
 	//--------------------------------------------------Constructors--------------------------------------------------
+
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The getter methode for the color of the WorldPoint.
+	 * @return The current color of the WorldPoint.
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	//--------------------------------------------------GetterMethods--------------------------------------------------
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The setter method for the color of the WorldPoint.
+	 * @param color The new color of the WorldPoint.
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	//--------------------------------------------------SetterMethods--------------------------------------------------
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++

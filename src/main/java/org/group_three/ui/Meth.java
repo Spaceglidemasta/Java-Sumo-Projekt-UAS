@@ -1,6 +1,7 @@
 package org.group_three.ui;
 
 import de.tudresden.sumo.objects.SumoColor;
+import de.tudresden.sumo.objects.SumoGeometry;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import javafx.scene.paint.Color;
 
@@ -11,33 +12,16 @@ import java.util.List;
 /**
  * Meth, the custom Math class
  *
- * @author Joel, Luca
+ * @author Joel
  */
 public class Meth {
-
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	/**
-	 * Empty private constructor, to avoid construction,
-	 * as the Meth class is a static class.
-	 *
-	 * @author Joel
-	 */
-	private Meth() {
-	}
-
-	//---------------------------------------------------Constructors---------------------------------------------------
-
-
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
-
 	/**
 	 * Just uses linear interpolation to lerp between two vectors.
 	 *
-	 * @param v0   Start value.
-	 * @param v1   End value.
-	 * @param lerp Lerp progress.
-	 * @return The lerped Vector2D.
+	 * @param v0   Param-Comment
+	 * @param v1   Param-Comment
+	 * @param lerp Param-Comment
+	 * @return Return-Comment
 	 * @author Joel
 	 */
 	@SuppressWarnings("unused")
@@ -48,16 +32,15 @@ public class Meth {
 	/**
 	 * Just uses linear interpolation to lerp between two doubles.
 	 *
-	 * @param d0   Start value.
-	 * @param d1   End value.
-	 * @param lerp Lerp progress.
-	 * @return The lerped double.
+	 * @param d0   Param-Comment
+	 * @param d1   Param-Comment
+	 * @param lerp Param-Comment
+	 * @return Return-Comment
 	 * @author Joel
 	 */
 	public static double lerp(double d0, double d1, double lerp) {
 		return d0 + (d1 - d0) * lerp;
 	}
-
 
 	/**
 	 * A method to get the relative location(vector) of two vectors in world (non-relative) space.
@@ -103,7 +86,6 @@ public class Meth {
 		return new Vector2D(x, y).round();
 	}
 
-
 	/**
 	 * basically just does double - double right now, might change
 	 *
@@ -130,7 +112,6 @@ public class Meth {
 	public static double addRelativeRotation(double rotation, double relativeRotation) {
 		return rotation + relativeRotation;
 	}
-
 
 	/**
 	 * Converts SumoColor to JavaFX's Color
@@ -166,7 +147,6 @@ public class Meth {
 		);
 	}
 
-
 	/**
 	 * A method to convert Sumo Coordinates to a list of Vector2D's.
 	 * Can be used to convert a SumoGeometry for example.
@@ -184,7 +164,4 @@ public class Meth {
 
 		return vector2DS;
 	}
-
-	//---------------------------------------------------ClassMethods---------------------------------------------------
-
 }
