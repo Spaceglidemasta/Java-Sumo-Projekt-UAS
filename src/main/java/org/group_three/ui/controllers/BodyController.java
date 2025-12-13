@@ -2,8 +2,6 @@ package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
-//import org.group_three.ui.idkyet.SimulationView2D;
-//import org.group_three.ui.idkyet.SimulationView3D;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import org.group_three.debug.Debug;
@@ -11,63 +9,78 @@ import org.group_three.debug.Debug;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
 import org.group_three.ui.SimView2D;
-import org.group_three.ui.world.WorldObject;
 
 /**
- * basically has no real use yet, is just used as a proxy for the 2d view right now
+ * The body controller class.
+ * Contains the SimulationViews, and sidebar with details panel,... .
  *
  * @author Joel
  */
 public class BodyController {
 
+	/**
+	 * The subscene that will contain the simulation views.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private SubScene subsceneView;
 
+	/**
+	 * The binder of the subscene to scale it with the window when needed.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private Pane binder;
 
+	/**
+	 * The AnchorPane to place the FXML sidebar into.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private AnchorPane detailsAnchor;
 
+	/**
+	 * The same as detailsAnchor,
+	 * but static to be able to access it from anywhere.
+	 *
+	 * @author Joel
+	 * @see #detailsAnchor
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private static AnchorPane detailsPanel;
 
-	//private SimulationView3D sv3d;
-	//private SimulationView2D sv2d;
 
 	/**
-	 * Comment
-	 * Code-Snippet: {@code code}
+	 * The method to initialize the BodyController.
+	 * Gets called after FXML body creation.
 	 *
-	 * @throws IOException Throw-Comment
+	 * @throws IOException The fxml loading might throw an IOException.
 	 * @author Joel
 	 */
 	@FXML
 	public void initialize() throws IOException {
 		detailsPanel = detailsAnchor;
-		Debug.toConsole("Body loaded.");
-		//Debug.toConsole("SubScene: " + subsceneView);
 
-		//sv3d = new SimulationView3D();
-		//sv2d = new SimulationView2D();
-
+		// bind the subscene size to the binder size to always resize it when the window size changes,
+		// by default it always stays the same size even when the parent gets resized
 		subsceneView.widthProperty().bind(binder.widthProperty());
 		subsceneView.heightProperty().bind(binder.heightProperty());
 
-		switch (2) {
-			case 0:
-				//subsceneView.setRoot(sv3d.createView());
-				//subsceneView.setCamera(new PerspectiveCamera());
-				break;
+		// decide which simulation view should be loaded
+		switch (0) {
 
-			case 1:
-				//subsceneView.setRoot(sv2d.createView());
-				break;
-
-			case 2:
+			//noinspection DataFlowIssue
+			case 0: // 2d view
+				// try loading fxml file
 				FXMLLoader loader = new FXMLLoader(
 						getClass().getResource("/org/group_three/ui/fxml/CanvasView.fxml")
 				);
@@ -75,45 +88,50 @@ public class BodyController {
 				Parent root = loader.load();
 				subsceneView.setRoot(root);
 				break;
+
+			case 1: // 3d view
+				//subsceneView.setRoot(sv3d.createView());
+				//subsceneView.setCamera(new PerspectiveCamera());
+				break;
 		}
-
-
 	}
 
+	/**
+	 * A method to create and assign the details panel.
+	 *
+	 * @param fxmlPath The path to the FXML file of the details panel.
+	 * @return The FXMLLoader of the details panel.
+	 * @author Joel
+	 */
 	public static FXMLLoader setDetailsPanel(String fxmlPath) {
+		// try loading fxml file
 		FXMLLoader loader = new FXMLLoader(
 				SimView2D.class.getResource(fxmlPath)
 		);
 
-		Debug.print(loader.getLocation().getPath());
+		//Debug.print(loader.getLocation().getPath());
 
 		Node detailsNode;
 		try {
 			detailsNode = loader.load();
+
+			// set constraints
 			AnchorPane.setLeftAnchor(detailsNode, 0.0);
 			AnchorPane.setRightAnchor(detailsNode, 0.0);
 			AnchorPane.setTopAnchor(detailsNode, 0.0);
 			AnchorPane.setBottomAnchor(detailsNode, 0.0);
-			Debug.print(detailsNode);
-			Debug.print(detailsPanel);
-			Debug.print(detailsPanel.getChildren().size());
+
+			// remove old details panel data and add new panel (from selected param)
 			detailsPanel.getChildren().clear();
-			Debug.print(detailsPanel.getChildren().size());
 			detailsPanel.getChildren().add(detailsNode);
-			Debug.print(detailsPanel.getChildren().size());
+
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null;
 		}
 
 
 		return loader;
 	}
-
-	/*@FXML
-	private void onMouseClicked() {
-		Debug.toConsole("Body -> SubScene");
-		sv3d.onMouseClicked(binder);
-	}*/
 
 }
