@@ -23,6 +23,8 @@ public class VehicleDetailsController {
 	private TextField speed;
 	@FXML
 	private ColorPicker color;
+	@FXML
+	private TextField route;
 
 	private WorldVehicle worldVehicle;
 
@@ -66,6 +68,7 @@ public class VehicleDetailsController {
 	public void update() {
 		speed.setText(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
 		color.setValue(worldVehicle.getColor());
+		route.setText(worldVehicle.getwVehicle().getRouteEdges().toString());
 	}
 
 	/**
@@ -81,5 +84,6 @@ public class VehicleDetailsController {
 		sumoId.setDisable(true);
 		speed.setDisable(true);
 		color.setDisable(true);
+		route.setDisable(true);
 	}
 }
