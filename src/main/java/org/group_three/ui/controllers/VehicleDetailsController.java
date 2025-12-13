@@ -84,5 +84,6 @@ public class VehicleDetailsController {
 		sumoId.setDisable(true);
 		speed.setDisable(true);
 		color.setDisable(true);
+		route.setDisable(true);
 	}
 }

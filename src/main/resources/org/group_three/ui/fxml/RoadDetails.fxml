@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.RoadDetailsController">
+<AnchorPane stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.RoadDetailsController">
    <children>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
@@ -22,7 +22,7 @@
                            <children>
                               <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="Id" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label styleClass="white-text" text="Id" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -31,7 +31,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="Sumo Id" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label styleClass="white-text" text="Sumo Id" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -40,7 +40,7 @@
                               </AnchorPane>
                               <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="DisplayName" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label styleClass="white-text" text="DisplayName" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -49,7 +49,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="Add" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label style="-fx-background-color: #333;" styleClass="white-text" text="Add" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -58,7 +58,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="Amount" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label styleClass="white-text" text="Amount" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -67,7 +67,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="Speed" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label styleClass="white-text" text="Speed" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -76,7 +76,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="Color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label styleClass="white-text" text="Color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -85,7 +85,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="Route" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label styleClass="white-text" text="Route" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -117,7 +117,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label text="Vehicles" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label style="-fx-background-color: #333;" styleClass="white-text" text="Vehicles" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>

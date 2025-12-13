@@ -112,6 +112,9 @@
     -fx-background-color: #444;
 }
 
+.white-text {
+    -fx-text-fill: white;
+}
 
 
 

@@ -208,7 +208,7 @@ public class SimView2D {
 						new WorldRoad(
 								world,
 								renderLayer,
-								"WorldRoad",
+								wEdge.getName(),
 								UI.roadColor,
 								list.get(list.indexOf(subPoint) -1),
 								subPoint,
