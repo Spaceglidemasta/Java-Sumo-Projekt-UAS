@@ -1,7 +1,6 @@
 package org.group_three.constants;
 
 import javafx.scene.paint.Color;
-import org.group_three.ui.Vector2D;
 
 public final class UI {
     private UI() {} //prevents init.
@@ -25,15 +24,13 @@ public final class UI {
 	// A bool to decide if WorldObject collision should be visible or not.
 	public static final boolean showCollision = false;
 	// A bool to decide if sphere collision should always be visible when WorldObject collision is visible.
-	public static final boolean forceShowSphereCollision = false;
+	public static final boolean forceShowSphereCollision = true;
 	// The default world color.
 	public static final Color worldColor = new Color(0.2,0.5,0.2,1);
 	// The default road color.
 	public static final Color roadColor = new Color(0.1,0.1,0.1,1);
 	// A bool to decide if misc polygons should be rendered.
 	public static final boolean showPolys = false;
-	// A Vector2D to decide how far one can zoom in and out of the UI. (x = min, y = max)
-	public static final Vector2D zoomLimit = new Vector2D(0.1, 10);
 
 
 	// The minimal window width.
