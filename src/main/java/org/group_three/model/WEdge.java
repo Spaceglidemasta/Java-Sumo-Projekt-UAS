@@ -9,9 +9,12 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 /**
  * <h1>Sumo Road</h1>
@@ -123,7 +126,18 @@ public class WEdge {
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(network);
+            Document doc;
+
+            //tests if the .net.xml file is zipped into .gz
+            if (network.getName().endsWith(".gz")) {
+                try (InputStream fis = new FileInputStream(network);
+                     InputStream gis = new GZIPInputStream(fis)) {
+
+                    doc = dBuilder.parse(gis);
+                }
+            } else {
+                doc = dBuilder.parse(network);
+            }
 
             doc.getDocumentElement().normalize();
 
