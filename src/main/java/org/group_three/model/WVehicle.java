@@ -313,6 +313,22 @@ public class WVehicle {
         return true;
     }
 
+    /**
+     * Changes Target to the given Edge
+     * @param EID target EdgeID
+     * @return true if successfull, false if not
+     * @author Luca
+     * */
+    public boolean changeTarget(String EID) {
+        try {
+            stc.do_job_set(Vehicle.changeTarget(vehID, EID));
+        }
+        catch (Exception _){
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Get the RouteID of the Vehicle
