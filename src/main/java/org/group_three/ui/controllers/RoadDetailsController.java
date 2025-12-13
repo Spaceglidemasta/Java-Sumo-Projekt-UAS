@@ -5,7 +5,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import org.group_three.debug.Debug;
 import org.group_three.ui.world.WorldRoad;
-import org.group_three.ui.world.WorldVehicle;
 
 import java.io.IOException;
 
@@ -63,6 +62,6 @@ public class RoadDetailsController {
 
 		id.setText(worldRoad.getId());
 		displayName.setText(worldRoad.getDisplayName());
-		sumoId.setText(worldRoad.sumoRoad.getEdgeID());
+		sumoId.setText(worldRoad.wEdge.getEdgeID());
 	}
 }

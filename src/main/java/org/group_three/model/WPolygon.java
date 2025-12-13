@@ -23,7 +23,11 @@ public class WPolygon {
     private String type;
     private static List<WPolygon> allPolys;
 
-    public WPolygon(String id, SimController sc, SumoColor clr, SumoGeometry sh, String ty){
+
+    private WPolygon() {};
+
+
+    private WPolygon(String id, SimController sc, SumoColor clr, SumoGeometry sh, String ty){
         PoID = id;
         simcon = sc;
         color = clr;
