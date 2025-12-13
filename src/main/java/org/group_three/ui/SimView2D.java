@@ -4,11 +4,10 @@ import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
-import org.group_three.model.SumoRoad;
+import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
@@ -17,7 +16,6 @@ import org.group_three.ui.world.*;
 import org.group_three.utils.TLStopLine;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.group_three.ui.Meth.lerp;
@@ -144,25 +142,8 @@ public class SimView2D {
 		addRoads(worldStaticRenderTarget);
 
 
-		// TODO:    move all the traffic light adding code here to its own function,
-		//          as it is above for example with the addRoads function
-		//          @Leon
-        SumoStringList tls = SimController.getMainsimcon().getTrafficLightsIDList();
+		// TODO:    Implement TL logic
 
-        for(String tl: tls){
-            WTrafficLight wtl = new WTrafficLight(tl);
-            List<TLStopLine> laneDataList = wtl.getStopLineData(tl);
-            if (laneDataList != null) {
-                for (TLStopLine data : laneDataList) {
-                        Debug.print(data.laneID);
-                        new WorldTrafficLight(world,
-                            worldStaticRenderTarget,
-                            "WorldTrafficLight", wtl
-                                ,laneDataList.indexOf(data)
-                    );
-                }
-            }
-        }
 		// TODO:    ----------------------------------------------------------------
 
 		addVehicles(worldStaticRenderTarget);
@@ -215,9 +196,9 @@ public class SimView2D {
 	 */
 	private static void addRoads(Canvas renderLayer) {
 		// loop through all roads
-		for (SumoRoad sumoRoad : SumoRoad.getAllroads()) {
+		for (WEdge wEdge : WEdge.getAllroads()) {
 			// loop through all lanes
-			for (String laneId : sumoRoad.getLaneIDs()) {
+			for (String laneId : wEdge.getLaneIDs()) {
 				// create lane sub point list
 				List<Vector2D> list = Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(laneId));
 
