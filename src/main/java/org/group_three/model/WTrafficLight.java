@@ -5,12 +5,13 @@ import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import de.tudresden.sumo.objects.SumoTLSProgram;
 import org.group_three.api.SimController;
-import org.group_three.debug.Debug;
-import org.group_three.ui.Meth;
-import org.group_three.ui.Vector2D;
+import org.group_three.utils.Sumo2DLine;
 import org.group_three.utils.TLStopLine;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class WTrafficLight {
     private final String trafficLightID;
     private final SimController simcon;
 
-
+    private static List<TLStopLine> allStopLinesInTL;
     private List<SumoPosition2D>  pos;
     private int phaseState;
     private String phaseName;
@@ -43,6 +44,10 @@ public class WTrafficLight {
         return simcon;
     }
 
+    public List<TLStopLine> getAllStopLinesInTL() {
+        return allStopLinesInTL;
+    }
+
     public double getPhaseState() {
         return phaseState;
     }
@@ -50,7 +55,6 @@ public class WTrafficLight {
     public List<SumoPosition2D> getPos() {
         return pos;
     }
-
 
     public String getPhaseName() {
         return phaseName;
@@ -138,7 +142,7 @@ public class WTrafficLight {
         return lastPoints;
     }
 
-
+    
 
     public List<TLStopLine> getStopLineData(String TLID) {
         List<TLStopLine> laneDataList = new ArrayList<>();
