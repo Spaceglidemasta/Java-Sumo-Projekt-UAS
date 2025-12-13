@@ -4,11 +4,8 @@ import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import de.tudresden.sumo.objects.SumoStringList;
 import de.tudresden.sumo.objects.SumoTLSProgram;
-import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
-import org.group_three.utils.LaneStopLineData;
-import org.group_three.utils.Sumo2DLine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +17,7 @@ public class WTrafficLight {
     private final SimController simcon;
 
 
-    private List<SumoPosition2D>  pos;
+    private List<SumoPosition2D> pos;
     private int phaseState;
     private String phaseName;
     private double phaseDuration;
@@ -107,7 +104,21 @@ public class WTrafficLight {
         }
     }
 
-    public void update() throws Exception {
+    /**
+     * Only updates the Phase of the TL
+     * @author Luca
+     * */
+    public void updateSimple() throws Exception{
+
+        this.phaseState = (int) simcon.jobget(Trafficlight.getPhase(trafficLightID));
+
+    }
+
+    /**
+     * Full updates the TL. This inlcudes: ...
+     * @author Leon
+     * */
+    public void updateFull() throws Exception {
 
         this.pos = getStopLinePoint(trafficLightID);
 

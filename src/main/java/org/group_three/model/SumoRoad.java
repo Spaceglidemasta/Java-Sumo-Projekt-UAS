@@ -128,6 +128,7 @@ public class SumoRoad {
             for (int i = 0; i < edgeList.getLength(); i++) {
                 Node edgeNode = edgeList.item(i);
 
+                //if the node is an element
                 if (edgeNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element edgeElement = (Element) edgeNode;
 
