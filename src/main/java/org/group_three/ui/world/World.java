@@ -459,7 +459,7 @@ public class World {
 				if (worldObject.useBoxCollision()) {
 					Vector2D relativeHitPosition = Meth.getRelativeLocation(worldObject.getPosition(), worldObject.getRotation(), worldPosition);
 					Vector2D relativeHalfHeightHit = relativeHitPosition.abs();
-					Debug.print(relativeHalfHeightHit);
+					//Debug.print(relativeHalfHeightHit);
 
 					// add only to box collision hit list if hit is inside of collision
 					if (worldObject.getBoxCollision().x >= relativeHalfHeightHit.x &&
