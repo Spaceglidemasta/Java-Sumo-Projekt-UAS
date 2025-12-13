@@ -14,6 +14,7 @@ import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.group_three.utils.Sumo2DLine;
+import org.group_three.utils.TLStopLine;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -66,15 +67,17 @@ public class WorldTrafficLight extends WorldObject {
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
     public void render(){
-        Sumo2DLine line = SimController.getMainsimcon().getStopLineVector(wtl.getID()).get(index);
-        Vector2D start = new Vector2D(line.start);
-        Vector2D end = new Vector2D(line.end);
+        TLStopLine line = SimController.getMainsimcon().getStopLineVector(wtl.getID()).get(index);
+        Vector2D start = new Vector2D(line.point1);
+        Vector2D end = new Vector2D(line.point2);
 
         Vector2D relStart = Meth.getRelativeLocation(start,0,end);
         setPosition(
                 start.add(relStart.div(2))
         );
         setRotation(start.getDirectionAngle(end));
+
+        //Debug.print("Id: " + line.laneID);
     }
     /**
      * The update method which is used to draw the WorldPoint in the world.
