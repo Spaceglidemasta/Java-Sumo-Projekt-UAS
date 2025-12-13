@@ -1,15 +1,9 @@
 package org.group_three.debug;
 
 
-import de.tudresden.sumo.cmd.Route;
 import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.sumo.cmd.Vehicle;
-import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
-import org.group_three.model.WVehicle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Tester Class so we don't have the Main function cluttered full of
@@ -61,7 +55,7 @@ public class StaticTester {
         }
 
         Debug.print("TL phases");
-        for(String tl : sim.getTrafficLightsIDList()){
+        for(String tl : sim.getTLIDList()){
             Debug.print(tl + ": " + sim.getTLPhase(tl));
         }
 

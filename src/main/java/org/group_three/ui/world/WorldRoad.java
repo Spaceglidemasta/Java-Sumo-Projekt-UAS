@@ -1,11 +1,10 @@
 package org.group_three.ui.world;
 
-import de.tudresden.sumo.objects.SumoPosition2D;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
-import org.group_three.model.SumoRoad;
+import org.group_three.model.WEdge;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.controllers.RoadDetailsController;
@@ -20,7 +19,7 @@ public class WorldRoad extends WorldObject {
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	Color color;
-	public SumoRoad sumoRoad;
+	public WEdge wEdge;
 	Vector2D from;
 	Vector2D to;
 	Vector2D size;
@@ -51,15 +50,15 @@ public class WorldRoad extends WorldObject {
 	 * @param displayName The display name which should show up on selection.
 	 * @author Joel
 	 */
-	public WorldRoad(World world, Canvas canvas, String displayName, Color color, SumoRoad sumoRoad) {
+	public WorldRoad(World world, Canvas canvas, String displayName, Color color, WEdge wEdge) {
 		super(world, canvas, displayName);
 		this.color = color;
-		this.sumoRoad = sumoRoad;
+		this.wEdge = wEdge;
 
 		detailClassPath = "/org/group_three/ui/fxml/RoadDetails.fxml";
 
-		from = new Vector2D(SimController.getMainsimcon().getJunctionPos(sumoRoad.getFrom()));
-		to = new Vector2D(SimController.getMainsimcon().getJunctionPos(sumoRoad.getTo()));
+		from = new Vector2D(SimController.getMainsimcon().getJunctionPos(wEdge.getFrom()));
+		to = new Vector2D(SimController.getMainsimcon().getJunctionPos(wEdge.getTo()));
 
 		Vector2D a = Meth.getRelativeLocation(from, 0, to);
 		setPosition(
@@ -69,7 +68,7 @@ public class WorldRoad extends WorldObject {
 
 		size = new Vector2D(a.length()/2, 0);
 
-		for (String laneId : sumoRoad.getLaneIDs()) {
+		for (String laneId : wEdge.getLaneIDs()) {
 			size.y += SimController.getMainsimcon().getLaneWidth(laneId);
 		}
 
@@ -103,7 +102,7 @@ public class WorldRoad extends WorldObject {
 
 		size = new Vector2D(a.length()/2, width);
 
-		//for (String laneId : sumoRoad.getLaneIDs()) {
+		//for (String laneId : wEdge.getLaneIDs()) {
 		//	size.y += SimController.getMainsimcon().getLaneWidth(laneId);
 		//}
 

@@ -1,5 +1,4 @@
 package org.group_three.model;
-import javafx.util.Pair;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.w3c.dom.Document;
@@ -20,19 +19,21 @@ import java.util.List;
  * => A connection between 2 junctions
  * @author Luca
  * */
-public class SumoRoad {
+public class WEdge {
     private String from;
     private String to;
     private String edgeID;
+    private String name;
     private List<String> laneIDs;
-    private static HashMap<String, SumoRoad> allroads;
+    private static HashMap<String, WEdge> allroads;
 
-    private SumoRoad() {};
+    private WEdge() {};
 
-    public SumoRoad(String f, String t, String id){
+    public WEdge(String f, String t, String id, String n){
         from = f;
         to = t;
         edgeID = id;
+        name = n;
         laneIDs = new ArrayList<>();
     }
 
@@ -46,6 +47,10 @@ public class SumoRoad {
 
     public String getEdgeID() {
         return edgeID;
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**
@@ -68,7 +73,7 @@ public class SumoRoad {
      * */
     public List<String> getLaneIDs() {return laneIDs; }
 
-    public static List<SumoRoad> getAllroads() {
+    public static List<WEdge> getAllroads() {
         return new ArrayList<>(allroads.values());
     }
 
@@ -77,7 +82,7 @@ public class SumoRoad {
      * @author Luca
      * */
     public void print(){
-        System.out.println("RoadID: " + edgeID);
+        System.out.println(name + ": " + edgeID);
         System.out.println("    from: " + from);
         System.out.println("    to: " + to);
         System.out.println("    Lanes:");
@@ -92,14 +97,15 @@ public class SumoRoad {
      * @author Luca
      * */
     public static void printAll(){
-        for(SumoRoad sr : getAllroads()){
+        Debug.print("All Roads:");
+        for(WEdge sr : getAllroads()){
             sr.print();
         }
     }
 
     /**
      * <h2>loadRoads</h2>
-     * loads all Edges in a given network file into a SumoRoad. <br>
+     * loads all Edges in a given network file into a WEdge. <br>
      * This has the contents "from", "to" and "edgeID". This gets stored in
      * the static variable "allroads" (List< SumoRoads >). You may retrieve this
      * via .getAllroads() or .getRoad(EID).
@@ -112,8 +118,6 @@ public class SumoRoad {
         try {
 
             allroads = new HashMap<>();
-
-            File sl = SimController.getSumoLoc();
 
             //Debug.print("location: " + network.toString());
 
@@ -135,12 +139,13 @@ public class SumoRoad {
                     String id   = edgeElement.getAttribute("id");
                     String _from = edgeElement.getAttribute("from");
                     String _to   = edgeElement.getAttribute("to");
+                    String _name = edgeElement.getAttribute("name");
 
                     if (_from.isEmpty() || _to.isEmpty()) {
                         continue;
                     }
 
-                    SumoRoad sr = new SumoRoad(_from, _to, id);
+                    WEdge sr = new WEdge(_from, _to, id, _name);
 
                     NodeList lanelist = edgeElement.getElementsByTagName("lane");
 
@@ -171,12 +176,12 @@ public class SumoRoad {
     }
 
     /**
-     * Gives you the corresponding SumoRoad to a given EdgeID.
+     * Gives you the corresponding WEdge to a given EdgeID.
      * @param EID the EdgeID as String
-     * @return the Road as SumoRoad or null if none is found.
+     * @return the Road as WEdge or null if none is found.
      * @author Luca
      * */
-    public static SumoRoad getRoad(String EID){
+    public static WEdge getRoad(String EID){
         return allroads.get(EID);
     }
 

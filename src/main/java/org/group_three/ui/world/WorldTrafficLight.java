@@ -75,8 +75,6 @@ public class WorldTrafficLight extends WorldObject {
                 start.add(relStart.div(2))
         );
         setRotation(start.getDirectionAngle(end));
-        Debug.print(start);
-        Debug.print(end);
     }
     /**
      * The update method which is used to draw the WorldPoint in the world.

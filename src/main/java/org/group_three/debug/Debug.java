@@ -2,7 +2,6 @@ package org.group_three.debug;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
-import org.group_three.model.SumoRoad;
 
 public class Debug {
 
