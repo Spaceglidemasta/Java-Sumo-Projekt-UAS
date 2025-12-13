@@ -202,12 +202,10 @@ public class WTrafficLight {
 
 	            double angle = last.getDirectionAngle(stlast);
 
-                Vector2D mid = Meth.addRelativeLocation(last, angle, new Vector2D(-5,0));//last.add(stlast).div(2);
-
                 double width = msc.getLaneWidth(LID);
-                double len = Meth.getRelativeLocation(last, angle ,mid).length();//mid.length();
+                double len = 0.5;
 
-                WLink wlink = new WLink(mid, width, len, angle, LID);
+                WLink wlink = new WLink(last, width, len, angle, LID);
 
                 wtl.addWlink(wlink);
 

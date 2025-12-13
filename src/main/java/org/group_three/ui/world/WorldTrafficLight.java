@@ -48,6 +48,11 @@ public class WorldTrafficLight extends WorldObject {
 		setPosition(wL.mid);
 		setRotation(wL.angle);
 		size = new Vector2D(wL.getLen(), wL.getWidth());
+
+		setInteractable(true);
+		setUseBoxCollision(true);
+		setBoxCollision(size.div(2));
+		detailClassPath = "";
     }
     //--------------------------------------------------Constructors--------------------------------------------------
 
@@ -77,7 +82,7 @@ public class WorldTrafficLight extends WorldObject {
     public void update() {
         super.update();
 
-		drawSphere(2,Color.RED);
+		//drawSphere(2,Color.RED);
 		drawRectangle(size.div(2), Color.ALICEBLUE);
     }
 }
