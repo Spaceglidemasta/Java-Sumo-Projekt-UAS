@@ -5,7 +5,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import org.group_three.debug.Debug;
 import org.group_three.ui.world.WorldRoad;
-import org.group_three.ui.world.WorldVehicle;
 
 import java.io.IOException;
 

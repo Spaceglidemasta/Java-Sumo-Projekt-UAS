@@ -339,7 +339,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
-    public SumoStringList getTrafficLightsIDList(){
+    public SumoStringList getTLIDList(){
         try {
             return (SumoStringList) stc.do_job_get(Trafficlight.getIDList());
         }

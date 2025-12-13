@@ -4,11 +4,10 @@ import de.tudresden.sumo.objects.SumoStringList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
-import org.group_three.model.SumoRoad;
+import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
@@ -17,7 +16,6 @@ import org.group_three.ui.world.*;
 import org.group_three.utils.TLStopLine;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.group_three.ui.Meth.lerp;
@@ -240,13 +238,32 @@ public class SimView2D {
 		}
 	}
 
-	/**
-	 * A method to add all initial SUMO vehicles to the world.
-	 *
-	 * @param renderLayer The render layer to which the object should be added.
-	 * @author Joel
-	 */
-	private static void addVehicles(Canvas renderLayer) {
+        SumoStringList tls = SimController.getMainsimcon().getTLIDList();
+
+        for(String tl: tls){
+            WTrafficLight wtl = new WTrafficLight(tl);
+            List<TLStopLine> laneDataList = wtl.getStopLineData(tl);
+            if (laneDataList != null) {
+                for (TLStopLine data : laneDataList) {
+                        //Debug.print(data.laneID);
+                        new WorldTrafficLight(world,
+                            worldStaticRenderTarget,
+                            "WorldTrafficLight", wtl
+                                ,laneDataList.indexOf(data)
+                    );
+                }
+            }
+        }
+
+
+		//Debug.print(rnHeight + " --- " + rnWidth);
+
+		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128, 128)));
+		world.setViewerPosition(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
+		world.setWorldOffset(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)));
+
+
+		//rendering cars
 		for (String id : SimController.getMainsimcon().getVehicleIDList()) {
 			WVehicle wVehicle = new WVehicle(id, SimController.getMainsimcon().getStc());
 			WorldVehicle worldVehicle = new WorldVehicle(
