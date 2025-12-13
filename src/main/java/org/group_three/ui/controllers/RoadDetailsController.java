@@ -5,39 +5,103 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import org.group_three.debug.Debug;
 import org.group_three.ui.world.WorldRoad;
-import org.group_three.ui.world.WorldVehicle;
 
 import java.io.IOException;
 
+/**
+ * The controller for the RoadDetails.
+ *
+ * @author Joel
+ */
 public class RoadDetailsController {
+
+	/**
+	 * The world object id.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private TextField id;
+
+	/**
+	 * The world objects display name.
+	 * Aka the street name.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private TextField displayName;
+
+	/**
+	 * The sumo street/lane id.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private TextField sumoId;
+
+	/**
+	 * How many vehicles to spawn.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private TextField vehicleSpawnAmount;
+
+	/**
+	 * THe speed of the vehicles to spawn.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private TextField vehicleSpawnSpeed;
+
+	/**
+	 * The color of the vehicles to spawn.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private ColorPicker vehicleSpawnColor;
+
+	/**
+	 * The route of the vehicles to spawn.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private TextField vehicleSpawnRoute;
 
+
+	/**
+	 * The world road that is owning this class.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings({"JavadocDeclaration", "FieldCanBeLocal"})
 	private WorldRoad worldRoad;
 
+	/**
+	 * The initialize method of the road details panel.
+	 *
+	 * @author Joel
+	 */
 	@FXML
-	private void initialize() throws IOException {
+	private void initialize() {
 		Debug.print("VehicleDetails Controller loaded.");
-
+		// following has no real use yet, comments later
 		vehicleSpawnSpeed.textProperty().addListener((_, oldText, newText) -> {
 			try {
-				//worldVehicle.getwVehicle().setSpeed(Math.abs(Double.parseDouble(newText)));
-				//speed.textProperty().set(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
-				vehicleSpawnSpeed.textProperty().set(String.valueOf(Math.abs(Double.parseDouble(newText))));
+				vehicleSpawnSpeed.setText(String.valueOf(Math.abs(Double.parseDouble(newText))));
 			} catch (Exception e) {
-				vehicleSpawnSpeed.textProperty().set(oldText);
+				vehicleSpawnSpeed.setText(oldText);
 			}
 			Debug.print("Speed changed.");
 		});
@@ -45,12 +109,7 @@ public class RoadDetailsController {
 		vehicleSpawnColor.valueProperty().addListener(
 				(_, _, newColor) -> {
 					try {
-						//if (color.getValue() != worldVehicle.getColor()) {
-						//worldVehicle.getwVehicle().setColor(Meth.convertColorToSumoColor(color.getValue()));
-						//}
-						//worldVehicle.getwVehicle().setColor(new SumoColor(0, 255, 0, 255));//Meth.convertColorToSumoColor(new Color(1,0,0,1)));
-						//worldVehicle.setColor(newColor);
-						//worldVehicle.getwVehicle().update();
+						//
 					} catch (Exception e) {
 						//throw new RuntimeException(e);
 					}
@@ -58,6 +117,12 @@ public class RoadDetailsController {
 				});
 	}
 
+	/**
+	 * The setup method for this class to fill it with data.
+	 *
+	 * @param worldRoad The world road which this controller is from.
+	 * @author Joel
+	 */
 	public void setup(WorldRoad worldRoad) {
 		this.worldRoad = worldRoad;
 
