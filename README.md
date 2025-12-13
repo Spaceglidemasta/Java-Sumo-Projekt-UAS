@@ -6,7 +6,7 @@ time.
 
 _*To be implemented_
 
-By Luca De Simone, Joel Stark, Leon Chimentchik and David Cornelius.
+By Luca De Simone, Joel Stark and Leon Chimentchik.
 
 ## Features
 
@@ -18,9 +18,9 @@ By Luca De Simone, Joel Stark, Leon Chimentchik and David Cornelius.
 
 ## Dependencies
 
-- [`Sumo`](https://sumo.dlr.de/docs/Installing/index.html, "SUMO Documentation") - needed for TraaS
-- [`Maven`](https://maven.apache.org, "Apache Maven") - used for building the project
-- [`Traas.jar`](https://sumo.dlr.de/javadoc/traas/index.html, "TraaS Documentation") -
+- [`Sumo`](https://sumo.dlr.de/docs/Installing/index.html "SUMO Documentation") - needed for TraaS
+- [`Maven`](https://maven.apache.org "Apache Maven") - used for building the project
+- [`Traas.jar`](https://sumo.dlr.de/javadoc/traas/index.html "TraaS Documentation") -
 the core component of the program, used to start, edit and end the SUMO connection.
 
 This automatically gets installed when you install SUMO on you device, or when you clone this repo. 
