@@ -62,7 +62,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private Vector2D viewerZoomLimit = new Vector2D(0.1, 10);
+	private final Vector2D viewerZoomLimit = UI.zoomLimit;
 
 	/**
 	 * The world size itself.
@@ -98,7 +98,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private Color worldColor = UI.worldColor;
+	private final Color worldColor = UI.worldColor;
 
 	/**
 	 * The background color of the world view.
@@ -107,7 +107,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private Color backgroundColor = UI.worldColor;
+	private final Color backgroundColor = UI.worldColor;
 
 
 	/**
@@ -410,7 +410,7 @@ public class World {
 	}
 
 	/**
-	 * A method to render the world bounds.
+	 * A method to render the world bounds and background.
 	 *
 	 * @author Joel
 	 * @see #requestUpdate()
@@ -445,12 +445,9 @@ public class World {
 	public WorldObject interact(Vector2D worldPosition) {
 		if (worldObjects.isEmpty()) return null;
 
-		List<Double> distances = new ArrayList<>() {
-		};
-		List<WorldObject> interactableObjects = new ArrayList<>() {
-		};
-		List<WorldObject> boxCollisionHits = new ArrayList<>() {
-		};
+		List<Double> distances = new ArrayList<>();
+		List<WorldObject> interactableObjects = new ArrayList<>();
+		List<WorldObject> boxCollisionHits = new ArrayList<>();
 
 		// reversed WorldObject list so you always select newer objects over older, so you can select cars over roads etc
 		for (WorldObject worldObject : worldObjects.reversed()) {
