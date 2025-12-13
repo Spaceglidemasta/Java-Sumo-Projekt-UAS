@@ -20,7 +20,7 @@ public class WorldRoad extends WorldObject {
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	Color color;
-	public SumoRoada sumoRoad;
+	public SumoRoad sumoRoad;
 	Vector2D from;
 	Vector2D to;
 	Vector2D size;
