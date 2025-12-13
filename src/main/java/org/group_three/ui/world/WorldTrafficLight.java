@@ -26,12 +26,9 @@ public class WorldTrafficLight extends WorldObject {
 
 
     //--------------------------------------------------MemberVariables--------------------------------------------------
-    public Vector2D rechteck = new Vector2D(2,6);
+
     private WTrafficLight wtl;
-    private Vector2D position;
-    private double rotation;
-    private Vector2D size;
-    private int index;
+
     //++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -45,7 +42,7 @@ public class WorldTrafficLight extends WorldObject {
     public WorldTrafficLight(World world, Canvas canvas, String displayName, WTrafficLight trafficLight, int index) {
         super(world, canvas, displayName);
         this.wtl = trafficLight;
-        render();
+
     }
     //--------------------------------------------------Constructors--------------------------------------------------
 
@@ -65,19 +62,7 @@ public class WorldTrafficLight extends WorldObject {
 
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
-    public void render(){
-        Sumo2DLine line = SimController.getMainsimcon().getStopLineVector(wtl.getID()).get(index);
-        Vector2D start = new Vector2D(line.start);
-        Vector2D end = new Vector2D(line.end);
 
-        Vector2D relStart = Meth.getRelativeLocation(start,0,end);
-        setPosition(
-                start.add(relStart.div(2))
-        );
-        setRotation(start.getDirectionAngle(end));
-        Debug.print(start);
-        Debug.print(end);
-    }
     /**
      * The update method which is used to draw the WorldPoint in the world.
      *
@@ -86,6 +71,6 @@ public class WorldTrafficLight extends WorldObject {
     @Override
     public void update() {
         super.update();
-            drawRectangle(rechteck, Color.AQUA);
+
     }
 }

@@ -3,11 +3,10 @@ package org.group_three.ui;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
-import org.group_three.model.SumoRoad;
+import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.utils.PathUtils;
 
-import java.awt.*;
 import java.io.File;
 import java.util.List;
 
@@ -97,9 +96,9 @@ public class FakeInteractions {
             try {
                 //you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
                 File net = PathUtils.getNetFromSCFG(config);
-                SumoRoad.loadRoads(net);
-                //SumoRoad.printAll();
-                //SumoRoad.getRoad("132964154").print();
+                WEdge.loadRoads(net);
+                //WEdge.printAll();
+                //WEdge.getRoad("132964154").print();
             }
             catch (Exception e){
                 Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
@@ -107,7 +106,7 @@ public class FakeInteractions {
             }
 
         }  else {
-            SumoRoad.loadRoads(network);
+            WEdge.loadRoads(network);
         }
 
         //set selected simulation as the main, global / static simulation.
@@ -118,9 +117,7 @@ public class FakeInteractions {
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
 
-
         //Statistics.exportState(PathUtils.outputgen());
-
 
 		return true;
 	}
