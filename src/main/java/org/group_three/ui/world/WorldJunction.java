@@ -2,8 +2,13 @@ package org.group_three.ui.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
+import org.group_three.api.SimController;
+import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The WorldPoint class is a simple class, which extends the WorldObject class.
@@ -12,7 +17,7 @@ import org.group_three.ui.Vector2D;
  *
  * @author Joel
  */
-public class WorldPoint extends WorldObject {
+public class WorldJunction extends WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -21,7 +26,7 @@ public class WorldPoint extends WorldObject {
 	 * @author Joel
 	 */
 	private Color color;
-	private double radius;
+	List<Vector2D> shape;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -35,10 +40,9 @@ public class WorldPoint extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("unused")
-	public WorldPoint() {
+	public WorldJunction() {
 		super();
 		this.color = null;
-		this.radius = 0;
 		remove();
 	}
 
@@ -50,10 +54,34 @@ public class WorldPoint extends WorldObject {
 	 * @param displayName The display name which should show up on selection.
 	 * @author Joel
 	 */
-	public WorldPoint(World world, Canvas canvas, String displayName, Color color, double radius) {
+	public WorldJunction(World world, Canvas canvas, String displayName, Color color, String junctionId) {
 		super(world, canvas, displayName);
 		this.color = color;
-		this.radius = radius;
+		shape = Meth.convertSumoCoords(SimController.getMainsimcon().getJunctionShape(junctionId));
+		setPosition(new Vector2D(SimController.getMainsimcon().getJunctionPos(junctionId)));
+
+
+		/*Debug.print("StartJV");
+		for (Vector2D vector2D : shape) {
+			Debug.print(vector2D);
+			new WorldPoint(
+					getWorld(),
+					getRenderTarget(),
+					"IDK",
+					Color.LIGHTCYAN,
+					0.5
+			).setPosition(vector2D);
+		}
+		Debug.print("EndJV");*/
+
+		List<Vector2D> relativeShape = new ArrayList<>();
+
+		for (Vector2D point : shape) {
+			relativeShape.add(Meth.getRelativeLocation(getPosition(), 0, point));
+		}
+
+		shape = relativeShape;
+
 	}
 
 	//--------------------------------------------------Constructors--------------------------------------------------
@@ -94,7 +122,9 @@ public class WorldPoint extends WorldObject {
 	@Override
 	public void update() {
 		super.update();
-		drawSphere(radius, color);
+		//drawSphere(8, color);
+
+		drawPolygon(shape, color);
 	}
 
 	//--------------------------------------------------Methods--------------------------------------------------

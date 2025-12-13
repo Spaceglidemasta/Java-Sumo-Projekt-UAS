@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -498,20 +499,27 @@ public class WorldObject {
 	 * @param points A list of Vector2D's which contains all the points of the polygon.
 	 * @author Joel
 	 */
-	public void drawPolygon(List<Vector2D> points) {
+	public void drawPolygon(List<Vector2D> points, Color color) {
 		graphicsContext.save();
+		graphicsContext.setFill(color);
 		setDrawTransform();
 
-		// convert Vector2D list to x and y double arrays
-		double[] xPoints = new double[points.size()];
-		double[] yPoints = new double[points.size()];
+		List<Vector2D> shape = new ArrayList<>();
 
-		for (int i = 0; i < points.size(); i++) {
-			xPoints[i] = points.get(i).x;
-			yPoints[i] = points.get(i).y;
+		for (Vector2D point : points) {
+			shape.add(point.mul(getWorld().getViewerZoom()));
 		}
 
-		graphicsContext.fillPolygon(xPoints, yPoints, points.size());
+		// convert Vector2D list to x and y double arrays
+		double[] xPoints = new double[shape.size()];
+		double[] yPoints = new double[shape.size()];
+
+		for (int i = 0; i < shape.size(); i++) {
+			xPoints[i] = shape.get(i).x;
+			yPoints[i] = shape.get(i).y;
+		}
+
+		graphicsContext.fillPolygon(xPoints, yPoints, shape.size());
 		graphicsContext.restore();
 	}
 
