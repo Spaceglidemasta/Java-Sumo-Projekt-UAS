@@ -7,13 +7,9 @@ import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 
-import org.group_three.utils.TLStopLine;
-import org.group_three.utils.Sumo2DLine;
-
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
