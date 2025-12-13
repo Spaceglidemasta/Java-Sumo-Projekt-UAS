@@ -73,9 +73,11 @@ public class WTrafficLight {
         allWlinks.add(wlink);
     }
 
-    public List<WTrafficLight> getAllWTLs() {
+    public static List<WTrafficLight> getAllWTLs() {
         return allWTLs;
     }
+
+    public List<WLink> getAllWlinks() {return allWlinks;}
 
     /**
      * Sets the Phase
