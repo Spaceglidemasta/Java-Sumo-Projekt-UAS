@@ -30,6 +30,22 @@ public class ColoredIconManager {
 	private final Image baseIcon;
 
 	/**
+	 * The image width.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final int iconWidth;
+
+	/**
+	 * The image height.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final int iconHeight;
+
+	/**
 	 * A list of all previously colored image variants.
 	 *
 	 * @author Joel
@@ -50,6 +66,8 @@ public class ColoredIconManager {
 	 */
 	public ColoredIconManager() {
 		this.baseIcon = null;
+		this.iconWidth = 0;
+		this.iconHeight = 0;
 	}
 
 	/**
@@ -70,6 +88,14 @@ public class ColoredIconManager {
 		}
 
 		this.baseIcon = loadedImage;
+
+		if (this.baseIcon != null) {
+			iconWidth = (int) baseIcon.getWidth();
+			iconHeight = (int) baseIcon.getHeight();
+		} else {
+			this.iconWidth = 0;
+			this.iconHeight = 0;
+		}
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------
@@ -108,16 +134,13 @@ public class ColoredIconManager {
 	 * @author Joel
 	 */
 	private Image addImageTint(Color color) {
-		int w = (int) baseIcon.getWidth();
-		int h = (int) baseIcon.getHeight();
-
-		WritableImage tinted = new WritableImage(w, h);
+		WritableImage tinted = new WritableImage(iconWidth, iconHeight);
 		PixelReader reader = baseIcon.getPixelReader();
 		PixelWriter writer = tinted.getPixelWriter();
 
 
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
+		for (int y = 0; y < iconHeight; y++) {
+			for (int x = 0; x < iconWidth; x++) {
 				Color c = reader.getColor(x, y);
 
 				if (c.getOpacity() >= 0.5) {
