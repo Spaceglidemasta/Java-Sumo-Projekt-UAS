@@ -3,6 +3,15 @@ package org.group_three.debug;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
+
+/**
+ * Debug class so nice debug messages can be displayed
+ * in the Terminal and our custom console.
+ * The Debug comment shows out ouf which class it was printed
+ * and afterwords a custom debug message
+ * @author Leon
+ * */
+
 public class Debug {
 
     private static final boolean MAIN_CON_DEBUG = true;
@@ -19,7 +28,12 @@ public class Debug {
         debugTextArea = textArea;
     }
 
-    // Print to the terminal (standard output)
+    /**
+     * Print function, so that messages are
+     * displayed in terminal
+     * @param value takes in object to print out
+     * @author Leon
+     * */
     public static void print(Object value) {
         if (MAIN_CON_DEBUG) {
             StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
@@ -28,7 +42,12 @@ public class Debug {
         }
     }
 
-    // Print to the console
+    /**
+     * Print function for custom console, so that messages
+     * are displayed in console
+     * @param message takes in object to print out
+     * @author Leon
+     * */
     public static void toConsole(Object message) {
 
         if (debugTextArea != null && debugTextArea.isVisible()) { //TODO remove isVisible later
