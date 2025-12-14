@@ -8,20 +8,61 @@ import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.controllers.RoadDetailsController;
 
+/**
+ * The class to represent roads in the world.
+ *
+ * @author Joel
+ */
 public class WorldRoad extends WorldObject {
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	//--------------------------------------------------ClassVariables--------------------------------------------------
-
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	/**
+	 * The color of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	Color color;
+
+	/**
+	 * The wrapper class of the edge.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	public WEdge wEdge;
+
+	/**
+	 * The start point of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	Vector2D from;
+
+	/**
+	 * The end point of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	Vector2D to;
+
+	/**
+	 * The size of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	Vector2D size;
+
+	/**
+	 * The sumo id of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	public String id = "";
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
@@ -66,11 +107,9 @@ public class WorldRoad extends WorldObject {
 		);
 		setRotation(from.getDirectionAngle(to));
 
-		size = new Vector2D(a.length()/2, width);
+		//noinspection SuspiciousNameCombination
+		size = new Vector2D(a.length() / 2, width);
 
-		//for (String laneId : wEdge.getLaneIDs()) {
-		//	size.y += SimController.getMainsimcon().getLaneWidth(laneId);
-		//}
 
 		setInteractable(true);
 		setUseBoxCollision(true);
@@ -80,20 +119,16 @@ public class WorldRoad extends WorldObject {
 	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	//--------------------------------------------------GetterMethods---------------------------------------------------
-
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	//--------------------------------------------------SetterMethods---------------------------------------------------
-
-
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	RoadDetailsController roadDetailsController;
 
+	/**
+	 * A method to update the details panel when the object is selected.
+	 *
+	 * @param fxmlLoader The FXML loader of the loaded details panel.
+	 * @author Joel
+	 */
 	@Override
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
 		roadDetailsController = fxmlLoader.getController();
@@ -101,7 +136,7 @@ public class WorldRoad extends WorldObject {
 	}
 
 	/**
-	 * The update method which is used to draw the WorldPoint in the world.
+	 * The update method which is used to draw the WorldRoad in the world.
 	 *
 	 * @author Joel
 	 */
