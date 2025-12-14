@@ -2,10 +2,12 @@ package org.group_three.ui;
 
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
+import org.group_three.debug.StaticTester;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
+import org.group_three.service.Table;
 import org.group_three.utils.PathUtils;
 
 import java.io.File;
@@ -116,6 +118,11 @@ public class FakeInteractions {
         WPolygon.loadAllPolys();
 
         WTrafficLight.loadAll();
+
+        /*
+        StaticTester.TableToCSVExample();
+        */
+
 
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();

@@ -297,6 +297,20 @@ public class SimController {
     }
 
     /**
+     * @return steptime as int, or <code>-1</code> if failed
+     * @author Luca
+     * */
+    public int getTime(){
+        try {
+            return (int) stc.do_job_get(Simulation.getTime());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
      * Returns the global / static _mainsim.
      * @author Luca
      * */
