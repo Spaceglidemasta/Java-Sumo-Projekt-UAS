@@ -5,7 +5,9 @@ import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
+import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.model.WVehicle;
+import org.group_three.utils.Formatting;
 
 import java.io.File;
 import java.net.URI;
@@ -513,16 +515,11 @@ public class SimController {
      * @param lane departing lane. Use .getLaneNum(edgeID) for lane number.
      * @author Luca
      * */
+    @MayReturnNull
     public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){
 
         try {
-            int newVID = (int) stc.do_job_get(Vehicle.getIDCount()) - 1;
-            do {
-                newVID = newVID + 1;
-            }
-            while(getVehicleIDList().contains("wveh_" + newVID));
-
-            String newVIDstr = "wveh_" + newVID;
+            String newVIDstr = Formatting.uniquegen("wveh_", "");
 
             stc.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, (byte)lane));
             return new WVehicle(newVIDstr, stc);
@@ -541,6 +538,7 @@ public class SimController {
      * @return The created Route ID, or null if failed.
      * @author Luca
      * */
+    @MayReturnNull
     public String addRoute(SumoStringList edges){
         try {
             String RID = "r_" + System.currentTimeMillis();
