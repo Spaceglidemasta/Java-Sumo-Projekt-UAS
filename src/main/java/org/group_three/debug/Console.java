@@ -13,7 +13,6 @@ public class Console {
     private TextArea debugTextArea;
     private Stage debugStage;
 
-    // Private constructor for Singleton
     private Console() {
 
         debugStage = new Stage();
@@ -21,10 +20,9 @@ public class Console {
 
         // Create the TextArea for displaying debug messages
         debugTextArea = new TextArea();
-        debugTextArea.setEditable(false);  // Make sure the user can't edit this
-        debugTextArea.setWrapText(true);   // allow newline
+        debugTextArea.setEditable(false);
+        debugTextArea.setWrapText(true);
 
-        // Create a BorderPane as the layout for the window
         BorderPane root = new BorderPane();
         root.setCenter(debugTextArea);
 
@@ -46,7 +44,6 @@ public class Console {
         return instance;
     }
 
-
     public void log(String message) {
         Platform.runLater(() -> { // pass lambda function
             debugTextArea.appendText(message + "\n");
@@ -54,13 +51,10 @@ public class Console {
         });
     }
 
-
-    // Method to show the debug window
     public void show() {
         debugStage.show();
     }
 
-    // Method to hide the debug window
     public void hide() {
         debugStage.hide();
     }
