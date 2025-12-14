@@ -4,7 +4,8 @@ import de.tudresden.sumo.objects.SumoColor;
 import org.group_three.ui.Vector2D;
 
 /**
- *
+ * Wrapper class for individual links for
+ * Traffic lights (or stop lines)
  * @author Leon
  */
 public class WLink {
