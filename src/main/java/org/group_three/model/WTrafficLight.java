@@ -8,10 +8,7 @@ import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 /**
@@ -179,9 +176,9 @@ public class WTrafficLight {
      * @author Luca
      * */
     @MayReturnNull
-    public SumoStringList getLinkStates() {
+    public String getLinkStates() {
         try {
-            return (SumoStringList) stc.do_job_get(Trafficlight.getRedYellowGreenState(TLID));
+            return (String) stc.do_job_get(Trafficlight.getRedYellowGreenState(TLID));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -195,8 +192,8 @@ public class WTrafficLight {
      * @author Luca
      * */
     @MayReturnNull
-    public SumoStringList loadLinkedStateColors() {
-        SumoStringList lstates = this.getLinkStates();
+    public List<String> loadLinkedStateColors() {
+        List<String> lstates = Arrays.asList(this.getLinkStates().split(""));
 
         if(lstates == null) return null;
 
@@ -208,7 +205,7 @@ public class WTrafficLight {
 
             if(Objects.equals(state, "r") || Objects.equals(state, "R"))        sc = new SumoColor(255,0,0,255);
             else if(Objects.equals(state, "g") || Objects.equals(state, "G"))   sc = new SumoColor(0,255,0,255);
-            else if(Objects.equals(state, "y") || Objects.equals(state, "Y"))   sc = new SumoColor(0,255,255,255);
+            else if(Objects.equals(state, "y") || Objects.equals(state, "Y"))   sc = new SumoColor(255,255,0,255);
 
             allWlinks.get(i).setColor(sc);
 
