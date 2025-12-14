@@ -296,6 +296,8 @@ public class SimView2D {
 	 */
 	private static void addTrafficLights(Canvas renderLayer) {
 		for (WTrafficLight wTrafficLight : WTrafficLight.getAllWTLs()) {
+			wTrafficLight.loadLinkedStateColors();
+
 			for (WLink wLink : wTrafficLight.getAllWlinks()) {
 				new WorldTrafficLight(
 						world,
@@ -315,7 +317,9 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void updateTrafficLights(Canvas renderLayer) {
-
+		for (WTrafficLight wTrafficLight : WTrafficLight.getAllWTLs()) {
+			wTrafficLight.loadLinkedStateColors();
+		}
 	}
 
 	/**
