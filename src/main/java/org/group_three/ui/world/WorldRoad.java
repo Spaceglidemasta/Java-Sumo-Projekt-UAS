@@ -8,20 +8,61 @@ import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.controllers.RoadDetailsController;
 
+/**
+ * The class to represent roads in the world.
+ *
+ * @author Joel
+ */
 public class WorldRoad extends WorldObject {
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	//--------------------------------------------------ClassVariables--------------------------------------------------
-
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	Color color;
-	public WEdge wEdge;
-	Vector2D from;
-	Vector2D to;
-	Vector2D size;
+	/**
+	 * The color of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private Color color;
+
+	/**
+	 * The wrapper class of the edge.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final WEdge wEdge;
+
+	/**
+	 * The start point of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private Vector2D from;
+
+	/**
+	 * The end point of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private Vector2D to;
+
+	/**
+	 * The size of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private Vector2D size;
+
+	/**
+	 * The sumo id of the road.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	public String id = "";
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
@@ -39,6 +80,7 @@ public class WorldRoad extends WorldObject {
 	public WorldRoad() {
 		super();
 		this.color = null;
+		this.wEdge = null;
 		remove();
 	}
 
@@ -50,10 +92,11 @@ public class WorldRoad extends WorldObject {
 	 * @param displayName The display name which should show up on selection.
 	 * @author Joel
 	 */
-	public WorldRoad(World world, Canvas canvas, String displayName, Color color, Vector2D start, Vector2D end, double width, String id) {
+	public WorldRoad(World world, Canvas canvas, String displayName, Color color, Vector2D start, Vector2D end, double width, String id, WEdge wEdge) {
 		super(world, canvas, displayName);
 		this.color = color;
 		this.id = id;
+		this.wEdge = wEdge;
 
 		detailClassPath = "/org/group_three/ui/fxml/RoadDetails.fxml";
 
@@ -66,11 +109,9 @@ public class WorldRoad extends WorldObject {
 		);
 		setRotation(from.getDirectionAngle(to));
 
-		size = new Vector2D(a.length()/2, width);
+		//noinspection SuspiciousNameCombination
+		size = new Vector2D(a.length() / 2, width);
 
-		//for (String laneId : wEdge.getLaneIDs()) {
-		//	size.y += SimController.getMainsimcon().getLaneWidth(laneId);
-		//}
 
 		setInteractable(true);
 		setUseBoxCollision(true);
@@ -80,20 +121,16 @@ public class WorldRoad extends WorldObject {
 	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	//--------------------------------------------------GetterMethods---------------------------------------------------
-
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	//--------------------------------------------------SetterMethods---------------------------------------------------
-
-
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	RoadDetailsController roadDetailsController;
 
+	/**
+	 * A method to set up the details panel when the object is selected.
+	 *
+	 * @param fxmlLoader The FXML loader of the loaded details panel.
+	 * @author Joel
+	 */
 	@Override
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
 		roadDetailsController = fxmlLoader.getController();
@@ -101,7 +138,7 @@ public class WorldRoad extends WorldObject {
 	}
 
 	/**
-	 * The update method which is used to draw the WorldPoint in the world.
+	 * The update method which is used to draw the WorldRoad in the world.
 	 *
 	 * @author Joel
 	 */
@@ -110,6 +147,16 @@ public class WorldRoad extends WorldObject {
 		super.update();
 
 		drawRectangle(size, color);
+	}
+
+	/**
+	 * Gets the wedge object from this class.
+	 *
+	 * @return The wEdge object.
+	 * @author Joel
+	 */
+	public WEdge getwEdge() {
+		return wEdge;
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------

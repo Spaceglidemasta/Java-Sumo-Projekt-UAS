@@ -283,7 +283,8 @@ public class SimView2D {
 								list.get(list.indexOf(subPoint) - 1),
 								subPoint,
 								SimController.getMainsimcon().getLaneWidth(laneId) / 2,
-								laneId + " (" + (list.indexOf(subPoint) - 1) + ")"
+								laneId + " (" + (list.indexOf(subPoint) - 1) + ")",
+								wEdge
 						);
 					}
 				}
@@ -299,6 +300,8 @@ public class SimView2D {
 	 */
 	private static void addTrafficLights(Canvas renderLayer) {
 		for (WTrafficLight wTrafficLight : WTrafficLight.getAllWTLs()) {
+			wTrafficLight.loadLinkedStateColors();
+
 			for (WLink wLink : wTrafficLight.getAllWlinks()) {
 				new WorldTrafficLight(
 						world,
@@ -318,7 +321,9 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void updateTrafficLights(Canvas renderLayer) {
-
+		for (WTrafficLight wTrafficLight : WTrafficLight.getAllWTLs()) {
+			wTrafficLight.loadLinkedStateColors();
+		}
 	}
 
 	/**
@@ -329,13 +334,12 @@ public class SimView2D {
 	 */
 	private static void addVehicles(Canvas renderLayer) {
 		for (String id : SimController.getMainsimcon().getVehicleIDList()) {
-			WVehicle wVehicle = new WVehicle(id, SimController.getMainsimcon().getStc());
-			WorldVehicle worldVehicle = new WorldVehicle(
+			new WorldVehicle(
 					world,
 					renderLayer,
-					"Object TestCarSim"
+					"Object TestCarSim",
+					new WVehicle(id, SimController.getMainsimcon().getStc())
 			);
-			worldVehicle.setwVehicle(wVehicle);
 			vehicleIds.add(id);
 		}
 	}
@@ -365,13 +369,12 @@ public class SimView2D {
 
 		for (String id : currentVehicleList) {
 			if (vehicleIds.contains(id)) continue;
-			WVehicle wVehicle = new WVehicle(id, SimController.getMainsimcon().getStc());
-			WorldVehicle worldVehicle = new WorldVehicle(
+			new WorldVehicle(
 					world,
 					renderLayer,
-					"Object TestCarSim"
+					"Object TestCarSim",
+					new WVehicle(id, SimController.getMainsimcon().getStc())
 			);
-			worldVehicle.setwVehicle(wVehicle);
 			vehicleIds.add(id);
 		}
 	}
