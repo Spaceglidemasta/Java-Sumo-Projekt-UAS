@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
+import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.SimView2D;
 
 /**
@@ -103,6 +104,7 @@ public class BodyController {
 	 * @return The FXMLLoader of the details panel.
 	 * @author Joel
 	 */
+    @MayReturnNull
 	public static FXMLLoader setDetailsPanel(String fxmlPath) {
 		// try loading fxml file
 		FXMLLoader loader = new FXMLLoader(
