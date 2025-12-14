@@ -194,9 +194,6 @@ public class WTrafficLight {
     @MayReturnNull
     public List<String> loadLinkedStateColors() {
         List<String> lstates = Arrays.asList(this.getLinkStates().split(""));
-
-        if(lstates == null) return null;
-
         int i = 0;
 
         for(String state : lstates){

@@ -8,6 +8,7 @@ import de.tudresden.sumo.objects.SumoPosition2D;
  * used for straight Lines
  * @author Luca
  * */
+@Deprecated
 public class Sumo2DLine {
     public SumoPosition2D start;
     public SumoPosition2D end;

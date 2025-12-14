@@ -4,16 +4,18 @@ package org.group_three.service;
 import de.tudresden.sumo.cmd.Simulation;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
+import org.group_three.debug.annotations.StaticClass;
 
 import java.util.List;
 
 /**
  * Class for collecting statistics.
- * Can be instantiated to collect stats of one Simulation,
- * but also has plenty of Static functions.
+ * <s>Can be instantiated to collect stats of one Simulation,
+ * but also</s> has plenty of Static functions.
  * @author Luca
  * */
-public class Statistics {
+@StaticClass
+public class StatUtils {
 
     private SimController simcon;
     private List<String> content;
