@@ -32,4 +32,15 @@ public class Formatting {
 
         return formatted.toString();
     }
+
+    /**
+     * Generates a unique name.
+     * @param prefix the String before the 'random' iD
+     * @param suffix the String after the 'random' iD
+     * @return prefix + System.currentTimeMillis() + suffix
+     * @author Luca
+     * */
+    public static String uniquegen(String prefix, String suffix){
+        return prefix + System.currentTimeMillis() + suffix;
+    }
 }

@@ -1,11 +1,8 @@
 package org.group_three.service;
 
-import javafx.stage.FileChooser;
 import org.group_three.debug.Debug;
 import org.group_three.debug.exceptions.InvalidArgumentCount;
-import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.utils.Formatting;
-import org.group_three.utils.PathUtils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -122,7 +119,7 @@ public class Table {
         // Retrieved 2025-12-14, License - CC BY-SA 4.0
 
         BufferedWriter out = null;
-        String filename = PathUtils.outputgen("output/tout_", ".csv");
+        String filename = Formatting.uniquegen("output/tout_", ".csv");
 
         if(content == null || content.isEmpty()) {
             Debug.print("Table is empty. CSV file was not outputted.");
