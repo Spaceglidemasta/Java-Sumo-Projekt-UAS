@@ -2,8 +2,10 @@ package org.group_three.ui.world;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
+import org.group_three.api.SimController;
 import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
+import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
 /**
@@ -97,7 +99,7 @@ public class WorldTrafficLight extends WorldObject {
 	public void update() {
 		super.update();
 
-		drawRectangle(size.div(2), Color.ALICEBLUE);
+		drawRectangle(size.div(2), Color.RED); //Meth.SumoClrToClr(wLink.getColor())
 	}
 
 }

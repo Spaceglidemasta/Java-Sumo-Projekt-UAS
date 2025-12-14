@@ -155,7 +155,7 @@ public class SimControlController {
         */
 
 		//Debug.print("Step clicked.");
-		
+
 
 		SimController.getMainsimcon().step();
 		SimView2D.update();
