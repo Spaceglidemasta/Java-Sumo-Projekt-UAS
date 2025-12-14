@@ -1,12 +1,20 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.objects.SumoStringList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
+import org.group_three.model.WEdge;
+import org.group_three.model.WVehicle;
+import org.group_three.ui.Meth;
 import org.group_three.ui.world.WorldRoad;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The controller for the RoadDetails.
@@ -115,6 +123,41 @@ public class RoadDetailsController {
 					}
 					Debug.print("Color changed.");
 				});
+	}
+
+	/**
+	 * The button to spawn vehicles on edge.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private void onSpawnPressed() {
+		Debug.print(worldRoad);
+		Debug.print(worldRoad.getwEdge());
+		Debug.print(worldRoad.getwEdge().getEdgeID());
+
+		List<WEdge> roads = WEdge.getAllroads();
+
+		SumoStringList strings = new SumoStringList();
+		strings.add(worldRoad.getwEdge().getEdgeID());
+
+		int randomIndex = ThreadLocalRandom.current().nextInt(roads.size());
+		strings.add(roads.get(randomIndex).getEdgeID());
+
+		String routeId = SimController.getMainsimcon().addRoute(strings);
+
+		if (routeId != null) {
+			Debug.print("Try Create Veh: " + routeId);
+			WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
+					"DEFAULT_VEHTYPE",
+					routeId,
+					0,
+					0,
+					10
+					,0
+			);
+			if (wVehicle != null) wVehicle.setColor(Meth.ClrToSumoClr(Color.CYAN));
+		}
 	}
 
 	/**

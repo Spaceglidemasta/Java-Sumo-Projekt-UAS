@@ -279,7 +279,8 @@ public class SimView2D {
 								list.get(list.indexOf(subPoint) - 1),
 								subPoint,
 								SimController.getMainsimcon().getLaneWidth(laneId) / 2,
-								laneId + " (" + (list.indexOf(subPoint) - 1) + ")"
+								laneId + " (" + (list.indexOf(subPoint) - 1) + ")",
+								wEdge
 						);
 					}
 				}

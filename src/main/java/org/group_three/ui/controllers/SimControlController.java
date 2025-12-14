@@ -155,6 +155,37 @@ public class SimControlController {
         */
 
 		//Debug.print("Step clicked.");
+
+
+
+
+		/*List<WEdge> roads = WEdge.getAllroads();
+		int randomIndex = ThreadLocalRandom.current().nextInt(roads.size());
+
+		SumoStringList strings = new SumoStringList();
+		strings.add(roads.get(randomIndex).getEdgeID());
+
+		randomIndex = ThreadLocalRandom.current().nextInt(roads.size());
+		strings.add(roads.get(randomIndex).getEdgeID());
+
+		String routeId = SimController.getMainsimcon().addRoute(strings);
+
+		if (routeId != null) {
+			Debug.print("Try Create Veh: " + routeId);
+			WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
+					"DEFAULT_VEHTYPE",
+					routeId,
+					0,
+					0,
+					10
+					,0
+			);
+			if (wVehicle != null) wVehicle.setColor(Meth.ClrToSumoClr(Color.CYAN));
+		}*/
+
+
+
+
 		SimController.getMainsimcon().step();
 		SimView2D.update();
 	}
@@ -188,21 +219,6 @@ public class SimControlController {
 	 */
 	private void onTick() {
 		onStepClicked();
-
-		/*List<WEdge> roads = WEdge.getAllroads();
-		int randomIndex = ThreadLocalRandom.current().nextInt(roads.size());
-
-		SumoStringList strings = new SumoStringList();
-		strings.add(roads.get(randomIndex).getEdgeID());
-
-		SimController.getMainsimcon().addVehicle(
-				"DEFAULT_VEHTYPE",
-				SimController.getMainsimcon().addRoute(strings),
-				SimController.getMainsimcon().gettim,
-				0,
-				10
-				,0
-				).setColor(Meth.ClrToSumoClr(Color.GREEN));*/
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------

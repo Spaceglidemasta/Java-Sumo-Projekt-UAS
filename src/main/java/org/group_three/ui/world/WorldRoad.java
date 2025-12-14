@@ -23,7 +23,7 @@ public class WorldRoad extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	Color color;
+	private Color color;
 
 	/**
 	 * The wrapper class of the edge.
@@ -31,7 +31,7 @@ public class WorldRoad extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	public WEdge wEdge;
+	private final WEdge wEdge;
 
 	/**
 	 * The start point of the road.
@@ -39,7 +39,7 @@ public class WorldRoad extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	Vector2D from;
+	private Vector2D from;
 
 	/**
 	 * The end point of the road.
@@ -47,7 +47,7 @@ public class WorldRoad extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	Vector2D to;
+	private Vector2D to;
 
 	/**
 	 * The size of the road.
@@ -55,7 +55,7 @@ public class WorldRoad extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	Vector2D size;
+	private Vector2D size;
 
 	/**
 	 * The sumo id of the road.
@@ -80,6 +80,7 @@ public class WorldRoad extends WorldObject {
 	public WorldRoad() {
 		super();
 		this.color = null;
+		this.wEdge = null;
 		remove();
 	}
 
@@ -91,10 +92,11 @@ public class WorldRoad extends WorldObject {
 	 * @param displayName The display name which should show up on selection.
 	 * @author Joel
 	 */
-	public WorldRoad(World world, Canvas canvas, String displayName, Color color, Vector2D start, Vector2D end, double width, String id) {
+	public WorldRoad(World world, Canvas canvas, String displayName, Color color, Vector2D start, Vector2D end, double width, String id, WEdge wEdge) {
 		super(world, canvas, displayName);
 		this.color = color;
 		this.id = id;
+		this.wEdge = wEdge;
 
 		detailClassPath = "/org/group_three/ui/fxml/RoadDetails.fxml";
 
@@ -145,6 +147,16 @@ public class WorldRoad extends WorldObject {
 		super.update();
 
 		drawRectangle(size, color);
+	}
+
+	/**
+	 * Gets the wedge object from this class.
+	 *
+	 * @return The wEdge object.
+	 * @author Joel
+	 */
+	public WEdge getwEdge() {
+		return wEdge;
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------
