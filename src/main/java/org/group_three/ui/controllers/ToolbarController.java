@@ -22,7 +22,9 @@ import javafx.stage.FileChooser;
 import org.group_three.ui.SimView2D;
 
 /**
- * Controller for the Toolbar at the Top of the Screen. Related to FXML
+ * Controller for the toolbar to manage button interactions,
+ * as well as loading the simulation
+ *
  * @author Joel
  */
 public class ToolbarController {
@@ -55,8 +57,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * adds the recent simulations to the open recent menu tab
-	 *
+	 * Adds the recently opened simulations to the "recent" menu tab
+     *
 	 * @author Joel
 	 */
 	private void initializeOpenRecentList() {
@@ -76,7 +78,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * func to disable/reactivate the close, reload and export buttons when no simulation is loaded
+     * Function to disable/reactivate the
+     * "close", "reload" and "export" buttons when simulation is loaded
 	 *
 	 * @param disabled Param-Comment
 	 * @author Joel
@@ -92,9 +95,11 @@ public class ToolbarController {
 	private String loadedSimulation = null;
 
 	/**
-	 * Comment
+	 * Function to activate buttons related to the simulation,
+     * such as "close" and add the opened simulation to
+     * the top of the list of recently opened simulations
 	 *
-	 * @param path Param-Comment
+	 * @param path Takes in the path as String
 	 * @author Joel
 	 */
 	private void setLoadedSimulation(String path) {
@@ -117,9 +122,10 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Comment
+	 * Function that tries to load the simulation from the passed in
+     * config or xml files
 	 *
-	 * @param paths Param-Comment
+	 * @param paths takes in the path(s) of the opened file(s)
 	 * @author Joel
 	 */
 	private void tryLoadingSimulation(List<File> paths) {
@@ -146,7 +152,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Comment
+	 * Function to validate the recently opened File locations,
+     * if no file is found in the entry is not displayed
 	 *
 	 * @author Joel
 	 */
@@ -177,7 +184,9 @@ public class ToolbarController {
 
 
 	/**
-	 * Simulation -> ButtonClicked
+     * Function for "open" button to open fileChooser,
+     * select a desired Sumo config or net as well as rou xml
+     * file and try to load the simulation
 	 *
 	 * @author Joel
 	 */
@@ -223,7 +232,7 @@ public class ToolbarController {
 	}*/
 
 	/**
-	 * Comment
+	 * Function to load a recently selected simulation
 	 *
 	 * @param item Param-Comment
 	 * @author Joel
@@ -241,7 +250,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Comment
+	 * Function to close the simulation if the
+     * "Close" button is clicked
 	 *
 	 * @author Joel
 	 */
@@ -254,8 +264,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Comment
-	 *
+	 * Function to reload the already loaded simulation
+	 * (Yet to be implemented)
 	 * @author Joel
 	 */
 	@FXML
@@ -264,8 +274,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Comment
-	 *
+	 * Function to export gathered data from the simulation
+	 * (Yet to be implemented)
 	 * @author Joel
 	 */
 	@FXML
@@ -274,7 +284,7 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Comment
+	 * Function for "Settings" Tab in toolbar
 	 *
 	 * @author Joel
 	 */
@@ -284,7 +294,7 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Comment
+	 * Function to open the console tab in the Settings meny
 	 *
 	 * @author Leon
 	 */
@@ -296,7 +306,7 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Comment
+	 * Function for "Help" Tab in toolbar
 	 *
 	 * @author Joel
 	 */
