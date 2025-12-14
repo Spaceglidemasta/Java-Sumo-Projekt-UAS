@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.util.Duration;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
+import org.group_three.model.WVehicle;
+import org.group_three.service.Table;
 import org.group_three.ui.SimView2D;
 
 import java.io.IOException;
@@ -58,6 +60,25 @@ public class SimControlController {
 	 */
 	@FXML
 	private void onStepClicked() {
+
+        /*Print table example
+        Table cars = new Table("vehID", "Color", "Position");
+
+        SimController sc = SimController.getMainsimcon();
+
+        for(String VID : sc.getVehicleIDList()){
+            WVehicle v = new WVehicle(VID, sc.getStc());
+            v.update();
+            cars.add(
+                    VID,
+                    v.getColor().toString(),
+                    v.getPos().toString()
+            );
+        }
+
+        cars.print();
+        */
+
 		//Debug.print("Step clicked.");
 		SimController.getMainsimcon().step();
 		time++;

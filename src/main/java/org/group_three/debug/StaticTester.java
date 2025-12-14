@@ -6,7 +6,9 @@ import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
+import org.group_three.model.WPolygon;
 import org.group_three.model.WVehicle;
+import org.group_three.service.Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +73,21 @@ public class StaticTester {
         }
 
         sim.close();
+    }
+
+
+    public static void TableToCSVExample(){
+        Table polyTable = new Table("PID", "Type", "color");
+
+        for(WPolygon poly : WPolygon.getAllPolys()){
+            polyTable.add(
+                    poly.getPoID(),
+                    poly.getType(),
+                    poly.getColor()
+            );
+        }
+
+        polyTable.outAsCSV();
     }
 
 
