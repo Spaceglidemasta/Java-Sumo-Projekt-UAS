@@ -34,6 +34,8 @@ public final class UI {
 	public static final boolean showPolys = false;
 	// A Vector2D to decide how far one can zoom in and out of the UI. (x = min, y = max)
 	public static final Vector2D zoomLimit = new Vector2D(0.1, 10);
+	// The limit to decide the minimum and maximum value of the speedModificator.
+	public static final Vector2D simulationSpeedLimit = new Vector2D(0.01, 50);
 
 
 	// The minimal window width.

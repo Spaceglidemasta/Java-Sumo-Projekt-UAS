@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.group_three.api.SimController;
+import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.model.WEdge;
 import org.group_three.ui.Meth;
@@ -19,17 +20,82 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SimControlController {
 
+	/**
+	 * The speed mod text field to display and change the value via ui.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private TextField speedModifier;
 
-	private static double speedModValue = 1;
-
-	private static double time = 1;
+	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * Comment
+	 * A double to set the simulation play speed mod.
 	 *
-	 * @throws IOException Throw-Comment
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private static double speedModValue = 1;
+
+	/**
+	 * The timeline that controls the trigger timing of the steps for the simulation.
+	 * Runs on the JavaFX thread.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private static Timeline timeline;
+
+	/**
+	 * A boolean to tell if the simulation is currently playing.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private static boolean play = false;
+
+	//--------------------------------------------------ClassVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * Gets if the simulation is currently playing.
+	 *
+	 * @return If the simulation is currently playing.
+	 * @author Joel
+	 */
+	public static boolean isPlay() {
+		return play;
+	}
+
+	/**
+	 * Sets if the simulation should play or not.
+	 *
+	 * @param play If the simulation should play.
+	 * @author Joel
+	 */
+	public static void setPlay(boolean play) {
+		SimControlController.play = play;
+
+		if (play) {
+			timeline.play();
+		} else {
+			timeline.stop();
+		}
+	}
+
+	//---------------------------------------------------ClassMethods---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The default ini method of the controller.
+	 *
+	 * @throws IOException The default exception to the controller.
 	 * @author Joel
 	 */
 	@FXML
@@ -44,8 +110,7 @@ public class SimControlController {
 		speedModifier.textProperty().addListener(
 				(obs, oldText, newText) -> {
 					try {
-						speedModValue = Math.abs(Double.parseDouble(newText));
-						if (speedModValue <= 0) speedModValue = 0.1;
+						speedModValue = Math.clamp(Math.abs(Double.parseDouble(newText)), UI.simulationSpeedLimit.x, UI.simulationSpeedLimit.y);
 						speedModifier.textProperty().set(String.valueOf(speedModValue));
 						timeline.setRate(speedModValue);
 
@@ -56,10 +121,8 @@ public class SimControlController {
 				});
 	}
 
-	private static Timeline timeline;
-
 	/**
-	 * Comment
+	 * Triggers when the gui step button is pressed.
 	 *
 	 * @author Joel
 	 */
@@ -67,29 +130,11 @@ public class SimControlController {
 	private void onStepClicked() {
 		//Debug.print("Step clicked.");
 		SimController.getMainsimcon().step();
-		time++;
-		//Debug.print((int) time);
 		SimView2D.update();
 	}
 
-	public static boolean isPlay() {
-		return play;
-	}
-
-	public static void setPlay(boolean play) {
-		SimControlController.play = play;
-
-		if (play) {
-			timeline.play();
-		} else {
-			timeline.stop();
-		}
-	}
-
-	private static boolean play = false;
-
 	/**
-	 * Comment
+	 * Triggers when the gui play button is pressed.
 	 *
 	 * @author Joel
 	 */
@@ -100,11 +145,21 @@ public class SimControlController {
 		setPlay(true);
 	}
 
+	/**
+	 * Triggers when the gui pause button is pressed.
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onPauseClicked() {
 		setPlay(false);
 	}
 
+	/**
+	 * The tick method for the simulation replay.
+	 *
+	 * @author Joel
+	 */
 	private void onTick() {
 		onStepClicked();
 
@@ -123,4 +178,7 @@ public class SimControlController {
 				,0
 				).setColor(Meth.ClrToSumoClr(Color.GREEN));*/
 	}
+
+	//-----------------------------------------------------Methods------------------------------------------------------
+
 }
