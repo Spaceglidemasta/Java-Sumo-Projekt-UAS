@@ -99,7 +99,15 @@ public class WorldTrafficLight extends WorldObject {
 	public void update() {
 		super.update();
 
-		drawRectangle(size.div(2), Color.RED); //Meth.SumoClrToClr(wLink.getColor())
+		Color color = Color.GRAY;
+		try {
+			color = Meth.SumoClrToClr(wLink.getColor());
+		} catch (Exception e) {
+			//throw new RuntimeException(e);
+			color = Color.GRAY;
+		}
+
+		drawRectangle(size.div(2), color);
 	}
 
 }
