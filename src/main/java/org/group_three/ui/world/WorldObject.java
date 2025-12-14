@@ -199,9 +199,9 @@ public class WorldObject {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * Comment
+	 * Gets sphereCollision
 	 *
-	 * @return
+	 * @return radius
 	 * @author Joel
 	 */
 	public double getSphereCollision() {
@@ -209,9 +209,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * Comment
+	 * Gets world the object is in
 	 *
-	 * @return
+	 * @return World
 	 * @author Joel
 	 */
 	public World getWorld() {
@@ -219,9 +219,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * Comment
+	 * Graphics context
 	 *
-	 * @return
+	 * @return Graphics context
 	 * @author Joel
 	 */
 	protected GraphicsContext getGraphicsContext() {
@@ -229,9 +229,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * Comment
+	 * Canvas
 	 *
-	 * @return
+	 * @return Canvas
 	 * @author Joel
 	 */
 	public Canvas getRenderTarget() {
@@ -239,7 +239,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * @return
+	 * Gets the display name of the object.
+	 *
+	 * @return String
 	 * @author Joel
 	 */
 	public String getDisplayName() {
@@ -247,7 +249,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * @return
+	 * Gets the id of the object.
+	 *
+	 * @return ClassName_UNIQUENUMBER
 	 * @author Joel
 	 */
 	public String getId() {
@@ -255,7 +259,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * @return
+	 * Gets the simple class name.
+	 *
+	 * @return The class name. For Example "WorldObject"
 	 * @author Joel
 	 */
 	public String getIdName() {
@@ -264,9 +270,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * Comment
+	 * Gets the position of the object in the world.
 	 *
-	 * @return Return-Comment
+	 * @return Vector2D
 	 * @author Joel
 	 */
 	public Vector2D getPosition() {
@@ -274,9 +280,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * Comment
+	 * Gets the roation of the object in the world
 	 *
-	 * @return Return-Comment
+	 * @return Double
 	 * @author Joel
 	 */
 	public double getRotation() {
@@ -284,7 +290,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * @return
+	 * Gets if the object is interactable.
+	 *
+	 * @return Boolean
 	 * @author Joel
 	 */
 	public boolean isInteractable() {
@@ -296,14 +304,19 @@ public class WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	/**
+	 * Sets the sphere collision of the object.
+	 * @param sphereCollision radius
+	 * @author Joel
+	 */
 	public void setSphereCollision(double sphereCollision) {
 		this.sphereCollision = sphereCollision;
 	}
 
 	/**
-	 * Comment
+	 * sets the position of the object in the world.
 	 *
-	 * @param position Param-Comment
+	 * @param position Vector2D
 	 * @author Joel
 	 */
 	public void setPosition(Vector2D position) {
@@ -328,9 +341,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * Comment
+	 * Set the rotation of the object in the world.
 	 *
-	 * @param rotation Param-Comment
+	 * @param rotation degrees
 	 * @author Joel
 	 */
 	public void setRotation(double rotation) {
@@ -348,7 +361,9 @@ public class WorldObject {
 	}
 
 	/**
-	 * @param interactable
+	 * Set if the object should use collision and be interactable.
+	 *
+	 * @param interactable boolean
 	 * @author Joel
 	 */
 	public void setInteractable(boolean interactable) {
