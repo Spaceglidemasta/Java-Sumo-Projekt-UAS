@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Joel
  */
-public class WorldObject {
+public abstract class WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
