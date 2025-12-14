@@ -107,7 +107,7 @@ public class RoadDetailsController {
 		// following has no real use yet, comments later
 		vehicleSpawnSpeed.textProperty().addListener((_, oldText, newText) -> {
 			try {
-				vehicleSpawnSpeed.setText(String.valueOf(Math.abs(Double.parseDouble(newText))));
+				vehicleSpawnSpeed.setText(String.valueOf(Math.abs(Integer.parseInt(newText))));
 			} catch (Exception e) {
 				vehicleSpawnSpeed.setText(oldText);
 			}
@@ -123,6 +123,8 @@ public class RoadDetailsController {
 					}
 					Debug.print("Color changed.");
 				});
+
+		vehicleSpawnRoute.setDisable(true); // route is always random currently, will be changed
 	}
 
 	/**
@@ -132,31 +134,29 @@ public class RoadDetailsController {
 	 */
 	@FXML
 	private void onSpawnPressed() {
-		Debug.print(worldRoad);
-		Debug.print(worldRoad.getwEdge());
-		Debug.print(worldRoad.getwEdge().getEdgeID());
-
 		List<WEdge> roads = WEdge.getAllroads();
 
-		SumoStringList strings = new SumoStringList();
-		strings.add(worldRoad.getwEdge().getEdgeID());
+		for (int i = 0; i < Integer.parseInt(vehicleSpawnAmount.textProperty().getValue()); i++) {
+			SumoStringList strings = new SumoStringList();
+			strings.add(worldRoad.getwEdge().getEdgeID());
 
-		int randomIndex = ThreadLocalRandom.current().nextInt(roads.size());
-		strings.add(roads.get(randomIndex).getEdgeID());
+			int randomIndex = ThreadLocalRandom.current().nextInt(roads.size());
+			strings.add(roads.get(randomIndex).getEdgeID());
 
-		String routeId = SimController.getMainsimcon().addRoute(strings);
+			String routeId = SimController.getMainsimcon().addRoute(strings);
 
-		if (routeId != null) {
-			Debug.print("Try Create Veh: " + routeId);
-			WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
-					"DEFAULT_VEHTYPE",
-					routeId,
-					0,
-					0,
-					10
-					,0
-			);
-			if (wVehicle != null) wVehicle.setColor(Meth.ClrToSumoClr(Color.CYAN));
+			if (routeId != null) {
+				Debug.print("Try Create Veh: " + routeId);
+				WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
+						"DEFAULT_VEHTYPE",
+						routeId,
+						0,
+						0,
+						Integer.parseInt(vehicleSpawnSpeed.getText())
+						,0
+				);
+				if (wVehicle != null) wVehicle.setColor(Meth.ClrToSumoClr(vehicleSpawnColor.getValue()));
+			}
 		}
 	}
 

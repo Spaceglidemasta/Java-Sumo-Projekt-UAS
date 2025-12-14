@@ -131,7 +131,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <TextField fx:id="vehicleSpawnSpeed" promptText="speed" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                    <TextField fx:id="vehicleSpawnSpeed" promptText="speed" text="10" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
