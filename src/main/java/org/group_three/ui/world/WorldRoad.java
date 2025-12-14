@@ -124,7 +124,7 @@ public class WorldRoad extends WorldObject {
 	RoadDetailsController roadDetailsController;
 
 	/**
-	 * A method to update the details panel when the object is selected.
+	 * A method to set up the details panel when the object is selected.
 	 *
 	 * @param fxmlLoader The FXML loader of the loaded details panel.
 	 * @author Joel

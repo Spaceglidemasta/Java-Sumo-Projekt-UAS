@@ -325,13 +325,12 @@ public class SimView2D {
 	 */
 	private static void addVehicles(Canvas renderLayer) {
 		for (String id : SimController.getMainsimcon().getVehicleIDList()) {
-			WVehicle wVehicle = new WVehicle(id, SimController.getMainsimcon().getStc());
-			WorldVehicle worldVehicle = new WorldVehicle(
+			new WorldVehicle(
 					world,
 					renderLayer,
-					"Object TestCarSim"
+					"Object TestCarSim",
+					new WVehicle(id, SimController.getMainsimcon().getStc())
 			);
-			worldVehicle.setwVehicle(wVehicle);
 			vehicleIds.add(id);
 		}
 	}
@@ -361,13 +360,12 @@ public class SimView2D {
 
 		for (String id : currentVehicleList) {
 			if (vehicleIds.contains(id)) continue;
-			WVehicle wVehicle = new WVehicle(id, SimController.getMainsimcon().getStc());
-			WorldVehicle worldVehicle = new WorldVehicle(
+			new WorldVehicle(
 					world,
 					renderLayer,
-					"Object TestCarSim"
+					"Object TestCarSim",
+					new WVehicle(id, SimController.getMainsimcon().getStc())
 			);
-			worldVehicle.setwVehicle(wVehicle);
 			vehicleIds.add(id);
 		}
 	}
