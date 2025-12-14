@@ -100,4 +100,4 @@ with a given Speed with the Play button. The pause button pauses the simulation.
 On the right side of the screen, you will find a lot of tools to edit the Simulation. Most of these require to select the element
 you want to edit on the Map first.
 
-!["Example Img"](documentation_images/guiusage.png)
+!["Example Img"](documentation_images/guiusage2.png)
