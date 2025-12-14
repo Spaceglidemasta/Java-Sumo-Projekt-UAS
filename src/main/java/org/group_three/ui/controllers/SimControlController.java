@@ -18,6 +18,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * THe controller class for the gui simulation controls.
+ *
+ * @author Joel
+ */
 public class SimControlController {
 
 	/**
