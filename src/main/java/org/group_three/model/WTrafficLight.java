@@ -1,10 +1,7 @@
 package org.group_three.model;
 
 import de.tudresden.sumo.cmd.Trafficlight;
-import de.tudresden.sumo.objects.SumoLink;
-import de.tudresden.sumo.objects.SumoLinkList;
-import de.tudresden.sumo.objects.SumoPosition2D;
-import de.tudresden.sumo.objects.SumoStringList;
+import de.tudresden.sumo.objects.*;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
 import org.group_three.ui.Meth;
@@ -13,6 +10,7 @@ import org.group_three.ui.Vector2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -97,12 +95,11 @@ public class WTrafficLight {
     }
 
 
-    /**
-     * Returns the TL Phase as an integer from <code>[0:2]</code>
-     * @return phase or <code>-1</code> if failed
+    /**This does not give you the color of the TL as an index!!!
+     * @return the index of the current phase[0:] Or <code>-1</code> if failed
      * @author Luca
      * */
-    public int getPhase() {
+    public int getPhaseIndex() {
         try {
             return (int) stc.do_job_get(Trafficlight.getPhase(TLID));
         }
@@ -172,6 +169,50 @@ public class WTrafficLight {
             return null;
         }
     }
+
+
+    /** This only retrieves the states. You probably want to use loadLinkedStateColors()
+     * Get program ID from the TLID
+     * @return The states of all Linked Wlinks.
+     * @author Luca
+     * */
+    public SumoStringList getLinkStates() {
+        try {
+            return (SumoStringList) stc.do_job_get(Trafficlight.getRedYellowGreenState(TLID));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Loads the Colors for all Links of this TL via the simulation. <br>
+     * Loaded Colors can then be retrieved via wLink.getColor()
+     * @return The states of all Linked WLinks.
+     * @author Luca
+     * */
+    public SumoStringList loadLinkedStateColors() {
+        SumoStringList lstates = this.getLinkStates();
+
+        int i = 0;
+
+        for(String state : lstates){
+
+            SumoColor sc = new SumoColor();
+
+            if(Objects.equals(state, "r") || Objects.equals(state, "R"))        sc = new SumoColor(255,0,0,255);
+            else if(Objects.equals(state, "g") || Objects.equals(state, "G"))   sc = new SumoColor(0,255,0,255);
+            else if(Objects.equals(state, "y") || Objects.equals(state, "Y"))   sc = new SumoColor(0,255,255,255);
+
+            allWlinks.get(i).setColor(sc);
+
+            i++;
+        }
+
+        return lstates;
+
+    }
+
 
 
     /**<h2>loadAll</h2>

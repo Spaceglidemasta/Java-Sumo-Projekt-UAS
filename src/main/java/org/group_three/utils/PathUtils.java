@@ -112,24 +112,4 @@ public class PathUtils {
         // path0.relativize(path1)  <--returns the relative path of path1 relative to path0
     }
 
-    /**
-     * Generates a unique name for the output file.
-     * @return "out" + System.currentTimeMillis() + ".txt"
-     * @author Luca
-     * */
-    public static String outputgen(){
-        return "out" + System.currentTimeMillis() + ".txt";
-    }
-
-    /**
-     * Generates a unique name for the output file.
-     * @param prefix the String before the 'random' iD
-     * @param suffix the String after the 'random' iD
-     * @return prefix + System.currentTimeMillis() + suffix
-     * @author Luca
-     * */
-    public static String outputgen(String prefix, String suffix){
-        return prefix + System.currentTimeMillis() + suffix;
-    }
-
 }
