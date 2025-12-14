@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.*;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import org.group_three.debug.annotations.MayReturnNull;
 
 /**
  * The MainApp class which is the GUI.
@@ -100,6 +101,7 @@ public class MainApp extends Application {
 	 * @return The app icon as an image.
 	 * @author Joel
 	 */
+    @MayReturnNull
 	public Image getAppIcon() {
 		//add error handling, if no "icons" is found
 		try {

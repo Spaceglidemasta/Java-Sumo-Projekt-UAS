@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
+import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.controllers.SimControlController;
@@ -442,6 +443,7 @@ public class World {
 	 * @return The hit world object.
 	 * @author Joel
 	 */
+    @MayReturnNull
 	public WorldObject interact(Vector2D worldPosition) {
 		if (worldObjects.isEmpty()) return null;
 
