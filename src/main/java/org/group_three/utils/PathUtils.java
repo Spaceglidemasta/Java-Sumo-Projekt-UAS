@@ -13,6 +13,10 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Utility Class for Pathing
+ * @author Luca
+ * */
 public class PathUtils {
     private PathUtils(){}
 
@@ -115,6 +119,17 @@ public class PathUtils {
      * */
     public static String outputgen(){
         return "out" + System.currentTimeMillis() + ".txt";
+    }
+
+    /**
+     * Generates a unique name for the output file.
+     * @param prefix the String before the 'random' iD
+     * @param suffix the String after the 'random' iD
+     * @return prefix + System.currentTimeMillis() + suffix
+     * @author Luca
+     * */
+    public static String outputgen(String prefix, String suffix){
+        return prefix + System.currentTimeMillis() + suffix;
     }
 
 }

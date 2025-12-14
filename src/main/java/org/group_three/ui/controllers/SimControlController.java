@@ -10,6 +10,8 @@ import javafx.util.Duration;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
+import org.group_three.model.WVehicle;
+import org.group_three.service.Table;
 import org.group_three.model.WEdge;
 import org.group_three.ui.Meth;
 import org.group_three.ui.SimView2D;
@@ -133,6 +135,25 @@ public class SimControlController {
 	 */
 	@FXML
 	private void onStepClicked() {
+
+        /*Print table example
+        Table cars = new Table("vehID", "Color", "Position");
+
+        SimController sc = SimController.getMainsimcon();
+
+        for(String VID : sc.getVehicleIDList()){
+            WVehicle v = new WVehicle(VID, sc.getStc());
+            v.update();
+            cars.add(
+                    VID,
+                    v.getColor().toString(),
+                    v.getPos().toString()
+            );
+        }
+
+        cars.print();
+        */
+
 		//Debug.print("Step clicked.");
 		SimController.getMainsimcon().step();
 		SimView2D.update();
