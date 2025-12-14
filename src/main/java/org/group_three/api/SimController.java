@@ -304,7 +304,9 @@ public class SimController {
      * */
     public int getTime(){
         try {
-            return (int) stc.do_job_get(Simulation.getTime());
+			double time = (double) stc.do_job_get(Simulation.getTime());
+
+            return Math.toIntExact(Math.round(time));
 
         } catch (Exception e) {
             e.printStackTrace();

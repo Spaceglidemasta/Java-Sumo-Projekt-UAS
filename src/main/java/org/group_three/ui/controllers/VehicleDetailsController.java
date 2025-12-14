@@ -130,7 +130,7 @@ public class VehicleDetailsController {
 	public void update() {
 		speed.setText(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
 		color.setValue(worldVehicle.getColor());
-		route.setText(worldVehicle.getwVehicle().getRouteEdges().toString());
+		route.setText(worldVehicle.getwVehicle().getRouteEdges().getLast());
 	}
 
 	/**
