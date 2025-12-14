@@ -7,6 +7,7 @@ import de.tudresden.sumo.objects.SumoStringList;
 import it.polito.appeal.traci.SumoTraciConnection;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
+import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 
 /**
@@ -321,6 +322,7 @@ public class WVehicle {
      * @return RouteID
      * @author Luca
      * */
+    @MayReturnNull
     public String getRouteID(){
         try {
             return (String) stc.do_job_get(Vehicle.getRouteID(vehID));
@@ -335,6 +337,7 @@ public class WVehicle {
      * @return RouteID
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getRouteEdges(){
         try {
             return (SumoStringList) stc.do_job_get(Vehicle.getRoute(vehID));
@@ -348,6 +351,7 @@ public class WVehicle {
      * @return Validity of the Route of the Vehicle as String. Test this.
      * @author Luca
      * */
+    @MayReturnNull
     public String isRouteValid(){
         try {
             return (String) stc.do_job_get(Vehicle.isRouteValid(vehID));

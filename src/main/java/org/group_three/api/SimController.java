@@ -253,8 +253,7 @@ public class SimController {
     public void close(){
 
         try {
-            // this can actually throw an ISE even tho it's not indicated.
-            stc.close();
+            if(stc != null && !stc.isClosed()) stc.close();
         }
         catch (IllegalStateException ise){
             ise.printStackTrace();
@@ -293,7 +292,7 @@ public class SimController {
         }
 
         //if compiled normally
-        Debug.print("Normal Execution detected");
+        Debug.print("Compiled Execution detected");
         return jarDir.getParentFile().getParentFile().getParentFile();
 
     }
@@ -316,7 +315,14 @@ public class SimController {
      * Returns the global / static _mainsim.
      * @author Luca
      * */
-    public static SimController getMainsimcon() {return mainsimcon;}
+    @MayReturnNull
+    public static SimController getMainsimcon() {
+
+        if(mainsimcon == null || mainsimcon.getStc().isClosed()) return null;
+
+        return mainsimcon;
+
+    }
 
     /**
      * Sets this Simulation as the new, global, main simulation. <br>
@@ -325,7 +331,7 @@ public class SimController {
      * */
     public void setMainstc(boolean close_old){
 
-        if(mainsimcon != null && close_old){
+        if(mainsimcon != null && !mainsimcon.getStc().isClosed() && close_old){
             mainsimcon.close();
         }
 
@@ -351,6 +357,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getTrafficLightsIDList(){
         try {
             return (SumoStringList) stc.do_job_get(Trafficlight.getIDList());
@@ -368,6 +375,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getVehicleIDList() {
 
         try {
@@ -385,6 +393,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getRouteIDList() {
 
         try {
@@ -402,6 +411,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getEdgeIDList() {
 
         try {
@@ -420,6 +430,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getPolygonIDList() {
 
         try {
@@ -449,6 +460,7 @@ public class SimController {
      * @return IDs of all Lanes in a network
      * @author Leon
      */
+    @MayReturnNull
     public SumoStringList getLaneIDList() {
         try {
             return (SumoStringList) stc.do_job_get(Lane.getIDList());
@@ -471,6 +483,7 @@ public class SimController {
      * @return coordinates from start to end
      * @author Leon, Luca
      */
+    @MayReturnNull
     public LinkedList<SumoPosition2D> getLaneShape(String laneID) {
 
         try {
@@ -487,6 +500,7 @@ public class SimController {
      * @param edgeID The String of the EdgeID you want the number of lanes from.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getLaneNumOfEdge(String edgeID) {
 
         try {
@@ -513,6 +527,7 @@ public class SimController {
      * @param pos Position in m from the start of the Route
      * @param speed Speed? Not clear from declaration
      * @param lane departing lane. Use .getLaneNum(edgeID) for lane number.
+     * @return the instantiated WVehicle
      * @author Luca
      * */
     @MayReturnNull
@@ -541,7 +556,7 @@ public class SimController {
     @MayReturnNull
     public String addRoute(SumoStringList edges){
         try {
-            String RID = "r_" + System.currentTimeMillis();
+            String RID = Formatting.uniquegen("r_", "");
 
             stc.do_job_set(Route.add(RID, edges));
 
@@ -559,6 +574,7 @@ public class SimController {
      * @return The edges as a SumoStringList, or null if failed
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getRouteEdges(String RID){
         try {
             return (SumoStringList) stc.do_job_get(Route.getEdges(RID));
@@ -593,6 +609,7 @@ public class SimController {
      * @return All junctionID's connected to the TL.
      * @author Luca
      * */
+    @MayReturnNull
     public List<String> getTLJunctions(String TLID){
         try {
             return (SumoStringList) stc.do_job_get(Trafficlight.getControlledJunctions(TLID));
@@ -607,6 +624,7 @@ public class SimController {
      * @return All LaneID's controlled by the TL.
      * @author Leon
      * */
+    @MayReturnNull
     public SumoStringList getControlledLanes(String TLID) {
         try {
             return (SumoStringList) stc.do_job_get(Trafficlight.getControlledLanes(TLID));
@@ -622,6 +640,7 @@ public class SimController {
      * (Weird format "E1_0#:clusterJ4_J5_0_0#E0.16_0")
      * @author Leon
      * */
+    @MayReturnNull
     public SumoLinkList getControlledLinks(String linkID) {
         try {
             return (SumoLinkList) stc.do_job_get(Trafficlight.getControlledLinks(linkID));
@@ -638,6 +657,7 @@ public class SimController {
      * @return Returns the width of a chosen lane.
      * @author Leon
      * */
+    @MayReturnNull
     public Double getLaneWidth(String laneID) {
         try {
             return (Double) stc.do_job_get(Lane.getWidth(laneID));
@@ -714,6 +734,7 @@ public class SimController {
      * @return <code>null</code> if failed, else the requested parameter
      * @author Luca
      * */
+    @MayReturnNull
     public String getTLParam(String TLID, String param){
         String retparam;
         try {
@@ -754,6 +775,7 @@ public class SimController {
      * Beware that this uses unchecked casting and CAN return null.
      * @author Luca
      * */
+    @MayReturnNull
     public List<String> getJunctionIDList() {
 
         try {
@@ -777,6 +799,7 @@ public class SimController {
      * @return SumoPosition2D, or <code>null</code> if failed.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoPosition2D getJunctionPos(String juncID){
 
         try {
@@ -793,6 +816,7 @@ public class SimController {
      * @return coords, or <code>null</code> if failed.
      * @author Leon
      * */
+    @MayReturnNull
     public LinkedList<SumoPosition2D> getJunctionShape(String laneID) {
         try {
             return ((SumoGeometry) stc.do_job_get(Junction.getShape(laneID))).coords;
@@ -803,6 +827,11 @@ public class SimController {
     }
 
 
+    /**
+     * @return the type of the poly, or null if failed
+     * @author Luca
+     * */
+    @MayReturnNull
     public SumoGeometry getPolyType(String pid){
         try {
             return (SumoGeometry) stc.do_job_get(Polygon.getShape(pid));
@@ -831,6 +860,7 @@ public class SimController {
      * @return "Object" of the .do_job_get() method. Yes, you need to unsafe cast this.
      * <code>null</code> if failed.
      * */
+    @MayReturnNull
     public Object jobget(SumoCommand scmd){
         try {
             return stc.do_job_get(scmd);

@@ -191,10 +191,14 @@ public class SimView2D {
 		Vector2D rnHeight = new Vector2D();
 		Vector2D rnWidth = new Vector2D();
 
-		// calculate rn, what was rn? something related to full world size and moving viewer initially to center of world
-		for (String jid : SimController.getMainsimcon().getJunctionIDList()) {
+
+        List<String> allJIDs = SimController.getMainsimcon().getJunctionIDList();
+
+        if(allJIDs == null) return;
+        // calculate rn, what was rn? something related to full world size and moving viewer initially to center of world
+		for (String jid : allJIDs) {
 			Vector2D jidV = new Vector2D(SimController.getMainsimcon().getJunctionPos(jid).x, SimController.getMainsimcon().getJunctionPos(jid).y);
-			boolean firstIteration = jid.equals(SimController.getMainsimcon().getJunctionIDList().getFirst());
+			boolean firstIteration = jid.equals(allJIDs.getFirst());
 
 			if (rnHeight.x > jidV.x || firstIteration)
 				rnHeight.x = jidV.x;

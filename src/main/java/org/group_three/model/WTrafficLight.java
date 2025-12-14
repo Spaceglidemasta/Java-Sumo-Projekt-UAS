@@ -4,6 +4,7 @@ import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.sumo.objects.*;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
+import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
@@ -161,6 +162,7 @@ public class WTrafficLight {
      * @return PID / null
      * @author Luca
      * */
+    @MayReturnNull
     public String getProgramID() {
         try {
             return (String) stc.do_job_get(Trafficlight.getProgram(TLID));
@@ -176,6 +178,7 @@ public class WTrafficLight {
      * @return The states of all Linked Wlinks.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList getLinkStates() {
         try {
             return (SumoStringList) stc.do_job_get(Trafficlight.getRedYellowGreenState(TLID));
@@ -191,8 +194,11 @@ public class WTrafficLight {
      * @return The states of all Linked WLinks.
      * @author Luca
      * */
+    @MayReturnNull
     public SumoStringList loadLinkedStateColors() {
         SumoStringList lstates = this.getLinkStates();
+
+        if(lstates == null) return null;
 
         int i = 0;
 

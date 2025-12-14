@@ -1,6 +1,7 @@
 package org.group_three.service;
 
 import org.group_three.debug.Debug;
+import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.exceptions.InvalidArgumentCount;
 import org.group_three.utils.Formatting;
 
@@ -69,6 +70,7 @@ public class Table {
      * @param target the expected value of the attribute
      * @author Luca
      * */
+    @MayReturnNull
     public List<Object> getRowWhere(String attribute, Object target) {
 
         int index = attributeNames.indexOf(attribute);

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 // import java.io.IOException; for what was that?
 
@@ -21,8 +22,7 @@ import javafx.stage.FileChooser;
 import org.group_three.ui.SimView2D;
 
 /**
- * Comment
- *
+ * Controller for the Toolbar at the Top of the Screen. Related to FXML
  * @author Joel
  */
 public class ToolbarController {
@@ -128,7 +128,7 @@ public class ToolbarController {
 		StringBuilder mergedPath = new StringBuilder();
 
 		for (File path : paths) {
-			mergedPath.append(path.getAbsolutePath());
+			mergedPath.append(path.getAbsolutePath() + "\n");
 		}
 
 		// don't attempt to load the same simulation if its currently loaded
@@ -230,7 +230,14 @@ public class ToolbarController {
 	 */
 	private void onSimulationOpenRecentClicked(MenuItem item) {
 		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText());
-		tryLoadingSimulation(new ArrayList<>());
+
+        List<File> files = new ArrayList<>();
+
+        for(String strfile : item.getText().split("\n")){
+            files.add(new File(strfile));
+        }
+
+		tryLoadingSimulation(files);
 	}
 
 	/**
