@@ -47,6 +47,7 @@ public class Console {
     public void log(String message) {
         Platform.runLater(() -> { // pass lambda function
             debugTextArea.appendText(message + "\n");
+            Debug.trimLines(debugTextArea);
             debugTextArea.setScrollTop(Double.MAX_VALUE);
         });
     }
@@ -56,6 +57,7 @@ public class Console {
     }
 
     public void hide() {
+        Debug.flushEverything();
         debugStage.hide();
     }
 }
