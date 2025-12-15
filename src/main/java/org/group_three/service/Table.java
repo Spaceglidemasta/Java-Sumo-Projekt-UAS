@@ -8,8 +8,12 @@ import org.group_three.utils.Formatting;
 
 import javax.management.relation.InvalidRelationTypeException;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -157,7 +161,7 @@ public class Table<T> {
      * @source <a href="https://stackoverflow.com/a/10667865">Stack Overflow Awnser by "Addicted"</a>
      * @author Luca
      * */
-    public void outAsCSV(){
+    public boolean outAsCSV(){
 
         // Source - https://stackoverflow.com/a/10667865
         // Posted by Addicted, modified by community. See post 'Timeline' for change history
@@ -168,7 +172,7 @@ public class Table<T> {
 
         if(content == null || content.isEmpty()) {
             Debug.print("Table is empty. CSV file was not outputted.");
-            return;
+            return false;
         }
 
         try {
@@ -197,6 +201,65 @@ public class Table<T> {
 
         Debug.print("Table was saved as: " + filename + ". This may take a second to load.");
 
+       return true;
+    }
+
+
+    /**
+     * Writes the table to a CSV file into ./output/...
+     * @param pathstr Path relative to ./output. <br>pathstr="foo" outputs to output/foo/tout_[...], so don't append /
+     * @source <a href="https://stackoverflow.com/a/10667865">Stack Overflow Awnser by "Addicted"</a>
+     * @author Luca
+     * */
+    public boolean outAsCSV(String pathstr){
+
+        Path target = Path.of("output", pathstr);
+
+        if(!Files.exists(target)){
+            Debug.print("Target directory \"" + target + "\" does not exist.");
+            return false;
+        };
+
+        // Source - https://stackoverflow.com/a/10667865
+        // Posted by Addicted, modified by community. See post 'Timeline' for change history
+        // Retrieved 2025-12-14, License - CC BY-SA 4.0
+
+        BufferedWriter out = null;
+        String filename = Formatting.uniquegen("output/" + pathstr + "/tout_", ".csv");
+
+        if(content == null || content.isEmpty()) {
+            Debug.print("Table is empty. CSV file was not outputted.");
+            return false;
+        }
+
+        try {
+            FileWriter fstream = new FileWriter(filename, true); //true tells to append data.
+            out = new BufferedWriter(fstream);
+            out.write(Formatting.toCSVformat(attributeNames));
+
+            for(List<T> row : content) {
+                out.write(Formatting.toCSVformat(row));
+            }
+
+        }
+
+        catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        if(out != null){
+            try {
+                out.close();
+            }
+            catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+
+        Debug.print("Table was saved as: " + filename + ". This may take a second to load.");
+
+
+        return true;
     }
 
 }
