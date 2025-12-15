@@ -538,10 +538,10 @@ public abstract class WorldObject {
 		graphicsContext.restore();
 	}
 
-	public void drawPolyLine(List<Vector2D> points, Color color) {
+	public void drawLine(List<Vector2D> points, double width, Color color) {
 		graphicsContext.save();
 		graphicsContext.setStroke(color);
-		graphicsContext.setLineWidth(1);
+		graphicsContext.setLineWidth(width);
 		setDrawTransform();
 
 		List<Vector2D> shape = new ArrayList<>();
