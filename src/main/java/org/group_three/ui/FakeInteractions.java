@@ -123,11 +123,13 @@ public class FakeInteractions {
         StaticTester.TableToCSVExample();
         */
 
+        StaticTester.StatisticGraphExample();
+
 
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
 
-        //Statistics.exportState(PathUtils.outputgen());
+        //StatUtils.exportState(PathUtils.outputgen());
 
 		return true;
 	}

@@ -1,33 +1,46 @@
 package org.group_three.service;
 
+import com.sun.jdi.InvalidTypeException;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.exceptions.InvalidArgumentCount;
 import org.group_three.utils.Formatting;
 
+import javax.management.relation.InvalidRelationTypeException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class Table {
+public class Table<T> {
 
-    private final int attributeCount;
-    private List<String> attributeNames;
+    protected final int attributeCount;
+    protected List<String> attributeNames;
 
     /// The whole content of the table.<br> <code>attributeCount</code> * content.size() in size.
-    private List<List<Object>> content;
+    protected List<List<T>> content;
+
 
     public Table(String ... atts){
 
         this.attributeCount = atts.length;
 
-        attributeNames = new ArrayList<>();
+        attributeNames = new ArrayList<>(List.of(atts));
         content = new ArrayList<>();
 
-        attributeNames.addAll(List.of(atts));
     }
+
+    public List<String> getAttributeNames() {
+        return attributeNames;
+    }
+
+    public boolean hasAttribute(String attribute){
+        return attributeNames.contains(attribute);
+    }
+
+
 
     /**
      * Adds a tuple / row to the table.
@@ -36,7 +49,7 @@ public class Table {
      * @return true if success, false if not.
      * @author Luca
      * */
-    public boolean add(Object ... atts) throws InvalidArgumentCount {
+    public final boolean add(T... atts) throws InvalidArgumentCount, InvalidTypeException {
 
         if(atts.length != attributeCount){
             throw new InvalidArgumentCount(atts.length + " arguments given, " + attributeCount + " expected.");
@@ -58,9 +71,39 @@ public class Table {
      * @return row at a certain index
      * @author Luca
      * */
-    public List<Object> getRow(int index){
+    public List<T> getRow(int index){
         return content.get(index);
     }
+
+
+    public List<List<T>> getContent() {return content;}
+
+
+    /**
+     * @param attribute The Name of the Attribute / Column
+     * @return The Column as a List of Objects
+     * @author Luca
+     * */
+    @MayReturnNull
+    public List<T> getColumn(String attribute){
+
+        int index = attributeNames.indexOf(attribute);
+
+        if(index == -1){
+            Debug.print("Attribute " + attribute + " is not Part of the table.");
+            return null;
+        }
+
+        List<T> column = new ArrayList<>();
+
+        for(List<T> row : content){
+            column.add(row.get(index));
+        }
+
+        return column;
+    }
+
+
 
     /**
      * Gets the Row where <code>attribute</code> is <code>target</code><br>
@@ -71,11 +114,11 @@ public class Table {
      * @author Luca
      * */
     @MayReturnNull
-    public List<Object> getRowWhere(String attribute, Object target) {
+    public List<T> getRowWhere(String attribute, T target) {
 
         int index = attributeNames.indexOf(attribute);
 
-        for(List<Object> row : content) {
+        for(List<T> row : content) {
             if(row.get(index) == target) return row;
         }
 
@@ -99,8 +142,8 @@ public class Table {
 
         System.out.println("\n" + "-".repeat(85));
 
-        for(List<Object> row : content) {
-            for(Object _attr : row){
+        for(List<T> row : content) {
+            for(T _attr : row){
                 System.out.print("| " + _attr.toString() + " |");
             }
             System.out.println();
@@ -133,7 +176,7 @@ public class Table {
             out = new BufferedWriter(fstream);
             out.write(Formatting.toCSVformat(attributeNames));
 
-            for(List<Object> row : content) {
+            for(List<T> row : content) {
                 out.write(Formatting.toCSVformat(row));
             }
 

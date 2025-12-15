@@ -587,6 +587,27 @@ public class SimController {
         }
     }
 
+
+    /**
+     * @return Average vehicle-speed from all loaded Vehicles.
+     * @author Luca
+     * */
+    public double getAverageVehSpeed(){
+
+        SumoStringList allVIDs = getVehicleIDList();
+
+        double speedcount = 0;
+        double vehcount = 0;
+
+
+        for(String VID : allVIDs){
+            speedcount += (double) jobget(Vehicle.getSpeed(VID));
+            vehcount++;
+        }
+
+        return speedcount / vehcount;
+    }
+
     // ******************************************************
     // **               Traffic Lights                     **
     // ******************************************************

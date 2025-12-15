@@ -1,439 +1,443 @@
-2025-11-12,Spaceglidemasta,"Init new Project take"
-2025-11-14,Joel,"pom changed to Java25"
-2025-11-14,Joel,"Added JavaFX from Maven"
-2025-11-14,Joel,"Create MainGui.java"
-2025-11-14,Joel,"Spaces to Tab"
-2025-11-14,Joel,"random testing + added color palette"
-2025-11-14,Joel,"GPT JavaFX 3D Example"
-2025-11-14,Joel,"+Func:getAppIcon()"
-2025-11-14,Joel,"+ some comments on pom and added a mainClassPath property"
-2025-11-15,Joel,"Created first FXML GUI for testing"
-2025-11-15,Joel,"Random testing changes"
-2025-11-15,Joel,"Restructuring + MainViewController"
-2025-11-15,Joel,"+ package org.group_three.*"
-2025-11-15,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-15,Joel,"Some GUI related file splitting"
-2025-11-16,Spaceglidemasta,"readme init"
-2025-11-16,Spaceglidemasta,"init readme"
-2025-11-16,Joel,"fxgb"
-2025-11-16,masta of the universe,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-16,masta of the universe,"Merge pull request #1 from Spaceglidemasta/basic-gui-noSumoFeatures"
-2025-11-16,Joel,"start maingui in main class"
-2025-11-16,Joel,"pom main class changed"
-2025-11-16,Joel,"FXML splitting"
-2025-11-16,Joel,"+ Toolbar->Simulation->OnClicked*"
-2025-11-16,Joel,"+ some Toolbar pseudo functionality"
-2025-11-16,Joel,""e" replaced with "event" for readability"
-2025-11-16,Joel,"+ custom MenuItem class to hold path value"
-2025-11-16,Joel,"- useless placeholder menu items"
-2025-11-16,Joel,"change of controller initializer from public to private"
-2025-11-17,Joel,"+ FileChooser for Simulation -> Open..."
-2025-11-17,masta of the universe,"api.SimSumo and api.SimTraci added. Changed to notes"
-2025-11-17,masta of the universe,"api init"
-2025-11-17,masta of the universe,"Merge pull request #2 from Spaceglidemasta/basic-gui-noSumoFeatures"
-2025-11-17,masta of the universe,"Merge pull request #3 from Spaceglidemasta/sumo-service"
-2025-11-17,Leon-Uas,"debug init"
-2025-11-17,masta of the universe,"Merge pull request #4 from Spaceglidemasta/debug"
-2025-11-17,masta of the universe,"SimController added"
-2025-11-17,masta of the universe,"Merge branch 'main' into sumo-service"
-2025-11-17,masta of the universe,"fixed confliction"
-2025-11-17,masta of the universe,"Merge pull request #5 from Spaceglidemasta/sumo-service"
-2025-11-17,Joel,"2d renderer attempt"
-2025-11-17,Joel,"Merge branch 'basic-gui-noSumoFeatures' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into basic-gui-noSumoFeatures"
-2025-11-17,Joel,"Revert "api.SimSumo and api.SimTraci added. Changed to notes""
-2025-11-17,masta of the universe,"debug debugged"
-2025-11-17,masta of the universe,"Merge pull request #6 from Spaceglidemasta/debug"
-2025-11-17,masta of the universe,"deleted stuff"
-2025-11-17,masta of the universe,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-17,masta of the universe,"Merge pull request #7 from Spaceglidemasta/basic-gui-noSumoFeatures"
-2025-11-17,Joel,"System.out.println replaced with Debug.print"
-2025-11-17,Joel,"removed org.group_three. in debug log"
-2025-11-17,Joel,"Merge branch 'main' into debug"
-2025-11-17,Joel0457,"Merge pull request #8 from Spaceglidemasta/debug"
-2025-11-17,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-17,Joel,"+ Debug.print("
-2025-11-17,Joel,"+ setRotation"
-2025-11-17,Joel,"+ class name color = cyan & added multi type compatibility"
-2025-11-17,Joel,"Merge branch 'main' into debug"
-2025-11-17,Joel0457,"Merge pull request #9 from Spaceglidemasta/debug"
-2025-11-17,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-17,Joel,"disable rotation change"
-2025-11-17,Joel,"+ dynamic render layer + changed render layer names"
-2025-11-17,Joel,"+ world rotation + word background draw"
-2025-11-17,Joel,"added missing empry constructor"
-2025-11-18,Joel,"+ world classes"
-2025-11-18,Joel,"added some get and set functions to world class"
-2025-11-18,Joel,"+ addset funcs"
-2025-11-18,Joel,"+ worldobject get;set;add;"
-2025-11-19,masta of the universe,"removed bs"
-2025-11-19,masta of the universe,"traas api included in project and maven"
-2025-11-19,masta of the universe,"Merge pull request #10 from Spaceglidemasta/sumo-service"
-2025-11-19,masta of the universe,"endlich funktioniert das"
-2025-11-19,masta of the universe,"Merge pull request #11 from Spaceglidemasta/sumo-service"
-2025-11-19,masta of the universe,"second try including TraaS.jar"
-2025-11-19,masta of the universe,"Merge pull request #12 from Spaceglidemasta/sumo-service"
-2025-11-19,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-19,masta of the universe,"Server connection to Sumo"
-2025-11-19,masta of the universe,"Merge pull request #13 from Spaceglidemasta/sumo-service"
-2025-11-19,Joel,"some intellij warning reduction"
-2025-11-19,Joel,"Create codeStyleConfig.xml"
-2025-11-19,Joel,"intellij reformat run"
-2025-11-19,masta of the universe,"Added constants package with UI and Settings final class"
-2025-11-19,masta of the universe,"Merge pull request #14 from Spaceglidemasta/sumo-service"
-2025-11-19,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-19,Joel,"typo fix"
-2025-11-19,Joel,"+ usage of world class"
-2025-11-19,Joel,"implemented world bounds (without rotation)"
-2025-11-19,Joel,"+ comment"
-2025-11-19,Joel,"+ update code moved from requestUpdate() to update() func"
-2025-11-19,Joel,"out commented world bounds because not fully functional"
-2025-11-20,Joel,"ui change attemp, non functional"
-2025-11-20,masta of the universe,"added Assembly plugin to maven, enabeling the package command used for creating jar files"
-2025-11-20,masta of the universe,"Merge pull request #15 from Spaceglidemasta/sumo-service"
-2025-11-20,Joel,"ugly af basic css desing made by gpt"
-2025-11-20,Joel,"logo adjustments, still ugly"
-2025-11-20,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-20,Joel,"+ lerp func"
-2025-11-20,Joel,"Vector2D add,sub,mul,div"
-2025-11-20,masta of the universe,"+Integrated .jar functionality, -Outsourced route, network and sumo.exe to parent folder"
-2025-11-20,masta of the universe,"Merge pull request #16 from Spaceglidemasta/sumo-service"
-2025-11-20,masta of the universe,"+debugging -magic strings"
-2025-11-21,Joel,"+func Vector2D.toString()"
-2025-11-21,Joel,"+ relative location calculations"
-2025-11-21,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-21,Joel,"+ first working world object prototype"
-2025-11-21,Joel,"+ Keyboard class"
-2025-11-21,Joel,"some clean up & ISSUE: y axis is flipped, needs to be fixed"
-2025-11-21,Joel,"+func Vector2D.getRotation()"
-2025-11-21,Joel,"Update Keyboard.java"
-2025-11-21,Joel,"+ rotation controls"
-2025-11-21,Joel,"code formatting"
-2025-11-21,Joel,"reformat code"
-2025-11-21,Joel,"some clean up and moved constants to UI class"
-2025-11-21,Joel,"some clean up and file restructuring"
-2025-11-21,Joel,"restructuring"
-2025-11-21,Joel,"restructuring"
-2025-11-21,Joel,"restructuring"
-2025-11-21,Joel,"restrcuturing"
-2025-11-21,Joel,"java graphics warning removal"
-2025-11-23,masta of the universe," added comments to SimController"
-2025-11-23,spaceglidemasta,"Merge pull request #17 from Spaceglidemasta/basic-gui-noSumoFeatures"
-2025-11-23,masta of the universe,"Merge branch 'main' into sumo-service"
-2025-11-23,masta of the universe,"+ SimController.getTrafficLights, + SimController.addVehicle [blueprint], + comments in SimController"
-2025-11-23,spaceglidemasta,"Merge pull request #18 from Spaceglidemasta/sumo-service"
-2025-11-24,Leon-Uas,"Console for debugging first itteration"
-2025-11-24,Leon-Uas,"New debugwindow in JavaFX"
-2025-11-24,Joel,"fixed world object location not updating on zoom change"
-2025-11-25,Joel,"+ comments in const UI class"
-2025-11-25,Joel,"+ some comments in the Vector2D class"
-2025-11-25,masta of the universe,"Fixed some bugs regarding Debug.Console, changed all Debug.print in ui to Debug.toConsole. excluded .idea from source control"
-2025-11-25,spaceglidemasta,"Merge pull request #19 from Spaceglidemasta/debug"
-2025-11-25,Joel,"more comments"
-2025-11-25,masta of the universe,"Added searching for sumo.exe in C:\Program Files (x86)\Eclipse\Sumo\/bin first."
-2025-11-25,spaceglidemasta,"Merge pull request #20 from Spaceglidemasta/sumo-service"
-2025-11-26,masta of the universe,"Milestone commit"
-2025-11-26,spaceglidemasta,"Merge pull request #21 from Spaceglidemasta/sumo-service"
-2025-11-26,Joel,"+ more basic comments"
-2025-11-26,Joel0457,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-26,Joel0457,"Merge pull request #22 from Spaceglidemasta/basic-gui-noSumoFeatures"
-2025-11-26,masta of the universe,"Second Milestone 1 push, added some comments"
-2025-11-26,spaceglidemasta,"Merge pull request #23 from Spaceglidemasta/sumo-service"
-2025-11-26,masta of the universe,"Update SimController.java"
-2025-11-26,spaceglidemasta,"Merge pull request #24 from Spaceglidemasta/sumo-service"
-2025-11-26,masta of the universe,"Small but important changes to README"
-2025-11-26,spaceglidemasta,"Merge pull request #25 from Spaceglidemasta/sumo-service"
-2025-11-26,Joel,"removed comment"
-2025-11-27,Joel,"set recentlyOpend button to default disabled"
-2025-11-27,Joel,"added a fake class for function class for the time of no actual sumo interaction existing"
-2025-11-27,Joel,"made the recently opend feature functional"
-2025-11-27,Joel,"func namechange"
-2025-11-28,masta of the universe,"Added the SimController.job method, which is just a warpper for the do_job_get() method."
-2025-11-28,Joel,"remove invalid recentlyopend entries"
-2025-11-28,masta of the universe,"Added WVehicle class with getters; Added new getter to SimController"
-2025-11-28,spaceglidemasta,"Merge pull request #26 from Spaceglidemasta/sumo-service"
-2025-11-28,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-28,Joel,"+ multiple file selection"
-2025-11-28,masta of the universe,"fixed huge mistake in SimController (do_job_get and do_job_set are not the same); Updated WVehicle.getPos() to function correct."
-2025-11-28,spaceglidemasta,"Merge pull request #27 from Spaceglidemasta/sumo-service"
-2025-11-28,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-11-28,Joel0457,"Merge pull request #28 from Spaceglidemasta/basic-gui-noSumoFeatures"
-2025-11-28,masta of the universe,"Changed comments and type in SimController.addVehicle()"
-2025-11-28,masta of the universe,"Added debug.exceptions package, together with InvalidFilesSelected"
-2025-11-28,spaceglidemasta,"Merge pull request #29 from Spaceglidemasta/debug"
-2025-11-28,masta of the universe,"Merge branch 'main' into sumo-service"
-2025-11-28,Joel,"+ Vector2D funcs"
-2025-11-28,Joel,"added full JavaDoc documentation to the Vector2D class"
-2025-11-28,Joel,"removal of SimulationView2D and 3D classes as they had no purpose"
-2025-11-28,Joel,"some file restructuring"
-2025-11-28,masta of the universe,"Added functionality to the FakeInteractions and changed some methods in SimController"
-2025-11-28,masta of the universe,"added SimController Constructor for .sumocfg files"
-2025-11-28,Joel,"added JavaDoc to the Keyboard class and changed it to an list based listener"
-2025-11-28,Joel,"changed some javadoc in Vector2D"
-2025-11-28,Joel,"+ Meth class java doc template"
-2025-11-28,Joel,"+ java doc template for MenuItem_RecentlyOpend"
-2025-11-28,Joel,"added java doc template for MainApp"
-2025-11-28,Joel,"added javadoc template forBodyController"
-2025-11-28,Joel,"added javadoc template for TailController"
-2025-11-28,Joel,"added javadoc template for CanvasController"
-2025-11-28,Joel,"added javadoc template for ToolbarController"
-2025-11-28,Joel,"added javadoc template for World class"
-2025-11-28,Joel,"added javadoc template for WorldObject class"
-2025-11-29,Joel,"+ pivot of world rotation is now center of view, rotation of world is now done in a relative way instead of absolute"
-2025-11-29,Joel,"0,0 pivot based zoom"
-2025-11-29,Joel,"viewer zoom pivot at 0,0"
-2025-11-29,Joel,"read mouseposition in world space"
-2025-11-29,Joel,"fixed zoom issue with worldspaceMousePosition"
-2025-11-29,masta of the universe,"Added WVehicle.update logic"
-2025-11-29,spaceglidemasta,"Merge pull request #30 from Spaceglidemasta/sumo-service"
-2025-11-29,Joel,"+ interaction func to interact with objects in the world"
-2025-11-30,masta of the universe,"Added Lane attribute together with constructor and updater to WVehicle Class"
-2025-11-30,masta of the universe,"Added Junction and  Traffic Light related methods to SimController"
-2025-11-30,spaceglidemasta,"Merge pull request #31 from Spaceglidemasta/sumo-service"
-2025-11-30,masta of the universe,"Added StaticTester Class so the main functio isnt cluttered wit testing"
-2025-11-30,spaceglidemasta,"Merge pull request #32 from Spaceglidemasta/debug"
-2025-12-02,Joel,"+ car icon"
-2025-12-02,Joel,"changing icon color on runtime with pixel reader/writer"
-2025-12-02,masta of the universe,"Added timestep methods to SimController and updated the Test scenario"
-2025-12-02,Joel,"colors in rgba instead of Color.RED,..."
-2025-12-02,masta of the universe,"Changed List<String> return type to SumoStringList in some SimController methods"
-2025-12-02,Joel,"manager attempt for color coded icons"
-2025-12-02,Joel,"another non functional icon manager attempt"
-2025-12-03,Joel,"world and worlobject class more oop style"
-2025-12-03,Joel,"world* classes restructuring and more oop approach"
-2025-12-03,Joel,"added ColoredIconManager to world vehicle class"
-2025-12-03,Joel,"+ WorldPoint class"
-2025-12-03,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-12-03,Joel,"Update ToolbarController.java"
-2025-12-03,Joel,"+ javadoc info in WorldObject class"
-2025-12-03,Joel,"WorldClass formatted"
-2025-12-03,Joel,"+ javadoc + formatting of many files"
-2025-12-03,Joel,"Delete ColoredIcon.java"
-2025-12-03,Joel,"Delete MenuItem_RecentlyOpend.java"
-2025-12-03,Joel,"rename of WorldVehicle's imageTint to color"
-2025-12-04,Joel,"Create DataPanelEntryExamples.fxml"
-2025-12-04,Joel,"include data panel entry exmaple in body"
-2025-12-04,spaceglidemasta,"Merge pull request #33 from Spaceglidemasta/sumo-service"
-2025-12-04,Joel,"+ nodepoint and vehicle render"
-2025-12-04,Joel,"Merge branch 'main' into basic-gui-noSumoFeatures"
-2025-12-04,Joel,"load complex sumo cfg"
-2025-12-04,Joel,"_sumcon getter func for wvehicle - no javadocs"
-2025-12-04,Joel,"outcommented test code for merge with main"
-2025-12-04,Joel0457,"Merge pull request #34 from Spaceglidemasta/basic-gui-noSumoFeatures"
-2025-12-04,Joel,"+ Simulation Controls Controller"
-2025-12-04,Joel,"+ default simulation ini on startup"
-2025-12-04,Joel,"+ SimView2D class"
-2025-12-04,Joel,"outcommented world color as world background logic broke"
-2025-12-04,Joel,"working sumo simulation step and play feature"
-2025-12-06,Joel,"changed SimController.getSumoLoc() from private to public to use it in the FakeInteraction class"
-2025-12-06,Joel,"+ some null checks to fix null error related issues"
-2025-12-06,Joel,"FakeInteractions class: converted absolute paths to relative ones so the gui file selection works"
-2025-12-06,Joel,"+ FakeInteractions.getRelativePath() JavaDoc and AI code part explainations"
-2025-12-07,Joel0457,"Merge pull request #35 from Spaceglidemasta/gui"
-2025-12-07,masta of the universe,"Changed some var names in SumoController"
-2025-12-07,masta of the universe,"Merge branch 'main' into sumo-service"
-2025-12-07,masta of the universe,"Updatet naming"
-2025-12-07,spaceglidemasta,"Merge pull request #36 from Spaceglidemasta/sumo-service"
-2025-12-07,masta of the universe,"Changed alot of logic in SimController and the Selection proccess of Files. + getTLJunctions() method in SimController"
-2025-12-07,spaceglidemasta,"Merge pull request #37 from Spaceglidemasta/sumo-service"
-2025-12-07,masta of the universe,"Added methods for color and speed to WVehicle"
-2025-12-07,spaceglidemasta,"Merge pull request #38 from Spaceglidemasta/sumo-service"
-2025-12-07,Joel,"+ color coded vehicle render implemention"
-2025-12-07,Joel,"+ box collision functionality"
-2025-12-07,Joel,"world object detail class placeholders"
-2025-12-07,Joel,"+ gui simulation speed modifier"
-2025-12-08,Leon-Uas,"Lane coordinates"
-2025-12-08,Leon-Uas,"Update SimController.java"
-2025-12-08,Joel,"+ world object detail panel system + detail panel for vehicles"
-2025-12-08,Joel,"+ visual detail panel kill when detail object is gone from simulation"
-2025-12-09,Leon-Uas,"Merge branch 'main' into debug"
-2025-12-09,spaceglidemasta,"Merge pull request #39 from Spaceglidemasta/debug"
-2025-12-09,spaceglidemasta,"Merge pull request #40 from Spaceglidemasta/main"
-2025-12-09,spaceglidemasta,"Merge pull request #41 from Spaceglidemasta/sumo-service"
-2025-12-09,spaceglidemasta,"Merge branch 'main' into gui"
-2025-12-09,spaceglidemasta,"Merge pull request #42 from Spaceglidemasta/gui"
-2025-12-09,Joel,"outcommetted broken code in SimController"
-2025-12-09,Joel," added UI constant to decide which color value should be replaced for the color coded icons"
-2025-12-09,Joel,"readded car icon, changed custom car icon name"
-2025-12-09,Joel,"vehicle param change attempt [failed]"
-2025-12-09,Leon-Uas,"Traffic light itteration 1"
-2025-12-09,Joel,"+ java doc in VehicleDetailsController"
-2025-12-09,Joel,"close main simu on program end"
-2025-12-09,Joel,"Merge branch 'main' into gui"
-2025-12-09,Joel,"+ Toolbar.close functionality"
-2025-12-09,Joel,"set reload and export button to always disabled becaus enot implemented yet"
-2025-12-09,Joel,"fixed box collision + added box collision visuals"
-2025-12-09,Joel,"+ javadoc in World class"
-2025-12-09,Joel,"completed JavaDoc for the Vector2D class"
-2025-12-09,Joel,"Main class cleanup"
-2025-12-09,Joel,"completed JavaDoc for the Keyboard class"
-2025-12-09,Joel,"completed JavaDoc for MainApp class"
-2025-12-09,Joel,"Vector2D code restructuring for readability"
-2025-12-09,Joel,"MainApp code restructuring for readability"
-2025-12-09,Joel,"completed JavaDoc for the WorldPoint class and added some more structuring for code readibility in some other classes"
-2025-12-09,Joel,"+ some more multiple class code cleanup"
-2025-12-09,Joel,"some more multi class code cleanup and restructuring"
-2025-12-10,masta of the universe,"Fixed _sumcon to stc"
-2025-12-10,masta of the universe,"Changed Color conversion in Meth and WorldVehicle. Also hitbox is smaller, care"
-2025-12-10,masta of the universe,"bonus to last commit"
-2025-12-10,Joel,"some more java doc in various classes and some lambda parameter reduction"
-2025-12-10,Joel,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-10,Joel,"+ vehicle filter ui design"
-2025-12-10,Joel,"Create EdgeDetails.fxml"
-2025-12-10,Joel,"added draw methods in WorldObject class and moved draw related actions into their own methods"
-2025-12-10,Joel,"implemented drawImage method in WorldVehicle class"
-2025-12-10,Joel,"improved readibility in WorldObject class"
-2025-12-10,Joel,"added drawPolygon(List<Vector2D>) to WorldObject class"
-2025-12-10,Joel,"+ JavaDoc for all draw methods in the WorldObject class"
-2025-12-10,Joel,"fixed format error"
-2025-12-10,Joel,"implemented drawSphere method in WorldPoint class and updated collision logic to make more sense"
-2025-12-10,Joel,"vehicle color coded icons now kinda functionaly but they turn to rgb disco on selection"
-2025-12-11,Joel,"fixed Meth.ClrToSumoClr method which had its green and blue channel swapped"
-2025-12-11,Joel,"removal of unused and incorrect color conversion methods"
-2025-12-11,Leon-Uas,"Merge branch 'main' into gui"
-2025-12-11,Leon-Uas,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-11,Leon-Uas,"Added getJunctionShape"
-2025-12-11,spaceglidemasta,"Merge pull request #43 from Spaceglidemasta/gui"
-2025-12-11,masta of the universe,"comments"
-2025-12-11,masta of the universe,"Added SumoRoad prototype"
-2025-12-11,masta of the universe,"BIG: added all road connections getter. Streets can be rendered now."
-2025-12-11,spaceglidemasta,"Merge pull request #44 from Spaceglidemasta/sumo-service"
-2025-12-11,Leon-Uas,"Added function to calculate stop lines"
-2025-12-11,Leon-Uas,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-11,Leon-Uas,"Comments updated"
-2025-12-11,Joel,"+ JavaDoc and cleanup in World class"
-2025-12-11,Joel,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-11,Joel,"Merge branch 'main' into gui"
-2025-12-11,spaceglidemasta,"Merge pull request #45 from Spaceglidemasta/gui"
-2025-12-11,Leon-Uas,"Updated the stop line function"
-2025-12-11,Leon-Uas,"Merge pull request #46 from Spaceglidemasta/gui"
-2025-12-11,masta of the universe,"Added Statistics class and changed some naming"
-2025-12-11,masta of the universe,"Name changes"
-2025-12-11,spaceglidemasta,"Merge branch 'main' into sumo-service"
-2025-12-11,spaceglidemasta,"Merge pull request #47 from Spaceglidemasta/sumo-service"
-2025-12-11,masta of the universe,"Name changes"
-2025-12-11,spaceglidemasta,"Merge pull request #48 from Spaceglidemasta/sumo-service"
-2025-12-11,Joel,"+ road rendering"
-2025-12-11,Joel,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-11,Joel,"Merge branch 'main' into gui"
-2025-12-11,Joel,"merge fix"
-2025-12-11,Joel0457,"Merge pull request #49 from Spaceglidemasta/gui"
-2025-12-11,masta of the universe,"Changed getLaneEdgeParam"
-2025-12-11,spaceglidemasta,"Merge pull request #50 from Spaceglidemasta/sumo-service"
-2025-12-11,Joel,"+ road details panel selectable"
-2025-12-11,Joel,"Merge branch 'main' into gui"
-2025-12-11,Leon-Uas,"Uodated WTrafficLight"
-2025-12-11,masta of the universe,"Added Lane information to SumoRoad"
-2025-12-11,spaceglidemasta,"Merge pull request #51 from Spaceglidemasta/sumo-service"
-2025-12-11,Joel,"+ JavaDoc in WorldObject class"
-2025-12-11,Joel,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-11,Joel,"Merge branch 'main' into gui"
-2025-12-11,Joel0457,"Merge pull request #52 from Spaceglidemasta/gui"
-2025-12-11,Joel,"+ road width displayed"
-2025-12-11,Leon-Uas,"Initial revision of TL spawning"
-2025-12-11,Leon-Uas,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-11,Leon-Uas,"Merge branch 'main' into gui"
-2025-12-11,Joel,"changed car icon rotation and size + added filter in UI constants to show/not show collsion"
-2025-12-11,Joel,"documentation in ui constants"
-2025-12-11,Joel,"+ VehicleRenderRotation"
-2025-12-12,masta of the universe,"move some stuff around and cloned the getNetFromSCFG method to getRouNetFromSCFG"
-2025-12-12,Joel,"some null accesses and list modification while looping fixed"
-2025-12-12,spaceglidemasta,"Merge pull request #53 from Spaceglidemasta/sumo-service"
-2025-12-12,masta of the universe,"throw change in the functions from the last commit"
-2025-12-12,spaceglidemasta,"Merge pull request #54 from Spaceglidemasta/sumo-service"
-2025-12-12,Joel,"Merge branch 'main' into gui"
-2025-12-12,Joel0457,"Merge pull request #55 from Spaceglidemasta/gui"
-2025-12-12,Leon-Uas,"Work on Traffic light spawn"
-2025-12-12,Leon-Uas,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-12,Joel,"collision fixes"
-2025-12-12,Joel,"+ read and set data for RoadDetailsClass"
-2025-12-12,masta of the universe,"Created new WPolygon wrapper class"
-2025-12-12,spaceglidemasta,"Merge pull request #56 from Spaceglidemasta/sumo-service"
-2025-12-12,Leon-Uas,"Worked on WorldTrafficLight"
-2025-12-12,Leon-Uas,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-12,Leon-Uas,"Merge branch 'main' into gui"
-2025-12-12,Joel,"Merge branch 'main' into gui"
-2025-12-12,masta of the universe,"Added vehicle move and route functionality"
-2025-12-12,spaceglidemasta,"Merge pull request #57 from Spaceglidemasta/sumo-service"
-2025-12-12,Joel,"Merge branch 'main' into gui"
-2025-12-12,Joel0457,"Merge pull request #58 from Spaceglidemasta/gui"
-2025-12-12,masta of the universe,"Updated README"
-2025-12-12,spaceglidemasta,"Merge pull request #59 from Spaceglidemasta/sumo-service"
-2025-12-12,Leon-Uas,"More work on Traffic lights"
-2025-12-12,Leon-Uas,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-12,Leon-Uas,"Merge branch 'main' into gui"
-2025-12-12,masta of the universe,"Added some new vehicle methods to get & Change speed and lange"
-2025-12-12,masta of the universe,"Merge branch 'main' into sumo-service"
-2025-12-12,masta of the universe,"error correction from last commit"
-2025-12-12,spaceglidemasta,"Merge pull request #60 from Spaceglidemasta/sumo-service"
-2025-12-12,Joel,"+ render individual lanes + render junctions"
-2025-12-12,Joel,"Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui"
-2025-12-12,Joel,"Merge branch 'main' into gui"
-2025-12-12,Joel,"color adjustments of world and world object classes"
-2025-12-12,Joel,"added bool in UI.Constants to toggle misc polys"
-2025-12-12,Joel0457,"Merge pull request #61 from Spaceglidemasta/gui"
-2025-12-12,Joel,"+ time counter in sim control controller"
-2025-12-12,Joel,"some cleanup and added javadoc in SimView2D and WorldPoly classes"
-2025-12-12,Joel,"fixed typo in var breaking app + moved getRelativeShape to WorldObject class"
-2025-12-12,Joel,"+ some javadoc + setposition to poly center in worldpoly class"
-2025-12-12,Joel,"+ Meth javadoc adjustments"
-2025-12-12,Joel,"+ some more javadoc"
-2025-12-12,Joel,"Merge branch 'main' into gui"
-2025-12-12,Joel,"+ some cleanup, small bug fixes and + some java doc"
-2025-12-13,Joel,"Update WorldRoad.java"
-2025-12-13,Joel,"Revert "Update WorldRoad.java""
-2025-12-13,masta of the universe,"Small changes to WVehicle"
-2025-12-13,masta of the universe,"Frühjahrsputz"
-2025-12-13,spaceglidemasta,"Merge pull request #68 from Spaceglidemasta/sumo-service"
-2025-12-13,Joel,"+ route fx:id"
-2025-12-13,Joel,"Merge branch 'main' into gui"
-2025-12-13,Joel,"+ details panel text color changes for readibility"
-2025-12-13,Joel,"Update style.css"
-2025-12-13,Joel0457,"Merge pull request #69 from Spaceglidemasta/gui"
-2025-12-13,Joel,"finished body controlle rjavadoc"
-2025-12-13,Joel,"finished simview2d javadoc"
-2025-12-13,Joel,"completed RoadDetailsController"
-2025-12-13,Joel,"some traffic light class clean up"
-2025-12-13,Joel,"completed javadoc for VehicleDetailsController"
-2025-12-13,Joel,"completed tail controller javadoc"
-2025-12-13,masta of the universe,"updated the WTrafficLight and WLink class"
-2025-12-13,spaceglidemasta,"Merge pull request #70 from Spaceglidemasta/sumo-service"
-2025-12-13,Joel,"Merge branch 'main' into gui"
-2025-12-13,masta of the universe,"crucial 2 liner"
-2025-12-13,spaceglidemasta,"Merge pull request #71 from Spaceglidemasta/sumo-service"
-2025-12-13,Joel,"Merge branch 'main' into gui"
-2025-12-13,masta of the universe,"BOOGIE WONDERLAND"
-2025-12-13,spaceglidemasta,"Merge pull request #72 from Spaceglidemasta/sumo-service"
-2025-12-13,Joel,"tarrfic light lane changes"
-2025-12-13,Joel,"Merge branch 'main' into gui"
-2025-12-13,Joel,"+ WorldTrafficLight stop lines"
-2025-12-13,Joel0457,"Merge pull request #73 from Spaceglidemasta/gui"
-2025-12-13,Joel,"completed WorldTrafficLight java doc"
-2025-12-13,Joel,"Update ColoredIconManager.java"
-2025-12-14,Joel,"+ simulation speed modifier cant be <= 0, vehicle details show only last edge from route"
-2025-12-14,masta of the universe,"Added a Table Class together with an CSV exporter."
-2025-12-14,spaceglidemasta,"Merge pull request #74 from Spaceglidemasta/sumo-service"
-2025-12-14,Joel,"completed javadoc for WorldRoad class"
-2025-12-14,Joel,"completed WorldVehicle javadoc"
-2025-12-14,Joel,"completed javadoc for SimCOntrolController + added full speed mod clamp"
-2025-12-14,Joel,"+ javadoc small fix"
-2025-12-14,Joel,"Merge branch 'main' into gui"
-2025-12-14,masta of the universe,"Traffic Light update"
-2025-12-14,spaceglidemasta,"Merge pull request #75 from Spaceglidemasta/sumo-service"
-2025-12-14,Joel,"+ some work on adding vehicle injection"
-2025-12-14,Joel,"Merge branch 'main' into gui"
-2025-12-14,Leon-Uas,"Tidying up comments in ToolbarController"
-2025-12-14,Joel,"+ vehicle injection on edges"
-2025-12-14,Joel0457,"Merge pull request #76 from Spaceglidemasta/gui"
-2025-12-14,Leon-Uas,"Tidied comments in various classes"
-2025-12-14,Joel,"+ traffic light state display attempt"
-2025-12-14,Joel,"+"
-2025-12-14,masta of the universe,"Added @MayReturnNull and Fixed some bugs"
-2025-12-14,Joel,"Merge branch 'main' into gui"
-2025-12-14,Joel0457,"Merge pull request #78 from Spaceglidemasta/gui"
-2025-12-14,masta of the universe,"Merge branch 'main' into sumo-service"
-2025-12-14,Leon-Uas,"Merge pull request #77 from Spaceglidemasta/Documentation"
-2025-12-14,Joel,"some JavaDoc in WOrldObject class"
-2025-12-14,masta of the universe,"Fixed color 'bug' with TLs"
-2025-12-14,spaceglidemasta,"Merge branch 'main' into sumo-service"
-2025-12-14,spaceglidemasta,"Merge pull request #79 from Spaceglidemasta/sumo-service"
-2025-12-14,Joel,"Merge branch 'main' into gui"
+'2025-11-12,Spaceglidemasta,Init new Project take'
+'2025-11-14,Joel,pom changed to Java25'
+'2025-11-14,Joel,Added JavaFX from Maven'
+'2025-11-14,Joel,Create MainGui.java'
+'2025-11-14,Joel,Spaces to Tab'
+'2025-11-14,Joel,random testing + added color palette'
+'2025-11-14,Joel,GPT JavaFX 3D Example'
+'2025-11-14,Joel,+Func:getAppIcon()'
+'2025-11-14,Joel,+ some comments on pom and added a mainClassPath property'
+'2025-11-15,Joel,Created first FXML GUI for testing'
+'2025-11-15,Joel,Random testing changes'
+'2025-11-15,Joel,Restructuring + MainViewController'
+'2025-11-15,Joel,+ package org.group_three.*'
+'2025-11-15,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-15,Joel,Some GUI related file splitting'
+'2025-11-16,Spaceglidemasta,readme init'
+'2025-11-16,Spaceglidemasta,init readme'
+'2025-11-16,Joel,fxgb'
+'2025-11-16,masta of the universe,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-16,masta of the universe,Merge pull request #1 from Spaceglidemasta/basic-gui-noSumoFeatures'
+'2025-11-16,Joel,start maingui in main class'
+'2025-11-16,Joel,pom main class changed'
+'2025-11-16,Joel,FXML splitting'
+'2025-11-16,Joel,+ Toolbar->Simulation->OnClicked*'
+'2025-11-16,Joel,+ some Toolbar pseudo functionality'
+'2025-11-16,Joel,"e" replaced with "event" for readability'
+'2025-11-16,Joel,+ custom MenuItem class to hold path value'
+'2025-11-16,Joel,- useless placeholder menu items'
+'2025-11-16,Joel,change of controller initializer from public to private'
+'2025-11-17,Joel,+ FileChooser for Simulation -> Open...'
+'2025-11-17,masta of the universe,api.SimSumo and api.SimTraci added. Changed to notes'
+'2025-11-17,masta of the universe,api init'
+'2025-11-17,masta of the universe,Merge pull request #2 from Spaceglidemasta/basic-gui-noSumoFeatures'
+'2025-11-17,masta of the universe,Merge pull request #3 from Spaceglidemasta/sumo-service'
+'2025-11-17,Leon-Uas,debug init'
+'2025-11-17,masta of the universe,Merge pull request #4 from Spaceglidemasta/debug'
+'2025-11-17,masta of the universe,SimController added'
+'2025-11-17,masta of the universe,Merge branch 'main' into sumo-service'
+'2025-11-17,masta of the universe,fixed confliction'
+'2025-11-17,masta of the universe,Merge pull request #5 from Spaceglidemasta/sumo-service'
+'2025-11-17,Joel,2d renderer attempt'
+'2025-11-17,Joel,Merge branch 'basic-gui-noSumoFeatures' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into basic-gui-noSumoFeatures'
+'2025-11-17,Joel,Revert "api.SimSumo and api.SimTraci added. Changed to notes"'
+'2025-11-17,masta of the universe,debug debugged'
+'2025-11-17,masta of the universe,Merge pull request #6 from Spaceglidemasta/debug'
+'2025-11-17,masta of the universe,deleted stuff'
+'2025-11-17,masta of the universe,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-17,masta of the universe,Merge pull request #7 from Spaceglidemasta/basic-gui-noSumoFeatures'
+'2025-11-17,Joel,System.out.println replaced with Debug.print'
+'2025-11-17,Joel,removed org.group_three. in debug log'
+'2025-11-17,Joel,Merge branch 'main' into debug'
+'2025-11-17,Joel0457,Merge pull request #8 from Spaceglidemasta/debug'
+'2025-11-17,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-17,Joel,+ Debug.print('
+'2025-11-17,Joel,+ setRotation'
+'2025-11-17,Joel,+ class name color = cyan & added multi type compatibility'
+'2025-11-17,Joel,Merge branch 'main' into debug'
+'2025-11-17,Joel0457,Merge pull request #9 from Spaceglidemasta/debug'
+'2025-11-17,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-17,Joel,disable rotation change'
+'2025-11-17,Joel,+ dynamic render layer + changed render layer names'
+'2025-11-17,Joel,+ world rotation + word background draw'
+'2025-11-17,Joel,added missing empry constructor'
+'2025-11-18,Joel,+ world classes'
+'2025-11-18,Joel,added some get and set functions to world class'
+'2025-11-18,Joel,+ addset funcs'
+'2025-11-18,Joel,+ worldobject get;set;add;'
+'2025-11-19,masta of the universe,removed bs'
+'2025-11-19,masta of the universe,traas api included in project and maven'
+'2025-11-19,masta of the universe,Merge pull request #10 from Spaceglidemasta/sumo-service'
+'2025-11-19,masta of the universe,endlich funktioniert das'
+'2025-11-19,masta of the universe,Merge pull request #11 from Spaceglidemasta/sumo-service'
+'2025-11-19,masta of the universe,second try including TraaS.jar'
+'2025-11-19,masta of the universe,Merge pull request #12 from Spaceglidemasta/sumo-service'
+'2025-11-19,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-19,masta of the universe,Server connection to Sumo'
+'2025-11-19,masta of the universe,Merge pull request #13 from Spaceglidemasta/sumo-service'
+'2025-11-19,Joel,some intellij warning reduction'
+'2025-11-19,Joel,Create codeStyleConfig.xml'
+'2025-11-19,Joel,intellij reformat run'
+'2025-11-19,masta of the universe,Added constants package with UI and Settings final class'
+'2025-11-19,masta of the universe,Merge pull request #14 from Spaceglidemasta/sumo-service'
+'2025-11-19,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-19,Joel,typo fix'
+'2025-11-19,Joel,+ usage of world class'
+'2025-11-19,Joel,implemented world bounds (without rotation)'
+'2025-11-19,Joel,+ comment'
+'2025-11-19,Joel,+ update code moved from requestUpdate() to update() func'
+'2025-11-19,Joel,out commented world bounds because not fully functional'
+'2025-11-20,Joel,ui change attemp, non functional'
+'2025-11-20,masta of the universe,added Assembly plugin to maven, enabeling the package command used for creating jar files'
+'2025-11-20,masta of the universe,Merge pull request #15 from Spaceglidemasta/sumo-service'
+'2025-11-20,Joel,ugly af basic css desing made by gpt'
+'2025-11-20,Joel,logo adjustments, still ugly'
+'2025-11-20,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-20,Joel,+ lerp func'
+'2025-11-20,Joel,Vector2D add,sub,mul,div'
+'2025-11-20,masta of the universe,+Integrated .jar functionality, -Outsourced route, network and sumo.exe to parent folder'
+'2025-11-20,masta of the universe,Merge pull request #16 from Spaceglidemasta/sumo-service'
+'2025-11-20,masta of the universe,+debugging -magic strings'
+'2025-11-21,Joel,+func Vector2D.toString()'
+'2025-11-21,Joel,+ relative location calculations'
+'2025-11-21,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-21,Joel,+ first working world object prototype'
+'2025-11-21,Joel,+ Keyboard class'
+'2025-11-21,Joel,some clean up & ISSUE: y axis is flipped, needs to be fixed'
+'2025-11-21,Joel,+func Vector2D.getRotation()'
+'2025-11-21,Joel,Update Keyboard.java'
+'2025-11-21,Joel,+ rotation controls'
+'2025-11-21,Joel,code formatting'
+'2025-11-21,Joel,reformat code'
+'2025-11-21,Joel,some clean up and moved constants to UI class'
+'2025-11-21,Joel,some clean up and file restructuring'
+'2025-11-21,Joel,restructuring'
+'2025-11-21,Joel,restructuring'
+'2025-11-21,Joel,restructuring'
+'2025-11-21,Joel,restrcuturing'
+'2025-11-21,Joel,java graphics warning removal'
+'2025-11-23,masta of the universe, added comments to SimController'
+'2025-11-23,spaceglidemasta,Merge pull request #17 from Spaceglidemasta/basic-gui-noSumoFeatures'
+'2025-11-23,masta of the universe,Merge branch 'main' into sumo-service'
+'2025-11-23,masta of the universe,+ SimController.getTrafficLights, + SimController.addVehicle [blueprint], + comments in SimController'
+'2025-11-23,spaceglidemasta,Merge pull request #18 from Spaceglidemasta/sumo-service'
+'2025-11-24,Leon-Uas,Console for debugging first itteration'
+'2025-11-24,Leon-Uas,New debugwindow in JavaFX'
+'2025-11-24,Joel,fixed world object location not updating on zoom change'
+'2025-11-25,Joel,+ comments in const UI class'
+'2025-11-25,Joel,+ some comments in the Vector2D class'
+'2025-11-25,masta of the universe,Fixed some bugs regarding Debug.Console, changed all Debug.print in ui to Debug.toConsole. excluded .idea from source control'
+'2025-11-25,spaceglidemasta,Merge pull request #19 from Spaceglidemasta/debug'
+'2025-11-25,Joel,more comments'
+'2025-11-25,masta of the universe,Added searching for sumo.exe in C:\Program Files (x86)\Eclipse\Sumo\/bin first.'
+'2025-11-25,spaceglidemasta,Merge pull request #20 from Spaceglidemasta/sumo-service'
+'2025-11-26,masta of the universe,Milestone commit'
+'2025-11-26,spaceglidemasta,Merge pull request #21 from Spaceglidemasta/sumo-service'
+'2025-11-26,Joel,+ more basic comments'
+'2025-11-26,Joel0457,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-26,Joel0457,Merge pull request #22 from Spaceglidemasta/basic-gui-noSumoFeatures'
+'2025-11-26,masta of the universe,Second Milestone 1 push, added some comments'
+'2025-11-26,spaceglidemasta,Merge pull request #23 from Spaceglidemasta/sumo-service'
+'2025-11-26,masta of the universe,Update SimController.java'
+'2025-11-26,spaceglidemasta,Merge pull request #24 from Spaceglidemasta/sumo-service'
+'2025-11-26,masta of the universe,Small but important changes to README'
+'2025-11-26,spaceglidemasta,Merge pull request #25 from Spaceglidemasta/sumo-service'
+'2025-11-26,Joel,removed comment'
+'2025-11-27,Joel,set recentlyOpend button to default disabled'
+'2025-11-27,Joel,added a fake class for function class for the time of no actual sumo interaction existing'
+'2025-11-27,Joel,made the recently opend feature functional'
+'2025-11-27,Joel,func namechange'
+'2025-11-28,masta of the universe,Added the SimController.job method, which is just a warpper for the do_job_get() method.'
+'2025-11-28,Joel,remove invalid recentlyopend entries'
+'2025-11-28,masta of the universe,Added WVehicle class with getters; Added new getter to SimController'
+'2025-11-28,spaceglidemasta,Merge pull request #26 from Spaceglidemasta/sumo-service'
+'2025-11-28,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-28,Joel,+ multiple file selection'
+'2025-11-28,masta of the universe,fixed huge mistake in SimController (do_job_get and do_job_set are not the same); Updated WVehicle.getPos() to function correct.'
+'2025-11-28,spaceglidemasta,Merge pull request #27 from Spaceglidemasta/sumo-service'
+'2025-11-28,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-11-28,Joel0457,Merge pull request #28 from Spaceglidemasta/basic-gui-noSumoFeatures'
+'2025-11-28,masta of the universe,Changed comments and type in SimController.addVehicle()'
+'2025-11-28,masta of the universe,Added debug.exceptions package, together with InvalidFilesSelected'
+'2025-11-28,spaceglidemasta,Merge pull request #29 from Spaceglidemasta/debug'
+'2025-11-28,masta of the universe,Merge branch 'main' into sumo-service'
+'2025-11-28,Joel,+ Vector2D funcs'
+'2025-11-28,Joel,added full JavaDoc documentation to the Vector2D class'
+'2025-11-28,Joel,removal of SimulationView2D and 3D classes as they had no purpose'
+'2025-11-28,Joel,some file restructuring'
+'2025-11-28,masta of the universe,Added functionality to the FakeInteractions and changed some methods in SimController'
+'2025-11-28,masta of the universe,added SimController Constructor for .sumocfg files'
+'2025-11-28,Joel,added JavaDoc to the Keyboard class and changed it to an list based listener'
+'2025-11-28,Joel,changed some javadoc in Vector2D'
+'2025-11-28,Joel,+ Meth class java doc template'
+'2025-11-28,Joel,+ java doc template for MenuItem_RecentlyOpend'
+'2025-11-28,Joel,added java doc template for MainApp'
+'2025-11-28,Joel,added javadoc template forBodyController'
+'2025-11-28,Joel,added javadoc template for TailController'
+'2025-11-28,Joel,added javadoc template for CanvasController'
+'2025-11-28,Joel,added javadoc template for ToolbarController'
+'2025-11-28,Joel,added javadoc template for World class'
+'2025-11-28,Joel,added javadoc template for WorldObject class'
+'2025-11-29,Joel,+ pivot of world rotation is now center of view, rotation of world is now done in a relative way instead of absolute'
+'2025-11-29,Joel,0,0 pivot based zoom'
+'2025-11-29,Joel,viewer zoom pivot at 0,0'
+'2025-11-29,Joel,read mouseposition in world space'
+'2025-11-29,Joel,fixed zoom issue with worldspaceMousePosition'
+'2025-11-29,masta of the universe,Added WVehicle.update logic'
+'2025-11-29,spaceglidemasta,Merge pull request #30 from Spaceglidemasta/sumo-service'
+'2025-11-29,Joel,+ interaction func to interact with objects in the world'
+'2025-11-30,masta of the universe,Added Lane attribute together with constructor and updater to WVehicle Class'
+'2025-11-30,masta of the universe,Added Junction and  Traffic Light related methods to SimController'
+'2025-11-30,spaceglidemasta,Merge pull request #31 from Spaceglidemasta/sumo-service'
+'2025-11-30,masta of the universe,Added StaticTester Class so the main functio isnt cluttered wit testing'
+'2025-11-30,spaceglidemasta,Merge pull request #32 from Spaceglidemasta/debug'
+'2025-12-02,Joel,+ car icon'
+'2025-12-02,Joel,changing icon color on runtime with pixel reader/writer'
+'2025-12-02,masta of the universe,Added timestep methods to SimController and updated the Test scenario'
+'2025-12-02,Joel,colors in rgba instead of Color.RED,...'
+'2025-12-02,masta of the universe,Changed List<String> return type to SumoStringList in some SimController methods'
+'2025-12-02,Joel,manager attempt for color coded icons'
+'2025-12-02,Joel,another non functional icon manager attempt'
+'2025-12-03,Joel,world and worlobject class more oop style'
+'2025-12-03,Joel,world* classes restructuring and more oop approach'
+'2025-12-03,Joel,added ColoredIconManager to world vehicle class'
+'2025-12-03,Joel,+ WorldPoint class'
+'2025-12-03,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-12-03,Joel,Update ToolbarController.java'
+'2025-12-03,Joel,+ javadoc info in WorldObject class'
+'2025-12-03,Joel,WorldClass formatted'
+'2025-12-03,Joel,+ javadoc + formatting of many files'
+'2025-12-03,Joel,Delete ColoredIcon.java'
+'2025-12-03,Joel,Delete MenuItem_RecentlyOpend.java'
+'2025-12-03,Joel,rename of WorldVehicle's imageTint to color'
+'2025-12-04,Joel,Create DataPanelEntryExamples.fxml'
+'2025-12-04,Joel,include data panel entry exmaple in body'
+'2025-12-04,spaceglidemasta,Merge pull request #33 from Spaceglidemasta/sumo-service'
+'2025-12-04,Joel,+ nodepoint and vehicle render'
+'2025-12-04,Joel,Merge branch 'main' into basic-gui-noSumoFeatures'
+'2025-12-04,Joel,load complex sumo cfg'
+'2025-12-04,Joel,_sumcon getter func for wvehicle - no javadocs'
+'2025-12-04,Joel,outcommented test code for merge with main'
+'2025-12-04,Joel0457,Merge pull request #34 from Spaceglidemasta/basic-gui-noSumoFeatures'
+'2025-12-04,Joel,+ Simulation Controls Controller'
+'2025-12-04,Joel,+ default simulation ini on startup'
+'2025-12-04,Joel,+ SimView2D class'
+'2025-12-04,Joel,outcommented world color as world background logic broke'
+'2025-12-04,Joel,working sumo simulation step and play feature'
+'2025-12-06,Joel,changed SimController.getSumoLoc() from private to public to use it in the FakeInteraction class'
+'2025-12-06,Joel,+ some null checks to fix null error related issues'
+'2025-12-06,Joel,FakeInteractions class: converted absolute paths to relative ones so the gui file selection works'
+'2025-12-06,Joel,+ FakeInteractions.getRelativePath() JavaDoc and AI code part explainations'
+'2025-12-07,Joel0457,Merge pull request #35 from Spaceglidemasta/gui'
+'2025-12-07,masta of the universe,Changed some var names in SumoController'
+'2025-12-07,masta of the universe,Merge branch 'main' into sumo-service'
+'2025-12-07,masta of the universe,Updatet naming'
+'2025-12-07,spaceglidemasta,Merge pull request #36 from Spaceglidemasta/sumo-service'
+'2025-12-07,masta of the universe,Changed alot of logic in SimController and the Selection proccess of Files. + getTLJunctions() method in SimController'
+'2025-12-07,spaceglidemasta,Merge pull request #37 from Spaceglidemasta/sumo-service'
+'2025-12-07,masta of the universe,Added methods for color and speed to WVehicle'
+'2025-12-07,spaceglidemasta,Merge pull request #38 from Spaceglidemasta/sumo-service'
+'2025-12-07,Joel,+ color coded vehicle render implemention'
+'2025-12-07,Joel,+ box collision functionality'
+'2025-12-07,Joel,world object detail class placeholders'
+'2025-12-07,Joel,+ gui simulation speed modifier'
+'2025-12-08,Leon-Uas,Lane coordinates'
+'2025-12-08,Leon-Uas,Update SimController.java'
+'2025-12-08,Joel,+ world object detail panel system + detail panel for vehicles'
+'2025-12-08,Joel,+ visual detail panel kill when detail object is gone from simulation'
+'2025-12-09,Leon-Uas,Merge branch 'main' into debug'
+'2025-12-09,spaceglidemasta,Merge pull request #39 from Spaceglidemasta/debug'
+'2025-12-09,spaceglidemasta,Merge pull request #40 from Spaceglidemasta/main'
+'2025-12-09,spaceglidemasta,Merge pull request #41 from Spaceglidemasta/sumo-service'
+'2025-12-09,spaceglidemasta,Merge branch 'main' into gui'
+'2025-12-09,spaceglidemasta,Merge pull request #42 from Spaceglidemasta/gui'
+'2025-12-09,Joel,outcommetted broken code in SimController'
+'2025-12-09,Joel, added UI constant to decide which color value should be replaced for the color coded icons'
+'2025-12-09,Joel,readded car icon, changed custom car icon name'
+'2025-12-09,Joel,vehicle param change attempt [failed]'
+'2025-12-09,Leon-Uas,Traffic light itteration 1'
+'2025-12-09,Joel,+ java doc in VehicleDetailsController'
+'2025-12-09,Joel,close main simu on program end'
+'2025-12-09,Joel,Merge branch 'main' into gui'
+'2025-12-09,Joel,+ Toolbar.close functionality'
+'2025-12-09,Joel,set reload and export button to always disabled becaus enot implemented yet'
+'2025-12-09,Joel,fixed box collision + added box collision visuals'
+'2025-12-09,Joel,+ javadoc in World class'
+'2025-12-09,Joel,completed JavaDoc for the Vector2D class'
+'2025-12-09,Joel,Main class cleanup'
+'2025-12-09,Joel,completed JavaDoc for the Keyboard class'
+'2025-12-09,Joel,completed JavaDoc for MainApp class'
+'2025-12-09,Joel,Vector2D code restructuring for readability'
+'2025-12-09,Joel,MainApp code restructuring for readability'
+'2025-12-09,Joel,completed JavaDoc for the WorldPoint class and added some more structuring for code readibility in some other classes'
+'2025-12-09,Joel,+ some more multiple class code cleanup'
+'2025-12-09,Joel,some more multi class code cleanup and restructuring'
+'2025-12-10,masta of the universe,Fixed _sumcon to stc'
+'2025-12-10,masta of the universe,Changed Color conversion in Meth and WorldVehicle. Also hitbox is smaller, care'
+'2025-12-10,masta of the universe,bonus to last commit'
+'2025-12-10,Joel,some more java doc in various classes and some lambda parameter reduction'
+'2025-12-10,Joel,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-10,Joel,+ vehicle filter ui design'
+'2025-12-10,Joel,Create EdgeDetails.fxml'
+'2025-12-10,Joel,added draw methods in WorldObject class and moved draw related actions into their own methods'
+'2025-12-10,Joel,implemented drawImage method in WorldVehicle class'
+'2025-12-10,Joel,improved readibility in WorldObject class'
+'2025-12-10,Joel,added drawPolygon(List<Vector2D>) to WorldObject class'
+'2025-12-10,Joel,+ JavaDoc for all draw methods in the WorldObject class'
+'2025-12-10,Joel,fixed format error'
+'2025-12-10,Joel,implemented drawSphere method in WorldPoint class and updated collision logic to make more sense'
+'2025-12-10,Joel,vehicle color coded icons now kinda functionaly but they turn to rgb disco on selection'
+'2025-12-11,Joel,fixed Meth.ClrToSumoClr method which had its green and blue channel swapped'
+'2025-12-11,Joel,removal of unused and incorrect color conversion methods'
+'2025-12-11,Leon-Uas,Merge branch 'main' into gui'
+'2025-12-11,Leon-Uas,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-11,Leon-Uas,Added getJunctionShape'
+'2025-12-11,spaceglidemasta,Merge pull request #43 from Spaceglidemasta/gui'
+'2025-12-11,masta of the universe,comments'
+'2025-12-11,masta of the universe,Added SumoRoad prototype'
+'2025-12-11,masta of the universe,BIG: added all road connections getter. Streets can be rendered now.'
+'2025-12-11,spaceglidemasta,Merge pull request #44 from Spaceglidemasta/sumo-service'
+'2025-12-11,Leon-Uas,Added function to calculate stop lines'
+'2025-12-11,Leon-Uas,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-11,Leon-Uas,Comments updated'
+'2025-12-11,Joel,+ JavaDoc and cleanup in World class'
+'2025-12-11,Joel,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-11,Joel,Merge branch 'main' into gui'
+'2025-12-11,spaceglidemasta,Merge pull request #45 from Spaceglidemasta/gui'
+'2025-12-11,Leon-Uas,Updated the stop line function'
+'2025-12-11,Leon-Uas,Merge pull request #46 from Spaceglidemasta/gui'
+'2025-12-11,masta of the universe,Added Statistics class and changed some naming'
+'2025-12-11,masta of the universe,Name changes'
+'2025-12-11,spaceglidemasta,Merge branch 'main' into sumo-service'
+'2025-12-11,spaceglidemasta,Merge pull request #47 from Spaceglidemasta/sumo-service'
+'2025-12-11,masta of the universe,Name changes'
+'2025-12-11,spaceglidemasta,Merge pull request #48 from Spaceglidemasta/sumo-service'
+'2025-12-11,Joel,+ road rendering'
+'2025-12-11,Joel,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-11,Joel,Merge branch 'main' into gui'
+'2025-12-11,Joel,merge fix'
+'2025-12-11,Joel0457,Merge pull request #49 from Spaceglidemasta/gui'
+'2025-12-11,masta of the universe,Changed getLaneEdgeParam'
+'2025-12-11,spaceglidemasta,Merge pull request #50 from Spaceglidemasta/sumo-service'
+'2025-12-11,Joel,+ road details panel selectable'
+'2025-12-11,Joel,Merge branch 'main' into gui'
+'2025-12-11,Leon-Uas,Uodated WTrafficLight'
+'2025-12-11,masta of the universe,Added Lane information to SumoRoad'
+'2025-12-11,spaceglidemasta,Merge pull request #51 from Spaceglidemasta/sumo-service'
+'2025-12-11,Joel,+ JavaDoc in WorldObject class'
+'2025-12-11,Joel,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-11,Joel,Merge branch 'main' into gui'
+'2025-12-11,Joel0457,Merge pull request #52 from Spaceglidemasta/gui'
+'2025-12-11,Joel,+ road width displayed'
+'2025-12-11,Leon-Uas,Initial revision of TL spawning'
+'2025-12-11,Leon-Uas,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-11,Leon-Uas,Merge branch 'main' into gui'
+'2025-12-11,Joel,changed car icon rotation and size + added filter in UI constants to show/not show collsion'
+'2025-12-11,Joel,documentation in ui constants'
+'2025-12-11,Joel,+ VehicleRenderRotation'
+'2025-12-12,masta of the universe,move some stuff around and cloned the getNetFromSCFG method to getRouNetFromSCFG'
+'2025-12-12,Joel,some null accesses and list modification while looping fixed'
+'2025-12-12,spaceglidemasta,Merge pull request #53 from Spaceglidemasta/sumo-service'
+'2025-12-12,masta of the universe,throw change in the functions from the last commit'
+'2025-12-12,spaceglidemasta,Merge pull request #54 from Spaceglidemasta/sumo-service'
+'2025-12-12,Joel,Merge branch 'main' into gui'
+'2025-12-12,Joel0457,Merge pull request #55 from Spaceglidemasta/gui'
+'2025-12-12,Leon-Uas,Work on Traffic light spawn'
+'2025-12-12,Leon-Uas,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-12,Joel,collision fixes'
+'2025-12-12,Joel,+ read and set data for RoadDetailsClass'
+'2025-12-12,masta of the universe,Created new WPolygon wrapper class'
+'2025-12-12,spaceglidemasta,Merge pull request #56 from Spaceglidemasta/sumo-service'
+'2025-12-12,Leon-Uas,Worked on WorldTrafficLight'
+'2025-12-12,Leon-Uas,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-12,Leon-Uas,Merge branch 'main' into gui'
+'2025-12-12,Joel,Merge branch 'main' into gui'
+'2025-12-12,masta of the universe,Added vehicle move and route functionality'
+'2025-12-12,spaceglidemasta,Merge pull request #57 from Spaceglidemasta/sumo-service'
+'2025-12-12,Joel,Merge branch 'main' into gui'
+'2025-12-12,Joel0457,Merge pull request #58 from Spaceglidemasta/gui'
+'2025-12-12,masta of the universe,Updated README'
+'2025-12-12,spaceglidemasta,Merge pull request #59 from Spaceglidemasta/sumo-service'
+'2025-12-12,Leon-Uas,More work on Traffic lights'
+'2025-12-12,Leon-Uas,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-12,Leon-Uas,Merge branch 'main' into gui'
+'2025-12-12,masta of the universe,Added some new vehicle methods to get & Change speed and lange'
+'2025-12-12,masta of the universe,Merge branch 'main' into sumo-service'
+'2025-12-12,masta of the universe,error correction from last commit'
+'2025-12-12,spaceglidemasta,Merge pull request #60 from Spaceglidemasta/sumo-service'
+'2025-12-12,Joel,+ render individual lanes + render junctions'
+'2025-12-12,Joel,Merge branch 'gui' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into gui'
+'2025-12-12,Joel,Merge branch 'main' into gui'
+'2025-12-12,Joel,color adjustments of world and world object classes'
+'2025-12-12,Joel,added bool in UI.Constants to toggle misc polys'
+'2025-12-12,Joel0457,Merge pull request #61 from Spaceglidemasta/gui'
+'2025-12-12,Joel,+ time counter in sim control controller'
+'2025-12-12,Joel,some cleanup and added javadoc in SimView2D and WorldPoly classes'
+'2025-12-12,Joel,fixed typo in var breaking app + moved getRelativeShape to WorldObject class'
+'2025-12-12,Joel,+ some javadoc + setposition to poly center in worldpoly class'
+'2025-12-12,Joel,+ Meth javadoc adjustments'
+'2025-12-12,Joel,+ some more javadoc'
+'2025-12-12,Joel,Merge branch 'main' into gui'
+'2025-12-12,Joel,+ some cleanup, small bug fixes and + some java doc'
+'2025-12-13,Joel,Update WorldRoad.java'
+'2025-12-13,Joel,Revert "Update WorldRoad.java"'
+'2025-12-13,masta of the universe,Small changes to WVehicle'
+'2025-12-13,masta of the universe,Frühjahrsputz'
+'2025-12-13,spaceglidemasta,Merge pull request #68 from Spaceglidemasta/sumo-service'
+'2025-12-13,Joel,+ route fx:id'
+'2025-12-13,Joel,Merge branch 'main' into gui'
+'2025-12-13,Joel,+ details panel text color changes for readibility'
+'2025-12-13,Joel,Update style.css'
+'2025-12-13,Joel0457,Merge pull request #69 from Spaceglidemasta/gui'
+'2025-12-13,Joel,finished body controlle rjavadoc'
+'2025-12-13,Joel,finished simview2d javadoc'
+'2025-12-13,Joel,completed RoadDetailsController'
+'2025-12-13,Joel,some traffic light class clean up'
+'2025-12-13,Joel,completed javadoc for VehicleDetailsController'
+'2025-12-13,Joel,completed tail controller javadoc'
+'2025-12-13,masta of the universe,updated the WTrafficLight and WLink class'
+'2025-12-13,spaceglidemasta,Merge pull request #70 from Spaceglidemasta/sumo-service'
+'2025-12-13,Joel,Merge branch 'main' into gui'
+'2025-12-13,masta of the universe,crucial 2 liner'
+'2025-12-13,spaceglidemasta,Merge pull request #71 from Spaceglidemasta/sumo-service'
+'2025-12-13,Joel,Merge branch 'main' into gui'
+'2025-12-13,masta of the universe,BOOGIE WONDERLAND'
+'2025-12-13,spaceglidemasta,Merge pull request #72 from Spaceglidemasta/sumo-service'
+'2025-12-13,Joel,tarrfic light lane changes'
+'2025-12-13,Joel,Merge branch 'main' into gui'
+'2025-12-13,Joel,+ WorldTrafficLight stop lines'
+'2025-12-13,Joel0457,Merge pull request #73 from Spaceglidemasta/gui'
+'2025-12-13,Joel,completed WorldTrafficLight java doc'
+'2025-12-13,Joel,Update ColoredIconManager.java'
+'2025-12-14,Joel,+ simulation speed modifier cant be <= 0, vehicle details show only last edge from route'
+'2025-12-14,masta of the universe,Added a Table Class together with an CSV exporter.'
+'2025-12-14,spaceglidemasta,Merge pull request #74 from Spaceglidemasta/sumo-service'
+'2025-12-14,Joel,completed javadoc for WorldRoad class'
+'2025-12-14,Joel,completed WorldVehicle javadoc'
+'2025-12-14,Joel,completed javadoc for SimCOntrolController + added full speed mod clamp'
+'2025-12-14,Joel,+ javadoc small fix'
+'2025-12-14,Joel,Merge branch 'main' into gui'
+'2025-12-14,masta of the universe,Traffic Light update'
+'2025-12-14,spaceglidemasta,Merge pull request #75 from Spaceglidemasta/sumo-service'
+'2025-12-14,Joel,+ some work on adding vehicle injection'
+'2025-12-14,Joel,Merge branch 'main' into gui'
+'2025-12-14,Leon-Uas,Tidying up comments in ToolbarController'
+'2025-12-14,Joel,+ vehicle injection on edges'
+'2025-12-14,Joel0457,Merge pull request #76 from Spaceglidemasta/gui'
+'2025-12-14,Leon-Uas,Tidied comments in various classes'
+'2025-12-14,Joel,+ traffic light state display attempt'
+'2025-12-14,Joel,+'
+'2025-12-14,masta of the universe,Added @MayReturnNull and Fixed some bugs'
+'2025-12-14,Joel,Merge branch 'main' into gui'
+'2025-12-14,Joel0457,Merge pull request #78 from Spaceglidemasta/gui'
+'2025-12-14,masta of the universe,Merge branch 'main' into sumo-service'
+'2025-12-14,Leon-Uas,Merge pull request #77 from Spaceglidemasta/Documentation'
+'2025-12-14,Joel,some JavaDoc in WOrldObject class'
+'2025-12-14,masta of the universe,Fixed color 'bug' with TLs'
+'2025-12-14,spaceglidemasta,Merge branch 'main' into sumo-service'
+'2025-12-14,spaceglidemasta,Merge pull request #79 from Spaceglidemasta/sumo-service'
+'2025-12-14,Joel,Merge branch 'main' into gui'
+'2025-12-14,Joel0457,Merge pull request #80 from Spaceglidemasta/gui'
+'2025-12-14,masta of the universe,README update'
+'2025-12-14,masta of the universe,Merge branch 'sumo-service' of https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS into sumo-service'
+'2025-12-14,masta of the universe,Merge branch 'main' into sumo-service'
