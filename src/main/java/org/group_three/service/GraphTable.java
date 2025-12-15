@@ -26,6 +26,7 @@ public class GraphTable<T extends Comparable<T>> extends Table<T>{
      * @author Luca
      * */
     @MayReturnNull
+    @Deprecated
     public List<? extends Comparable<T>> getSortedColumn(String attribute, int direction){
 
         int index = attributeNames.indexOf(attribute);

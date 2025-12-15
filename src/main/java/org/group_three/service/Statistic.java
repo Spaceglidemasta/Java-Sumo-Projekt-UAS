@@ -13,15 +13,12 @@ import java.util.function.Function;
  * Class for 1 singular Statistic, e.g. 1 Graph, 1 Table, etc. <br>
  * @author Luca
  * */
-
-public class Statistic {
+public class Statistic<T> extends Table<T> {
 
     /// Name to be displayed.
     private String name;
     /// description for when showing the table.
-    private String description;
-    /// The table to get information from.
-    private Table table;
+    private String description = "N/A";
 
     public String getName() {
         return name;
@@ -39,26 +36,17 @@ public class Statistic {
         this.description = description;
     }
 
-    public Table getTable() {
-        return table;
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
-    }
-
-
-    public Statistic(String name, Table table){
+    public Statistic(String name, String ... atts){
+        super(atts);
         this.name = name;
-        this.table = table;
     }
 
-    public Statistic(String name, String description, Table table) {
-        this.name = name;
-        this.description = description;
-        this.table = table;
-    }
 
+    @Override
+    public void print() {
+        System.out.println(name + ": ");
+        super.print();
+    }
 
     /**
      * <h2>getGraphOf()</h2>
@@ -77,21 +65,21 @@ public class Statistic {
         // Posted by satnam, modified by community. See post 'Timeline' for change history
         // Retrieved 2025-12-14, License - CC BY-SA 3.0
 
-        if(!table.hasAttribute(x_attribute)){
+        if(!hasAttribute(x_attribute)){
             Debug.print(name + ": Attribute \"" + x_attribute + "\" is not a valid attribute of the Table.\n" +
                         "Valid attributes are:\n" +
-                        table.getAttributeNames().toString());
+                        getAttributeNames().toString());
             return null;
         }
-        if(!table.hasAttribute(y_attribute)){
+        if(!hasAttribute(y_attribute)){
             Debug.print(name + ": Attribute \"" + y_attribute + "\" is not a valid attribute of the Table.\n" +
                     "Valid attributes are:\n" +
-                    table.getAttributeNames().toString());
+                    getAttributeNames().toString());
             return null;
         }
         
-        List<?> xcolumn = table.getColumn(x_attribute);
-        List<?> ycolumn = table.getColumn(y_attribute);
+        List<?> xcolumn = getColumn(x_attribute);
+        List<?> ycolumn = getColumn(y_attribute);
 
 
         return new Function<Object, Object>() {
