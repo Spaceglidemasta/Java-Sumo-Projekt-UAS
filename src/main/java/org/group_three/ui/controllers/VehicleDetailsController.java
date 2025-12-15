@@ -1,9 +1,12 @@
 package org.group_three.ui.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import org.group_three.debug.Debug;
+import org.group_three.ui.Meth;
+import org.group_three.ui.SimView2D;
 import org.group_three.ui.world.WorldVehicle;
 
 /**
@@ -69,6 +72,23 @@ public class VehicleDetailsController {
 	private TextField route;
 
 	/**
+	 * The button to toggle view locking to the vehicle.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	@FXML
+	private Button viewLockButton;
+
+	/**
+	 * The state of the vehicle view lock.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private boolean viewLocked = false;
+
+	/**
 	 * The world vehicle that is owning this class.
 	 *
 	 * @author Joel
@@ -104,6 +124,26 @@ public class VehicleDetailsController {
 						//throw new RuntimeException(e);
 					}
 				});
+	}
+
+	/**
+	 * The event to toggle view locking of the vehicle.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private void onViewLockPressed() {
+		viewLocked = !viewLocked;
+		viewLockButton.setText(viewLocked ? "Unlock" : "Lock");
+
+		Debug.print(SimView2D.getWorld().getViewerPosition());
+		Debug.print(worldVehicle.getPosition());
+
+		Debug.print(Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), worldVehicle.getPosition()));
+
+		//SimView2D.getWorld().setViewerPosition(worldVehicle.getPosition().negate());
+		//SimView2D.getWorld().setViewerRotation(worldVehicle.getRotation());
+		SimView2D.getWorld().requestUpdate();
 	}
 
 	/**
@@ -147,5 +187,6 @@ public class VehicleDetailsController {
 		speed.setDisable(true);
 		color.setDisable(true);
 		route.setDisable(true);
+		viewLockButton.setDisable(true);
 	}
 }
