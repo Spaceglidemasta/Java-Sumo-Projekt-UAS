@@ -129,6 +129,8 @@ public class StaticTester {
             System.out.println(i + ": " + fun.apply(i));
         }
 
+        Debug.print("Wir haben gerade 30 steps gemacht, nicht wundern.");
+
 
     }
 
