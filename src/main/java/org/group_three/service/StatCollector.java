@@ -7,6 +7,7 @@ import java.util.List;
  * A Collection of Stats. Supports additional features like group-exporting to .tar.gz.
  * @author Luca
  * */
+
 public class StatCollector {
 
 
