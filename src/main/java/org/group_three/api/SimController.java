@@ -5,6 +5,7 @@ import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
+import org.group_three.debug.annotations.CreatesFiles;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.model.WVehicle;
 import org.group_three.utils.Formatting;
@@ -12,6 +13,8 @@ import org.group_three.utils.Formatting;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -258,8 +261,34 @@ public class SimController {
         catch (IllegalStateException ise){
             ise.printStackTrace();
         }
+    }
 
+    /**Saves the State as a file. The format and output depends on the extension.
+     * @param filetype the extension. Include the dot: saveState(".xml")
+     *                 ".csv" and ".xml" are the only ones we found to make sense.
+     * @return The filename, or null if without success.
+     * @author Luca
+     * */
+    @MayReturnNull
+    @CreatesFiles
+    public String saveState(String filetype){
 
+        if(!Files.exists(Path.of("output"))){
+            Debug.print("There was not \"output\" directory found. Are you running from a .jar? Make one.");
+            return null;
+        }
+
+        try {
+            String filename = Formatting.uniquegen("savedState_", filetype);
+            stc.do_job_set(Simulation.saveState("output/" + filename));
+            Debug.print("State successfully saved to output/" + filename);
+            return filename;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Debug.print("There was an error saving the State.");
+            return null;
+        }
     }
 
     /**
@@ -611,6 +640,9 @@ public class SimController {
     // ******************************************************
     // **               Traffic Lights                     **
     // ******************************************************
+
+    //Old Text of mine when I thought we don't need a TL Wrapper-Class.
+
     /*"Why is this not its own Wrapper-Class like WVehicle?"
      * There simply aren't enough functions & attributes to a TL
      * that we need, that it's worth to build its own class.
