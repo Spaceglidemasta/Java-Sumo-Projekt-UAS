@@ -99,7 +99,7 @@ public class FakeInteractions {
             try {
                 //you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
                 File net = PathUtils.getNetFromSCFG(config);
-                WEdge.loadRoads(net);
+                WEdge.loadRoads(simcon, net);
                 //WEdge.printAll();
                 //WEdge.getRoad("132964154").print();
             }
@@ -109,15 +109,15 @@ public class FakeInteractions {
             }
 
         }  else {
-            WEdge.loadRoads(network);
+            WEdge.loadRoads(simcon, network);
         }
 
         //set selected simulation as the main, global / static simulation.
         simcon.setMainstc(true);
 
-        WPolygon.loadAllPolys();
+        WPolygon.loadAllPolys(simcon);
 
-        WTrafficLight.loadAll();
+        WTrafficLight.loadAll(simcon);
 
         /*
         StaticTester.TableToCSVExample();

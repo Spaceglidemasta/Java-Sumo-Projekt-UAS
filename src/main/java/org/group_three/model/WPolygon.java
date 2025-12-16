@@ -6,7 +6,6 @@ import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoGeometry;
 import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
-import org.group_three.debug.Debug;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,24 +14,22 @@ import java.util.List;
  * <h1>Polygon Wrapper Class</h1>
  *
  * */
-public class WPolygon {
+public class WPolygon extends WObject {
 
-    private String PoID;
-    private SimController simcon;
     private SumoColor color;
     private SumoGeometry shape;
     private String type;
     private static List<WPolygon> allPolys;
 
-    public WPolygon(String id, SimController sc, SumoColor clr, SumoGeometry sh, String ty){
-        PoID = id;
-        simcon = sc;
+    public WPolygon(SimController sc,String id, SumoColor clr, SumoGeometry sh, String ty){
+        super(sc, id);
+
         color = clr;
         shape = sh;
         type = ty;
     }
 
-    public String getPoID() {return PoID;}
+    public String getId() {return id;}
 
     public static List<WPolygon> getAllPolys() {return allPolys;}
 
@@ -41,23 +38,21 @@ public class WPolygon {
      * @return true of successfull, false if not.
      * @author Luca
      * */
-    public static boolean loadAllPolys(){
-
-        SimController sc = SimController.getMainsimcon();
+    public static boolean loadAllPolys(SimController simcon){
 
         allPolys = new ArrayList<>();
 
-        SumoStringList polys = sc.getPolygonIDList();
+        SumoStringList polys = simcon.getPolygonIDList();
 
         if(polys == null) return false;
 
         for(String pid : polys){
 
-            SumoColor clr = (SumoColor) sc.jobget(Polygon.getColor(pid));
-            SumoGeometry sh = (SumoGeometry) sc.jobget(Polygon.getShape(pid));
-            String ty = (String) sc.jobget(Polygon.getType(pid));
+            SumoColor clr = (SumoColor) simcon.jobget(Polygon.getColor(pid));
+            SumoGeometry sh = (SumoGeometry) simcon.jobget(Polygon.getShape(pid));
+            String ty = (String) simcon.jobget(Polygon.getType(pid));
 
-            WPolygon poly = new WPolygon(pid, sc, clr, sh, ty);
+            WPolygon poly = new WPolygon(simcon, pid,  clr, sh, ty);
             allPolys.add(poly);
         }
 
@@ -100,12 +95,12 @@ public class WPolygon {
      * @author Luca
      * */
     public Object getParameter(String param){
-        return simcon.jobget(Polygon.getParameter(PoID, param));
+        return simcon.jobget(Polygon.getParameter(id, param));
     }
 
 
     public void print() {
-        System.out.println(PoID);
+        System.out.println(id);
     }
 
     public static void printAll(){

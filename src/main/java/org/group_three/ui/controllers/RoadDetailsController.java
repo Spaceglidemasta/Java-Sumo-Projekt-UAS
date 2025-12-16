@@ -138,10 +138,10 @@ public class RoadDetailsController {
 
 		for (int i = 0; i < Integer.parseInt(vehicleSpawnAmount.textProperty().getValue()); i++) {
 			SumoStringList strings = new SumoStringList();
-			strings.add(worldRoad.getwEdge().getEdgeID());
+			strings.add(worldRoad.getwEdge().getId());
 
 			int randomIndex = ThreadLocalRandom.current().nextInt(roads.size());
-			strings.add(roads.get(randomIndex).getEdgeID());
+			strings.add(roads.get(randomIndex).getId());
 
 			String routeId = SimController.getMainsimcon().addRoute(strings);
 

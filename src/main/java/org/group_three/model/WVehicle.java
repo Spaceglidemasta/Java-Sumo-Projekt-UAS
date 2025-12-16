@@ -13,6 +13,7 @@ import org.group_three.ui.Meth;
 /**
  * <h1>WVehicle</h1>
  * A Wrapper Class for Vehicle which uses only the VehicleID to get and set values.
+ *
  * @author Luca
  * */
 public class WVehicle {
