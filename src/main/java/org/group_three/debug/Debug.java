@@ -26,6 +26,7 @@ public class Debug {
     private static final String ANSI_CYAN = "\u001B[36m";
     private static final String BOLD = "\033[0;1m";
 
+    // String builder, since only string would always create new object, whereas this creates one and modifies it
     private static final StringBuilder buffer = new StringBuilder();
 
     private static Timeline flushTimer;;
@@ -106,6 +107,9 @@ public class Debug {
             String chunk = text.substring(start, end);
             start = end;
 
+            // This function is executed as runLater, when it is safe to do so,
+            // since this updates the UI elements and
+            // is not being done by the JavaFX Application Thread
             Platform.runLater(() -> {   //pass lambda function to save writing another function
                 debugTextArea.appendText(chunk);
                 trimLines(debugTextArea);
@@ -136,7 +140,7 @@ public class Debug {
 
 
     /**
-     * Function to trim the lines to the set limit,
+     * Function to keep line amount to the set limit,
      * to avoid performance issues if too many messages are kept in the log
      * @author Leon
      */

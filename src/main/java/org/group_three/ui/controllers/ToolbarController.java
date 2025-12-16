@@ -301,8 +301,7 @@ public class ToolbarController {
 	@FXML
 	private void onConsoleOpen() {
 		Console console = Console.getInstance();  // Get the single instance of the Console
-		console.show();  // Show the debug window
-		console.log("Debug window opened.");
+		console.show();
 	}
 
 	/**
