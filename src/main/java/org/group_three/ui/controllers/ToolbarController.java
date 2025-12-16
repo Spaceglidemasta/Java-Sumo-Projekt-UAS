@@ -278,8 +278,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Function to export gathered data from the simulation
-	 * (Yet to be implemented)
+	 * A method to export gathered data from the simulation as a .xml file.
+	 *
 	 * @author Joel
 	 */
 	@FXML
@@ -289,8 +289,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Function to export gathered data from the simulation
-	 * (Yet to be implemented)
+	 * A method to export gathered data from the simulation as an .csv file.
+	 *
 	 * @author Joel
 	 */
 	@FXML
