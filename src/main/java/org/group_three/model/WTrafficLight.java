@@ -110,6 +110,18 @@ public class WTrafficLight extends WObject {
         return (String) simcon.jobget(Trafficlight.getProgram(id));
     }
 
+    /**
+     * Get program of the TL. <br>
+     * SumoTLSProgram.phases -> ArrayList< SumoTLSPhase > <br>
+     * SumoTLSPhase.phasedef -> String
+     * @return The SumoTLSProgram
+     * @author Luca
+     * */
+    @MayReturnNull
+    public SumoTLSProgram getProgram() {
+        return (SumoTLSProgram) simcon.jobget(Trafficlight.getCompleteRedYellowGreenDefinition(id));
+    }
+
 
     /** This only retrieves the states. You probably want to use loadLinkedStateColors()
      * Get program ID from the id
