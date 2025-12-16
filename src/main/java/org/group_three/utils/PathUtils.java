@@ -19,9 +19,7 @@ import java.nio.file.Paths;
  * @author Luca
  * */
 @StaticClass
-public class PathUtils {
-    private PathUtils(){}
-
+public abstract class PathUtils {
 
     /**
      * Reads out the relative path / filename of the network file via XML parsing the .sumocfg file.

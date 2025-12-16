@@ -1,9 +1,10 @@
-package org.group_three.service;
+package org.group_three.utils;
 
 
 import de.tudresden.sumo.cmd.Simulation;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
+import org.group_three.debug.annotations.CreatesFiles;
 import org.group_three.debug.annotations.StaticClass;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class StatUtils {
      * @return true of successfull, false if not
      * @author Luca
      * */
+    @CreatesFiles
+    @Deprecated
     public static boolean exportState(String filename) {
 
         return SimController.getMainsimcon().jobset(Simulation.saveState("output/" + filename));
@@ -40,6 +43,8 @@ public class StatUtils {
      * @return true of successfull, false if not
      * @author Luca
      * */
+    @CreatesFiles
+    @Deprecated
     public static boolean exportState(String filename, SumoTraciConnection stc) {
         try {
             stc.do_job_set(Simulation.saveState("output/" + filename));
@@ -57,6 +62,8 @@ public class StatUtils {
      * @return true of successfull, false if not
      * @author Luca
      * */
+    @CreatesFiles
+    @Deprecated
     public static boolean exportState(String filename, SimController simcon) {
 
         return  simcon.jobset(Simulation.saveState("output/" + filename));
