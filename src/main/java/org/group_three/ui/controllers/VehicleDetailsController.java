@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.SimView2D;
+import org.group_three.ui.world.WorldRoute;
 import org.group_three.ui.world.WorldVehicle;
 
 /**
@@ -160,6 +161,12 @@ public class VehicleDetailsController {
 		sumoId.setText(worldVehicle.getwVehicle().getID());
 		speed.setText(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
 		color.setValue(worldVehicle.getColor());
+
+		new WorldRoute(
+				worldVehicle.getWorld(),
+				worldVehicle.getWorld().worldStaticRenderTarget,
+				"",
+				worldVehicle.getwVehicle().getRouteEdges());
 	}
 
 	/**
