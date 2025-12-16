@@ -17,9 +17,10 @@ import java.util.function.Function;
  * @author Luca
  * */
 @StaticClass
-public class StaticTester {
+public abstract class StaticTester {
 
-    public StaticTester() {
+    @Deprecated
+    private StaticTester() {
         SimController sim = new SimController("uascity/osm.sumocfg");
 
         //Test Scenario
@@ -51,7 +52,7 @@ public class StaticTester {
         * */
 
 
-        
+
 
 
 

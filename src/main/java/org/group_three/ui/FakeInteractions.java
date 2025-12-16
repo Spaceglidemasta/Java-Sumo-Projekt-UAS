@@ -2,12 +2,10 @@ package org.group_three.ui;
 
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
-import org.group_three.debug.StaticTester;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
-import org.group_three.service.Table;
 import org.group_three.utils.PathUtils;
 
 import java.io.File;
@@ -18,7 +16,7 @@ import static org.group_three.utils.PathUtils.getRelativePath;
 
 /**
  * Invoked upon loading one or more files via GUI -> Settings -> Open
- *
+ * PLEASE CHANGE NAME
  * @author Joel, Luca
  */
 public class FakeInteractions {
@@ -123,7 +121,7 @@ public class FakeInteractions {
         StaticTester.TableToCSVExample();
         */
 
-        StaticTester.StatisticGraphExample();
+        //StaticTester.StatisticGraphExample();
 
         //simcon.saveState(".state.xml");
 
@@ -131,6 +129,7 @@ public class FakeInteractions {
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
 
+        //DEPRECATED    VVVV         DONT USE
         //StatUtils.exportState(PathUtils.outputgen());
 
 		return true;
