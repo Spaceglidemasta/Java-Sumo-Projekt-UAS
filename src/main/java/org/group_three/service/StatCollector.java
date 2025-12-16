@@ -19,6 +19,18 @@ public class StatCollector {
         this.statistics = List.of(args);
     }
 
+    /**
+     * Adds a <code>Statistic</code> to the Collector
+     * @param stat The Statistic to Add
+     * @return the length of the collector-array after insertion
+     * @author Luca
+     * */
+    public int addStatistic(Statistic<?> stat){
+        statistics.add(stat);
+        return statistics.size();
+    }
+
+
     public void setName(String name) {this.name = name;}
 
     public String getName() {
