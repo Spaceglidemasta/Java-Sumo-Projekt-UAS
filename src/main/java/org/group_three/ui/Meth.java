@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Joel, Luca
  */
-public class Meth {
+public final class Meth {
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
