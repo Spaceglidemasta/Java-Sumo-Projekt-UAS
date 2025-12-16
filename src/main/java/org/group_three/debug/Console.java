@@ -7,19 +7,25 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+/**
+ * Console class contains the controls for the console window
+ * (This class is subject to change)
+ * @author Leon
+ * */
+
 public class Console {
 
     private static Console instance = null;
-    private TextArea debugTextArea;
-    private Stage debugStage;
+    private final Stage debugStage;
 
+
+    // Spawns the window
     private Console() {
 
         debugStage = new Stage();
         debugStage.setTitle("Debug Window");
 
-        // Create the TextArea for displaying debug messages
-        debugTextArea = new TextArea();
+        TextArea debugTextArea = new TextArea();
         debugTextArea.setEditable(false);
         debugTextArea.setWrapText(true);
 
@@ -28,15 +34,14 @@ public class Console {
 
 
         Scene scene = new Scene(root, 600, 400);
-        debugStage.setScene(scene); // add scene to the stage
+        debugStage.setScene(scene);
 
-        // Set the TextArea in Debug class
+        // Set the TextArea in Debug class,
+        // this is where the messages are passed to, to be displayed
         Debug.setDebugTextArea(debugTextArea);
 
-        // Redirect System.out to the TextArea using TextAreaPrintStream
     }
 
-    // Singleton method to get the single instance
     public static Console getInstance() {
         if (instance == null) {
             instance = new Console();
@@ -44,18 +49,13 @@ public class Console {
         return instance;
     }
 
-    public void log(String message) {
-        Platform.runLater(() -> { // pass lambda function
-            debugTextArea.appendText(message + "\n");
-            debugTextArea.setScrollTop(Double.MAX_VALUE);
-        });
-    }
-
     public void show() {
         debugStage.show();
     }
 
+    // may be used later
     public void hide() {
+        Debug.flushEverything();
         debugStage.hide();
     }
 }

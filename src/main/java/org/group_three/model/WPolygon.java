@@ -6,6 +6,7 @@ import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoGeometry;
 import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
+import org.group_three.debug.Debug;
 
 import java.util.ArrayList;
 import java.util.List;
