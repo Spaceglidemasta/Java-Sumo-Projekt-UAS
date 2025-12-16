@@ -125,7 +125,7 @@ public class FakeInteractions {
 
         StaticTester.StatisticGraphExample();
 
-        simcon.saveState(".state.xml");
+        //simcon.saveState(".state.xml");
 
 
 		// Create a new World for the opened simulation
