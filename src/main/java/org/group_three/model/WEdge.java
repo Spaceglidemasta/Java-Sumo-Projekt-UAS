@@ -21,20 +21,17 @@ import java.util.zip.GZIPInputStream;
  * => A connection between 2 junctions
  * @author Luca
  * */
-public class WEdge {
-    private String from;
-    private String to;
-    private String edgeID;
+public class WEdge extends WObject{
+    private final String from;
+    private final String to;
     private List<String> laneIDs;
-    private String name;
+    private final String name;
     private static HashMap<String, WEdge> allroads;
 
-    private WEdge() {};
-
-    public WEdge(String f, String t, String id, String name){
+    public WEdge(SimController sumcon, String f, String t, String id, String name){
+        super(sumcon, id);
         from = f;
         to = t;
-        edgeID = id;
         laneIDs = new ArrayList<>();
         this.name = name;
     }
@@ -45,10 +42,6 @@ public class WEdge {
 
     public String getTo() {
         return to;
-    }
-
-    public String getEdgeID() {
-        return edgeID;
     }
 
     public String getName() { return name; }
@@ -82,7 +75,7 @@ public class WEdge {
      * @author Luca
      * */
     public void print(){
-        System.out.println(name + ": " + edgeID);
+        System.out.println(name + ": " + getId());
         System.out.println("    from: " + from);
         System.out.println("    to: " + to);
         System.out.println("    Lanes:");
@@ -105,7 +98,7 @@ public class WEdge {
     /**
      * <h2>loadRoads</h2>
      * loads all Edges in a given network file into a WEdge. <br>
-     * This has the contents "from", "to" and "edgeID". This gets stored in
+     * This has the contents "from", "to" and "id". This gets stored in
      * the static variable "allroads" (List< SumoRoads >). You may retrieve this
      * via .getAllroads() or .getRoad(EID).
      * @param network The network file. If we are working with a config file, you need to parse it
@@ -113,12 +106,10 @@ public class WEdge {
      * @return True of successfull, false if not
      * @author Luca
      * */
-    public static boolean loadRoads(File network){
+    public static boolean loadRoads(SimController simcon, File network){
         try {
 
             allroads = new HashMap<>();
-
-            File sl = SimController.getSumoLoc();
 
             //Debug.print("location: " + network.toString());
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -155,7 +146,7 @@ public class WEdge {
                         continue;
                     }
 
-                    WEdge sr = new WEdge(_from, _to, id, _name);
+                    WEdge sr = new WEdge(simcon, _from, _to, id, _name);
 
                     NodeList lanelist = edgeElement.getElementsByTagName("lane");
 

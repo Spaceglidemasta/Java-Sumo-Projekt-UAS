@@ -5,7 +5,6 @@ import de.tudresden.sumo.objects.*;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
 import org.group_three.debug.annotations.MayReturnNull;
-import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
 import java.util.*;
@@ -16,50 +15,20 @@ import java.util.*;
  *
  * @author Luca, Leon
  * */
-public class WTrafficLight {
+public class WTrafficLight extends WObject {
 
-
-    private final String TLID;
-    private final SumoTraciConnection stc;
     private List<WLink> allWlinks;
     private static List<WTrafficLight> allWTLs;
 
-
-
-    public WTrafficLight(String id) {
-        this.TLID = id;
-        this.stc = SimController.getMainsimcon().getStc();
+    public WTrafficLight(SimController simcon, String id) {
+        super(simcon, id);
         allWlinks = new ArrayList<>();
     }
 
 
     public String getID() {
-        return TLID;
+        return id;
     }
-
-    public SumoTraciConnection getStc() {
-        return stc;
-    }
-
-
-    public void printLinks(){
-
-        SumoLinkList out = new SumoLinkList();
-        try {
-            out = (SumoLinkList) stc.do_job_get(Trafficlight.getControlledLinks(TLID));
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        System.out.println(TLID + ":");
-        for(Object k : out){
-            System.out.println("    " + TLID +  ": " + k.toString());
-        }
-
-
-    }
-
 
     /**
      * Adds a WLink to the local instance allWlinks list
@@ -83,28 +52,17 @@ public class WTrafficLight {
      * @author Leon
      * */
     public boolean setPhase(int index) {
-        try {
-            stc.do_job_set(Trafficlight.setPhase(TLID, index));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return simcon.jobset(Trafficlight.setPhase(id, index));
     }
 
 
     /**This does not give you the color of the TL as an index!!!
-     * @return the index of the current phase[0:] Or <code>-1</code> if failed
+     * @return the index of the current phase[0:]
      * @author Luca
      * */
     public int getPhaseIndex() {
-        try {
-            return (int) stc.do_job_get(Trafficlight.getPhase(TLID));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return -1;
-        }
+
+         return (int) simcon.jobget(Trafficlight.getPhase(id));
     }
 
     /**
@@ -114,13 +72,9 @@ public class WTrafficLight {
      * @author Luca
      * */
     public boolean setPhaseLen(double t){
-        try {
-            stc.do_job_set(Trafficlight.setPhaseDuration(TLID, t));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+
+        return simcon.jobset(Trafficlight.setPhaseDuration(id, t));
+
     }
 
 
@@ -129,13 +83,9 @@ public class WTrafficLight {
      * @author Luca
      * */
     public double getPhaseLen(){
-        try {
-            return (double) stc.do_job_get(Trafficlight.getPhaseDuration(TLID));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1.0d;
-        }
+        return (double) simcon.jobget(Trafficlight.getPhaseDuration(id));
+
     }
 
     /**
@@ -145,44 +95,30 @@ public class WTrafficLight {
      * @author Luca
      * */
     public boolean setProgram(String PID) {
-        try {
-            stc.do_job_set(Trafficlight.setProgram(TLID, PID));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+
+        return simcon.jobset(Trafficlight.setProgram(id, PID));
+
     }
 
     /**
-     * Get program ID from the TLID
+     * Get program ID from the id
      * @return PID / null
      * @author Luca
      * */
     @MayReturnNull
     public String getProgramID() {
-        try {
-            return (String) stc.do_job_get(Trafficlight.getProgram(TLID));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return (String) simcon.jobget(Trafficlight.getProgram(id));
     }
 
 
     /** This only retrieves the states. You probably want to use loadLinkedStateColors()
-     * Get program ID from the TLID
-     * @return The states of all Linked Wlinks.
+     * Get program ID from the id
+     * @return The states of all Linked Wlinks or null.
      * @author Luca
      * */
     @MayReturnNull
     public String getLinkStates() {
-        try {
-            return (String) stc.do_job_get(Trafficlight.getRedYellowGreenState(TLID));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return (String) simcon.jobget(Trafficlight.getRedYellowGreenState(id));
     }
 
     /**
@@ -200,8 +136,13 @@ public class WTrafficLight {
 
             SumoColor sc = new SumoColor();
 
-            if(Objects.equals(state, "r") || Objects.equals(state, "R"))        sc = new SumoColor(255,0,0,255);
-            else if(Objects.equals(state, "g") || Objects.equals(state, "G"))   sc = new SumoColor(0,255,0,255);
+            if( Objects.equals(state, "R"))        sc = new SumoColor(255,0,0,255);
+            else if(Objects.equals(state, "r"))    sc = new SumoColor(255,0,0,100);
+
+            else if(Objects.equals(state, "G"))   sc = new SumoColor(0,255,0,255);
+            else if(Objects.equals(state, "g"))   sc = new SumoColor(0,255,0,100);
+
+
             else if(Objects.equals(state, "y") || Objects.equals(state, "Y"))   sc = new SumoColor(255,255,0,255);
 
             allWlinks.get(i).setColor(sc);
@@ -220,37 +161,38 @@ public class WTrafficLight {
      * @return Said List
      * @author Luca
      * */
-    public static List<WTrafficLight> loadAll() {
+    public static List<WTrafficLight> loadAll(SimController simcon) {
 
         allWTLs = new ArrayList<>();
 
-        SimController msc = SimController.getMainsimcon();
-
-        SumoStringList allTLIDs = msc.getTrafficLightsIDList();
+        SumoStringList allTLIDs = simcon.getTrafficLightsIDList();
 
         for(String TLID : allTLIDs){
 
-            WTrafficLight wtl = new WTrafficLight(TLID);
+            WTrafficLight wtl = new WTrafficLight(simcon, TLID);
 
-            List<String> allLIDs = msc.getControlledLanes(TLID);
+            List<String> allLIDs = simcon.getControlledLanes(TLID);
 
+            int TLIndex = 0;
             for(String LID : allLIDs){
 
-                LinkedList<SumoPosition2D> shape = msc.getLaneShape(LID);
+                LinkedList<SumoPosition2D> shape = simcon.getLaneShape(LID);
 
                 Vector2D last = new Vector2D(shape.getLast());
                 Vector2D stlast = new Vector2D(shape.get(shape.size() - 2));
 
 	            double angle = last.getDirectionAngle(stlast);
 
-                double width = msc.getLaneWidth(LID);
+                double width = simcon.getLaneWidth(LID);
                 double len = 0.5;
 
-                WLink wlink = new WLink(last, width, len, angle, LID);
+                WLink wlink = new WLink(TLIndex, last, width, len, angle, LID);
 
                 wtl.addWlink(wlink);
 
                 //wtl.printLinks();
+
+                TLIndex++;
 
             }
 

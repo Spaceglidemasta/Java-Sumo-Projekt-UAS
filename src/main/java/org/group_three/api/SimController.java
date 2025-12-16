@@ -910,7 +910,7 @@ public class SimController {
      * @param scmd The SumoCommand to be executed upon the Simulation.
      * @example
      * <code>
-     * sumcon.jobget(Vehicle.getIDList())
+     * simcon.jobget(Vehicle.getIDList())
      * </code>
      * @return "Object" of the .do_job_get() method. Yes, you need to unsafe cast this.
      * <code>null</code> if failed.
@@ -933,7 +933,7 @@ public class SimController {
      * @return <code>true</code> if successfull, <code>false</code> if not.
      * @example
      * <code>
-     * sumcon.jobset(Vehicle.add(vehID, typeID, routeID, depart, speed, lane))
+     * simcon.jobset(Vehicle.add(vehID, typeID, routeID, depart, speed, lane))
      * </code>
      * */
     public boolean jobset(SumoCommand scmd){

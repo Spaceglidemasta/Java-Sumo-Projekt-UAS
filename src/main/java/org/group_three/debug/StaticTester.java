@@ -1,21 +1,14 @@
 package org.group_three.debug;
 
 
-import com.sun.jdi.InvalidTypeException;
-import de.tudresden.sumo.cmd.Route;
 import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.sumo.cmd.Vehicle;
-import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
 import org.group_three.debug.annotations.StaticClass;
-import org.group_three.debug.exceptions.InvalidArgumentCount;
 import org.group_three.model.WPolygon;
-import org.group_three.model.WVehicle;
 import org.group_three.service.Statistic;
 import org.group_three.service.Table;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -88,7 +81,7 @@ public class StaticTester {
         for(WPolygon poly : WPolygon.getAllPolys()){
             try {
                 polyTable.add(
-                        poly.getPoID(),
+                        poly.getId(),
                         poly.getType(),
                         poly.getColor()
                 );
