@@ -47,7 +47,12 @@
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="simulationReload" disable="true" mnemonicParsing="false" onAction="#onSimulationReloadClicked" text="Reload" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="simulationExport" disable="true" mnemonicParsing="false" onAction="#onSimulationExportClicked" text="Export" />
+            <Menu fx:id="simulationExport" disable="true" mnemonicParsing="false" text="Export">
+               <items>
+                  <MenuItem fx:id="simulationExportXml" mnemonicParsing="false" onAction="#onSimulationExportXmlClicked" text=".xml" />
+                  <MenuItem fx:id="simulationExportCsv" mnemonicParsing="false" onAction="#onSimulationExportCsvClicked" text=".csv" />
+               </items>
+            </Menu>
          </items>
       </Menu>
       <Menu mnemonicParsing="false" text="Settings">

@@ -1,9 +1,13 @@
 package org.group_three.ui.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import org.group_three.debug.Debug;
+import org.group_three.ui.Meth;
+import org.group_three.ui.SimView2D;
+import org.group_three.ui.world.WorldRoute;
 import org.group_three.ui.world.WorldVehicle;
 
 /**
@@ -69,6 +73,23 @@ public class VehicleDetailsController {
 	private TextField route;
 
 	/**
+	 * The button to toggle view locking to the vehicle.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	@FXML
+	private Button viewLockButton;
+
+	/**
+	 * The state of the vehicle view lock.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private boolean viewLocked = false;
+
+	/**
 	 * The world vehicle that is owning this class.
 	 *
 	 * @author Joel
@@ -107,6 +128,26 @@ public class VehicleDetailsController {
 	}
 
 	/**
+	 * The event to toggle view locking of the vehicle.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private void onViewLockPressed() {
+		viewLocked = !viewLocked;
+		viewLockButton.setText(viewLocked ? "Unlock" : "Lock");
+
+		Debug.print(SimView2D.getWorld().getViewerPosition());
+		Debug.print(worldVehicle.getPosition());
+
+		Debug.print(Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), worldVehicle.getPosition()));
+
+		//SimView2D.getWorld().setViewerPosition(worldVehicle.getPosition().negate());
+		//SimView2D.getWorld().setViewerRotation(worldVehicle.getRotation());
+		SimView2D.getWorld().requestUpdate();
+	}
+
+	/**
 	 * The setup method for this class to fill it with data.
 	 *
 	 * @param worldVehicle The world vehicle which this controller is from.
@@ -120,6 +161,12 @@ public class VehicleDetailsController {
 		sumoId.setText(worldVehicle.getwVehicle().getID());
 		speed.setText(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
 		color.setValue(worldVehicle.getColor());
+
+		new WorldRoute(
+				worldVehicle.getWorld(),
+				worldVehicle.getWorld().worldStaticRenderTarget,
+				"",
+				worldVehicle.getwVehicle().getRouteEdges());
 	}
 
 	/**
@@ -147,5 +194,6 @@ public class VehicleDetailsController {
 		speed.setDisable(true);
 		color.setDisable(true);
 		route.setDisable(true);
+		viewLockButton.setDisable(true);
 	}
 }

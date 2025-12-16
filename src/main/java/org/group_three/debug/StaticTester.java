@@ -105,13 +105,13 @@ public class StaticTester {
     public static void StatisticGraphExample() {
         SimController sc = SimController.getMainsimcon();
 
-        Table speedtable = new Table("time", "average speed");
+        Statistic<Double> stat = new Statistic<Double>("Average Speed per second","time", "average speed");
 
         for(int i = 0; i < 30; i++){
             sc.step();
             try {
-                speedtable.add(
-                        sc.getTime(),
+                stat.add(
+                        (double) sc.getTime(),
                         sc.getAverageVehSpeed()
                 );
             } catch ( Exception e){
@@ -121,13 +121,15 @@ public class StaticTester {
 
         }
 
-        Statistic stat = new Statistic("Average speed per time", speedtable);
 
         Function<Object, Object> fun  = stat.getGraphOf("time", "average speed");
 
-        for(int i = 0; i < 30; i++){
+        System.out.println(stat.getName());
+        for(double i = 0; i < 30; i++){
             System.out.println(i + ": " + fun.apply(i));
         }
+
+        Debug.print("Wir haben gerade 30 steps gemacht, nicht wundern.");
 
 
     }

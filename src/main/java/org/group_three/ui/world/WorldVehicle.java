@@ -193,13 +193,10 @@ public class WorldVehicle extends WorldObject {
 	@Override
 	public void updateSim() {
 		wVehicle.update();
-		setPosition(new Vector2D(wVehicle.getPos()));
-		//setRotation(wVehicle.getAngle());
+		setRotation(360 - wVehicle.getAngle() + 90);
+		setPosition(Meth.addRelativeLocation(new Vector2D(wVehicle.getPos()), getRotation(), new Vector2D(-size.x/2, 0)));
 		setColor(wVehicle.getColor());
 
-		//Debug.print(wVehicle.getColor());
-
-		//setColor(convertWVColor());
 		updateDetailsPanel();
 	}
 
@@ -213,7 +210,7 @@ public class WorldVehicle extends WorldObject {
 		super.update();
 		Image visualImage = iconManager.getIcon(getColor());
 
-		setRotation(360 - wVehicle.getAngle() + 90);
+
 
 		//wVehicle.boogieWonderland();
 

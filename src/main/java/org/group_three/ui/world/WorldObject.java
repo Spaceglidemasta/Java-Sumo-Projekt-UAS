@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Joel
  */
-public class WorldObject {
+public abstract class WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -535,6 +535,31 @@ public class WorldObject {
 		}
 
 		graphicsContext.fillPolygon(xPoints, yPoints, shape.size());
+		graphicsContext.restore();
+	}
+
+	public void drawLine(List<Vector2D> points, double width, Color color) {
+		graphicsContext.save();
+		graphicsContext.setStroke(color);
+		graphicsContext.setLineWidth(width);
+		setDrawTransform();
+
+		List<Vector2D> shape = new ArrayList<>();
+
+		for (Vector2D point : points) {
+			shape.add(point.mul(getWorld().getViewerZoom()));
+		}
+
+		// convert Vector2D list to x and y double arrays
+		double[] xPoints = new double[shape.size()];
+		double[] yPoints = new double[shape.size()];
+
+		for (int i = 0; i < shape.size(); i++) {
+			xPoints[i] = shape.get(i).x;
+			yPoints[i] = shape.get(i).y;
+		}
+
+		graphicsContext.strokePolyline(xPoints, yPoints, shape.size());
 		graphicsContext.restore();
 	}
 

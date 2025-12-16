@@ -37,7 +37,11 @@ public class ToolbarController {
 	@FXML
 	private MenuItem simulationReload;
 	@FXML
-	private MenuItem simulationExport;
+	private Menu simulationExport;
+	@FXML
+	private MenuItem simulationExportXml;
+	@FXML
+	private MenuItem simulationExportCsv;
 
 	// TODO: Fix issues from multi file selection
 
@@ -87,7 +91,7 @@ public class ToolbarController {
 	private void setSimulationButtonStates(boolean disabled) {
 		simulationClose.setDisable(disabled);
 		simulationReload.setDisable(true); // not implemented yet
-		simulationExport.setDisable(true); // not implemented yet
+		simulationExport.setDisable(disabled);
 	}
 
 	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {
@@ -279,8 +283,20 @@ public class ToolbarController {
 	 * @author Joel
 	 */
 	@FXML
-	private void onSimulationExportClicked() {
-		Debug.toConsole("Simulation -> Export");
+	private void onSimulationExportXmlClicked() {
+		Debug.toConsole("Simulation -> Export -> .xml");
+		SimController.getMainsimcon().saveState(".xml");
+	}
+
+	/**
+	 * Function to export gathered data from the simulation
+	 * (Yet to be implemented)
+	 * @author Joel
+	 */
+	@FXML
+	private void onSimulationExportCsvClicked() {
+		Debug.toConsole("Simulation -> Export -> .csv");
+		SimController.getMainsimcon().saveState(".csv");
 	}
 
 	/**
