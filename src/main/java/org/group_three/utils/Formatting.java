@@ -42,6 +42,7 @@ public final class Formatting {
      * @return prefix + System.currentTimeMillis() + suffix
      * @author Luca
      * */
+    //TODO Make this truly unique
     public static String uniquegen(String prefix, String suffix){
 
         long id = (long) (System.currentTimeMillis() * Math.random());

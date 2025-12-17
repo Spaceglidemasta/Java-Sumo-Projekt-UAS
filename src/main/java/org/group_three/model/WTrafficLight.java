@@ -117,8 +117,8 @@ public class WTrafficLight extends WObject {
      * @author Luca
      * */
     @MayReturnNull
-    public SumoTLSProgram getProgram() {
-        return (SumoTLSProgram) simcon.jobget(Trafficlight.getCompleteRedYellowGreenDefinition(id));
+    public String getProgram() {
+        return (String) simcon.jobget(Trafficlight.getCompleteRedYellowGreenDefinition(id));
     }
 
 
