@@ -1,11 +1,15 @@
 package org.group_three.debug;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.logging.*;
+
 
 /**
  * Centralized Debug utility using java.util.logging.
@@ -14,7 +18,6 @@ public abstract class Debug {
 
     private static final Logger LOGGER = Logger.getLogger("org.group_three");
 
-    private static TextArea debugTextArea;
 
     private static final String RESET  = "\u001B[0m";
     private static final String BLUE   = "\u001B[34m";
@@ -22,6 +25,12 @@ public abstract class Debug {
     private static final String YELLOW = "\u001B[33m";
     private static final String RED    = "\u001B[31m";
     private static final String GREEN  = "\u001B[32m";
+
+    private static final StringBuilder buffer = new StringBuilder();
+    private static Timeline flushTimer;
+    private static final int MAX_CHUNK_SIZE = 2000;  // characters per flush
+    private static final int MAX_LINES = 500;        // max lines kept
+    private static TextArea debugTextArea;
 
     static {
         try {
@@ -89,18 +98,86 @@ public abstract class Debug {
         }
     }
 
+
+    public static void setDebugTextArea(TextArea textArea) {
+        debugTextArea = textArea;
+        startFlushTimer();
+    }
+
     /**
-     * Prints the message only to the console
-     * @param message The chosen message
-     * @return
+     * Print function for custom console. Messages are buffered and flushed
+     * periodically to avoid UI lag. Old lines are trimmed to MAX_LINES.
+     * @param message Message to print
      * @author Leon
      */
     public static void toConsole(Object message) {
-        if (debugTextArea != null) {
-            String className = getCallerClassName();
-            String msg = "[" + className + "] " + String.valueOf(message);
-            Platform.runLater(() -> debugTextArea.appendText(msg + "\n"));
+        if (debugTextArea == null) return;
+        String className = getCallerClassName();
+        String formatted = "[" + className + "] " + message;
+        synchronized (buffer) {
+            buffer.append(formatted).append("\n");
         }
+    }
+
+    private static void startFlushTimer() {
+        if (flushTimer != null) return; // prevent multiple timers
+        flushTimer = new Timeline(new KeyFrame(Duration.millis(200), e -> flushBuffer()));
+        flushTimer.setCycleCount(Timeline.INDEFINITE);
+        flushTimer.play();
+    }
+
+    private static void flushBuffer() {
+        if (debugTextArea == null) return;
+
+        String text;
+        synchronized (buffer) {
+            if (buffer.isEmpty()) return;
+            text = buffer.toString();
+            buffer.setLength(0);
+        }
+
+        int length = text.length();
+        int start = 0;
+        while (start < length) {
+            int end = Math.min(start + MAX_CHUNK_SIZE, length);
+            String chunk = text.substring(start, end);
+            start = end;
+
+            Platform.runLater(() -> {
+                debugTextArea.appendText(chunk);
+                trimLines(debugTextArea);
+                debugTextArea.positionCaret(debugTextArea.getLength());
+            });
+        }
+    }
+
+    public static void flushEverything() {
+        if (debugTextArea == null) return;
+
+        String text;
+        synchronized (buffer) {
+            if (buffer.isEmpty()) return;
+            text = buffer.toString();
+            buffer.setLength(0);
+        }
+
+        Platform.runLater(() -> {
+            debugTextArea.appendText(text);
+            debugTextArea.positionCaret(debugTextArea.getLength());
+        });
+    }
+
+    private static void trimLines(TextArea area) {
+        String[] lines = area.getText().split("\n");
+        if (lines.length > MAX_LINES) {
+            int startIndex = 0;
+            for (int i = 0; i < lines.length - MAX_LINES; i++) {
+                startIndex += lines[i].length() + 1; // +1 for newline
+            }
+            // delete old lines without resetting the whole text
+            area.deleteText(0, startIndex);
+        }
+        area.positionCaret(area.getLength());
     }
 
     /**
@@ -136,36 +213,6 @@ public abstract class Debug {
      * @param textArea The TextArea to append logs to
      * @author Leon
      */
-    public static void setDebugTextArea(TextArea textArea) {
-        debugTextArea = textArea;
-
-        Handler textAreaHandler = new Handler() {
-            @Override
-            public void publish(LogRecord record) {
-                if (debugTextArea == null || !isLoggable(record)) return;
-                String msg = getFormatter().format(record);
-                Platform.runLater(() -> debugTextArea.appendText(msg));
-            }
-
-            @Override
-            public void flush() { }
-
-            @Override
-            public void close() throws SecurityException { }
-        };
-
-        // Simplified formatter for Console
-        textAreaHandler.setFormatter(new Formatter() {
-            @Override
-            public String format(LogRecord record) {
-                String cleanMsg = record.getMessage().replaceAll("\u001B\\[[;\\d]*m", "");
-                return cleanMsg + "\n";
-            }
-        });
-
-        textAreaHandler.setLevel(Level.ALL);
-        LOGGER.addHandler(textAreaHandler);
-    }
 
     /**
      * Shortens a fully qualified class name by removing the org.group_three.
