@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @author Luca
  * */
 @StaticClass
-public abstract class StaticTester {
+public final class StaticTester {
 
     @Deprecated
     private StaticTester() {
