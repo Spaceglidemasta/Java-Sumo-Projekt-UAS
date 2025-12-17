@@ -108,14 +108,13 @@ public class CanvasController {
 	private void onCanvasDragged(MouseEvent event) {
 		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasDragged");
 
-		double x = event.getX();
-		double y = event.getY();
+		Vector2D current = new Vector2D(event.getX(), event.getY());
 
-		deltaX = x - lastX;
-		deltaY = y - lastY;
+		delta.x = current.x - last.x;
+		delta.y = current.y - last.y;
 
-		double startRot = new Vector2D(lastX, lastY).sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
-		double rot = new Vector2D(x, y).sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
+		double startRot = new Vector2D(last.x, last.y).sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
+		double rot = current.sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
 		double deltaRot = rot - startRot;
 
 		if (/*!Keyboard.isCtrlKeyPressed() && */Keyboard.isAltKeyPressed()) { // start rotation freely, no snapping
@@ -136,11 +135,10 @@ public class CanvasController {
 			SimView2D.getWorld().setViewerRotation(rot);
 
 		} else {
-			SimView2D.getWorld().addViewerPosition(new Vector2D(deltaX, deltaY));
+			SimView2D.getWorld().addViewerPosition(new Vector2D(delta.x, delta.y));
 		}
 
-		lastX = x;
-		lastY = y;
+		last = current;
 	}
 
 	/**
@@ -153,8 +151,7 @@ public class CanvasController {
 	private void onCanvasPressed(MouseEvent event) {
 		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasPressed");
 
-		lastX = event.getX();
-		lastY = event.getY();
+		last = new Vector2D(event.getX(), event.getY());
 	}
 
 	private Vector2D mousePosition = new Vector2D();
@@ -168,7 +165,7 @@ public class CanvasController {
 	@FXML
 	private void onMouseMoved(MouseEvent event) {
 		mousePosition = new Vector2D(event.getX(), event.getY());
-		Debug.print(mousePosition);
+		//Debug.print(mousePosition);
 	}
 
 	/**
@@ -191,12 +188,8 @@ public class CanvasController {
 		//Debug.print(world.getViewerPosition());
 	}
 
-
-	private double lastX;
-	private double lastY;
-
-	public double deltaX;
-	public double deltaY;
+	Vector2D last = new Vector2D();
+	Vector2D delta = new Vector2D();
 
 	// draw handler needed so it doesn't waste performance
 }
