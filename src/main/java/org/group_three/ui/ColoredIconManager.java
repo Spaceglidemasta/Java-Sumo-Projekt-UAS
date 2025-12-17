@@ -9,7 +9,6 @@ import org.group_three.debug.Debug;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * A class to create and manage colored icon variants.
@@ -121,7 +120,7 @@ public class ColoredIconManager {
 			// Create icon with specified color if icon doesn't exist yet and add it to map
 			icon = addImageTint(color);
 			icons.put(color, icon);
-			Debug.log("IconCount: " + icons.size(), Level.FINE);
+			Debug.print("IconCount: " + icons.size());
 		}
 
 		return icon;

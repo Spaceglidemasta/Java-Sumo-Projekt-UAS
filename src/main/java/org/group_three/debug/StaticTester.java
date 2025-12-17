@@ -10,7 +10,6 @@ import org.group_three.service.Statistic;
 import org.group_three.service.Table;
 
 import java.util.function.Function;
-import java.util.logging.Level;
 
 /**
  * Tester Class so we don't have the Main function cluttered full of
@@ -26,13 +25,13 @@ public abstract class StaticTester {
 
         //Test Scenario
 
-        Debug.log("Trafic lights: " + sim.jobget(Trafficlight.getIDList()).toString(), Level.FINE);
+        Debug.print("Trafic lights: " + sim.jobget(Trafficlight.getIDList()).toString());
 
-        Debug.log("Edges:" + sim.getEdgeIDList(), Level.FINE);
+        Debug.print("Edges:" + sim.getEdgeIDList());
 
-        Debug.log("Vehicles:" + sim.getVehicleIDList(), Level.FINE);
+        Debug.print("Vehicles:" + sim.getVehicleIDList());
 
-        Debug.log("Vehicle Count: " + sim.jobget(Vehicle.getIDCount()), Level.FINE);
+        Debug.print("Vehicle Count: " + sim.jobget(Vehicle.getIDCount()));
 
         /*
         * List<String> edgelist = new ArrayList<>();
@@ -58,19 +57,19 @@ public abstract class StaticTester {
 
 
 
-        Debug.log("Junction Positions", Level.FINE);
+        Debug.print("Junction Positions");
         for(String junc : sim.getJunctionIDList()){
-            Debug.log(junc + ": " + sim.getJunctionPos(junc), Level.FINE);
+            Debug.print(junc + ": " + sim.getJunctionPos(junc));
         }
 
-        Debug.log("TL phases", Level.FINE);
+        Debug.print("TL phases");
         for(String tl : sim.getTrafficLightsIDList()){
-            Debug.log(tl + ": " + sim.getTLPhase(tl), Level.FINE);
+            Debug.print(tl + ": " + sim.getTLPhase(tl));
         }
 
-        Debug.log("Vehicle Positions", Level.FINE);
+        Debug.print("Vehicle Positions");
         for(String veh : sim.getVehicleIDList()){;
-            Debug.log(veh + ": " + sim.jobget(Vehicle.getPosition(veh)), Level.FINE);
+            Debug.print(veh + ": " + sim.jobget(Vehicle.getPosition(veh)));
         }
 
         sim.close();
@@ -123,6 +122,9 @@ public abstract class StaticTester {
         for(double i = 0; i < 30; i++){
             System.out.println(i + ": " + fun.apply(i));
         }
+
+        Debug.print("Wir haben gerade 30 steps gemacht, nicht wundern.");
+
 
     }
 

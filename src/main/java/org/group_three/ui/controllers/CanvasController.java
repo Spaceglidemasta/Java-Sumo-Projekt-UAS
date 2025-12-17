@@ -106,7 +106,7 @@ public class CanvasController {
 	 */
 	@FXML
 	private void onCanvasDragged(MouseEvent event) {
-        Debug.toConsole("onCanvasDragged");
+		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasDragged");
 
 		double x = event.getX();
 		double y = event.getY();
@@ -151,7 +151,7 @@ public class CanvasController {
 	 */
 	@FXML
 	private void onCanvasPressed(MouseEvent event) {
-		Debug.toConsole("onCanvasPressed");
+		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasPressed");
 
 		lastX = event.getX();
 		lastY = event.getY();
@@ -179,7 +179,7 @@ public class CanvasController {
 	 */
 	@FXML
 	private void onScroll(ScrollEvent event) {
-		Debug.toConsole("onScroll");
+		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onScroll");
 
 		double zoomDelta = event.getDeltaY() * 0.01;
 		double mlp = zoomDelta < 0 ? 1 : 1;
