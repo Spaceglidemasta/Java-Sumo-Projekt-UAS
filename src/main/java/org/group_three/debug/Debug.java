@@ -101,6 +101,51 @@ public abstract class Debug {
         }
     }
 
+    // These functions are logging related
+    /**
+     * Generic log method: pass message and Level explicitly.
+     * @param value The message to be logged
+     * @param level The logging level (INFO, FINE, WARNING, SEVERE)
+     * @author Leon
+     */
+    public static void log(Object value, Level level) {
+        String className = getCallerClassName();
+        String msg = "[" + GREEN + className + RESET + "] " + String.valueOf(value);
+        LOGGER.log(level, msg);
+    }
+
+    /**
+     * Shortens a fully qualified class name by removing the org.group_three.
+     * @param fullName The full class name
+     * @return The shortened class name
+     * @author Leon
+     */
+    private static String shortenClassName(String fullName) {
+        String prefix = "org.group_three.";
+        if (fullName.startsWith(prefix)) {
+            return fullName.substring(prefix.length());
+        }
+        return fullName;
+    }
+
+    /**
+     * Helper to get the actual caller class name, skipping Debug and JDK internals.
+     * @return The caller class name, or "Unknown" if not found
+     * @author Leon
+     */
+    private static String getCallerClassName() {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        for (StackTraceElement element : stack) {
+            String className = element.getClassName();
+            if (!className.equals(Debug.class.getName())
+                    && !className.startsWith("java.lang")) {
+                return shortenClassName(className);
+            }
+        }
+        return "Unknown";
+    }
+
+    // These functions are console related
 
     public static void setDebugTextArea(TextArea textArea) {
         debugTextArea = textArea;
@@ -198,47 +243,6 @@ public abstract class Debug {
         System.out.println(nlDebug + classOut + " " + msg);
     }
 
-    /**
-     * Generic log method: pass message and Level explicitly.
-     * @param value The message to be logged
-     * @param level The logging level (INFO, FINE, WARNING, SEVERE)
-     * @author Leon
-     */
-    public static void log(Object value, Level level) {
-        String className = getCallerClassName();
-        String msg = "[" + GREEN + className + RESET + "] " + String.valueOf(value);
-        LOGGER.log(level, msg);
-    }
 
-    /**
-     * Shortens a fully qualified class name by removing the org.group_three.
-     * @param fullName The full class name
-     * @return The shortened class name
-     * @author Leon
-     */
-    private static String shortenClassName(String fullName) {
-        String prefix = "org.group_three.";
-        if (fullName.startsWith(prefix)) {
-            return fullName.substring(prefix.length());
-        }
-        return fullName;
-    }
-
-    /**
-     * Helper to get the actual caller class name, skipping Debug and JDK internals.
-     * @return The caller class name, or "Unknown" if not found
-     * @author Leon
-     */
-    private static String getCallerClassName() {
-        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-        for (StackTraceElement element : stack) {
-            String className = element.getClassName();
-            if (!className.equals(Debug.class.getName())
-                    && !className.startsWith("java.lang")) {
-                return shortenClassName(className);
-            }
-        }
-        return "Unknown";
-    }
 
 }
