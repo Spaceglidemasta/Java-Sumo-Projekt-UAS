@@ -168,7 +168,7 @@ public class CanvasController {
 	@FXML
 	private void onMouseMoved(MouseEvent event) {
 		mousePosition = new Vector2D(event.getX(), event.getY());
-		//Debug.print(mousePosition);
+		Debug.print(mousePosition);
 	}
 
 	/**
