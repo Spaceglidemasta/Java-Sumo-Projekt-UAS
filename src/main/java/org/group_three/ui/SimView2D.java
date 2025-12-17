@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
+import org.group_three.debug.Debug;
 import org.group_three.model.*;
 import org.group_three.ui.controllers.BodyController;
 import org.group_three.ui.world.*;
@@ -231,8 +232,16 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addPolygons(Canvas renderLayer) {
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon == null){
+            Debug.print("Main Simcon instance is null");
+            return;
+        }
+
 		// add all polys to world
-		for (WPolygon poly : WPolygon.getAllPolys()) {
+		for (WPolygon poly : simcon.getAllPolys()) {
 			new WorldPoly(
 					world,
 					renderLayer,
@@ -265,8 +274,16 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addRoads(Canvas renderLayer) {
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon == null){
+            Debug.print("Main Simcon instance is null");
+            return;
+        }
+
 		// loop through all roads
-		for (WEdge wEdge : WEdge.getAllroads()) {
+		for (WEdge wEdge : simcon.getAllroads().values()) {
 			// loop through all lanes
 			for (String laneId : wEdge.getLaneIDs()) {
 				// create lane sub point list
@@ -299,7 +316,15 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addTrafficLights(Canvas renderLayer) {
-		for (WTrafficLight wTrafficLight : WTrafficLight.getAllWTLs()) {
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon == null){
+            Debug.print("Main Simcon instance is null");
+            return;
+        }
+
+        for (WTrafficLight wTrafficLight : simcon.getAllWTLs()) {
 			wTrafficLight.loadLinkedStateColors();
 
 			for (WLink wLink : wTrafficLight.getAllWlinks()) {
@@ -321,7 +346,15 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void updateTrafficLights(Canvas renderLayer) {
-		for (WTrafficLight wTrafficLight : WTrafficLight.getAllWTLs()) {
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon == null){
+            Debug.print("Main Simcon instance is null");
+            return;
+        }
+
+		for (WTrafficLight wTrafficLight : simcon.getAllWTLs()) {
 			wTrafficLight.loadLinkedStateColors();
 		}
 	}

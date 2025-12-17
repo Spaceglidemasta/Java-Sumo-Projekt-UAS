@@ -22,7 +22,6 @@ public class WPolygon extends WObject {
     private SumoColor color;
     private SumoGeometry shape;
     private String type;
-    private static List<WPolygon> allPolys;
 
     public WPolygon(SimController sc,String id, SumoColor clr, SumoGeometry sh, String ty){
         super(sc, id);
@@ -34,7 +33,7 @@ public class WPolygon extends WObject {
 
     public String getId() {return id;}
 
-    public static List<WPolygon> getAllPolys() {return allPolys;}
+    public List<WPolygon> getAllPolys() {return simcon.getAllPolys();}
 
     /**
      * Loads all Polygons from the Main Simulation into allPolys
@@ -42,8 +41,6 @@ public class WPolygon extends WObject {
      * @author Luca
      * */
     public static boolean loadAllPolys(SimController simcon){
-
-        allPolys = new ArrayList<>();
 
         SumoStringList polys = simcon.getPolygonIDList();
 
@@ -56,7 +53,7 @@ public class WPolygon extends WObject {
             String ty = (String) simcon.jobget(Polygon.getType(pid));
 
             WPolygon poly = new WPolygon(simcon, pid,  clr, sh, ty);
-            allPolys.add(poly);
+            simcon.addToAllPolys(poly);
         }
 
         return true;
@@ -106,9 +103,9 @@ public class WPolygon extends WObject {
         System.out.println(id);
     }
 
-    public static void printAll(){
+    public void printAll(){
 
-        for(WPolygon wpoly : allPolys){
+        for(WPolygon wpoly : simcon.getAllPolys()){
             wpoly.print();
         }
 
@@ -121,7 +118,7 @@ public class WPolygon extends WObject {
      * @param shape the SumoGeometry of the Shape
      * @param color the SumoColor of the Polgyon
      * @param fill if the Polygon is to be filled or not.
-     * @param polygonType the type of the Polygon as String.
+     * @param type the type of the Polygon as String.
      * @param layer The height(?) of the polygon
      * @return the Polygon ID, or <code>null</code> if failed.
      * @author Luca
@@ -131,13 +128,17 @@ public class WPolygon extends WObject {
                                  SumoGeometry shape,
                                  SumoColor color,
                                  boolean fill,
-                                 String polygonType,
+                                 String type,
                                  int layer
     ){
 
         String pid = Formatting.uniquegen("poly_", "");
 
-        boolean response = simcon.jobset(Polygon.add(pid, shape, color, fill, polygonType, layer));
+        boolean response = simcon.jobset(Polygon.add(pid, shape, color, fill, type, layer));
+
+        simcon.addToAllPolys(
+                new WPolygon(simcon, pid, color, shape, type)
+        );
 
         if(!response) return null;
 

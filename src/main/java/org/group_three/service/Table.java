@@ -297,7 +297,6 @@ public class Table<T> {
         // Posted by Stewart, modified by community. See post 'Timeline' for change history
         // Retrieved 2025-12-16, License - CC BY-SA 3.0
 
-
         String filename = Formatting.uniquegen("output/" + pathstr + "/tout_", ".csv");
 
         if(content == null || content.isEmpty()) {
@@ -314,7 +313,6 @@ public class Table<T> {
             }
 
         }
-
         catch (IOException ioe) {
             ioe.printStackTrace();
         }

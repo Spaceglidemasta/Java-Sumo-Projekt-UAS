@@ -18,7 +18,6 @@ import java.util.*;
 public class WTrafficLight extends WObject {
 
     private List<WLink> allWlinks;
-    private static List<WTrafficLight> allWTLs;
 
     public WTrafficLight(SimController simcon, String id) {
         super(simcon, id);
@@ -39,8 +38,8 @@ public class WTrafficLight extends WObject {
         allWlinks.add(wlink);
     }
 
-    public static List<WTrafficLight> getAllWTLs() {
-        return allWTLs;
+    public List<WTrafficLight> getAllWTLs() {
+        return simcon.getAllWTLs();
     }
 
     public List<WLink> getAllWlinks() {return allWlinks;}
@@ -175,8 +174,6 @@ public class WTrafficLight extends WObject {
      * */
     public static List<WTrafficLight> loadAll(SimController simcon) {
 
-        allWTLs = new ArrayList<>();
-
         SumoStringList allTLIDs = simcon.getTrafficLightsIDList();
 
         for(String TLID : allTLIDs){
@@ -208,11 +205,11 @@ public class WTrafficLight extends WObject {
 
             }
 
-            allWTLs.add(wtl);
+            simcon.addToAllWTLs(wtl);
 
         }
 
-        return allWTLs;
+        return simcon.getAllWTLs();
     }
 
 

@@ -26,7 +26,6 @@ public class WEdge extends WObject{
     private final String to;
     private List<String> laneIDs;
     private final String name;
-    private static HashMap<String, WEdge> allroads;
 
     public WEdge(SimController sumcon, String f, String t, String id, String name){
         super(sumcon, id);
@@ -66,8 +65,8 @@ public class WEdge extends WObject{
      * */
     public List<String> getLaneIDs() {return laneIDs; }
 
-    public static List<WEdge> getAllroads() {
-        return new ArrayList<>(allroads.values());
+    public List<WEdge> getAllroads() {
+        return new ArrayList<>(simcon.getAllroads().values());
     }
 
     /**
@@ -89,7 +88,7 @@ public class WEdge extends WObject{
      * Prints all the static allroads array
      * @author Luca
      * */
-    public static void printAll(){
+    public void printAll(){
         for(WEdge sr : getAllroads()){
             sr.print();
         }
@@ -108,8 +107,6 @@ public class WEdge extends WObject{
      * */
     public static boolean loadRoads(SimController simcon, File network){
         try {
-
-            allroads = new HashMap<>();
 
             //Debug.print("location: " + network.toString());
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -164,7 +161,7 @@ public class WEdge extends WObject{
                         }
                     }
 
-                    allroads.put(id, sr);
+                    simcon.addToAllroads(id, sr);
                 }
             }
 
@@ -182,8 +179,8 @@ public class WEdge extends WObject{
      * @return the Road as WEdge or null if none is found.
      * @author Luca
      * */
-    public static WEdge getRoad(String EID){
-        return allroads.get(EID);
+    public  WEdge getRoad(String EID){
+        return simcon.getAllroads().get(EID);
     }
 
 

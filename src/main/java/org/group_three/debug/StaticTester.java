@@ -76,10 +76,10 @@ public abstract class StaticTester {
     }
 
 
-    public static void TableToCSVExample(){
+    public static void TableToCSVExample(SimController simcon){
         Table polyTable = new Table("UID", "Type", "color");
 
-        for(WPolygon poly : WPolygon.getAllPolys()){
+        for(WPolygon poly : simcon.getAllPolys()){
             try {
                 polyTable.add(
                         poly.getId(),
