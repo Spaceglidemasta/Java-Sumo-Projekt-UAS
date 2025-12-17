@@ -3,6 +3,7 @@ package org.group_three.ui.world;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
+import org.group_three.debug.Debug;
 import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.Meth;
@@ -83,9 +84,18 @@ public class WorldTrafficLight extends WorldObject {
 		size = new Vector2D(wLink.getLen(), wLink.getWidth());
 
 		setInteractable(true);
-		setUseBoxCollision(true);
-		setBoxCollision(size.div(2));
+		setSphereCollision(size.y / 2);
 		detailClassPath = ""; // not added yet
+
+		/*wTrafficLight.getPhaseIndex();
+		wLink.getTLIndex();
+		wTrafficLight.getPhaseLen();
+		wTrafficLight.setProgram();
+		wTrafficLight.pr*/
+
+
+		//Debug.print(wTrafficLight.getProgramID());
+
 	}
 
 	//--------------------------------------------------Constructors--------------------------------------------------
