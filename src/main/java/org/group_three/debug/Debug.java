@@ -12,7 +12,10 @@ import java.util.logging.*;
 
 
 /**
- * Centralized Debug utility using java.util.logging.
+ * Debug utility using java.util.logging.
+ * Provides methods for logging at different levels, printing directly to the terminal,
+ * and the custom console.
+ * @author Leon
  */
 public abstract class Debug {
 
