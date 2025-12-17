@@ -208,13 +208,6 @@ public abstract class Debug {
     }
 
     /**
-     * Sets a JavaFX TextArea (used in the console) as an additional log output target. <br>
-     * Messages are appended without colors.
-     * @param textArea The TextArea to append logs to
-     * @author Leon
-     */
-
-    /**
      * Shortens a fully qualified class name by removing the org.group_three.
      * @param fullName The full class name
      * @return The shortened class name
