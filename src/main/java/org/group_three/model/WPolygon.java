@@ -6,13 +6,16 @@ import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoGeometry;
 import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
+import org.group_three.debug.annotations.MayReturnNull;
+import org.group_three.utils.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * <h1>Polygon Wrapper Class</h1>
- *
+ * Wrapper for polygons all around the network.
+ * @author Luca
  * */
 public class WPolygon extends WObject {
 
@@ -109,6 +112,36 @@ public class WPolygon extends WObject {
             wpoly.print();
         }
 
+    }
+
+    /**<h2>addPoly</h2>
+     * Adds a Polygon to the given Simulation. <br>
+     * The PolygonID is automatically calculated via Formatting.uniquegen()
+     * @param simcon the SimController controlling the Simulation this is to be invoked upon.
+     * @param shape the SumoGeometry of the Shape
+     * @param color the SumoColor of the Polgyon
+     * @param fill if the Polygon is to be filled or not.
+     * @param polygonType the type of the Polygon as String.
+     * @param layer The height(?) of the polygon
+     * @return the Polygon ID, or <code>null</code> if failed.
+     * @author Luca
+     * */
+    @MayReturnNull
+    public static String addPoly(SimController simcon,
+                                 SumoGeometry shape,
+                                 SumoColor color,
+                                 boolean fill,
+                                 String polygonType,
+                                 int layer
+    ){
+
+        String pid = Formatting.uniquegen("poly_", "");
+
+        boolean response = simcon.jobset(Polygon.add(pid, shape, color, fill, polygonType, layer));
+
+        if(!response) return null;
+
+        return pid;
     }
 
 
