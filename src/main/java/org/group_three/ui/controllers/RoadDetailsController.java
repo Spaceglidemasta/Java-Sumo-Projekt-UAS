@@ -134,7 +134,15 @@ public class RoadDetailsController {
 	 */
 	@FXML
 	private void onSpawnPressed() {
-		List<WEdge> roads = WEdge.getAllroads();
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon == null){
+            Debug.print("Main Simcon instance is null");
+            return;
+        }
+
+		List<WEdge> roads = simcon.getAllroads().values().stream().toList();
 
 		for (int i = 0; i < Integer.parseInt(vehicleSpawnAmount.textProperty().getValue()); i++) {
 			SumoStringList strings = new SumoStringList();

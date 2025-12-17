@@ -7,6 +7,9 @@ import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.CreatesFiles;
 import org.group_three.debug.annotations.MayReturnNull;
+import org.group_three.model.WEdge;
+import org.group_three.model.WPolygon;
+import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.utils.Formatting;
 
@@ -15,6 +18,8 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +40,10 @@ public class SimController {
     // Easy mode
     private static SimController mainsimcon = null;
 
+    // WObjects Collectors
+    private List<WTrafficLight> allWTLs = new ArrayList<>();
+    private List<WPolygon> allPolys = new ArrayList<>();
+    private HashMap<String, WEdge> allroads = new HashMap<String, WEdge>();
 
 // ******************************************************
 //                      SIMULATION
@@ -904,6 +913,75 @@ public class SimController {
     // ******************************************************
 
 
+
+    public List<WPolygon> getAllPolys() {
+        return allPolys;
+    }
+
+    public HashMap<String, WEdge> getAllroads() {
+        return allroads;
+    }
+
+    public List<WTrafficLight> getAllWTLs() {
+            return allWTLs;
+    }
+
+    @MayReturnNull
+    public WEdge getRoad(String EID) {
+        return getAllroads().get(EID);
+    }
+
+
+
+    public void setAllWTLs(List<WTrafficLight> allWTLs) {
+        this.allWTLs = allWTLs;
+    }
+
+    public void setAllPolys(List<WPolygon> allPolys) {
+        this.allPolys = allPolys;
+    }
+
+    public void setAllroads(HashMap<String, WEdge> allroads) {
+        this.allroads = allroads;
+    }
+
+
+    /**
+     * Adds a WTrafficLight to the WTL Collection of this SimController.
+     * @param wtl The WTrafficLight to be added
+     * @return the new size of the collector List
+     * @author Luca
+     * */
+    public int addToAllWTLs(WTrafficLight wtl){
+        allWTLs.add(wtl);
+        return allWTLs.size();
+    }
+
+    /**
+     * Adds a WPolygon to the WPoly Collection of this SimController.
+     * @param poly The WPolygon to be added
+     * @return the new size of the collector List
+     * @author Luca
+     * */
+    public int addToAllPolys(WPolygon poly){
+        allPolys.add(poly);
+        return allPolys.size();
+    }
+
+    /**
+     * Adds a WEdge to the WEdge Collection of this SimController.
+     * @param id The id of the Edge. Used for hashing
+     * @param edge The WEdge to be added.
+     * @return the new size of the collector List
+     * @author Luca
+     * */
+    public int addToAllroads(String id, WEdge edge){
+        allroads.put(id, edge);
+        return allroads.size();
+    }
+
+
+
     /**
      * Getter of the Simulation
      * If you want to print the returned object, .to_String() is probably the best option.
@@ -948,5 +1026,4 @@ public class SimController {
 
         return true;
     }
-
 }
