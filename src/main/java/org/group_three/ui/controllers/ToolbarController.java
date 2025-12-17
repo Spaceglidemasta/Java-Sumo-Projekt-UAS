@@ -37,11 +37,7 @@ public class ToolbarController {
 	@FXML
 	private MenuItem simulationReload;
 	@FXML
-	private Menu simulationExport;
-	@FXML
-	private MenuItem simulationExportXml;
-	@FXML
-	private MenuItem simulationExportCsv;
+	private MenuItem simulationExport;
 
 	// TODO: Fix issues from multi file selection
 
@@ -205,6 +201,7 @@ public class ToolbarController {
 		String desktopPath = System.getProperty("user.home") + "/Desktop";
 		File desktopDir = new File(desktopPath);
 
+
 		if (desktopDir.exists()) {
 			fileChooser.setInitialDirectory(desktopDir);
 		}
@@ -278,8 +275,43 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Function to export gathered data from the simulation
-	 * (Yet to be implemented)
+	 * A method to export gathered data from the simulation as an .csv file.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private void onSimulationExportClicked() {
+		Debug.toConsole("Simulation -> Export");
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Export simulation");
+
+		// desktop path, works for windows macOS and linux
+		String desktopPath = System.getProperty("user.home") + "/Desktop";
+		File desktopDir = new File(desktopPath);
+
+
+		if (desktopDir.exists()) {
+			fileChooser.setInitialDirectory(desktopDir);
+		}
+
+		// add selectable data types to the file chooser
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+
+		fileChooser.setInitialFileName("");
+
+		File file = fileChooser.showSaveDialog(null);
+		if (file != null) {
+			String fileExtension = fileChooser.getSelectedExtensionFilter().getExtensions().getFirst().substring(1);
+
+			SimController.getMainsimcon().saveState(fileExtension);
+		}
+	}
+
+	/**
+	 * A method to export gathered data from the simulation as a .xml file.
+	 *
 	 * @author Joel
 	 */
 	@FXML
@@ -289,8 +321,8 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Function to export gathered data from the simulation
-	 * (Yet to be implemented)
+	 * A method to export gathered data from the simulation as an .csv file.
+	 *
 	 * @author Joel
 	 */
 	@FXML

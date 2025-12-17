@@ -36,7 +36,7 @@ public class WorldRoute extends WorldObject {
 	public void update() {
 		super.update();
 
-		drawLine(routePoints, 1, Color.RED);
+		//drawLine(routePoints, 1, Color.RED);
 	}
 
 	public List<String> getRoute() {
