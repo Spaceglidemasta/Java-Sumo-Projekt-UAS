@@ -19,6 +19,7 @@ import org.group_three.ui.SimView2D;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 /**
  * THe controller class for the gui simulation controls.
@@ -107,7 +108,7 @@ public class SimControlController {
 	 */
 	@FXML
 	public void initialize() throws IOException {
-		Debug.print("Controls loaded.");
+		Debug.log("Controls loaded.", Level.FINE);
 
 		timeline = new Timeline(
 				new KeyFrame(Duration.seconds(1), e -> onTick())

@@ -12,6 +12,7 @@ import org.group_three.ui.world.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import static org.group_three.ui.Meth.lerp;
 
@@ -236,7 +237,7 @@ public class SimView2D {
         SimController simcon = SimController.getMainsimcon();
 
         if(simcon == null){
-            Debug.print("Main Simcon instance is null");
+            Debug.log("Main Simcon instance is null", Level.FINE);
             return;
         }
 
@@ -278,7 +279,7 @@ public class SimView2D {
         SimController simcon = SimController.getMainsimcon();
 
         if(simcon == null){
-            Debug.print("Main Simcon instance is null");
+            Debug.log("Main Simcon instance is null", Level.FINE);
             return;
         }
 
@@ -320,7 +321,7 @@ public class SimView2D {
         SimController simcon = SimController.getMainsimcon();
 
         if(simcon == null){
-            Debug.print("Main Simcon instance is null");
+            Debug.log("Main Simcon instance is null", Level.FINE);
             return;
         }
 
@@ -350,7 +351,7 @@ public class SimView2D {
         SimController simcon = SimController.getMainsimcon();
 
         if(simcon == null){
-            Debug.print("Main Simcon instance is null");
+            Debug.log("Main Simcon instance is null", Level.FINE);
             return;
         }
 

@@ -15,6 +15,7 @@ import org.group_three.ui.world.WorldRoad;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 /**
  * The controller for the RoadDetails.
@@ -103,7 +104,7 @@ public class RoadDetailsController {
 	 */
 	@FXML
 	private void initialize() {
-		Debug.print("VehicleDetails Controller loaded.");
+		Debug.log("VehicleDetails Controller loaded.", Level.FINE);
 		// following has no real use yet, comments later
 		vehicleSpawnSpeed.textProperty().addListener((_, oldText, newText) -> {
 			try {
@@ -111,7 +112,7 @@ public class RoadDetailsController {
 			} catch (Exception e) {
 				vehicleSpawnSpeed.setText(oldText);
 			}
-			Debug.print("Speed changed.");
+			Debug.log("Speed changed.", Level.FINE);
 		});
 
 		vehicleSpawnColor.valueProperty().addListener(
@@ -121,7 +122,7 @@ public class RoadDetailsController {
 					} catch (Exception e) {
 						//throw new RuntimeException(e);
 					}
-					Debug.print("Color changed.");
+					Debug.log("Color changed.", Level.FINE);
 				});
 
 		vehicleSpawnRoute.setDisable(true); // route is always random currently, will be changed
@@ -138,7 +139,7 @@ public class RoadDetailsController {
         SimController simcon = SimController.getMainsimcon();
 
         if(simcon == null){
-            Debug.print("Main Simcon instance is null");
+            Debug.log("Main Simcon instance is null", Level.FINE);
             return;
         }
 
@@ -154,7 +155,7 @@ public class RoadDetailsController {
 			String routeId = SimController.getMainsimcon().addRoute(strings);
 
 			if (routeId != null) {
-				Debug.print("Try Create Veh: " + routeId);
+				Debug.log("Try Create Veh: " + routeId, Level.FINE);
 				WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
 						"DEFAULT_VEHTYPE",
 						routeId,

@@ -10,6 +10,7 @@ import org.group_three.utils.PathUtils;
 
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
 
 import static org.group_three.utils.PathUtils.getRelativePath;
 
@@ -102,7 +103,7 @@ public class FakeInteractions {
                 //WEdge.getRoad("132964154").print();
             }
             catch (Exception e){
-                Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
+                Debug.log("CRITICAL ERROR: STREETS CANNOT BE RENDERED", Level.SEVERE);
                 e.printStackTrace();
             }
 
