@@ -14,8 +14,7 @@ import javafx.util.Duration;
  * and afterwords a custom debug message
  * @author Leon
  * */
-
-public class Debug {
+public final class Debug {
 
     private static final boolean MAIN_CON_DEBUG = true;
     public static boolean JAVAFX_FULL_DEBUG = false;

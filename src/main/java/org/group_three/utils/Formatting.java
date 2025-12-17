@@ -10,7 +10,7 @@ import java.util.List;
  * @author Luca
  * */
 @StaticClass
-public abstract class Formatting {
+public final class Formatting {
 
 
     /**Turns a List of Objects into a String, with elements separated by commas and ended by a newline.
