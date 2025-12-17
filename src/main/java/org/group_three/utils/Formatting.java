@@ -43,6 +43,9 @@ public abstract class Formatting {
      * @author Luca
      * */
     public static String uniquegen(String prefix, String suffix){
-        return prefix + System.currentTimeMillis() + suffix;
+
+        long id = (long) (System.currentTimeMillis() * Math.random());
+
+        return prefix + id + suffix;
     }
 }
