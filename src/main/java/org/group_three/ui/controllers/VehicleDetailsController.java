@@ -10,6 +10,8 @@ import org.group_three.ui.SimView2D;
 import org.group_three.ui.world.WorldRoute;
 import org.group_three.ui.world.WorldVehicle;
 
+import java.util.logging.Level;
+
 /**
  * The controller for the VehicleDetails.
  *
@@ -137,10 +139,10 @@ public class VehicleDetailsController {
 		viewLocked = !viewLocked;
 		viewLockButton.setText(viewLocked ? "Unlock" : "Lock");
 
-		Debug.print(SimView2D.getWorld().getViewerPosition());
-		Debug.print(worldVehicle.getPosition());
+		Debug.log(SimView2D.getWorld().getViewerPosition(), Level.FINE);
+		Debug.log(worldVehicle.getPosition(), Level.FINE);
 
-		Debug.print(Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), worldVehicle.getPosition()));
+		Debug.log(Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), worldVehicle.getPosition()), Level.FINE);
 
 		//SimView2D.getWorld().setViewerPosition(worldVehicle.getPosition().negate());
 		//SimView2D.getWorld().setViewerRotation(worldVehicle.getRotation());

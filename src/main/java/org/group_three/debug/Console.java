@@ -55,7 +55,6 @@ public class Console {
 
     // may be used later
     public void hide() {
-        Debug.flushEverything();
         debugStage.hide();
     }
 }

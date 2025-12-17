@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.logging.Level;
 
 /**
  * Class for 1 singular Statistic, e.g. 1 Graph, 1 Table, etc. <br>
@@ -66,15 +67,15 @@ public class Statistic<T> extends Table<T> {
         // Retrieved 2025-12-14, License - CC BY-SA 3.0
 
         if(!hasAttribute(x_attribute)){
-            Debug.print(name + ": Attribute \"" + x_attribute + "\" is not a valid attribute of the Table.\n" +
+            Debug.log(name + ": Attribute \"" + x_attribute + "\" is not a valid attribute of the Table.\n" +
                         "Valid attributes are:\n" +
-                        getAttributeNames().toString());
+                        getAttributeNames().toString(), Level.FINE);
             return null;
         }
         if(!hasAttribute(y_attribute)){
-            Debug.print(name + ": Attribute \"" + y_attribute + "\" is not a valid attribute of the Table.\n" +
+            Debug.log(name + ": Attribute \"" + y_attribute + "\" is not a valid attribute of the Table.\n" +
                     "Valid attributes are:\n" +
-                    getAttributeNames().toString());
+                    getAttributeNames().toString(), Level.FINE);
             return null;
         }
         

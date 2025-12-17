@@ -5,6 +5,8 @@ import org.group_three.debug.annotations.MayReturnNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+
 /**
  * This was only created because I thought you need to sort a list to map it to another.
  * @author Luca
@@ -32,7 +34,7 @@ public class GraphTable<T extends Comparable<T>> extends Table<T>{
         int index = attributeNames.indexOf(attribute);
 
         if(index == -1){
-            Debug.print("Attribute " + attribute + " is not Part of the table.");
+            Debug.log("Attribute " + attribute + " is not Part of the table.", Level.FINE);
             return null;
         }
 

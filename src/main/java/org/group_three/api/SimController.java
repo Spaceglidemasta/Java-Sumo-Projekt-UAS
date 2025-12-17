@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * <h1>SimController</h1>
@@ -54,7 +55,7 @@ public class SimController {
     }
 
     public SimController(String cfg) {
-        Debug.print("SimController invoked");
+        Debug.log("SimController invoked", Level.FINE);
 
         try {
 
@@ -71,16 +72,16 @@ public class SimController {
             // possible location of sumo.exe in %SUMO_HOME%/bin
             File sumoExe = decideSumo(sumoHome, resourcesDir);
 
-            Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
+            Debug.log("sumo.exe found: " + sumoExe.getAbsolutePath(), Level.FINE);
 
             // opens the sumocfg file inside the resources Folder
             File sumocfg = new File(resourcesDir, cfg);
-            Debug.print(sumocfg.getAbsolutePath());
+            Debug.log(sumocfg.getAbsolutePath(), Level.FINE);
             if (!sumocfg.exists()) {
                 throw new Exception(cfg + " not found");
             }
             else {
-                Debug.print("sumocfg file found");
+                Debug.log("sumocfg file found", Level.FINE);
             }
 
             // establishes the connection to sumo with the route and network via TraaS
@@ -101,7 +102,7 @@ public class SimController {
             e.printStackTrace();
         }
 
-        Debug.print("SimController startup was successfull");
+        Debug.log("SimController startup was successfull", Level.FINE);
         Debug.toConsole("SimController startup was successfull");
     }
 
@@ -133,7 +134,7 @@ public class SimController {
     }
 
     public SimController(String net, String rou){
-        Debug.print("SimController invoked");
+        Debug.log("SimController invoked", Level.FINE);
 
         //try & catch to catch exceptions
         try {
@@ -151,25 +152,25 @@ public class SimController {
             //A ? B : C <=> if A then B else C
             File sumoExe = decideSumo(sumoHome, resourcesDir);
 
-            Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
+            Debug.log("sumo.exe found: " + sumoExe.getAbsolutePath(), Level.FINE);
 
             // opens the network file inside the resources Folder
             File networknet = new File(resourcesDir, net);
-            Debug.print(networknet.getAbsolutePath());
+            Debug.log(networknet.getAbsolutePath(), Level.FINE);
             if (!networknet.exists()) {
                 throw new Exception(net + " not found");
             }
             else {
-                Debug.print("network file found");
+                Debug.log("network file found", Level.FINE);
             }
             // opens the route file inside the resources Folder
             File routenet = new File(resourcesDir, rou);
-            Debug.print(routenet.getAbsolutePath());
+            Debug.log(routenet.getAbsolutePath(), Level.FINE);
             if (!routenet.exists()) {
                 throw new Exception(rou + " not found");
             }
             else {
-                Debug.print("route file found");
+                Debug.log("route file found", Level.FINE);
             }
 
             // establishes the connection to sumo with the route and network via TraaS
@@ -192,7 +193,7 @@ public class SimController {
             e.printStackTrace();
         }
 
-        Debug.print("SimController startup was successfull");
+        Debug.log("SimController startup was successfull", Level.FINE);
         Debug.toConsole("SimController startup was successfull");
 
     }
@@ -227,7 +228,7 @@ public class SimController {
             try {
                 stc.do_timestep();
             } catch (Exception e) {
-                Debug.print("CRITICAL ERROR:");
+                Debug.log("CRITICAL ERROR:", Level.SEVERE);
                 e.printStackTrace();
                 return false;
             }
@@ -283,19 +284,19 @@ public class SimController {
     public String saveState(String filetype){
 
         if(!Files.exists(Path.of("output"))){
-            Debug.print("There was not \"output\" directory found. Are you running from a .jar? Make one.");
+            Debug.log("There was not \"output\" directory found. Are you running from a .jar? Make one.", Level.FINE);
             return null;
         }
 
         try {
             String filename = Formatting.uniquegen("savedState_", filetype);
             stc.do_job_set(Simulation.saveState("output/" + filename));
-            Debug.print("State successfully saved to output/" + filename);
+            Debug.log("State successfully saved to output/" + filename, Level.FINE);
             return filename;
         }
         catch (Exception e){
             e.printStackTrace();
-            Debug.print("There was an error saving the State.");
+            Debug.log("There was an error saving the State.", Level.FINE);
             return null;
         }
     }
@@ -325,12 +326,12 @@ public class SimController {
 
         //if compiled to a Jar
         if(jarDir.isFile()){
-            Debug.print("Jar Execution detected");
+            Debug.log("Jar Execution detected", Level.FINE);
             return jarDir.getParentFile();
         }
 
         //if compiled normally
-        Debug.print("Compiled Execution detected");
+        Debug.log("Compiled Execution detected", Level.FINE);
         return jarDir.getParentFile().getParentFile().getParentFile();
 
     }
@@ -377,7 +378,7 @@ public class SimController {
 
         mainsimcon = this;
 
-        Debug.print("Main SUMO Simulation was overwritten.");
+        Debug.log("Main SUMO Simulation was overwritten.", Level.FINE);
     }
 
     // ******************************************************
@@ -999,7 +1000,7 @@ public class SimController {
             return stc.do_job_get(scmd);
         }
         catch (Exception e){
-            Debug.print("GET JOB FAILED: " + scmd.toString());
+            Debug.log("GET JOB FAILED: " + scmd.toString(), Level.FINE);
             e.printStackTrace();
         }
         return null;
@@ -1019,7 +1020,7 @@ public class SimController {
             stc.do_job_set(scmd);
         }
         catch (Exception e){
-            Debug.print("DO JOB FAILED: " + scmd.toString());
+            Debug.log("DO JOB FAILED: " + scmd.toString(), Level.FINE);
             e.printStackTrace();
             return false;
         }

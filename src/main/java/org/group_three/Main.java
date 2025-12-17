@@ -4,9 +4,11 @@ import org.group_three.debug.Debug;
 import org.group_three.api.SimController;
 import org.group_three.ui.MainApp;
 
+import java.util.logging.Level;
+
 public class Main {
 	static void main(String[] args) {
-		Debug.print("Program Start");
+		Debug.log("Program Start", Level.FINE);
 
 		// Create and start the GUI
 		MainApp aMainGui = new MainApp();
