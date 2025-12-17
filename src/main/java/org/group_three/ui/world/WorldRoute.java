@@ -3,6 +3,7 @@ package org.group_three.ui.world;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
+import org.group_three.debug.Debug;
 import org.group_three.model.WEdge;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
@@ -43,11 +44,19 @@ public class WorldRoute extends WorldObject {
 	}
 
 	public void setRoute(List<String> route) {
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon == null){
+            Debug.print("Main Simcon instance is null");
+            return;
+        }
+
 		this.route = route;
 
 		routePoints.clear();
 		for (String edge : route) {
-			List<String> lanes = WEdge.getRoad(edge).getLaneIDs();
+			List<String> lanes = simcon.getRoad(edge).getLaneIDs();
 
 			routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
 
