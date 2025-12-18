@@ -160,13 +160,13 @@ public class WVehicle {
      * @return Lane Index
      * @author Luca
      * */
-    public SumoPosition2D getLanePosition(){
+    public double getLanePosition(){
         try {
-            return (SumoPosition2D) stc.do_job_get(Vehicle.getLanePosition(vehID));
+            return (double) stc.do_job_get(Vehicle.getLanePosition(vehID));
         }
         catch (Exception e){
             e.printStackTrace();
-            return null;
+            return 0;
         }
     }
 
