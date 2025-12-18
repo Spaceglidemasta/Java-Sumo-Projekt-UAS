@@ -170,6 +170,20 @@ public class WVehicle {
         }
     }
 
+    /**
+     * @return Lane Index, or -1 if failed.
+     * @author Luca
+     * */
+    public int getRouteIndex(){
+        try {
+            return (int) stc.do_job_get(Vehicle.getRouteIndex(vehID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 
     /**TraaS: "Returns the maximum speed(in m/s) of the named vehicle."
      * @return the MaxSpeed as double, or -1 if failed
