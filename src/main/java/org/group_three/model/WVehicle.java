@@ -128,6 +128,48 @@ public class WVehicle {
      * */
     public double getSpeed() {return speed;}
 
+    /**
+     * @return Lane ID
+     * @author Luca
+     * */
+    public String getLaneID(){
+        try {
+            return (String) stc.do_job_get(Vehicle.getLaneID(vehID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * @return Lane Index, or -1 if failed.
+     * @author Luca
+     * */
+    public int getLaneIndex(){
+        try {
+            return (int) stc.do_job_get(Vehicle.getLaneIndex(vehID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * @return Lane Index
+     * @author Luca
+     * */
+    public SumoPosition2D getLanePosition(){
+        try {
+            return (SumoPosition2D) stc.do_job_get(Vehicle.getLanePosition(vehID));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**TraaS: "Returns the maximum speed(in m/s) of the named vehicle."
      * @return the MaxSpeed as double, or -1 if failed
