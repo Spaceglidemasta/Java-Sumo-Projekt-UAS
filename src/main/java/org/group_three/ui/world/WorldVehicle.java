@@ -265,7 +265,8 @@ public class WorldVehicle extends WorldObject {
 				getWorld(),
 				getWorld().worldStaticRenderTarget,
 				"",
-				getwVehicle().getRouteEdges());
+				getwVehicle().getRouteEdges(),
+				this);
 	}
 
 	@Override

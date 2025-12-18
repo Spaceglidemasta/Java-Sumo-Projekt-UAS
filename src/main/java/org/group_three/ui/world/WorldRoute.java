@@ -19,8 +19,9 @@ import java.util.List;
  */
 public class WorldRoute extends WorldObject {
 
-	private List<String> route;
-	private final List<Vector2D> routePoints = new ArrayList<>();
+	protected List<String> route;
+
+	protected List<Vector2D> routePoints = new ArrayList<>();
 
 	public WorldRoute(World world, Canvas canvas, String displayName, List<String> route) {
 		super(world, canvas, displayName);
@@ -37,6 +38,10 @@ public class WorldRoute extends WorldObject {
 		super.update();
 
 		drawLine(routePoints, 1, Color.RED);
+	}
+
+	public List<Vector2D> getRoutePoints() {
+		return routePoints;
 	}
 
 	public List<String> getRoute() {
