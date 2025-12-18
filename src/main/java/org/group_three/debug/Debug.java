@@ -16,6 +16,8 @@ import javafx.util.Duration;
  * */
 public final class Debug {
 
+
+
     private static final boolean MAIN_CON_DEBUG = true;
     public static boolean JAVAFX_FULL_DEBUG = false;
     private static TextArea debugTextArea;
