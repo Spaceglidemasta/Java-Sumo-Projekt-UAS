@@ -151,10 +151,19 @@ public class SimView2D {
 	public static void setSelected(WorldObject selected) {
 		if (SimView2D.selected == selected) return;
 
+		// deselect old object
+		if (SimView2D.selected != null) {
+			SimView2D.selected.deselect();
+		}
+
+		// select new object
 		SimView2D.selected = selected;
+		if (selected != null) {
+			selected.select();
+		}
 
 		// update details panel
-		SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+		//SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
 	}
 
 	//--------------------------------------------------SetterClassMethods--------------------------------------------------
