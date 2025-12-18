@@ -20,6 +20,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import org.group_three.ui.SimView2D;
+import org.group_three.utils.Formatting;
 
 /**
  * Controller for the toolbar to manage button interactions,
@@ -299,7 +300,7 @@ public class ToolbarController {
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
 
-		fileChooser.setInitialFileName("");
+		fileChooser.setInitialFileName(Formatting.uniquegen("savedState_", ".xml"));
 
 		File file = fileChooser.showSaveDialog(null);
 		if (file != null) {
