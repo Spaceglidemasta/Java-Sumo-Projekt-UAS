@@ -18,12 +18,12 @@ public class WorldVehicleRoute extends WorldRoute {
 	public WorldVehicleRoute(World world, Canvas canvas, String displayName, List<String> route, WorldVehicle worldVehicle) {
 		super(world, canvas, displayName, route);
 		this.worldVehicle = worldVehicle;
-		this.updatedRoutePoints = getRoutePoints();
+		//this.updatedRoutePoints = getRoutePoints();
 
-		updatedRoutePoints.removeFirst();
+		//updatedRoutePoints.removeFirst();
 	}
 
-	private final List<Vector2D> updatedRoutePoints;
+	//private final List<Vector2D> updatedRoutePoints;
 
 	/**
 	 * The update method which is used to draw the WorldRoute in the world.
@@ -32,11 +32,14 @@ public class WorldVehicleRoute extends WorldRoute {
 	 */
 	@Override
 	public void update() {
-		if (worldVehicle == null) return;
+		super.update();
+		//if (worldVehicle == null) return;
 
 		//if (Meth.getRelativeLocation(worldVehicle.getPosition(), worldVehicle.getRotation(), Meth.addRelativeLocation(getPosition(), getRotation(), updatedRoutePoints.getFirst())).x <= 0) {
 		//	updatedRoutePoints.removeFirst();
 		//}
+
+		/*
 
 		List<Vector2D> currentRoutePoints = new ArrayList<>();
 
@@ -67,17 +70,17 @@ public class WorldVehicleRoute extends WorldRoute {
 
 
 			currentRoutePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
-		}
+		}*/
 
 		//Debug.print(worldVehicle.getwVehicle().getLaneID());
 
 
-		Debug.print(worldVehicle.getwVehicle().getLanePosition());
+		//Debug.print(worldVehicle.getwVehicle().getLanePosition());
 
 
 		//currentRoutePoints.addFirst(worldVehicle.getPosition());
 
-		drawLine(currentRoutePoints, 1, Color.RED);
+		//drawLine(currentRoutePoints, 1, Color.RED);
 	}
 
 	/*@Override

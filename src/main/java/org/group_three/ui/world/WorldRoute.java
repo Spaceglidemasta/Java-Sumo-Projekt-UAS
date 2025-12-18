@@ -60,14 +60,29 @@ public class WorldRoute extends WorldObject {
 		this.route = route;
 
 		routePoints.clear();
+
 		for (String edge : route) {
 			List<String> lanes = simcon.getRoad(edge).getLaneIDs();
 
-			routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
+			List<List<Vector2D>> allLanePoints = new ArrayList<>();
+			for (String lane : lanes) {
+				allLanePoints.add(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lane)));
+			}
 
-			/*for (String lane : lanes.get(lanes.size()/2)) {
-				routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lane)));
-			}*/
+			int laneCount = allLanePoints.size();
+
+			for (int i = 0; i < allLanePoints.getFirst().size(); i++) {
+				Vector2D point = new Vector2D();
+				for (int b = 0; b < laneCount; b++) {
+					point = point.add(allLanePoints.get(b).get(i));
+				}
+				point = point.div(laneCount);
+				routePoints.add(point);
+			}
+
+
+
+			//routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
 		}
 	}
 }
