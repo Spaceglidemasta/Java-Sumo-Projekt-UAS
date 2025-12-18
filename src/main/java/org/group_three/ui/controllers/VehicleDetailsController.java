@@ -161,12 +161,6 @@ public class VehicleDetailsController {
 		sumoId.setText(worldVehicle.getwVehicle().getID());
 		speed.setText(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
 		color.setValue(worldVehicle.getColor());
-
-		new WorldRoute(
-				worldVehicle.getWorld(),
-				worldVehicle.getWorld().worldStaticRenderTarget,
-				"",
-				worldVehicle.getwVehicle().getRouteEdges());
 	}
 
 	/**

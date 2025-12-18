@@ -255,6 +255,25 @@ public class WorldVehicle extends WorldObject {
 		if (vehicleDetailsController != null) vehicleDetailsController.kill();
 	}
 
+	private WorldVehicleRoute worldVehicleRoute;
+
+	@Override
+	public void select() {
+		super.select();
+
+		worldVehicleRoute = new WorldVehicleRoute(
+				getWorld(),
+				getWorld().worldStaticRenderTarget,
+				"",
+				getwVehicle().getRouteEdges());
+	}
+
+	@Override
+	public void deselect() {
+		super.deselect();
+		worldVehicleRoute.remove();
+	}
+
 	//-----------------------------------------------------Methods------------------------------------------------------
 
 }
