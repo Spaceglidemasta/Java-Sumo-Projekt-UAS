@@ -1,5 +1,6 @@
 package org.group_three.ui.world;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
@@ -8,6 +9,7 @@ import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.TrafficLightDetailsController;
 
 /**
  * The class to render TrafficLights.
@@ -42,6 +44,7 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final Vector2D size;
+	private TrafficLightDetailsController trafficLightDetailsController;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -85,7 +88,7 @@ public class WorldTrafficLight extends WorldObject {
 
 		setInteractable(true);
 		setSphereCollision(size.y / 2);
-		detailClassPath = ""; // not added yet
+		detailClassPath = "/org/group_three/ui/fxml/TrafficLightDetails.fxml";
 
 		/*wTrafficLight.getPhaseIndex();
 		wLink.getTLIndex();
@@ -118,6 +121,12 @@ public class WorldTrafficLight extends WorldObject {
 		}
 
 		drawRectangle(size.div(2), color);
+	}
+
+	@Override
+	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
+		trafficLightDetailsController = fxmlLoader.getController();
+		Debug.print("trafficLightDetailsController");
 	}
 
 }
