@@ -2,12 +2,13 @@ package org.group_three.model;
 
 import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.sumo.objects.*;
-import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
+import org.group_three.constants.enums.TLColor;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Vector2D;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 
 /**
@@ -17,11 +18,41 @@ import java.util.*;
  * */
 public class WTrafficLight extends WObject {
 
-    private List<WLink> allWlinks;
+    Logger log = Logger.getLogger(WTrafficLight.class.getName());
+
+    //unfinal this when adding add-link functionality
+    private final List<WLink> allWlinks;
+    private boolean customPhasesActive = false;
+    private List<WPhase> customProgram = new ArrayList<>();
 
     public WTrafficLight(SimController simcon, String id) {
         super(simcon, id);
         allWlinks = new ArrayList<>();
+    }
+
+    public boolean isCustomPhasesActive() {
+        return customPhasesActive;
+    }
+
+    public void setCustomPhasesActive(boolean customPhasesActive) {
+        this.customPhasesActive = customPhasesActive;
+    }
+
+    public List<WPhase> getCustomProgram() {
+        return customProgram;
+    }
+
+    public void setCustomProgram(List<WPhase> customProgram) {
+        this.customProgram = customProgram;
+    }
+
+    /**
+     * Adds a Phase to the Custom List of Phases / Custom Program
+     * @param phase The WPhase to be added
+     * @author Luca
+     * */
+    public void addCustomPhase(WPhase phase){
+        this.customProgram.add(phase);
     }
 
 
@@ -45,8 +76,8 @@ public class WTrafficLight extends WObject {
     public List<WLink> getAllWlinks() {return allWlinks;}
 
     /**
-     * Sets the Phase
-     * @param index Phase index from [0:2]
+     * A PHASE IS A PHASE OF A WHOLE PROGRAM, NOT THE COLOR OF ONE TL-Link
+     * @param index Phase index of the Phase inside the Program
      * @return true if success, false if not
      * @author Leon
      * */
@@ -55,14 +86,17 @@ public class WTrafficLight extends WObject {
     }
 
 
-    /**This does not give you the color of the TL as an index!!!
+    /**This does not give you the color of the TL as an index, but the index of the phase in the program.
      * @return the index of the current phase[0:]
      * @author Luca
      * */
     public int getPhaseIndex() {
-
          return (int) simcon.jobget(Trafficlight.getPhase(id));
     }
+
+
+
+
 
     /**
      * Sets the phase length of the TL
@@ -111,9 +145,7 @@ public class WTrafficLight extends WObject {
 
     /**
      * Get program of the TL. <br>
-     * SumoTLSProgram.phases -> ArrayList< SumoTLSPhase > <br>
-     * SumoTLSPhase.phasedef -> String
-     * @return The SumoTLSProgram
+     * @return The SumoTLSController of the Program
      * @author Luca
      * */
     @MayReturnNull
@@ -130,6 +162,45 @@ public class WTrafficLight extends WObject {
     @MayReturnNull
     public String getLinkStates() {
         return (String) simcon.jobget(Trafficlight.getRedYellowGreenState(id));
+    }
+
+
+    /**<h2>setCustomProgramLinkColor</h2>
+     * Sets the Color of a desired link inside a phase inside the customProgram.
+     * @param program_index the index of the phase inside customProgram
+     * @param link_index the index of the link inside the phase
+     * @param color the desired TLColor
+     * @return <code>true</code> if success, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean setCustomProgramLinkColor(int program_index, int link_index, TLColor color) {
+
+        if(program_index >= customProgram.size()) {
+            log.warning("Given program_index index out of bounds: " + program_index + ". Max Index: " + (customProgram.size() - 1));
+            return false;
+        }
+
+        WPhase wphase = customProgram.get(program_index);
+
+        if(link_index >= wphase.program.size()) {
+            log.warning("Given link_index index out of bounds: " + link_index + ". Max Index: " + (wphase.program.size() - 1));
+            return false;
+        }
+
+        Character col = null;
+
+        if (color == TLColor.RED) col = 'R';
+        if (color == TLColor.YELLOW) col = 'Y';
+        if (color == TLColor.GREEN) col = 'G';
+
+        if(col == null){
+            log.severe("Given TL Color is really weird, color not changed.");
+            return false;
+        }
+
+        wphase.program.set(link_index, col);
+
+        return true;
     }
 
     /**
@@ -211,6 +282,7 @@ public class WTrafficLight extends WObject {
 
         return simcon.getAllWTLs();
     }
+
 
 
 }
