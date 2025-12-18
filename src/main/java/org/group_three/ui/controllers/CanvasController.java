@@ -7,7 +7,6 @@ import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -43,9 +42,8 @@ public class CanvasController {
 	@FXML
 	private Pane renderTargetBounds;
 
-	private GraphicsContext worldStaticRenderTarget_GraphicsContext;
-
-	//private World world = new World();
+	private Vector2D last = new Vector2D();
+	private Vector2D delta = new Vector2D();
 
 	/**
 	 * Comment
@@ -56,8 +54,6 @@ public class CanvasController {
 	@FXML
 	public void initialize() throws IOException {
 		Debug.toConsole("Canvas loaded.");
-
-		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
@@ -80,15 +76,6 @@ public class CanvasController {
 		Vector2D nMP = mousePosition.sub(SimView2D.getWorld().getViewerPositionOffset());
 		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), nMP).mul(1 / SimView2D.getWorld().getViewerZoom());
 
-		/*WorldObject test = new WorldObject();
-		test.world = world;
-		test.graphicsContext = worldStaticRenderTarget_GraphicsContext;
-		test.renderTarget = worldStaticRenderTarget;
-		test.setPosition(worldspaceMousePosition);
-		world.addWorldObject(test);*/
-
-		//world.world
-
 		try {
 			WorldObject interacted = SimView2D.getWorld().interact(worldspaceMousePosition);
 			if (interacted != null) SimView2D.setSelected(interacted);
@@ -110,10 +97,9 @@ public class CanvasController {
 
 		Vector2D current = new Vector2D(event.getX(), event.getY());
 
-		delta.x = current.x - last.x;
-		delta.y = current.y - last.y;
+		delta = current.sub(last);
 
-		double startRot = new Vector2D(last.x, last.y).sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
+		double startRot = last.sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
 		double rot = current.sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
 		double deltaRot = rot - startRot;
 
@@ -135,7 +121,7 @@ public class CanvasController {
 			SimView2D.getWorld().setViewerRotation(rot);
 
 		} else {
-			SimView2D.getWorld().addViewerPosition(new Vector2D(delta.x, delta.y));
+			SimView2D.getWorld().addViewerPosition(delta);
 		}
 
 		last = current;
@@ -187,9 +173,6 @@ public class CanvasController {
 		SimView2D.getWorld().setViewerPosition(SimView2D.getWorld().getViewerPosition().mul(SimView2D.getWorld().getViewerZoom() / oldZoom));
 		//Debug.print(world.getViewerPosition());
 	}
-
-	Vector2D last = new Vector2D();
-	Vector2D delta = new Vector2D();
 
 	// draw handler needed so it doesn't waste performance
 }
