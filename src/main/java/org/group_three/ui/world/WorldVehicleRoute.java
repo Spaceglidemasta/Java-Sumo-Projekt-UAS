@@ -7,6 +7,7 @@ import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,13 +34,36 @@ public class WorldVehicleRoute extends WorldRoute {
 	public void update() {
 		if (worldVehicle == null) return;
 
-		if (Meth.getRelativeLocation(worldVehicle.getPosition(), worldVehicle.getRotation(), Meth.addRelativeLocation(getPosition(), getRotation(), updatedRoutePoints.getFirst())).x <= 0) {
-			updatedRoutePoints.removeFirst();
+		//if (Meth.getRelativeLocation(worldVehicle.getPosition(), worldVehicle.getRotation(), Meth.addRelativeLocation(getPosition(), getRotation(), updatedRoutePoints.getFirst())).x <= 0) {
+		//	updatedRoutePoints.removeFirst();
+		//}
+
+		List<Vector2D> currentRoutePoints = new ArrayList<>();
+
+		for (int i = worldVehicle.getwVehicle().getRouteIndex(); i < route.size(); i++) {
+
+			List<String> lanes = new ArrayList<>();
+
+			if (i == worldVehicle.getwVehicle().getRouteIndex()) {
+				List<String> laneIDs = SimController.getMainsimcon().getRoad(route.get(i)).getLaneIDs();
+
+				//for (int d = laneIDs.indexOf(worldVehicle.getwVehicle().getLaneID()); d < laneIDs.size(); i++) {
+				//	lanes.add();
+				//}
+
+			} else {
+				lanes = SimController.getMainsimcon().getRoad(route.get(i)).getLaneIDs();
+			}
+
+
+			if (lanes.size() <= 0) continue;
+			currentRoutePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
 		}
 
-		List<Vector2D> currentRoutePoints = updatedRoutePoints;
+		Debug.print(worldVehicle.getwVehicle().getLaneID());
 
 
+		//Debug.print(worldVehicle.getwVehicle().getLanePosition());
 
 
 		//currentRoutePoints.addFirst(worldVehicle.getPosition());
