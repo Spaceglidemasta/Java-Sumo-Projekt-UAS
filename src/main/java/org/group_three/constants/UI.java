@@ -36,6 +36,16 @@ public final class UI {
 	public static final Vector2D zoomLimit = new Vector2D(0.1, 10);
 	// The limit to decide the minimum and maximum value of the speedModificator.
 	public static final Vector2D simulationSpeedLimit = new Vector2D(0.01, 50);
+	// The file extension filter data for the simulation open file chooser window.
+	public static final String[][][] simulationOpenFileExtensions = {
+			{ {"SUMO Config"}, {"*.sumocfg"} },
+			{ {"Network & Route"}, {"*.net.xml", "*.rou.xml"} }
+	};
+	// The file extension filter data for the simulation export save file chooser window.
+	public static final String[][] simulationExportFileExtensions = {
+			{"XML", "*.xml"},
+			{"CSV", "*.csv"}
+	};
 
 
 	// The minimal window width.
