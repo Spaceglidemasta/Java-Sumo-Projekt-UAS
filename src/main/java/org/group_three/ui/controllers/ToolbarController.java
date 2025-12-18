@@ -10,6 +10,7 @@ import java.util.List;
 // import java.io.IOException; for what was that?
 
 import org.group_three.api.SimController;
+import org.group_three.constants.UI;
 import org.group_three.debug.Console;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
@@ -20,6 +21,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import org.group_three.ui.SimView2D;
+import org.group_three.utils.Formatting;
 
 /**
  * Controller for the toolbar to manage button interactions,
@@ -207,10 +209,10 @@ public class ToolbarController {
 		}
 
 		// add selectable data types to the file chooser
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("All", "*.sumocfg", "*.net.xml", "*.rou.xml"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SUMO Config", "*.sumocfg"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Network", "*.net.xml"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Route", "*.rou.xml"));
+		for (String[][] fileExtension : UI.simulationOpenFileExtensions) {
+			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileExtension[0][0], fileExtension[1]));
+		}
+
 
 		List<File> files = fileChooser.showOpenMultipleDialog(null);
 		if (files != null) {
@@ -275,7 +277,7 @@ public class ToolbarController {
 	}
 
 	/**
-	 * A method to export gathered data from the simulation as an .csv file.
+	 * A method to export gathered data from the simulation to a file.
 	 *
 	 * @author Joel
 	 */
@@ -296,10 +298,11 @@ public class ToolbarController {
 		}
 
 		// add selectable data types to the file chooser
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+		for (String[] fileExtension : UI.simulationExportFileExtensions) {
+			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileExtension[0], fileExtension[1]));
+		}
 
-		fileChooser.setInitialFileName("");
+		fileChooser.setInitialFileName(Formatting.uniquegen("savedState_", ".xml"));
 
 		File file = fileChooser.showSaveDialog(null);
 		if (file != null) {
@@ -307,28 +310,6 @@ public class ToolbarController {
 
 			SimController.getMainsimcon().saveState(fileExtension);
 		}
-	}
-
-	/**
-	 * A method to export gathered data from the simulation as a .xml file.
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private void onSimulationExportXmlClicked() {
-		Debug.toConsole("Simulation -> Export -> .xml");
-		SimController.getMainsimcon().saveState(".xml");
-	}
-
-	/**
-	 * A method to export gathered data from the simulation as an .csv file.
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private void onSimulationExportCsvClicked() {
-		Debug.toConsole("Simulation -> Export -> .csv");
-		SimController.getMainsimcon().saveState(".csv");
 	}
 
 	/**
