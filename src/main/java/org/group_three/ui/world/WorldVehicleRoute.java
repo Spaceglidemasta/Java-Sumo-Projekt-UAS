@@ -47,6 +47,9 @@ public class WorldVehicleRoute extends WorldRoute {
 			if (i == worldVehicle.getwVehicle().getRouteIndex()) {
 				List<String> laneIDs = SimController.getMainsimcon().getRoad(route.get(i)).getLaneIDs();
 
+				lanes = SimController.getMainsimcon().getRoad(route.get(i)).getLaneIDs();
+				Debug.print(Meth.getVector2DListLength(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2)))));
+
 				//for (int d = laneIDs.indexOf(worldVehicle.getwVehicle().getLaneID()); d < laneIDs.size(); i++) {
 				//	lanes.add();
 				//}
@@ -56,14 +59,20 @@ public class WorldVehicleRoute extends WorldRoute {
 			}
 
 
+
+
 			if (lanes.size() <= 0) continue;
+
+
+
+
 			currentRoutePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
 		}
 
-		Debug.print(worldVehicle.getwVehicle().getLaneID());
+		//Debug.print(worldVehicle.getwVehicle().getLaneID());
 
 
-		//Debug.print(worldVehicle.getwVehicle().getLanePosition());
+		Debug.print(worldVehicle.getwVehicle().getLanePosition());
 
 
 		//currentRoutePoints.addFirst(worldVehicle.getPosition());
