@@ -4,7 +4,6 @@ package org.group_three.debug;
 import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.sumo.cmd.Vehicle;
 import org.group_three.api.SimController;
-import org.group_three.debug.annotations.StaticClass;
 import org.group_three.model.WPolygon;
 import org.group_three.service.Statistic;
 import org.group_three.service.Table;
@@ -16,7 +15,6 @@ import java.util.function.Function;
  * Random test methods. There is no other use for this.
  * @author Luca
  * */
-@StaticClass
 public final class StaticTester {
 
     @Deprecated
