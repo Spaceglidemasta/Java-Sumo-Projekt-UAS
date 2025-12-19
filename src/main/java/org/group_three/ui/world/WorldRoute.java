@@ -10,7 +10,6 @@ import org.group_three.ui.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * A class to visually represent a route in the world.
@@ -49,7 +48,7 @@ public class WorldRoute extends WorldObject {
         SimController simcon = SimController.getMainsimcon();
 
         if(simcon == null){
-            Debug.log("Main Simcon instance is null", Level.FINE);
+            Debug.print("Main Simcon instance is null");
             return;
         }
 

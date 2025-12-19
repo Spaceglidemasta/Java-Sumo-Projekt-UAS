@@ -18,11 +18,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import java.util.logging.Logger;
 
 public class Table<T> {
+
+    private static final Logger log =
+            Logger.getLogger(Table.class.getName());
 
     protected final int attributeCount;
     protected List<String> attributeNames;
@@ -98,7 +101,7 @@ public class Table<T> {
         int index = attributeNames.indexOf(attribute);
 
         if(index == -1){
-            Debug.log("Attribute " + attribute + " is not Part of the table.", Level.FINE);
+            log.warning("Attribute " + attribute + " is not Part of the table.");
             return null;
         }
 
@@ -140,7 +143,7 @@ public class Table<T> {
     public void print(){
 
         if(content == null) {
-            Debug.log("Table is empty -> Table wasn't printed.", Level.FINE);
+            log.warning("Table is empty -> Table wasn't printed.");
             return;
         }
 
@@ -177,7 +180,7 @@ public class Table<T> {
         String filename = Formatting.uniquegen("output/tout_", ".csv");
 
         if(content == null || content.isEmpty()) {
-            Debug.log("Table is empty. CSV file was not outputted.", Level.FINE);
+            log.warning("Table is empty. CSV file was not outputted.");
             return false;
         }
 
@@ -205,7 +208,7 @@ public class Table<T> {
             }
         }
 
-        Debug.log("Table was saved as: " + filename + ". This may take a second to load.", Level.FINE);
+        log.info("Table was saved as: " + filename + ". This may take a second to load.");
 
        return true;
     }
@@ -224,7 +227,7 @@ public class Table<T> {
         Path target = Path.of("output", pathstr);
 
         if(!Files.exists(target)){
-            Debug.log("Target directory \"" + target + "\" does not exist.", Level.FINE);
+            log.warning("Target directory \"" + target + "\" does not exist.");
             return false;
         };
 
@@ -236,7 +239,7 @@ public class Table<T> {
         String filename = Formatting.uniquegen("output/" + pathstr + "/tout_", ".csv");
 
         if(content == null || content.isEmpty()) {
-            Debug.log("Table is empty. CSV file was not outputted.", Level.FINE);
+            log.warning("Table is empty. CSV file was not outputted.");
             return false;
         }
 
@@ -264,7 +267,7 @@ public class Table<T> {
             }
         }
 
-        Debug.log("Table was saved as: " + filename + ". This may take a second to load.", Level.FINE);
+        log.info("Table was saved as: " + filename + ". This may take a second to load.");
 
 
         return true;
@@ -286,7 +289,7 @@ public class Table<T> {
         Path target = Path.of("output", pathstr);
 
         if(!Files.exists(target)){
-            Debug.log("Target directory \"" + target + "\" does not exist.", Level.FINE);
+            log.warning("Target directory \"" + target + "\" does not exist.");
             return false;
         };
 
@@ -301,7 +304,7 @@ public class Table<T> {
         String filename = Formatting.uniquegen("output/" + pathstr + "/tout_", ".csv");
 
         if(content == null || content.isEmpty()) {
-            Debug.log("Table is empty. CSV file was not outputted.", Level.FINE);
+            log.warning("Table is empty. CSV file was not outputted.");
             return false;
         }
 
@@ -324,7 +327,7 @@ public class Table<T> {
             ioe.printStackTrace();
         }
 
-        Debug.log("Table was saved as: " + filename + ". This may take a second to load.", Level.FINE);
+        log.info("Table was saved as: " + filename + ". This may take a second to load.");
 
 
         return true;

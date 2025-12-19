@@ -10,7 +10,7 @@ import java.util.List;
  * @author Luca
  * */
 @StaticClass
-public abstract class Formatting {
+public final class Formatting {
 
 
     /**Turns a List of Objects into a String, with elements separated by commas and ended by a newline.
@@ -42,7 +42,11 @@ public abstract class Formatting {
      * @return prefix + System.currentTimeMillis() + suffix
      * @author Luca
      * */
+    //TODO Make this truly unique
     public static String uniquegen(String prefix, String suffix){
-        return prefix + System.currentTimeMillis() + suffix;
+
+        long id = (long) (System.currentTimeMillis() * Math.random());
+
+        return prefix + id + suffix;
     }
 }

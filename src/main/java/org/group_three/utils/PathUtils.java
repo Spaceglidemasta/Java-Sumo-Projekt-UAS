@@ -19,7 +19,7 @@ import java.nio.file.Paths;
  * @author Luca
  * */
 @StaticClass
-public abstract class PathUtils {
+public final class PathUtils {
 
     /**
      * Reads out the relative path / filename of the network file via XML parsing the .sumocfg file.
@@ -102,7 +102,7 @@ public abstract class PathUtils {
      */
     public static String getRelativePath(String absolutePath) {
         // get SumoConfig path
-        Path sumoConfigPath = Paths.get(new File(SimController.getSumoLoc(), "SumoConfig").getPath());
+        Path sumoConfigPath = Paths.get(new File(SimController.getProjectLocation(), "SumoConfig").getPath());
 
         // create and return a relative path based on the SumoConfig path
         return sumoConfigPath.relativize(Paths.get(absolutePath)).toString();

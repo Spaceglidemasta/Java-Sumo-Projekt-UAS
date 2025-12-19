@@ -6,146 +6,36 @@ import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.logging.*;
+import java.util.logging.Logger;
 
 
 /**
- * Debug utility using java.util.logging.
- * Provides methods for logging at different levels, printing directly to the terminal,
- * and the custom console.
+ * Debug class so nice debug messages can be displayed
+ * in the Terminal and our custom console.
+ * The Debug comment shows out ouf which class it was printed
+ * and afterwords a custom debug message
  * @author Leon
- */
-public abstract class Debug {
+ * */
+public final class Debug {
 
-    private static final Logger LOGGER = Logger.getLogger("org.group_three");
+    private static final Logger logger = Logger.getLogger(Debug.class.getName());
 
-
-    private static final String RESET  = "\u001B[0m";
-    private static final String BLUE   = "\u001B[34m";
-    private static final String CYAN   = "\u001B[36m";
-    private static final String YELLOW = "\u001B[33m";
-    private static final String RED    = "\u001B[31m";
-    private static final String GREEN  = "\u001B[32m";
-
-    private static final StringBuilder buffer = new StringBuilder();
-    private static Timeline flushTimer;
-    private static final int MAX_CHUNK_SIZE = 2000;  // characters per flush
-    private static final int MAX_LINES = 500;        // max lines kept
+    private static final boolean MAIN_CON_DEBUG = true;
+    public static boolean JAVAFX_FULL_DEBUG = false;
     private static TextArea debugTextArea;
 
-    static {
-        try {
-            LogManager.getLogManager().reset();
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String BOLD = "\033[0;1m";
 
-            // Console handler with custom formatter
-            ConsoleHandler consoleHandler = new ConsoleHandler();
-            consoleHandler.setLevel(Level.ALL);
-            consoleHandler.setFormatter(new Formatter() {
-                @Override
-                public String format(LogRecord record) {
-                    String color;
-                    String levelLabel;
+    // String builder, since only string would always create new object, whereas this creates one and modifies it
+    private static final StringBuilder buffer = new StringBuilder();
 
-                    if (record.getLevel() == Level.INFO) {
-                        color = CYAN;
-                        levelLabel = "INFO";
-                    } else if (record.getLevel() == Level.FINE) {
-                        color = BLUE;
-                        levelLabel = "FINE";
-                    } else if (record.getLevel() == Level.WARNING) {
-                        color = YELLOW;
-                        levelLabel = "WARNING";
-                    } else if (record.getLevel() == Level.SEVERE) {
-                        color = RED;
-                        levelLabel = "ERROR";
-                    } else {
-                        color = RESET;
-                        levelLabel = record.getLevel().toString();
-                    }
+    private static Timeline flushTimer;;
 
-                    String levelOut = "[" + color + levelLabel + RESET + "]";
-
-                    String msg = record.getMessage();
-                    return levelOut + msg + "\n";
-                }
-            });
-
-            // File handler
-            FileHandler fileHandler = new FileHandler("application.log", false);
-            fileHandler.setLevel(Level.ALL);
-            fileHandler.setFormatter(new Formatter() {
-                private final SimpleDateFormat sdf =
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-                @Override
-                public String format(LogRecord record) {
-                    String timestamp = sdf.format(new java.util.Date(record.getMillis()));
-                    String level = record.getLevel().getName();
-                    String msg = record.getMessage();
-
-                    // Strip ANSI escape sequences
-                    msg = msg.replaceAll("\u001B\\[[;\\d]*m", "");
-
-                    return String.format("%s %s %s%n", timestamp, level, msg);
-                }
-            });
-
-            LOGGER.addHandler(consoleHandler);
-            LOGGER.addHandler(fileHandler);
-            LOGGER.setLevel(Level.ALL);
-
-        } catch (IOException e) {
-            System.err.println("Failed to initialize logger: " + e.getMessage());
-        }
-    }
-
-    // These functions are logging related
-    /**
-     * Generic log method: pass message and Level explicitly.
-     * @param value The message to be logged
-     * @param level The logging level (INFO, FINE, WARNING, SEVERE)
-     * @author Leon
-     */
-    public static void log(Object value, Level level) {
-        String className = getCallerClassName();
-        String msg = "[" + GREEN + className + RESET + "] " + String.valueOf(value);
-        LOGGER.log(level, msg);
-    }
-
-    /**
-     * Shortens a fully qualified class name by removing the org.group_three.
-     * @param fullName The full class name
-     * @return The shortened class name
-     * @author Leon
-     */
-    private static String shortenClassName(String fullName) {
-        String prefix = "org.group_three.";
-        if (fullName.startsWith(prefix)) {
-            return fullName.substring(prefix.length());
-        }
-        return fullName;
-    }
-
-    /**
-     * Helper to get the actual caller class name, skipping Debug and JDK internals.
-     * @return The caller class name, or "Unknown" if not found
-     * @author Leon
-     */
-    private static String getCallerClassName() {
-        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-        for (StackTraceElement element : stack) {
-            String className = element.getClassName();
-            if (!className.equals(Debug.class.getName())
-                    && !className.startsWith("java.lang")) {
-                return shortenClassName(className);
-            }
-        }
-        return "Unknown";
-    }
-
-    // These functions are console related
+    private static final int MAX_CHUNK_SIZE = 2000;
+    private static final int MAX_LINES = 500;
 
     public static void setDebugTextArea(TextArea textArea) {
         debugTextArea = textArea;
@@ -153,27 +43,55 @@ public abstract class Debug {
     }
 
     /**
-     * Print function for custom console. Messages are buffered and flushed
-     * periodically to avoid UI lag. Old lines are trimmed to MAX_LINES.
-     * @param message Message to print
+     * Print function, so that messages are
+     * displayed in terminal
+     * @param value takes in object to print out
      * @author Leon
-     */
-    public static void toConsole(Object message) {
-        if (debugTextArea == null) return;
-        String className = getCallerClassName();
-        String formatted = "[" + className + "] " + message;
-        synchronized (buffer) {
-            buffer.append(formatted).append("\n");
+     * */
+    public static void print(Object value) {
+        if (MAIN_CON_DEBUG) {
+            StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
+            String className = caller.getClassName().substring(16);
+            System.out.println(BOLD + "[" + ANSI_BLUE + "DEBUG" + ANSI_RESET + BOLD + "](" + ANSI_CYAN + className + ANSI_RESET + ") " + ANSI_RESET + String.valueOf(value));
         }
     }
 
+    /**
+     * Print function for custom console, so that messages
+     * are displayed in console. Also implemented a flush function,
+     * so that console does not lag the simulation when logging messages.
+     * The message limit was set to 500 (might make it changeable later),
+     * so that the simulation does not lag because too many messages are stored.
+     * @param message takes in object to print out
+     * @author Leon
+     * */
+    public static void toConsole(Object message) {
+
+        //only one thread can execute at a time
+        synchronized (buffer) {
+            buffer.append(message).append("\n");
+        }
+    }
+
+    /**
+     * Function to start a flush timer that measures 200 milliseconds
+     * and flushes the buffer after they have passed.
+     * @author Leon
+     * */
     private static void startFlushTimer() {
-        if (flushTimer != null) return; // prevent multiple timers
+        //If a timer was already called, the if-check prevents multiple timers running at the same time
+        if (flushTimer != null) return;
+
         flushTimer = new Timeline(new KeyFrame(Duration.millis(200), e -> flushBuffer()));
         flushTimer.setCycleCount(Timeline.INDEFINITE);
         flushTimer.play();
     }
 
+    /**
+     * Function to split very large messages into chunks,
+     * set by max chunk size, to improve performance
+     * @author Leon
+     */
     private static void flushBuffer() {
         if (debugTextArea == null) return;
 
@@ -186,12 +104,16 @@ public abstract class Debug {
 
         int length = text.length();
         int start = 0;
+
         while (start < length) {
             int end = Math.min(start + MAX_CHUNK_SIZE, length);
             String chunk = text.substring(start, end);
             start = end;
 
-            Platform.runLater(() -> {
+            // This function is executed as runLater, when it is safe to do so,
+            // since this updates the UI elements and
+            // is not being done by the JavaFX Application Thread
+            Platform.runLater(() -> {   //pass lambda function to save writing another function
                 debugTextArea.appendText(chunk);
                 trimLines(debugTextArea);
                 debugTextArea.positionCaret(debugTextArea.getLength());
@@ -199,50 +121,42 @@ public abstract class Debug {
         }
     }
 
+    /**
+     * Function to immediately flush everything stored.
+     * @author Leon
+     */
     public static void flushEverything() {
         if (debugTextArea == null) return;
 
         String text;
         synchronized (buffer) {
-            if (buffer.isEmpty()) return;
+            if (buffer.isEmpty()) return;   // If buffer is empty, nothing is done
             text = buffer.toString();
             buffer.setLength(0);
         }
 
-        Platform.runLater(() -> {
+        Platform.runLater(() -> {   //pass lambda function to save writing another function
             debugTextArea.appendText(text);
             debugTextArea.positionCaret(debugTextArea.getLength());
         });
     }
 
-    private static void trimLines(TextArea area) {
-        String[] lines = area.getText().split("\n");
-        if (lines.length > MAX_LINES) {
-            int startIndex = 0;
-            for (int i = 0; i < lines.length - MAX_LINES; i++) {
-                startIndex += lines[i].length() + 1; // +1 for newline
-            }
-            // delete old lines without resetting the whole text
-            area.deleteText(0, startIndex);
-        }
-        area.positionCaret(area.getLength());
-    }
 
     /**
-     * Prints directly to the terminal (not into the logger).
-     * @param value The message to be printed
+     * Function to keep line amount to the set limit,
+     * to avoid performance issues if too many messages are kept in the log
      * @author Leon
      */
-    public static void print(Object value) {
-        String className = getCallerClassName();
+    public static void trimLines(TextArea area) {
+        String[] lines = area.getText().split("\n");
+        if (lines.length > MAX_LINES) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = lines.length - MAX_LINES; i < lines.length; i++) {
+                sb.append(lines[i]).append("\n");
+            }
+            area.setText(sb.toString());
+            area.positionCaret(area.getLength());
 
-        String nlDebug = "[" + YELLOW + "DEBUG" + RESET + "]";
-        String classOut = "[" + GREEN + className + RESET + "]";
-        String msg = String.valueOf(value);
-
-        System.out.println(nlDebug + classOut + " " + msg);
+        }
     }
-
-
-
 }

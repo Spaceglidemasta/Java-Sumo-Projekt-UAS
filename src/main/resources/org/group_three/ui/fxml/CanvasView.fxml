@@ -9,8 +9,8 @@
    <children>
       <StackPane fx:id="renderTargetBounds" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Canvas fx:id="worldStaticRenderTarget" height="200.0" onMouseClicked="#onMouseClicked" onMouseDragged="#onCanvasDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onCanvasPressed" onScroll="#onScroll" width="200.0" />
-            <Canvas fx:id="worldDynamicRenderTarget" height="200.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onMouseClicked" onMouseDragged="#onCanvasDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onCanvasPressed" onScroll="#onScroll" width="200.0" />
+            <Canvas fx:id="worldStaticRenderTarget" height="200.0" onMouseClicked="#onMouseClicked" onMouseDragged="#onCanvasDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onCanvasPressed" onScroll="#onScroll" scaleY="-1.0" width="200.0" />
+            <Canvas fx:id="worldDynamicRenderTarget" height="200.0" onMouseClicked="#onMouseClicked" onMouseDragged="#onCanvasDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onCanvasPressed" onScroll="#onScroll" scaleY="-1.0" width="200.0" />
             <Button mnemonicParsing="false" opacity="0.0" text="Button" StackPane.alignment="TOP_CENTER" />
             <Button mnemonicParsing="false" opacity="0.0" text="Button" StackPane.alignment="BOTTOM_CENTER" />
             <Button mnemonicParsing="false" opacity="0.0" text="Button" StackPane.alignment="CENTER_LEFT" />

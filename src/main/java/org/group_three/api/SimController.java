@@ -14,24 +14,29 @@ import org.group_three.model.WVehicle;
 import org.group_three.utils.Formatting;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.logging.Level;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * <h1>SimController</h1>
  * Class used to Connect & Control to SUMO via the TraaS API <br>
- * The constructor does everything for you, you only need
- * to SimController.close() the Simulation after you are done.
+ * The constructor does everything that is connection-based for you,
+ * you only need to simcon.close() the simulation after you are done. <br><br>
+ * This class is also host to the all[...]s Lists / Hashmaps, which you
+ * want to look into if you want to understand the inner workings of the
+ * wrapper classes for the Objects contained by the simulation.
+ * @see org.group_three.model
  * @author Luca
  */
 public class SimController {
+
+    private static final Logger log =
+            Logger.getLogger(SimController.class.getName());
 
 	//The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
     private SumoTraciConnection stc; //
@@ -44,7 +49,7 @@ public class SimController {
     // WObjects Collectors
     private List<WTrafficLight> allWTLs = new ArrayList<>();
     private List<WPolygon> allPolys = new ArrayList<>();
-    private HashMap<String, WEdge> allroads = new HashMap<String, WEdge>();
+    private HashMap<String, WEdge> allroads = new HashMap<>();
 
 // ******************************************************
 //                      SIMULATION
@@ -55,12 +60,12 @@ public class SimController {
     }
 
     public SimController(String cfg) {
-        Debug.log("SimController invoked", Level.FINE);
+        log.info("SimController invoked");
 
         try {
 
             // get folder location of Project
-            File jarDir = getSumoLoc();
+            File jarDir = getProjectLocation();
 
             // opens said folder
             File resourcesDir = new File(jarDir, "SumoConfig");
@@ -72,16 +77,15 @@ public class SimController {
             // possible location of sumo.exe in %SUMO_HOME%/bin
             File sumoExe = decideSumo(sumoHome, resourcesDir);
 
-            Debug.log("sumo.exe found: " + sumoExe.getAbsolutePath(), Level.FINE);
+            log.info("sumo.exe found: " + sumoExe.getAbsolutePath());
 
             // opens the sumocfg file inside the resources Folder
             File sumocfg = new File(resourcesDir, cfg);
-            Debug.log(sumocfg.getAbsolutePath(), Level.FINE);
             if (!sumocfg.exists()) {
-                throw new Exception(cfg + " not found");
+                throw new FileNotFoundException(cfg + " not found");
             }
             else {
-                Debug.log("sumocfg file found", Level.FINE);
+                log.info("sumocfg file found at " + sumocfg.getAbsolutePath());
             }
 
             // establishes the connection to sumo with the route and network via TraaS
@@ -99,10 +103,10 @@ public class SimController {
             stc.do_timestep();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Error in SimController init: " + Arrays.toString(e.getStackTrace()));
         }
 
-        Debug.log("SimController startup was successfull", Level.FINE);
+        log.info("SimController startup was successfull");
         Debug.toConsole("SimController startup was successfull");
     }
 
@@ -113,7 +117,7 @@ public class SimController {
      * @return Which one was decided upon. sumoHome most of the time
      * @author Luca
      * */
-    private static File decideSumo(String sumoHome, File resourcesDir) throws Exception {
+    private static File decideSumo(String sumoHome, File resourcesDir) throws FileNotFoundException {
         //A ? B : C <=> if A then B else C
         File sumoExeHome = (sumoHome != null)
                 ? new File(sumoHome + "/bin/sumo.exe")
@@ -128,18 +132,18 @@ public class SimController {
                 : sumoExeResources;
 
         if (!sumoExe.exists()) {
-            throw new Exception("sumo.exe not found");
+            throw new FileNotFoundException("sumo.exe not found");
         }
         return sumoExe;
     }
 
     public SimController(String net, String rou){
-        Debug.log("SimController invoked", Level.FINE);
+        log.info("SimController invoked");
 
         //try & catch to catch exceptions
         try {
             // get folder location of Project
-            File jarDir = getSumoLoc();
+            File jarDir = getProjectLocation();
 
             // opens said folder
             File resourcesDir = new File(jarDir, "SumoConfig");
@@ -152,25 +156,25 @@ public class SimController {
             //A ? B : C <=> if A then B else C
             File sumoExe = decideSumo(sumoHome, resourcesDir);
 
-            Debug.log("sumo.exe found: " + sumoExe.getAbsolutePath(), Level.FINE);
+            log.info("sumo.exe found: " + sumoExe.getAbsolutePath());
 
             // opens the network file inside the resources Folder
             File networknet = new File(resourcesDir, net);
-            Debug.log(networknet.getAbsolutePath(), Level.FINE);
+
             if (!networknet.exists()) {
                 throw new Exception(net + " not found");
             }
             else {
-                Debug.log("network file found", Level.FINE);
+                log.info("network file found at: " + networknet.getAbsolutePath());
             }
             // opens the route file inside the resources Folder
             File routenet = new File(resourcesDir, rou);
-            Debug.log(routenet.getAbsolutePath(), Level.FINE);
+
             if (!routenet.exists()) {
                 throw new Exception(rou + " not found");
             }
             else {
-                Debug.log("route file found", Level.FINE);
+                log.info("route file found at: " + routenet.getAbsolutePath());
             }
 
             // establishes the connection to sumo with the route and network via TraaS
@@ -190,10 +194,10 @@ public class SimController {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Error in SimController init: " + Arrays.toString(e.getStackTrace()));
         }
 
-        Debug.log("SimController startup was successfull", Level.FINE);
+        log.info("SimController startup was successfull");
         Debug.toConsole("SimController startup was successfull");
 
     }
@@ -208,7 +212,7 @@ public class SimController {
         try {
             stc.do_timestep();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Step execution failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
 
@@ -228,8 +232,7 @@ public class SimController {
             try {
                 stc.do_timestep();
             } catch (Exception e) {
-                Debug.log("CRITICAL ERROR:", Level.SEVERE);
-                e.printStackTrace();
+                log.severe("CRITICAL ERROR: " + Arrays.toString(e.getStackTrace()));
                 return false;
             }
 
@@ -250,7 +253,7 @@ public class SimController {
         try {
             stc.do_timestep(time);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("execution failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
 
@@ -269,7 +272,7 @@ public class SimController {
             if(stc != null && !stc.isClosed()) stc.close();
         }
         catch (IllegalStateException ise){
-            ise.printStackTrace();
+            log.severe("closing failed: " + Arrays.toString(ise.getStackTrace()));
         }
     }
 
@@ -284,60 +287,62 @@ public class SimController {
     public String saveState(String filetype){
 
         if(!Files.exists(Path.of("output"))){
-            Debug.log("There was not \"output\" directory found. Are you running from a .jar? Make one.", Level.FINE);
+            log.warning("There was not \"output\" directory found. Are you running from a .jar? Make one.");
+            log.warning("saveState aborted");
             return null;
         }
 
         try {
             String filename = Formatting.uniquegen("savedState_", filetype);
             stc.do_job_set(Simulation.saveState("output/" + filename));
-            Debug.log("State successfully saved to output/" + filename, Level.FINE);
+            log.info("State successfully saved to output/" + filename);
             return filename;
         }
         catch (Exception e){
-            e.printStackTrace();
-            Debug.log("There was an error saving the State.", Level.FINE);
+            log.warning("There was an error saving the State: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
 
     /**
      * @author Luca
-     * @return the location(FILE) the Project is located in.
+     * @return the location(FILE) the Project is located in, or null if failed.
      * Knows if the Program is compiled & executed or a jar file
     **/
-    public static File getSumoLoc() {
+    @MayReturnNull
+    public static File getProjectLocation() {
 
         //the location of this class in the URL format
         URL mainURL = SimController.class.getProtectionDomain().getCodeSource().getLocation();
-        URI mainURI = null;
+        URI mainURI;
 
         //"cast" to URI format
         try {
             mainURI = mainURL.toURI();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Converting URL to URI failed; \"" + mainURL.toString() + "\" contains URI invalid characters.");
+            return null;
         }
         //checks if the last "cast" was successfull.
-        assert mainURI != null;
+
 
         //transforms the URI to a FILE
         File jarDir = new File(mainURI);
 
         //if compiled to a Jar
         if(jarDir.isFile()){
-            Debug.log("Jar Execution detected", Level.FINE);
+            log.info("Jar Execution detected");
             return jarDir.getParentFile();
         }
 
         //if compiled normally
-        Debug.log("Compiled Execution detected", Level.FINE);
+        log.info("Compiled Execution detected");
         return jarDir.getParentFile().getParentFile().getParentFile();
 
     }
 
     /**
-     * @return steptime as int, or <code>-1</code> if failed
+     * @return step-time as int, or <code>-1</code> if failed
      * @author Luca
      * */
     public int getTime(){
@@ -347,19 +352,24 @@ public class SimController {
             return Math.toIntExact(Math.round(time));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getting Time failed: " + Arrays.toString(e.getStackTrace()));
             return -1;
         }
     }
 
     /**
-     * Returns the global / static _mainsim.
+     * Returns the global / static mainsimcon.
      * @author Luca
      * */
     @MayReturnNull
     public static SimController getMainsimcon() {
 
-        if(mainsimcon == null || mainsimcon.getStc().isClosed()) return null;
+        if(mainsimcon == null || mainsimcon.getStc().isClosed()) {
+
+            log.warning("Mainsimcon is closed or null.");
+
+            return null;
+        }
 
         return mainsimcon;
 
@@ -370,7 +380,7 @@ public class SimController {
      * Beware that this overwrites the old one
      * @author Luca
      * */
-    public void setMainstc(boolean close_old){
+    public void setAsMainsimcon(boolean close_old){
 
         if(mainsimcon != null && !mainsimcon.getStc().isClosed() && close_old){
             mainsimcon.close();
@@ -378,7 +388,7 @@ public class SimController {
 
         mainsimcon = this;
 
-        Debug.log("Main SUMO Simulation was overwritten.", Level.FINE);
+        log.info("Main SUMO Simulation was overwritten.");
     }
 
     // ******************************************************
@@ -404,7 +414,7 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Trafficlight.getIDList());
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
 
@@ -424,10 +434,11 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Vehicle.getIDList());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
     }
 
     /**
@@ -442,10 +453,11 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Route.getIDList());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
     }
 
     /**
@@ -461,10 +473,11 @@ public class SimController {
 
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
     }
 
     /**
@@ -480,20 +493,17 @@ public class SimController {
 
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
     }
 
 
     // ******************************************************
-    // **                   Edges                          **
+    // **                   Edges & Lanes                  **
     // ******************************************************
-
-
-
-
 
 
     /**
@@ -507,10 +517,10 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Lane.getIDList());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
     }
 
     //
@@ -531,7 +541,7 @@ public class SimController {
             return ((SumoGeometry) stc.do_job_get(Lane.getShape(laneID))).coords;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -549,10 +559,10 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Edge.getLaneNumber(edgeID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
     }
 
     // ******************************************************
@@ -560,7 +570,8 @@ public class SimController {
     // ******************************************************
 
     /**
-     * Basicly the normal Vehicle.add(), but it handles the VehicleID setting logic for you.
+     * <h2>addVehicle</h2>
+     * Basically the normal Vehicle.add(), but it handles the VehicleID setting logic for you.
      *
      * @param typeID The type of the Vehicle; Use constants.Vehicle for this.
      * @param routeID The ID of the route where the Vehicle is supposed to land
@@ -581,10 +592,11 @@ public class SimController {
             return new WVehicle(newVIDstr, stc);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
 
     }
 
@@ -604,7 +616,7 @@ public class SimController {
             return RID;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -621,19 +633,24 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Route.getEdges(RID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
 
 
     /**
-     * @return Average vehicle-speed from all loaded Vehicles.
+     * @return Average vehicle-speed from all loaded Vehicles, or -1.0d if failed.
      * @author Luca
      * */
     public double getAverageVehSpeed(){
 
         SumoStringList allVIDs = getVehicleIDList();
+
+        if(allVIDs == null) {
+            log.severe("getAverageVehSpeed failed. VehicleIDList is null.");
+            return -1.0d;
+        }
 
         double speedcount = 0;
         double vehcount = 0;
@@ -651,8 +668,7 @@ public class SimController {
     // **               Traffic Lights                     **
     // ******************************************************
 
-    //Old Text of mine when I thought we don't need a TL Wrapper-Class.
-
+    //Old Text of mine when I thought we don't need a TL Wrapper-Class:
     /*"Why is this not its own Wrapper-Class like WVehicle?"
      * There simply aren't enough functions & attributes to a TL
      * that we need, that it's worth to build its own class.
@@ -680,7 +696,7 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Trafficlight.getControlledJunctions(TLID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -695,9 +711,10 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Trafficlight.getControlledLanes(TLID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
-        return null;
+
     }
 
     /**
@@ -711,13 +728,14 @@ public class SimController {
             return (SumoLinkList) stc.do_job_get(Trafficlight.getControlledLinks(linkID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
-        return null;
+
     }
 
     /**This function supposedly returns it in meters but since one meter
-     * equals one coordinate unit, they can just be used as the width in coordinates)
+     * equals one coordinate unit, they can just be used as the width in coordinates
      * @param laneID ID of the chosen lane with format:("E1_0")
      * @return Returns the width of a chosen lane.
      * @author Leon
@@ -728,9 +746,10 @@ public class SimController {
             return (Double) stc.do_job_get(Lane.getWidth(laneID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
-        return null;
+
     }
 
 
@@ -745,14 +764,14 @@ public class SimController {
     public boolean setTLPhase(String TLID, int iPhase){
 
         try {
-            Debug.toConsole("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
+            log.fine("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
             stc.do_job_set(Trafficlight.setPhase(TLID, iPhase));
+            return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("setter failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
-        return true;
     }
 
     /**
@@ -762,15 +781,13 @@ public class SimController {
      * @author Luca
      */
     public int getTLPhase(String TLID) {
-        int iphase;
         try {
-            iphase = (int) stc.do_job_get(Trafficlight.getPhase(TLID));
+            return (int) stc.do_job_get(Trafficlight.getPhase(TLID));
         }
         catch (Exception e){
-            e.printStackTrace();
-            iphase = -1;
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return -1;
         }
-        return iphase;
     }
 
     /**
@@ -784,12 +801,13 @@ public class SimController {
 
         try {
             stc.do_job_set(Trafficlight.setPhaseDuration(TLID, dur));
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
 
-        return true;
+
     }
 
     /**
@@ -801,15 +819,15 @@ public class SimController {
      * */
     @MayReturnNull
     public String getTLParam(String TLID, String param){
-        String retparam;
+
         try {
-            retparam = (String) stc.do_job_get(Trafficlight.getParameter(TLID,param));
+            return  (String) stc.do_job_get(Trafficlight.getParameter(TLID,param));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
-        return retparam;
+
     }
 
 
@@ -819,6 +837,7 @@ public class SimController {
      * @param param the parameter which is supposed to change
      * @param value the value that is to be inserted in the given parameter
      * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @author Luca
      * */
     public boolean setTLParam(String TLID, String param, String value){
         try {
@@ -826,7 +845,7 @@ public class SimController {
             return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("setter failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
     }
@@ -841,17 +860,17 @@ public class SimController {
      * @author Luca
      * */
     @MayReturnNull
-    public List<String> getJunctionIDList() {
+    public SumoStringList getJunctionIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) stc.do_job_get(Junction.getIDList());
+            return (SumoStringList) stc.do_job_get(Junction.getIDList());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
     }
 
 
@@ -871,7 +890,7 @@ public class SimController {
             return (SumoPosition2D) stc.do_job_get(Junction.getPosition(juncID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -886,7 +905,7 @@ public class SimController {
         try {
             return ((SumoGeometry) stc.do_job_get(Junction.getShape(laneID))).coords;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -901,7 +920,7 @@ public class SimController {
         try {
             return (SumoGeometry) stc.do_job_get(Polygon.getShape(pid));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -927,12 +946,15 @@ public class SimController {
             return allWTLs;
     }
 
+    /**
+     * @return the Road / WEdge of allRoads via the given Edge ID
+     * @param EID  EdgeID
+     * @author Luca
+     * */
     @MayReturnNull
     public WEdge getRoad(String EID) {
         return getAllroads().get(EID);
     }
-
-
 
     public void setAllWTLs(List<WTrafficLight> allWTLs) {
         this.allWTLs = allWTLs;
@@ -1000,10 +1022,11 @@ public class SimController {
             return stc.do_job_get(scmd);
         }
         catch (Exception e){
-            Debug.log("GET JOB FAILED: " + scmd.toString(), Level.FINE);
-            e.printStackTrace();
+            log.severe("GET JOB FAILED: " + scmd.toString() + "\n"
+            + Arrays.toString(e.getStackTrace()));
+            return null;
+
         }
-        return null;
     }
 
     /**
@@ -1018,13 +1041,12 @@ public class SimController {
     public boolean jobset(SumoCommand scmd){
         try {
             stc.do_job_set(scmd);
+            return true;
         }
         catch (Exception e){
-            Debug.log("DO JOB FAILED: " + scmd.toString(), Level.FINE);
-            e.printStackTrace();
+            log.severe("SET JOB FAILED: " + scmd.toString() + "\n"
+                    + Arrays.toString(e.getStackTrace()));
             return false;
         }
-
-        return true;
     }
 }
