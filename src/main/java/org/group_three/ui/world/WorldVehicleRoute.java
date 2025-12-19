@@ -8,6 +8,7 @@ import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,12 +19,12 @@ public class WorldVehicleRoute extends WorldRoute {
 	public WorldVehicleRoute(World world, Canvas canvas, String displayName, List<String> route, WorldVehicle worldVehicle) {
 		super(world, canvas, displayName, route);
 		this.worldVehicle = worldVehicle;
-		//this.updatedRoutePoints = getRoutePoints();
+		this.updatedRoutePoints = getRoutePoints();
 
 		//updatedRoutePoints.removeFirst();
 	}
 
-	//private final List<Vector2D> updatedRoutePoints;
+	private final List<Vector2D> updatedRoutePoints;
 
 	/**
 	 * The update method which is used to draw the WorldRoute in the world.
@@ -32,18 +33,18 @@ public class WorldVehicleRoute extends WorldRoute {
 	 */
 	@Override
 	public void update() {
-		super.update();
+		drawCollision();
 		//if (worldVehicle == null) return;
 
 		//if (Meth.getRelativeLocation(worldVehicle.getPosition(), worldVehicle.getRotation(), Meth.addRelativeLocation(getPosition(), getRotation(), updatedRoutePoints.getFirst())).x <= 0) {
 		//	updatedRoutePoints.removeFirst();
 		//}
 
-		/*
 
-		List<Vector2D> currentRoutePoints = new ArrayList<>();
 
-		for (int i = worldVehicle.getwVehicle().getRouteIndex(); i < route.size(); i++) {
+		//List<Vector2D> currentRoutePoints = new ArrayList<>();
+
+		/*for (int i = worldVehicle.getwVehicle().getRouteIndex(); i < route.size(); i++) {
 
 			List<String> lanes = new ArrayList<>();
 
@@ -80,14 +81,122 @@ public class WorldVehicleRoute extends WorldRoute {
 
 		//currentRoutePoints.addFirst(worldVehicle.getPosition());
 
-		//drawLine(currentRoutePoints, 1, Color.RED);
-	}
+		/*int endIndex = 0;endPointIndex.get(worldVehicle.getwVehicle().getLaneID());
 
-	/*@Override
-	public void setRoute(List<String> route) {
-		super.setRoute(route);
+		for (int i = endIndex; i < updatedRoutePoints.size(); i++) {
+			currentRoutePoints.add(updatedRoutePoints.get(i));
+		}*/
+
+		//currentRoutePoints.addAll(updatedRoutePoints);
+
+
+		//Debug.print(currentRoutePoints.size());
+
+
+
+		//drawLine(currentRoutePoints, 1, Color.RED);
+
+
+
 
 		routePoints.clear();
+
+		for (String edge : route) {
+			List<String> lanes = SimController.getMainsimcon().getRoad(edge).getLaneIDs();
+
+			List<List<Vector2D>> allLanePoints = new ArrayList<>();
+			for (String lane : lanes) {
+				allLanePoints.add(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lane)));
+			}
+
+			int laneCount = allLanePoints.size();
+
+			for (int i = 0; i < allLanePoints.getFirst().size(); i++) {
+				Vector2D point = new Vector2D();
+				for (int b = 0; b < laneCount; b++) {
+					point = point.add(allLanePoints.get(b).get(i));
+				}
+				point = point.div(laneCount);
+				routePoints.add(point);
+			}
+		}
+
+		/*reachedPoints.clear();
+
+		for (String edge : route) {
+			String laneId = worldVehicle.getwVehicle().getLaneID();
+			if (laneId.startsWith(":")) {
+				laneId = lastLaneId;
+			}
+
+			//Debug.print(worldVehicle.getwVehicle().getLaneID());
+
+			List<String> lanes = SimController.getMainsimcon().getRoad(edge).getLaneIDs();
+
+			List<List<Vector2D>> allLanePoints = new ArrayList<>();
+			for (String lane : lanes) {
+
+				allLanePoints.add(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lane)));
+			}
+
+			int laneCount = allLanePoints.size();
+
+			for (int i = 0; i < allLanePoints.getFirst().size(); i++) {
+				Vector2D point = new Vector2D();
+				for (int b = 0; b < laneCount; b++) {
+					point = point.add(allLanePoints.get(b).get(i));
+				}
+				point = point.div(laneCount);
+				reachedPoints.add(point);
+			}
+		}*/
+
+		//routePoints.removeAll(reachedPoints);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		drawLine(reachedPoints, 1, Color.RED);
+		Debug.print("superUpdate");
+	}
+
+	String lastLaneId = "";
+
+	List<Vector2D> reachedPoints = new ArrayList<>();
+
+
+
+	HashMap<String, Integer> endPointIndex = new HashMap<String, Integer>();
+	List<Double> lengthList = new ArrayList<>();
+
+	@Override
+	public void setRoute(List<String> route) {
+		//super.setRoute(route);
+		Debug.print("superROute");
+
+		SimController simcon = SimController.getMainsimcon();
+
+		if(simcon == null){
+			Debug.print("Main Simcon instance is null");
+			return;
+		}
+
+		this.route = route;
+
+
+
+		/*routePoints.clear();
 
 		String startLane = worldVehicle.getwVehicle().getRouteID();
 		boolean bStartLane = false;
@@ -101,6 +210,58 @@ public class WorldVehicleRoute extends WorldRoute {
 			List<String> lanes = SimController.getMainsimcon().getRoad(edge).getLaneIDs();
 
 			routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
+		}*/
+
+
+		/*SimController simcon = SimController.getMainsimcon();
+
+		if(simcon == null){
+			Debug.print("Main Simcon instance is null");
+			return;
 		}
-	}*/
+
+		this.route = route;
+
+		routePoints.clear();
+
+
+
+		for (String edge : route) {
+
+
+			List<String> lanes = simcon.getRoad(edge).getLaneIDs();
+
+			List<List<Vector2D>> allLanePoints = new ArrayList<>();
+			for (String lane : lanes) {
+				allLanePoints.add(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lane)));
+			}
+
+			int laneCount = allLanePoints.size();
+
+			for (int i = 0; i < allLanePoints.getFirst().size(); i++) {
+				Vector2D point = new Vector2D();
+				for (int b = 0; b < laneCount; b++) {
+					point = point.add(allLanePoints.get(b).get(i));
+				}
+				point = point.div(laneCount);
+				routePoints.add(point);
+			}
+
+			endPointIndex.put(edge, routePoints.size()-1);
+
+
+
+			//routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
+		}
+
+		for (int i = 0; i < routePoints.size()-1; i++) {
+			lengthList.add(routePoints.get(i).getDistance(routePoints.get(i+1)));
+		}
+
+
+		Debug.print("HasMap: ");
+		for (String s : route) {
+			Debug.print(s + ": " + endPointIndex.get(s));
+		}*/
+	}
 }
