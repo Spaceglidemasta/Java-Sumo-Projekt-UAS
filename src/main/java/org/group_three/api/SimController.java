@@ -5,7 +5,6 @@ import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.debug.Debug;
-import org.group_three.debug.annotations.CreatesFiles;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
@@ -386,13 +385,13 @@ public class SimController {
     }
 
     /**Saves the State as a file. The format and output depends on the extension.
+     * <p> WARNING Creates Files </p>
      * @param filetype the extension. Include the dot: saveState(".xml")
      *                 ".csv" and ".xml" are the only ones we found to make sense.
      * @return The filename, or null if without success.
      * @author Luca
      * */
     @MayReturnNull
-    @CreatesFiles
     public String saveState(String filetype){
 
         if(!Files.exists(Path.of("output"))){

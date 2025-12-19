@@ -4,8 +4,6 @@ package org.group_three.utils;
 import de.tudresden.sumo.cmd.Simulation;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
-import org.group_three.debug.annotations.CreatesFiles;
-import org.group_three.debug.annotations.StaticClass;
 
 import java.util.List;
 
@@ -15,7 +13,6 @@ import java.util.List;
  * but also</s> has plenty of Static functions.
  * @author Luca
  * */
-@StaticClass
 public class StatUtils {
 
     private SimController simcon;
@@ -24,11 +21,11 @@ public class StatUtils {
 
     /**
      * Exports the state of the Main simulation
+     * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
      * @return true of successfull, false if not
      * @author Luca
      * */
-    @CreatesFiles
     @Deprecated
     public static boolean exportState(String filename) {
 
@@ -38,12 +35,12 @@ public class StatUtils {
 
     /**
      * Exports the state of the given simulation
+     * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
      * @param stc the SumoTraciConnection of the Simulation
      * @return true of successfull, false if not
      * @author Luca
      * */
-    @CreatesFiles
     @Deprecated
     public static boolean exportState(String filename, SumoTraciConnection stc) {
         try {
@@ -57,12 +54,12 @@ public class StatUtils {
 
     /**
      * Exports the state of the given simulation
+     * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
      * @param simcon the SimController of the Simulation
      * @return true of successfull, false if not
      * @author Luca
      * */
-    @CreatesFiles
     @Deprecated
     public static boolean exportState(String filename, SimController simcon) {
 

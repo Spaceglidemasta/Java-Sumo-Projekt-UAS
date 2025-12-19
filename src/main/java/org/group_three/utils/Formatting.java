@@ -1,15 +1,12 @@
 package org.group_three.utils;
 
 
-import org.group_three.debug.annotations.StaticClass;
-
 import java.util.List;
 
 /**
  * Utility class for formatting.
  * @author Luca
  * */
-@StaticClass
 public final class Formatting {
 
 
