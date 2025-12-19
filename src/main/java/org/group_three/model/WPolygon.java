@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * <h1>Polygon Wrapper Class</h1>
  * Wrapper for polygons all around the network.
+ * @see SumoGeometry
  * @author Luca
  * */
 public class WPolygon extends WObject {

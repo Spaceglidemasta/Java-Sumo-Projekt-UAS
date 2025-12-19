@@ -13,7 +13,8 @@ import org.group_three.ui.Meth;
 /**
  * <h1>WVehicle</h1>
  * A Wrapper Class for Vehicle which uses only the VehicleID to get and set values.
- *
+ * This is a very good example of bad OOP and how things should not be done. In an ideal world,
+ * this extends to WObject and is structured like WEdge / WTrafficlight / WPolygon.
  * @author Luca
  * */
 public class WVehicle {
@@ -366,11 +367,13 @@ public class WVehicle {
     public boolean setRoute(String RID){
         try {
             stc.do_job_set(Vehicle.setRouteID(vehID, RID));
+
+            return true;
         }
         catch (Exception _){
             return false;
         }
-        return true;
+
     }
 
 
@@ -510,6 +513,7 @@ public class WVehicle {
      * Dance, dance, dance (Boogie Wonderland), dance, dance, dance, dance<br>
      * Dance, dance (Boogie Wonderland), dance<br>
      * */
+    @Deprecated
     public static void boogieWonderland(){
         for(String VID : SimController.getMainsimcon().getVehicleIDList()){
             SimController.getMainsimcon().jobset(Vehicle.setColor(VID, Meth.ClrToSumoClr(new Color(

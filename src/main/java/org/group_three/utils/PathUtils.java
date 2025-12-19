@@ -102,7 +102,7 @@ public final class PathUtils {
      */
     public static String getRelativePath(String absolutePath) {
         // get SumoConfig path
-        Path sumoConfigPath = Paths.get(new File(SimController.getSumoLoc(), "SumoConfig").getPath());
+        Path sumoConfigPath = Paths.get(new File(SimController.getProjectLocation(), "SumoConfig").getPath());
 
         // create and return a relative path based on the SumoConfig path
         return sumoConfigPath.relativize(Paths.get(absolutePath)).toString();
