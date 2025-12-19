@@ -1,5 +1,7 @@
 package org.group_three.model;
+import de.tudresden.sumo.objects.SumoPosition2D;
 import org.group_three.api.SimController;
+import org.group_three.ui.Vector2D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -50,6 +52,19 @@ public class WEdge extends WObject{
     }
 
     public String getName() { return name; }
+
+    /**
+     * Calculates the Length via <code>from</code> and <code>to</code>.
+     * @return length as double
+     * @author Luca
+     * */
+    public double getLength(){
+
+        Vector2D f = new Vector2D(simcon.getJunctionPos(from));
+        Vector2D t = new Vector2D(simcon.getJunctionPos(to));
+
+        return t.sub(f).length();
+    }
 
     /**
      * Adds a Lane to the laneIDlist

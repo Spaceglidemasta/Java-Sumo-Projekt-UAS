@@ -77,53 +77,11 @@ public final class StaticTester {
 
 
     public static void TableToCSVExample(SimController simcon){
-        Table polyTable = new Table("UID", "Type", "color");
 
-        for(WPolygon poly : simcon.getAllPolys()){
-            try {
-                polyTable.add(
-                        poly.getId(),
-                        poly.getType(),
-                        poly.getColor()
-                );
-            } catch ( Exception e){
-                e.printStackTrace();
-                return;
-            }
-
-        }
-
-        polyTable.outAsCSV();
     }
 
-    public static void StatisticGraphExample() {
-        SimController sc = SimController.getMainsimcon();
+    public static void StatisticExample(SimController simcon) {
 
-        Statistic<Double> stat = new Statistic<Double>("Average Speed per second","time", "average speed");
-
-        for(int i = 0; i < 30; i++){
-            sc.step();
-            try {
-                stat.add(
-                        (double) sc.getTime(),
-                        sc.getAverageVehSpeed()
-                );
-            } catch ( Exception e){
-                e.printStackTrace();
-                return;
-            }
-
-        }
-
-
-        Function<Object, Object> fun  = stat.getGraphOf("time", "average speed");
-
-        System.out.println(stat.getName());
-        for(double i = 0; i < 30; i++){
-            System.out.println(i + ": " + fun.apply(i));
-        }
-
-        Debug.print("Wir haben gerade 30 steps gemacht, nicht wundern.");
 
 
     }

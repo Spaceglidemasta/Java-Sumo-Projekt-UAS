@@ -11,6 +11,8 @@ import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
+import org.group_three.service.StatCollector;
+import org.group_three.service.Statistic;
 import org.group_three.utils.Formatting;
 
 import java.io.File;
@@ -50,6 +52,59 @@ public class SimController {
     private List<WTrafficLight> allWTLs = new ArrayList<>();
     private List<WPolygon> allPolys = new ArrayList<>();
     private HashMap<String, WEdge> allroads = new HashMap<>();
+    private HashMap<String, WVehicle> allVehicles = new HashMap<>();
+
+    //Statistics
+    private StatCollector statcol;
+
+
+
+    public record VehicleRec(String vehID, double avgspeed, SumoColor color) {
+
+        public static List<VehicleRec> collect(SimController simcon){
+
+            List<VehicleRec> data = new ArrayList<>();
+
+            for(WVehicle wveh : simcon.getAllVehicles().values()){
+
+                VehicleRec vrec = new VehicleRec(
+                        wveh.getID(),
+                        wveh.getAvgSpeed(),
+                        wveh.getColor()
+                );
+
+                data.add(vrec);
+
+            }
+
+            return data;
+        }
+
+    }
+
+    public record EdgeRec(String name, int usage, double length) {
+
+        public static List<EdgeRec> collect(SimController simcon){
+
+            List<EdgeRec> data = new ArrayList<>();
+
+            for(WEdge wEdge : simcon.getAllroads().values()){
+
+                EdgeRec vrec = new EdgeRec(
+                        wEdge.getName(),
+                        3,
+                        wEdge.getLength()
+                );
+
+                data.add(vrec);
+
+            }
+
+            return data;
+        }
+
+
+    }
 
 // ******************************************************
 //                      SIMULATION
@@ -108,33 +163,6 @@ public class SimController {
 
         log.info("SimController startup was successfull");
         Debug.toConsole("SimController startup was successfull");
-    }
-
-    /**
-     * decides where the sumo.exe is.
-     * @param sumoHome The location of env %SUMO_HOME%
-     * @param resourcesDir The location of SumoConfig
-     * @return Which one was decided upon. sumoHome most of the time
-     * @author Luca
-     * */
-    private static File decideSumo(String sumoHome, File resourcesDir) throws FileNotFoundException {
-        //A ? B : C <=> if A then B else C
-        File sumoExeHome = (sumoHome != null)
-                ? new File(sumoHome + "/bin/sumo.exe")
-                : null;
-
-        // possible location of sumo.exe in resources
-        File sumoExeResources = new File(resourcesDir, "sumo.exe");
-
-        // Decide final path
-        File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
-                ? sumoExeHome
-                : sumoExeResources;
-
-        if (!sumoExe.exists()) {
-            throw new FileNotFoundException("sumo.exe not found");
-        }
-        return sumoExe;
     }
 
     public SimController(String net, String rou){
@@ -203,8 +231,89 @@ public class SimController {
     }
 
     /**
+     * decides where the sumo.exe is.
+     * @param sumoHome The location of env %SUMO_HOME%
+     * @param resourcesDir The location of SumoConfig
+     * @return Which one was decided upon. sumoHome most of the time
+     * @author Luca
+     * */
+    private static File decideSumo(String sumoHome, File resourcesDir) throws FileNotFoundException {
+        //A ? B : C <=> if A then B else C
+        File sumoExeHome = (sumoHome != null)
+                ? new File(sumoHome + "/bin/sumo.exe")
+                : null;
+
+        // possible location of sumo.exe in resources
+        File sumoExeResources = new File(resourcesDir, "sumo.exe");
+
+        // Decide final path
+        File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
+                ? sumoExeHome
+                : sumoExeResources;
+
+        if (!sumoExe.exists()) {
+            throw new FileNotFoundException("sumo.exe not found");
+        }
+        return sumoExe;
+    }
+
+    // ******************************************************
+    //                      Statistics
+    // ******************************************************
+
+    /**<h2>finishStatCollector</h2>
+     * Initiates the StatCollector attribute.
+     * <p>Uses the records defined at the top as types for the Statistic Template.
+     * Adding statistics works by adding a record as SimController attribute and
+     * adding it to the StatCollector via Statistic< Record >.</p>
+     * @see StatCollector
+     * @see Statistic
+     * @author Luca
+     * */
+    public void finishStatCollector(){
+
+        Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
+        for(VehicleRec vrec : VehicleRec.collect(this)){
+            vehStat.add(vrec);
+        }
+
+        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Usage Rate", "Length (m)");
+        for(EdgeRec erec : EdgeRec.collect(this)){
+            edgeStat.add(erec);
+        }
+
+
+        statcol = new StatCollector(
+                "StatCollector_" + System.currentTimeMillis(),
+                vehStat,
+                edgeStat
+        );
+
+        log.fine("StatCollector init was successful.");
+
+    }
+
+    /**Prints all collected stats of this Simulation.
+     * @see StatCollector#print()
+     * @author Luca
+     * */
+    public void printStats(){
+        statcol.print();
+    }
+
+    /**Exports the Stat Collection to a .gz.tar
+     * @see StatCollector#exportToGZ()
+     * @author Luca
+     * */
+    public void exportStats(){
+        statcol.exportToGZ();
+    }
+
+
+
+    /**
      * Does 1 step in the simulation.
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean step(){
@@ -968,6 +1077,14 @@ public class SimController {
         this.allroads = allroads;
     }
 
+    public HashMap<String, WVehicle> getAllVehicles() {
+        return allVehicles;
+    }
+
+    public void setAllVehicles(HashMap<String, WVehicle> allVehicles) {
+        this.allVehicles = allVehicles;
+    }
+
 
     /**
      * Adds a WTrafficLight to the WTL Collection of this SimController.
@@ -1001,6 +1118,18 @@ public class SimController {
     public int addToAllroads(String id, WEdge edge){
         allroads.put(id, edge);
         return allroads.size();
+    }
+
+    /**
+     * Adds a WVehicle to the WVehicle Collection of this SimController.
+     * @param id The id of the Vehicle. Used for hashing
+     * @param vehicle The WVehicle to be added.
+     * @return the new size of the collector List
+     * @author Luca
+     * */
+    public int addToAllVehicles(String id, WVehicle vehicle){
+        allVehicles.put(id, vehicle);
+        return allVehicles.size();
     }
 
 

@@ -427,7 +427,23 @@ public class SimView2D {
 	 */
 	public static void update() {
 		updateTrafficLights(worldStaticRenderTarget);
-		updateVehicles(worldStaticRenderTarget);
+
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon != null){
+            WVehicle.loadnupdateAll(simcon);
+
+            if(simcon.getTime() == 30){
+                simcon.finishStatCollector();
+                simcon.printStats();
+                //simcon.exportStats();
+            }
+        }
+
+
+
+        updateVehicles(worldStaticRenderTarget);
 
 		world.requestUpdate();
 	}
