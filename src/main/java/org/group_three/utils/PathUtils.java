@@ -1,7 +1,6 @@
 package org.group_three.utils;
 
 import org.group_three.api.SimController;
-import org.group_three.debug.annotations.StaticClass;
 import org.group_three.debug.exceptions.SumoCfgParsingError;
 import org.group_three.debug.exceptions.XMLEmptyAttributeError;
 import org.w3c.dom.Document;
@@ -18,7 +17,6 @@ import java.nio.file.Paths;
  * Utility Class for Pathing
  * @author Luca
  * */
-@StaticClass
 public final class PathUtils {
 
     /**

@@ -1,22 +1,16 @@
 package org.group_three.service;
 
 import com.sun.jdi.InvalidTypeException;
-import org.group_three.debug.Debug;
-import org.group_three.debug.annotations.CreatesFiles;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.exceptions.InvalidArgumentCount;
 import org.group_three.utils.Formatting;
 
-import javax.management.relation.InvalidRelationTypeException;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -165,11 +159,11 @@ public class Table<T> {
 
     /**
      * Writes the table to a CSV file into ./output
+     * <p> WARNING Creates Files </p>
      * @return <code>true</code> if success, <code>false</code> if not.
      * @source <a href="https://stackoverflow.com/a/10667865">Stack Overflow Answer by "Addicted"</a>
      * @author Luca
      * */
-    @CreatesFiles
     public boolean outAsCSV(){
 
         // Source - https://stackoverflow.com/a/10667865
@@ -216,12 +210,12 @@ public class Table<T> {
 
     /**
      * Writes the table to a CSV file into ./output/...
+     * <p> WARNING Creates Files </p>
      * @param pathstr Path relative to ./output. <br>pathstr="foo" outputs to output/foo/tout_[...], so don't append /
      * @return <code>true</code> if success, <code>false</code> if not.
      * @source <a href="https://stackoverflow.com/a/10667865">Stack Overflow Answer by "Addicted"</a>
      * @author Luca
      * */
-    @CreatesFiles
     public boolean outAsCSV(String pathstr){
 
         Path target = Path.of("output", pathstr);
@@ -275,6 +269,7 @@ public class Table<T> {
 
 
     /**<h2>outAsZippedCSV</h2>
+     * <p> WARNING Creates Files </p>
      * Writes the table to a CSV file into ./output/...
      * @param zos The ZipOutputStream to stream the table content to.
      * @param pathstr Path relative to ./output. <br>pathstr="foo" outputs to output/foo/tout_[...], so don't append /
@@ -283,7 +278,7 @@ public class Table<T> {
      *          <a href="https://stackoverflow.com/a/18571348">Stack Overflow Answer by "Stewart"</a>
      * @author Luca
      * */
-    @CreatesFiles
+
     public boolean outAsZippedCSV(ZipOutputStream zos, String pathstr){
 
         Path target = Path.of("output", pathstr);
