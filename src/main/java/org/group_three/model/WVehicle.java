@@ -9,6 +9,8 @@ import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
+import java.util.logging.Logger;
+import java.util.List;
 
 /**
  * <h1>WVehicle</h1>
@@ -18,6 +20,9 @@ import org.group_three.ui.Meth;
  * @author Luca
  * */
 public class WVehicle {
+
+    private static final Logger log =
+            Logger.getLogger(WVehicle.class.getName());
 
     private final String vehID;
     private final SumoTraciConnection stc;
@@ -29,6 +34,10 @@ public class WVehicle {
     private int lane;
     private SumoColor color;
     private double speed;
+
+    //Statistics
+    private double speedcounter = 0;
+    private long stepcounter = 0;
 
     /// Dont use this! >:(
     private WVehicle(){
@@ -310,6 +319,19 @@ public class WVehicle {
         }
     }
 
+
+    /**
+     * Calculates the average speed via speedcounter and stepcounter
+     * @return average speed as double, or -1 if failed.
+     * @author Luca
+     * */
+    public double getAvgSpeed(){
+        if(speedcounter != 0 && stepcounter != 0){
+            return speedcounter / stepcounter;
+        }
+        else return -1;
+    }
+
     /**
      * Removes the vehicle from the Simulation.
      * @param reason The reason for removing it. idk either
@@ -580,12 +602,52 @@ public class WVehicle {
             ispeed = false;
         }
 
+
+        if(ispeed){
+            speedcounter += speed;
+            stepcounter++;
+        }
+
+
+
         return new WVehicleUpdateObject(ipos,
                                         iangle,
                                         ilane,
                                         icolor,
                                         ispeed
         );
+    }
+
+
+    public static boolean loadnupdateAll(SimController simcon){
+
+        List<String> allVehIDs = simcon.getVehicleIDList();
+
+        if(allVehIDs == null) {
+            log.severe("Vehicles could not be loaded. getVehicleIDList returned null.");
+            return false;
+        }
+
+        for(String vehID : allVehIDs){
+
+            WVehicle target = simcon.getAllVehicles().get(vehID);
+            if(target != null){
+                target.update();
+            }
+            else{
+                WVehicle addition = new WVehicle(vehID, simcon);
+
+                addition.update();
+
+                simcon.addToAllVehicles(vehID, addition);
+            }
+
+        }
+
+        //this is not log.info, because it happens with every step and would therefore clutter the terminal.
+        log.fine("Loading and updating all vehicles was successful.");
+        return true;
+
     }
 
 }

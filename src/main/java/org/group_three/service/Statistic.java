@@ -11,11 +11,13 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 
 
-/**
+/**<h1>Statistic</h1>
  * Class for 1 singular Statistic, e.g. 1 Graph, 1 Table, etc. <br>
+ * Extends to Table
+ * @see Table
  * @author Luca
  * */
-public class Statistic<T> extends Table<T> {
+public class Statistic<T extends Record> extends Table<T> {
 
     private static final Logger log =
             Logger.getLogger(Statistic.class.getName());
@@ -46,7 +48,16 @@ public class Statistic<T> extends Table<T> {
         this.name = name;
     }
 
-
+    /**
+     * Prints out the Statistic in the follow format:
+     * <code>name</code>:
+     * | Head1  | Head2  | ... <br>
+     * ------------------- ...<br>
+     * | value1 | value2 | ...<br>
+     * | ...<br>
+     * @see Table#print()
+     * @author Luca
+     * */
     @Override
     public void print() {
         System.out.println(name + ": ");
@@ -62,7 +73,6 @@ public class Statistic<T> extends Table<T> {
      * @return a callabe function that takes x as an input and returns y.
      * @source <a href="https://stackoverflow.com/a/29584084">Posted by 'satnam' on Stackoverflow</a>
      * @author Luca
-     *
      */
     @MayReturnNull
     public Function<Object, Object> getGraphOf(String x_attribute, String y_attribute) {
