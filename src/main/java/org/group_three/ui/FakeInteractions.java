@@ -111,7 +111,7 @@ public class FakeInteractions {
         }
 
         //set selected simulation as the main, global / static simulation.
-        simcon.setMainstc(true);
+        simcon.setAsMainsimcon(true);
 
         WPolygon.loadAllPolys(simcon);
 

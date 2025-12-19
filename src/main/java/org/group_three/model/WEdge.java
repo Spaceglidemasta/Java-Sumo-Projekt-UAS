@@ -11,9 +11,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+import java.util.logging.Logger;
 
 /**
  * <h1>Sumo Road</h1>
@@ -22,6 +24,10 @@ import java.util.zip.GZIPInputStream;
  * @author Luca
  * */
 public class WEdge extends WObject{
+
+    private static final Logger log =
+            Logger.getLogger(WEdge.class.getName());
+
     private final String from;
     private final String to;
     private List<String> laneIDs;
@@ -166,10 +172,11 @@ public class WEdge extends WObject{
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Loading all WEdges failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
 
+        log.fine("Loading all WEdges successfull");
         return true;
     }
 
