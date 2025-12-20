@@ -15,6 +15,7 @@ import org.group_three.ui.world.WorldRoad;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 
 /**
  * The controller for the RoadDetails.
@@ -167,6 +168,17 @@ public class RoadDetailsController {
 			}
 		}
 	}
+
+    private void onJamPressed() {
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon == null){
+            Debug.print("Main Simcon instance is null");
+            return;
+        }
+
+        List<WEdge> roads = simcon.getAllroads().values().stream().toList();
+    }
 
 	/**
 	 * The setup method for this class to fill it with data.
