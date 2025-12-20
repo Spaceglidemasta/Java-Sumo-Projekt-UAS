@@ -9,10 +9,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -55,6 +57,11 @@ public class Statistic<T extends Record> extends Table<T> {
         this.name = name;
     }
 
+    public Statistic(String name, List<String> atts){
+        super(atts);
+        this.name = name;
+    }
+
     /**
      * Prints out the Statistic in the follow format:
      * <code>name</code>:
@@ -72,6 +79,25 @@ public class Statistic<T extends Record> extends Table<T> {
     }
 
 
+    /**
+     * Gets the Rows where <code>attribute</code> is <code>target</code><br>
+     * @example Statistic.getRowWhere("plz", 63165) → List("Mühlheim am Main", ...)
+     * @return The rows as Statistic
+     * @param predic The expression to filter for
+     * @author Luca
+     * */
+    public Statistic<T> getFilteredRows(Predicate<T> predic){
+
+        Statistic<T> stat = new Statistic<>(name + "_filtered", attributeNames);
+
+        for(T rec : content) {
+            if(predic.test(rec)) stat.add(rec);
+        }
+
+        return stat;
+    }
+
+
     /**<h2>outAsZippedCSV</h2>
      * <p> WARNING Creates Files </p>
      * Writes the table to a CSV file into ./output/...
@@ -86,7 +112,7 @@ public class Statistic<T extends Record> extends Table<T> {
         String filename = Formatting.uniquegen(name, ".csv");
 
         if (content == null || content.isEmpty()) {
-            log.warning("Table is empty.");
+            log.warning("Table is empty. " + name + " was not exported.");
             return false;
         }
 

@@ -75,16 +75,14 @@ public class StatCollector {
         try (FileOutputStream fos = new FileOutputStream("output/" + filename);
              ZipOutputStream zip = new ZipOutputStream(fos)) {
 
-            int i = 0;
+            int successful = 0;
+            int all = 0;
             for (Statistic<?> stat : statistics) {
-                stat.outAsZippedCSV(zip);
-                i++;
-
+                if(stat.outAsZippedCSV(zip)) successful++;
+                all++;
             }
 
-
-
-            log.info("Exporting (" + i + ") Tables to output/" + filename + " was successful.");
+            log.info("Exporting (" + successful + " / " + all +  ") Statistics to output/" + filename + " was successful.");
             return true;
 
 
