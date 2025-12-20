@@ -435,10 +435,11 @@ public class SimView2D {
             WVehicle.loadnupdateAll(simcon);
             simcon.updateTelemetry();
 
+            //temporary for testing
             if(simcon.getTime() == 60){
                 simcon.finishStatCollector();
                 simcon.printStats();
-                //simcon.exportStats();
+                simcon.exportStats();
             }
         }
 

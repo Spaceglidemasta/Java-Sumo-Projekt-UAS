@@ -279,7 +279,7 @@ public class WTrafficLight extends WObject {
 
         }
 
-        log.fine("Loading all TrafficLights was successfull.");
+        log.fine("Loading all TrafficLights was successful.");
 
         return simcon.getAllWTLs();
     }

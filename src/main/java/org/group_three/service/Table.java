@@ -1,11 +1,15 @@
 package org.group_three.service;
 
 import com.sun.jdi.InvalidTypeException;
+import javafx.scene.control.Tab;
+import org.group_three.constants.enums.ValueStyle;
 import org.group_three.debug.annotations.MayReturnNull;
+import org.group_three.debug.annotations.PrintStyle;
 import org.group_three.debug.exceptions.InvalidArgumentCount;
 import org.group_three.utils.Formatting;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,6 +21,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.util.logging.Logger;
+
+import static org.group_three.utils.Formatting.arrayToString;
 
 public class Table<T extends Record> {
 
@@ -38,6 +44,15 @@ public class Table<T extends Record> {
 
     }
 
+    public Table(List<String> atts){
+
+        this.attributeCount = atts.size();
+
+        attributeNames = atts;
+        content = new ArrayList<>();
+
+    }
+
     public List<String> getAttributeNames() {
         return attributeNames;
     }
@@ -49,15 +64,22 @@ public class Table<T extends Record> {
 
 
     /**
-     * Adds a tuple / row to the table.
-     * @param rec The values of the attributes. These need to match with the quantity of the given attributes in the
-     *             Constructor.
-     * @return true if success, false if not.
+     * @param rec The Record to be added.
      * @author Luca
      * */
     public void add(T rec){
 
         content.add(rec);
+
+    }
+
+    /**
+     * @param recs The Records to be added
+     * @author Luca
+     * */
+    public void addAll(List<T> recs){
+
+        for(T row : recs) add(row);
 
     }
 
@@ -129,15 +151,15 @@ public class Table<T extends Record> {
 
 
     /**
-     * Gets the Row where <code>attribute</code> is <code>target</code><br>
+     * Gets the Rows where <code>attribute</code> is <code>target</code><br>
      * @example table.getRowWhere("plz", 63165) → List("Mühlheim am Main", ...)
-     * @return The row itself
+     * @return The rows as table
      * @param attribute the attribute name you want to search for
-     * @param target the expected value of the attribute
+     * @param target the expected value of the attributes
      * @author Luca
      * */
     @MayReturnNull
-    public T getRowWhere(String attribute, Object target) {
+    public Table<T> getRowsWhere(String attribute, Object target) {
 
         int index = attributeNames.indexOf(attribute);
 
@@ -146,18 +168,24 @@ public class Table<T extends Record> {
             return null;
         }
 
+        List<T> out = new ArrayList<>();
+
         for(int i = 0; i < content.size(); i++) {
-            if(getValue(i, index) == target) return getRow(i);
+            if(getValue(i, index) == target) out.add(getRow(i));
         }
 
-        return null;
+        Table<T> table = new Table<>(attributeNames);
+
+        table.addAll(out);
+
+        return table;
     }
 
     /**
      * Prints the table barely formatted to the std output
      * @author Luca
      * */
-    public void print(){
+    public void print() throws Exception {
 
         if(content == null) {
             log.warning("Table is empty -> Table wasn't printed.");
@@ -172,24 +200,29 @@ public class Table<T extends Record> {
 
         for(T r : content) {
 
-            //very unclean, but only way to do this. Questionable why java.util does not
-            //provides Record.toString()
+            //I hate the way I have to do this, but this level of generality has its price.
+
             RecordComponent[] components = r.getClass().getRecordComponents();
 
             StringBuilder sb = new StringBuilder();
             sb.append("| ");
 
-            for (int i = 0; i < components.length; i++) {
+            for (RecordComponent comp : components) {
 
-                try {
-                    Object value = components[i].getAccessor().invoke(r);
+                Object value = comp.getAccessor().invoke(r);
 
+                PrintStyle ann = comp.getAnnotation(PrintStyle.class);
+                if (ann != null) {
+                    switch (ann.value()) {
+                        case VALUE -> sb.append(value);
+                        case LIST  -> sb.append(Arrays.toString((int[]) value));
+                        case COLUMN -> {
+                            int[] arr = (int[]) value;
+                            for (int v : arr) sb.append(v).append(" | ");
+                        }
+                    }
+                } else {
                     sb.append(value);
-
-                    if (i < components.length - 1) sb.append(", ");
-
-                } catch (Exception e) {
-                    sb.append(components[i].getName()).append("<error>");
                 }
             }
             sb.append(" |");
@@ -211,13 +244,25 @@ public class Table<T extends Record> {
 
         RecordComponent[] components = rec.getClass().getRecordComponents();
 
-        for(int i = 0; i < components.length; i++){
+        for(RecordComponent comp: components){
 
             try {
 
-                Object value = components[i].getAccessor().invoke(rec);
+                Object value = comp.getAccessor().invoke(rec);
 
-                out.add(value.toString());
+                PrintStyle ann = comp.getAnnotation(PrintStyle.class);
+                if (ann != null) {
+                    switch (ann.value()) {
+                        case VALUE -> out.add(value.toString()); //technically just default
+                        case LIST  -> out.add(Arrays.toString((int[]) value));
+                        case COLUMN -> {
+                            int[] arr = (int[]) value;
+                            for (int v : arr) out.add(String.valueOf(v));
+                        }
+                    }
+                } else {
+                    out.add(value.toString());
+                }
 
             } catch (Exception e) {
                 out.add("<error>");
@@ -228,23 +273,35 @@ public class Table<T extends Record> {
     }
 
     /**
-     * @param row the Row
-     * @return the row Record as List< String >
+     * @param rec the Row
+     * @return the rec Record as List< String >
      * @author Luca
      * */
-    public List<String> rowToStringList(T row){
+    public List<String> rowToStringList(T rec){
 
         List<String> out = new ArrayList<>();
 
-        RecordComponent[] components = row.getClass().getRecordComponents();
+        RecordComponent[] components = rec.getClass().getRecordComponents();
 
-        for(int i = 0; i < components.length; i++){
+        for(RecordComponent comp: components){
 
             try {
 
-                Object value = components[i].getAccessor().invoke(row);
+                Object value = comp.getAccessor().invoke(rec);
 
-                out.add(value.toString());
+                PrintStyle ann = comp.getAnnotation(PrintStyle.class);
+                if (ann != null) {
+                    switch (ann.value()) {
+                        case VALUE -> out.add(value.toString()); //technically just default
+                        case LIST  -> out.add(Arrays.toString((int[]) value));
+                        case COLUMN -> {
+                            int[] arr = (int[]) value;
+                            for (int v : arr) out.add(String.valueOf(v));
+                        }
+                    }
+                } else {
+                    out.add(value.toString());
+                }
 
             } catch (Exception e) {
                 out.add("<error>");

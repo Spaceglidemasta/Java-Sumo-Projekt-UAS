@@ -23,7 +23,7 @@ public class StatUtils {
      * Exports the state of the Main simulation
      * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
-     * @return true of successfull, false if not
+     * @return true of successful, false if not
      * @author Luca
      * */
     @Deprecated
@@ -38,7 +38,7 @@ public class StatUtils {
      * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
      * @param stc the SumoTraciConnection of the Simulation
-     * @return true of successfull, false if not
+     * @return true of successful, false if not
      * @author Luca
      * */
     @Deprecated
@@ -57,7 +57,7 @@ public class StatUtils {
      * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
      * @param simcon the SimController of the Simulation
-     * @return true of successfull, false if not
+     * @return true of successful, false if not
      * @author Luca
      * */
     @Deprecated

@@ -53,7 +53,7 @@ public class StatCollector {
      * @see Statistic#print()
      * @author Luca
      * */
-    public void print(){
+    public void print() throws Exception {
         System.out.println(name + ": ");
         for(Statistic<?> stat : statistics ){
             stat.print();
@@ -64,7 +64,7 @@ public class StatCollector {
 
     /**<h2>exportAsZip</h2>
      * Exports the Statistics contained by this StatCollector to one zipped folder in output.
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @see Statistic#outAsZippedCSV(ZipOutputStream)
      * @author Luca
      * */
