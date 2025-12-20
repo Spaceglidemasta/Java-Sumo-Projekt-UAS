@@ -1,4 +1,5 @@
 package org.group_three.model;
+import de.tudresden.sumo.cmd.Edge;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import org.group_three.api.SimController;
 import org.group_three.ui.Vector2D;
@@ -35,6 +36,8 @@ public class WEdge extends WObject{
     private List<String> laneIDs;
     private final String name;
 
+    private long vehDensityCount = 0;
+
     public WEdge(SimController sumcon, String f, String t, String id, String name){
         super(sumcon, id);
         from = f;
@@ -52,6 +55,18 @@ public class WEdge extends WObject{
     }
 
     public String getName() { return name; }
+
+    public long getVehDensityCount() { return vehDensityCount; }
+
+    public boolean addVehDensityCount(){
+        try {
+            vehDensityCount += (int) simcon.jobget(Edge.getLastStepVehicleNumber(id));
+            return true;
+        } catch (Exception e){
+            log.warning("Getting last step's vehicle number on Edge " + id + " failed.");
+            return false;
+        }
+    }
 
     /**
      * Calculates the Length via <code>from</code> and <code>to</code>.

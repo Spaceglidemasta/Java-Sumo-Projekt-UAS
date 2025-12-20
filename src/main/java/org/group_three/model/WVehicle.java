@@ -619,6 +619,11 @@ public class WVehicle {
     }
 
 
+    /**<h2>loadnupdateAll</h2>
+     * Updates simcon.allVehicles and adds new ones.
+     * @return <code>true</code> if successful, <code>false</code> if not.
+     * @author Luca
+     * */
     public static boolean loadnupdateAll(SimController simcon){
 
         List<String> allVehIDs = simcon.getVehicleIDList();
