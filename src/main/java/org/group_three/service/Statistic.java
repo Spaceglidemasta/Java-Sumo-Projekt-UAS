@@ -120,7 +120,7 @@ public class Statistic<T extends Record> extends Table<T> {
      *
      * @param x_attribute The name of the attribute that is supposed to be on the x-axis
      * @param y_attribute The name of the attribute that is supposed to be on the y-axis
-     * @return a callabe function that takes x as an input and returns y.
+     * @return a callable function that takes x as an input and returns y.
      * @source <a href="https://stackoverflow.com/a/29584084">Posted by 'satnam' on Stackoverflow</a>
      * @author Luca
      */
@@ -147,16 +147,13 @@ public class Statistic<T extends Record> extends Table<T> {
         List<?> ycolumn = getColumn(y_attribute);
 
 
-        return new Function<Object, Object>() {
-            @Override
-            public Object apply(Object xval) {
+        return xval -> {
 
-                int index = xcolumn.indexOf(xval);
+            int index = xcolumn.indexOf(xval);
 
-                if(index == -1) return null;
+            if(index == -1) return null;
 
-                return ycolumn.get(index);
-            }
+            return ycolumn.get(index);
         };
 
     }

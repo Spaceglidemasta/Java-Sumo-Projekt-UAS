@@ -1,6 +1,7 @@
 package org.group_three.service;
 
 import com.sun.jdi.InvalidTypeException;
+import javafx.scene.control.Tab;
 import org.group_three.constants.enums.ValueStyle;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.annotations.PrintStyle;
@@ -43,6 +44,15 @@ public class Table<T extends Record> {
 
     }
 
+    public Table(List<String> atts){
+
+        this.attributeCount = atts.size();
+
+        attributeNames = atts;
+        content = new ArrayList<>();
+
+    }
+
     public List<String> getAttributeNames() {
         return attributeNames;
     }
@@ -54,15 +64,22 @@ public class Table<T extends Record> {
 
 
     /**
-     * Adds a tuple / row to the table.
-     * @param rec The values of the attributes. These need to match with the quantity of the given attributes in the
-     *             Constructor.
-     * @return true if success, false if not.
+     * @param rec The Record to be added.
      * @author Luca
      * */
     public void add(T rec){
 
         content.add(rec);
+
+    }
+
+    /**
+     * @param recs The Records to be added
+     * @author Luca
+     * */
+    public void addAll(List<T> recs){
+
+        for(T row : recs) add(row);
 
     }
 
@@ -134,15 +151,15 @@ public class Table<T extends Record> {
 
 
     /**
-     * Gets the Row where <code>attribute</code> is <code>target</code><br>
+     * Gets the Rows where <code>attribute</code> is <code>target</code><br>
      * @example table.getRowWhere("plz", 63165) → List("Mühlheim am Main", ...)
-     * @return The row itself
+     * @return The rows as table
      * @param attribute the attribute name you want to search for
-     * @param target the expected value of the attribute
+     * @param target the expected value of the attributes
      * @author Luca
      * */
     @MayReturnNull
-    public T getRowWhere(String attribute, Object target) {
+    public Table<T> getRowsWhere(String attribute, Object target) {
 
         int index = attributeNames.indexOf(attribute);
 
@@ -151,11 +168,17 @@ public class Table<T extends Record> {
             return null;
         }
 
+        List<T> out = new ArrayList<>();
+
         for(int i = 0; i < content.size(); i++) {
-            if(getValue(i, index) == target) return getRow(i);
+            if(getValue(i, index) == target) out.add(getRow(i));
         }
 
-        return null;
+        Table<T> table = new Table<>(attributeNames);
+
+        table.addAll(out);
+
+        return table;
     }
 
     /**
