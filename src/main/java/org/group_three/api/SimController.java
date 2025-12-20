@@ -55,6 +55,7 @@ public class SimController {
 
     //Statistics
     private StatCollector statcol;
+    private long vehicleMaxDenseValue = 0;
 
 
 
@@ -81,7 +82,7 @@ public class SimController {
 
     }
 
-    public record EdgeRec(String name, int usage, double length) {
+    public record EdgeRec(String name, double usage, double length) {
 
         public static List<EdgeRec> collect(SimController simcon){
 
@@ -91,7 +92,7 @@ public class SimController {
 
                 EdgeRec vrec = new EdgeRec(
                         wEdge.getName(),
-                        3,
+                        (double) wEdge.getVehDensityCount() / simcon.vehicleMaxDenseValue,
                         wEdge.getLength()
                 );
 
@@ -256,57 +257,6 @@ public class SimController {
         return sumoExe;
     }
 
-    // ******************************************************
-    //                      Statistics
-    // ******************************************************
-
-    /**<h2>finishStatCollector</h2>
-     * Initiates the StatCollector attribute.
-     * <p>Uses the records defined at the top as types for the Statistic Template.
-     * Adding statistics works by adding a record as SimController attribute and
-     * adding it to the StatCollector via Statistic< Record >.</p>
-     * @see StatCollector
-     * @see Statistic
-     * @author Luca
-     * */
-    public void finishStatCollector(){
-
-        Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
-        for(VehicleRec vrec : VehicleRec.collect(this)){
-            vehStat.add(vrec);
-        }
-
-        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Usage Rate", "Length (m)");
-        for(EdgeRec erec : EdgeRec.collect(this)){
-            edgeStat.add(erec);
-        }
-
-
-        statcol = new StatCollector(
-                "StatCollector_" + System.currentTimeMillis(),
-                vehStat,
-                edgeStat
-        );
-
-        log.fine("StatCollector init was successful.");
-
-    }
-
-    /**Prints all collected stats of this Simulation.
-     * @see StatCollector#print()
-     * @author Luca
-     * */
-    public void printStats(){
-        statcol.print();
-    }
-
-    /**Exports the Stat Collection to a .gz.tar
-     * @see StatCollector#exportToGZ()
-     * @author Luca
-     * */
-    public void exportStats(){
-        statcol.exportToGZ();
-    }
 
 
 
@@ -498,6 +448,75 @@ public class SimController {
 
         log.info("Main SUMO Simulation was overwritten.");
     }
+
+    // ******************************************************
+    //                      Statistics
+    // ******************************************************
+
+    /**<h2>finishStatCollector</h2>
+     * Finishes the StatCollector attribute.
+     * <p>Uses the records defined at the top as types for the Statistic Template.
+     * Adding statistics works by adding a record as SimController attribute and
+     * adding it to the StatCollector via Statistic< Record >.</p>
+     * @see StatCollector
+     * @see Statistic
+     * @author Luca
+     * */
+    public void finishStatCollector(){
+
+        Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
+        for(VehicleRec vrec : VehicleRec.collect(this)){
+            vehStat.add(vrec);
+        }
+
+        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Usage Rate", "Length (m)");
+        for(EdgeRec erec : EdgeRec.collect(this)){
+            edgeStat.add(erec);
+        }
+
+
+        statcol = new StatCollector(
+                "StatCollector_" + System.currentTimeMillis(),
+                vehStat,
+                edgeStat
+        );
+
+        log.fine("StatCollector assembling was successful.");
+
+    }
+
+    /**Prints all collected stats of this Simulation.
+     * @see StatCollector#print()
+     * @author Luca
+     * */
+    public void printStats(){
+        statcol.print();
+    }
+
+    /**Exports the Stat Collection to a .gz.tar
+     * @see StatCollector#exportAsZip()
+     * @author Luca
+     * */
+    public void exportStats(){
+        statcol.exportAsZip();
+    }
+
+
+    /**
+     * Updates necessary Telemetry for the Statistic Collection.
+     * @author Luca
+     * @see WEdge#addVehDensityCount()
+     * */
+    public void updateTelemetry(){
+
+        vehicleMaxDenseValue += allVehicles.size();
+
+        for(WEdge edge : allroads.values()){
+            edge.addVehDensityCount();
+        }
+
+    }
+
 
     // ******************************************************
     // **                   Getters                        **

@@ -5,10 +5,9 @@ import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.exceptions.InvalidArgumentCount;
 import org.group_three.utils.Formatting;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.RecordComponent;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -366,64 +365,7 @@ public class Table<T extends Record> {
     }
 
 
-    /**<h2>outAsZippedCSV</h2>
-     * <p> WARNING Creates Files </p>
-     * Writes the table to a CSV file into ./output/...
-     * @param zos The ZipOutputStream to stream the table content to.
-     * @param pathstr Path relative to ./output. <br>pathstr="foo" outputs to output/foo/tout_[...], so don't append /
-     * @return <code>true</code> if success, <code>false</code> if not.
-     * @sources <a href="https://stackoverflow.com/a/10667865">Stack Overflow Answer by "Addicted"</a>
-     *          <a href="https://stackoverflow.com/a/18571348">Stack Overflow Answer by "Stewart"</a>
-     * @author Luca
-     * */
-
-    public boolean outAsZippedCSV(ZipOutputStream zos, String pathstr){
-
-        Path target = Path.of("output", pathstr);
-
-        if(!Files.exists(target)){
-            log.warning("Target directory \"" + target + "\" does not exist.");
-            return false;
-        };
-
-        // Source - https://stackoverflow.com/a/10667865
-        // Posted by Addicted, modified by community. See post 'Timeline' for change history
-        // Retrieved 2025-12-14, License - CC BY-SA 4.0
-
-        // Source - https://stackoverflow.com/a/18571348
-        // Posted by Stewart, modified by community. See post 'Timeline' for change history
-        // Retrieved 2025-12-16, License - CC BY-SA 3.0
-
-        String filename = Formatting.uniquegen("output/" + pathstr + "/tout_", ".csv");
-
-        if(content == null || content.isEmpty()) {
-            log.warning("Table is empty. CSV file was not outputted.");
-            return false;
-        }
-
-        try {
-            zos.putNextEntry(new ZipEntry(filename));
-            zos.write(Formatting.toCSVformat(attributeNames).getBytes());
-
-            for(T row : content) {
-                zos.write(Formatting.toCSVformat(rowToStringList(row)).getBytes());
-            }
-
-        }
-        catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-        try {
-            zos.close();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-        log.info("Table was saved as: " + filename + ". This may take a second to load.");
 
 
-        return true;
-    }
 
 }

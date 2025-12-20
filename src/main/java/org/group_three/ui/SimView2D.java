@@ -433,8 +433,9 @@ public class SimView2D {
 
         if(simcon != null){
             WVehicle.loadnupdateAll(simcon);
+            simcon.updateTelemetry();
 
-            if(simcon.getTime() == 30){
+            if(simcon.getTime() == 60){
                 simcon.finishStatCollector();
                 simcon.printStats();
                 //simcon.exportStats();

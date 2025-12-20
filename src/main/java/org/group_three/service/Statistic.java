@@ -3,12 +3,19 @@ package org.group_three.service;
 
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
+import org.group_three.utils.Formatting;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 /**<h1>Statistic</h1>
@@ -62,6 +69,50 @@ public class Statistic<T extends Record> extends Table<T> {
     public void print() {
         System.out.println(name + ": ");
         super.print();
+    }
+
+
+    /**<h2>outAsZippedCSV</h2>
+     * <p> WARNING Creates Files </p>
+     * Writes the table to a CSV file into ./output/...
+     * @param zos The ZipOutputStream to stream the table content to.
+     * @return <code>true</code> if success, <code>false</code> if not.
+     * @sources <a href="https://stackoverflow.com/a/10667865">Stack Overflow Answer by "Addicted"</a>
+     *          <a href="https://stackoverflow.com/a/18571348">Stack Overflow Answer by "Stewart"</a>
+     * @author Luca
+     * */
+
+    public boolean outAsZippedCSV(ZipOutputStream zos) {
+
+        String filename = Formatting.uniquegen(name, ".csv");
+
+        if (content == null || content.isEmpty()) {
+            log.warning("Table is empty.");
+            return false;
+        }
+
+        try {
+            zos.putNextEntry(new ZipEntry(filename));
+
+            // UTF-8 BOM (Excel)
+            zos.write(new byte[] {(byte)0xEF, (byte)0xBB, (byte)0xBF});
+
+            Writer writer = new OutputStreamWriter(zos, StandardCharsets.UTF_8);
+
+            writer.write(Formatting.toCSVformat(attributeNames));
+            for (T row : content) {
+                writer.write(Formatting.toCSVformat(rowToStringList(row)));
+            }
+
+            writer.flush();
+            zos.closeEntry();
+
+            return true;
+
+        } catch (IOException e) {
+            log.warning("Zipping CSV failed: " + e.getMessage());
+            return false;
+        }
     }
 
     /**

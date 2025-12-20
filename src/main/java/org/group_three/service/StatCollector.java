@@ -1,8 +1,14 @@
 package org.group_three.service;
 
 
+import org.group_three.utils.Formatting;
+
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.zip.ZipOutputStream;
 
 /**<h1>StatCollector</h1>
  * A Collection of Stats. Supports additional features like group-exporting to .tar.gz.
@@ -10,6 +16,9 @@ import java.util.List;
  * @author Luca
  * */
 public class StatCollector {
+
+    private static final Logger log =
+            Logger.getLogger(StatCollector.class.getName());
 
 
     private String name;
@@ -51,14 +60,42 @@ public class StatCollector {
         }
     }
 
-    @Deprecated
-    public void exportToGZ(){
 
-        for(Statistic<?> stat : statistics){
-            stat.outAsCSV();
+
+    /**<h2>exportAsZip</h2>
+     * Exports the Statistics contained by this StatCollector to one zipped folder in output.
+     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @see Statistic#outAsZippedCSV(ZipOutputStream)
+     * @author Luca
+     * */
+    public boolean exportAsZip() {
+
+        String filename = Formatting.uniquegen(name, ".zip");
+
+        try (FileOutputStream fos = new FileOutputStream("output/" + filename);
+             ZipOutputStream zip = new ZipOutputStream(fos)) {
+
+            int i = 0;
+            for (Statistic<?> stat : statistics) {
+                stat.outAsZippedCSV(zip);
+                i++;
+
+            }
+
+
+
+            log.info("Exporting (" + i + ") Tables to output/" + filename + " was successful.");
+            return true;
+
+
+        } catch (Exception e) {
+            log.warning("Exporting to a zipped folder failed: " + Arrays.toString(e.getStackTrace()));
+            return false;
         }
 
+
     }
+
 
 
 
