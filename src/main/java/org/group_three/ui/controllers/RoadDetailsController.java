@@ -1,5 +1,6 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoStringList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
@@ -169,16 +170,6 @@ public class RoadDetailsController {
 		}
 	}
 
-    private void onJamPressed() {
-        SimController simcon = SimController.getMainsimcon();
-
-        if(simcon == null){
-            Debug.print("Main Simcon instance is null");
-            return;
-        }
-
-        List<WEdge> roads = simcon.getAllroads().values().stream().toList();
-    }
 
 	/**
 	 * The setup method for this class to fill it with data.
