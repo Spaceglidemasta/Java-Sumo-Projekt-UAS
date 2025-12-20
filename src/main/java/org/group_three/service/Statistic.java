@@ -66,7 +66,7 @@ public class Statistic<T extends Record> extends Table<T> {
      * @author Luca
      * */
     @Override
-    public void print() {
+    public void print() throws Exception {
         System.out.println(name + ": ");
         super.print();
     }
@@ -81,7 +81,6 @@ public class Statistic<T extends Record> extends Table<T> {
      *          <a href="https://stackoverflow.com/a/18571348">Stack Overflow Answer by "Stewart"</a>
      * @author Luca
      * */
-
     public boolean outAsZippedCSV(ZipOutputStream zos) {
 
         String filename = Formatting.uniquegen(name, ".csv");

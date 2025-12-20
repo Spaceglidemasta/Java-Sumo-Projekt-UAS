@@ -38,6 +38,7 @@ public class WVehicle {
     //Statistics
     private double speedcounter = 0;
     private long stepcounter = 0;
+    private double highestSpeed = 0;
 
     /// Dont use this! >:(
     private WVehicle(){
@@ -119,7 +120,7 @@ public class WVehicle {
     /**
      * Sets the Color of the Vehicle.
      * @param clr the SumoColor of the Vehicle
-     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @return <code>true</code> if successful, <code>false</code> if failed
      * */
     public boolean setColor(SumoColor clr) {
         try {
@@ -256,7 +257,7 @@ public class WVehicle {
 
     /**TraaS: "Sets the speed (in m/s) of the named vehicle."
      * @param v Geschwindigkeit in m/s
-     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @return <code>true</code> if successful, <code>false</code> if failed
      * @author Luca
      * */
     public boolean setSpeed(double v) {
@@ -272,7 +273,7 @@ public class WVehicle {
 
     /**TraaS: "Sets the maximum speed (in m/s) of the named vehicle."
      * @param v Geschwindigkeit in m/s
-     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @return <code>true</code> if successful, <code>false</code> if failed
      * @author Luca
      * */
     public boolean setMaxSpeed(double v) {
@@ -288,7 +289,7 @@ public class WVehicle {
 
     /**TraaS: "Sets the standard deviation of the estimated maximum speed."
      * @param v Geschwindigkeit in m/s
-     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @return <code>true</code> if successful, <code>false</code> if failed
      * @author Luca
      * */
     public boolean setSpeedDeviation(double v) {
@@ -305,7 +306,7 @@ public class WVehicle {
     /**TraaS: "
      Sets the factor by which the driver multiplies the speed read from street signs to estimate "real" maximum allowed speed."
      * @param v Geschwindigkeit in m/s
-     * @return <code>true</code> if successfull, <code>false</code> if failed
+     * @return <code>true</code> if successful, <code>false</code> if failed
      * @author Luca
      * */
     public boolean setSpeedFactor(double v) {
@@ -332,10 +333,32 @@ public class WVehicle {
         else return -1;
     }
 
+
+    /**
+     * @return highest speed the Vehicle has ever driven
+     * @see WVehicle#updateHighestSpeed()
+     * @author Luca
+     * */
+    public double getHighestSpeed() {
+        return highestSpeed;
+    }
+
+    /**
+     * Updates highestSpeed
+     * @author Luca
+     * */
+    public void updateHighestSpeed() {
+
+        double v = getSpeed();
+
+        if(v > highestSpeed) highestSpeed = v;
+
+    }
+
     /**
      * Removes the vehicle from the Simulation.
      * @param reason The reason for removing it. idk either
-     * @return true if successfull, false if failed
+     * @return true if successful, false if failed
      * @author Luca
      * */
     public boolean remove(byte reason){
@@ -351,7 +374,7 @@ public class WVehicle {
 
     /**
      * Removes the vehicle from the Simulation.
-     * @return true if successfull, false if failed
+     * @return true if successful, false if failed
      * @author Luca
      * */
     public boolean remove(){
@@ -367,7 +390,7 @@ public class WVehicle {
     /**
      * Set Route of the Vehilce via a SumoStringList of edges
      * @param edges edges String list
-     * @return true if successfull, false if not
+     * @return true if successful, false if not
      * @author Luca
      * */
     public boolean setRoute(SumoStringList edges){
@@ -383,7 +406,7 @@ public class WVehicle {
     /**
      * Set Route of the Vehilce via a Route ID
      * @param RID Route iD
-     * @return true if successfull, false if not
+     * @return true if successful, false if not
      * @author Luca
      * */
     public boolean setRoute(String RID){
@@ -447,7 +470,7 @@ public class WVehicle {
      * Move the Vehicle to a new Position.
      * @param LID Lane ID
      * @param pos The position of the Vehicle relative to the lane. I Assume this m from start of the lane.
-     * @return <code>true</code> if successfull, <code>false</code> if not
+     * @return <code>true</code> if successful, <code>false</code> if not
      * @author Luca
      * */
     public boolean moveTo(String LID, double pos){
@@ -465,7 +488,7 @@ public class WVehicle {
      * Move the Vehicle to a new Lane
      * @param laneIndex lane index
      * @param duration duration of this proccess
-     * @return <code>true</code> if successfull, <code>false</code> if not
+     * @return <code>true</code> if successful, <code>false</code> if not
      * @author Luca
      * */
     public boolean changeLane(byte laneIndex, double duration){
@@ -481,7 +504,7 @@ public class WVehicle {
     /**
      * Changes Target to the given Edge
      * @param EID target EdgeID
-     * @return true if successfull, false if not
+     * @return true if successful, false if not
      * @author Luca
      * */
     public boolean changeTarget(String EID) {
@@ -553,7 +576,7 @@ public class WVehicle {
      * Updates the attributes of the Vehicle via the Simulation. <br>
      * This should be done after every Simulation step.
      * @return VehicleUpdateObject - An object with public attributes indicating
-     * if the getters were successfull.
+     * if the getters were successful.
      * @author Luca
      * */
     public WVehicleUpdateObject update() {

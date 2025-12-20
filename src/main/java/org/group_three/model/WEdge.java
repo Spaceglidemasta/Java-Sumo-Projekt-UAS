@@ -1,7 +1,7 @@
 package org.group_three.model;
 import de.tudresden.sumo.cmd.Edge;
-import de.tudresden.sumo.objects.SumoPosition2D;
 import org.group_three.api.SimController;
+import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.logging.Logger;
@@ -36,7 +35,7 @@ public class WEdge extends WObject{
     private List<String> laneIDs;
     private final String name;
 
-    private long vehDensityCount = 0;
+    private List<Integer> vehDensityPerStep = new ArrayList<>();
 
     public WEdge(SimController sumcon, String f, String t, String id, String name){
         super(sumcon, id);
@@ -56,16 +55,33 @@ public class WEdge extends WObject{
 
     public String getName() { return name; }
 
-    public long getVehDensityCount() { return vehDensityCount; }
+    public List<Integer> getVehDensityPerStep() { return vehDensityPerStep; }
+
+    public long getVehDensitySum(){
+        return (long) Meth.sumOfList(vehDensityPerStep);
+    }
 
     public boolean addVehDensityCount(){
         try {
-            vehDensityCount += (int) simcon.jobget(Edge.getLastStepVehicleNumber(id));
+            vehDensityPerStep.add((int) simcon.jobget(Edge.getLastStepVehicleNumber(id)));
             return true;
         } catch (Exception e){
             log.warning("Getting last step's vehicle number on Edge " + id + " failed.");
             return false;
         }
+    }
+
+    /**
+     * Calculates the mean of relative load / occupancy ratio of this vehicle via
+     * a counter which indicates how many vehicles were present each second, and a
+     * counter which counted all vehicles which were active each second.
+     * @return mean of relative load / occupancy ratio
+     * @author Luca
+     * @see WEdge#getVehDensityPerStep()
+     * @see SimController#getVehicleMaxDenseValue()
+     * */
+    public double getOccupancyRatio(){
+        return (double) getVehDensitySum() / simcon.getVehicleMaxDenseValue();
     }
 
     /**
@@ -84,7 +100,7 @@ public class WEdge extends WObject{
     /**
      * Adds a Lane to the laneIDlist
      * @param LID Lane id
-     * @return true if successfull, false if the array is null
+     * @return true if successful, false if the array is null
      * @author Luca
      * */
     public boolean addLane(String LID) {
@@ -138,7 +154,7 @@ public class WEdge extends WObject{
      * via .getAllroads() or .getRoad(EID).
      * @param network The network file. If we are working with a config file, you need to parse it
      *                into utils.PathUtils.getNetfromSConfig(sumocfg) first.
-     * @return True of successfull, false if not
+     * @return True of successful, false if not
      * @author Luca
      * */
     public static boolean loadRoads(SimController simcon, File network){
@@ -206,7 +222,7 @@ public class WEdge extends WObject{
             return false;
         }
 
-        log.fine("Loading all WEdges successfull");
+        log.fine("Loading all WEdges successful");
         return true;
     }
 

@@ -438,7 +438,7 @@ public class SimView2D {
             if(simcon.getTime() == 60){
                 simcon.finishStatCollector();
                 simcon.printStats();
-                //simcon.exportStats();
+                simcon.exportStats();
             }
         }
 

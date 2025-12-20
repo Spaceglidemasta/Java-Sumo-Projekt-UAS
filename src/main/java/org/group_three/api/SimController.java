@@ -4,8 +4,10 @@ import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
+import org.group_three.constants.enums.ValueStyle;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
+import org.group_three.debug.annotations.PrintStyle;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
@@ -59,52 +61,7 @@ public class SimController {
 
 
 
-    public record VehicleRec(String vehID, double avgspeed, SumoColor color) {
 
-        public static List<VehicleRec> collect(SimController simcon){
-
-            List<VehicleRec> data = new ArrayList<>();
-
-            for(WVehicle wveh : simcon.getAllVehicles().values()){
-
-                VehicleRec vrec = new VehicleRec(
-                        wveh.getID(),
-                        wveh.getAvgSpeed(),
-                        wveh.getColor()
-                );
-
-                data.add(vrec);
-
-            }
-
-            return data;
-        }
-
-    }
-
-    public record EdgeRec(String name, double usage, double length) {
-
-        public static List<EdgeRec> collect(SimController simcon){
-
-            List<EdgeRec> data = new ArrayList<>();
-
-            for(WEdge wEdge : simcon.getAllroads().values()){
-
-                EdgeRec vrec = new EdgeRec(
-                        wEdge.getName(),
-                        (double) wEdge.getVehDensityCount() / simcon.vehicleMaxDenseValue,
-                        wEdge.getLength()
-                );
-
-                data.add(vrec);
-
-            }
-
-            return data;
-        }
-
-
-    }
 
 // ******************************************************
 //                      SIMULATION
@@ -161,8 +118,8 @@ public class SimController {
             log.severe("Error in SimController init: " + Arrays.toString(e.getStackTrace()));
         }
 
-        log.info("SimController startup was successfull");
-        Debug.toConsole("SimController startup was successfull");
+        log.info("SimController startup was successful");
+        Debug.toConsole("SimController startup was successful");
     }
 
     public SimController(String net, String rou){
@@ -225,8 +182,8 @@ public class SimController {
             log.severe("Error in SimController init: " + Arrays.toString(e.getStackTrace()));
         }
 
-        log.info("SimController startup was successfull");
-        Debug.toConsole("SimController startup was successfull");
+        log.info("SimController startup was successful");
+        Debug.toConsole("SimController startup was successful");
 
     }
 
@@ -281,7 +238,7 @@ public class SimController {
     /**
      * Does n steps in the simulation.
      * @param n The number of steps to be done
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean step(int n){
@@ -303,7 +260,7 @@ public class SimController {
     /**
      * Sets the Time of the Simulation to (time), needs to be in the Future.
      * @param time The time in the future to travel to.
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean timetravel_to(double time){
@@ -353,7 +310,7 @@ public class SimController {
         try {
             String filename = Formatting.uniquegen("savedState_", filetype);
             stc.do_job_set(Simulation.saveState("output/" + filename));
-            log.info("State successfully saved to output/" + filename);
+            log.info("State successfuly saved to output/" + filename);
             return filename;
         }
         catch (Exception e){
@@ -381,7 +338,7 @@ public class SimController {
             log.severe("Converting URL to URI failed; \"" + mainURL.toString() + "\" contains URI invalid characters.");
             return null;
         }
-        //checks if the last "cast" was successfull.
+        //checks if the last "cast" was successful.
 
 
         //transforms the URI to a FILE
@@ -453,6 +410,102 @@ public class SimController {
     //                      Statistics
     // ******************************************************
 
+    //I tried using OOP, but Records cannot inherit other Records, which means I cannot
+    //create an abstract "GeneralRecord" with collect(), which then gets overridden by
+    //its children. It wouldn't improve code anyway.
+
+    /**<h2>VehicleRec</h2>
+     * Record for holding Vehicle Data. Includes a collect method which is used
+     * to collect necessary data.
+     * @see WVehicle
+     * @author Luca
+     * */
+    public record VehicleRec(String vehID, double avgspeed, SumoColor color) {
+
+        public static List<VehicleRec> collect(SimController simcon){
+
+            List<VehicleRec> data = new ArrayList<>();
+
+            for(WVehicle wveh : simcon.getAllVehicles().values()){
+
+                VehicleRec vrec = new VehicleRec(
+                        wveh.getID(),
+                        wveh.getAvgSpeed(),
+                        wveh.getColor()
+                );
+
+                data.add(vrec);
+
+            }
+
+            return data;
+        }
+
+    }
+
+    /**<h2>EdgeRec</h2>
+     * Record for holding Edge Data. Includes a collect method which is used
+     * to collect necessary data.
+     * @see WEdge
+     * @author Luca
+     * */
+    public record EdgeRec(String name, double usage, double length) {
+
+        public static List<EdgeRec> collect(SimController simcon){
+
+            List<EdgeRec> data = new ArrayList<>();
+
+            for(WEdge wEdge : simcon.getAllroads().values()){
+
+                EdgeRec vrec = new EdgeRec(
+                        wEdge.getName(),
+                        wEdge.getOccupancyRatio(),
+                        wEdge.getLength()
+                );
+
+                data.add(vrec);
+
+            }
+
+            return data;
+        }
+
+
+    }
+
+    /**<h2>VehDensPerSecond</h2>
+     * Record for holding the Vehicle Density of each road per second.
+     * @see WEdge
+     * @author Luca
+     * */
+    public record VehDensPerSecond(@PrintStyle(ValueStyle.COLUMN) int ... vehicles_on_edges) {
+
+        public static List<VehDensPerSecond> collect(SimController simcon){
+
+            List<VehDensPerSecond> data = new ArrayList<>();
+
+
+            for(int step = 0; step < simcon.getTime() - 1; step++){
+
+                List<Integer> vehDenseThisStep = new ArrayList<>();
+
+                for(WEdge wEdge : simcon.getAllroads().values()){
+
+                    vehDenseThisStep.add(wEdge.getVehDensityPerStep().get(step));
+
+                }
+
+                VehDensPerSecond densrec = new VehDensPerSecond( vehDenseThisStep.stream().mapToInt(i->i).toArray());
+
+                data.add(densrec);
+            }
+
+            return data;
+        }
+
+
+    }
+
     /**<h2>finishStatCollector</h2>
      * Finishes the StatCollector attribute.
      * <p>Uses the records defined at the top as types for the Statistic Template.
@@ -469,16 +522,26 @@ public class SimController {
             vehStat.add(vrec);
         }
 
-        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Usage Rate", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Occupancy Ratio", "Length (m)");
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
 
+        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
+                getAllroads()
+                .values()
+                .stream() //stream data to allow mapping
+                .map(WEdge::getName) // the same as edge -> edge.getName() lambda
+                .toArray(String[]::new)); //tells it to convert to String[] instead of Object[]
+        for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
+            vehDensStat.add(vdrec);
+        }
 
         statcol = new StatCollector(
                 "StatCollector_" + System.currentTimeMillis(),
                 vehStat,
-                edgeStat
+                edgeStat,
+                vehDensStat
         );
 
         log.fine("StatCollector assembling was successful.");
@@ -490,7 +553,14 @@ public class SimController {
      * @author Luca
      * */
     public void printStats(){
-        statcol.print();
+
+        try {
+            statcol.print();
+        } catch (Exception e){
+            log.warning("Printing Stat collection failed: " + Arrays.toString(e.getStackTrace()));
+        }
+
+
     }
 
     /**Exports the Stat Collection to a .gz.tar
@@ -885,7 +955,7 @@ public class SimController {
      * Sets the Phase Index [0:2] of the TL. <br>
      * @param TLID Traffic Light ID
      * @param iPhase Phase index as int, starting at 0 (?)
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean setTLPhase(String TLID, int iPhase){
@@ -921,7 +991,7 @@ public class SimController {
      * Sets the Length of the current Phase of the given TL.
      * @param TLID Traffic Light ID
      * @param dur new Duration in seconds(?)( <- This not my questionmark, the TraaS doc also has a "?")
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean setTLPhaseLen(String TLID, double dur){
@@ -963,7 +1033,7 @@ public class SimController {
      * @param TLID TrafficLight ID
      * @param param the parameter which is supposed to change
      * @param value the value that is to be inserted in the given parameter
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean setTLParam(String TLID, String param, String value){
@@ -1083,6 +1153,10 @@ public class SimController {
         return getAllroads().get(EID);
     }
 
+
+    public long getVehicleMaxDenseValue() { return vehicleMaxDenseValue; }
+
+
     public void setAllWTLs(List<WTrafficLight> allWTLs) {
         this.allWTLs = allWTLs;
     }
@@ -1179,7 +1253,7 @@ public class SimController {
     /**
      * Setter of the Simulation
      * @param scmd The SumoCommand to be executed upon the Simulation.
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @example
      * <code>
      * simcon.jobset(Vehicle.add(vehID, typeID, routeID, depart, speed, lane))

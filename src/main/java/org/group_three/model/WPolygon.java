@@ -38,7 +38,7 @@ public class WPolygon extends WObject {
 
     /**
      * Loads all Polygons from the Main Simulation into allPolys
-     * @return true of successfull, false if not.
+     * @return true of successful, false if not.
      * @author Luca
      * */
     public static boolean loadAllPolys(SimController simcon){
