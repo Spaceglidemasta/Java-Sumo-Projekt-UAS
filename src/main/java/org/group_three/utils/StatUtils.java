@@ -2,6 +2,7 @@ package org.group_three.utils;
 
 
 import de.tudresden.sumo.cmd.Simulation;
+import de.tudresden.sumo.objects.SumoColor;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
 
@@ -17,6 +18,16 @@ public class StatUtils {
 
     private SimController simcon;
     private List<String> content;
+
+
+    public static boolean equalSColor(SumoColor first, SumoColor sec){
+        return (
+                first.r == sec.r
+                && first.b == sec.b
+                && first.g == sec.g
+                && first.a == sec.a
+                );
+    }
 
 
     /**

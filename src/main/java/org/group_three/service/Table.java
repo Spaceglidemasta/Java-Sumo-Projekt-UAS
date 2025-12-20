@@ -147,40 +147,6 @@ public class Table<T extends Record> {
     }
 
 
-
-
-
-    /**
-     * Gets the Rows where <code>attribute</code> is <code>target</code><br>
-     * @example table.getRowWhere("plz", 63165) → List("Mühlheim am Main", ...)
-     * @return The rows as table
-     * @param attribute the attribute name you want to search for
-     * @param target the expected value of the attributes
-     * @author Luca
-     * */
-    @MayReturnNull
-    public Table<T> getRowsWhere(String attribute, Object target) {
-
-        int index = attributeNames.indexOf(attribute);
-
-        if(index == -1){
-            log.warning("Attribute " + attribute + " is not Part of the table.");
-            return null;
-        }
-
-        List<T> out = new ArrayList<>();
-
-        for(int i = 0; i < content.size(); i++) {
-            if(getValue(i, index) == target) out.add(getRow(i));
-        }
-
-        Table<T> table = new Table<>(attributeNames);
-
-        table.addAll(out);
-
-        return table;
-    }
-
     /**
      * Prints the table barely formatted to the std output
      * @author Luca

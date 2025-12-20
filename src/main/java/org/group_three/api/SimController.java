@@ -15,6 +15,7 @@ import org.group_three.model.WVehicle;
 import org.group_three.service.StatCollector;
 import org.group_three.service.Statistic;
 import org.group_three.utils.Formatting;
+import org.group_three.utils.StatUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -539,7 +540,7 @@ public class SimController {
 
         statcol = new StatCollector(
                 "StatCollector_" + System.currentTimeMillis(),
-                vehStat,
+                vehStat.getFilteredRows(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255))),
                 edgeStat,
                 vehDensStat
         );
