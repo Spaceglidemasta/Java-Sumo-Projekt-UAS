@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 // import java.io.IOException; for what was that?
 
@@ -14,7 +13,6 @@ import org.group_three.constants.UI;
 import org.group_three.debug.Console;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
-import org.group_three.ui.FakeInteractions;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
@@ -145,7 +143,7 @@ public class ToolbarController {
 
 		// Normally we would handle errors with booleans (like every professional C lib), but apparently we need custom Exceptions.
 		try {
-			FakeInteractions.loadSimulation(paths);
+			SimController.loadSimulation(paths);
 			setLoadedSimulation(mergedPath.toString());
 		} catch (InvalidFilesSelected ifs) {
 			ifs.printStackTrace();
