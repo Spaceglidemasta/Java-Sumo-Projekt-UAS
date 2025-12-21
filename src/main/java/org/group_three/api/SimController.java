@@ -28,16 +28,19 @@ import java.util.logging.Logger;
 
 /**
  * <h1>SimController</h1>
- * Class used to Connect & Control to SUMO via the TraaS API <br>
- * The constructor does everything that is connection-based for you,
- * you only need to simcon.close() the simulation after you are done. <br><br>
- * This class is also host to the all[...]s Lists / Hashmaps, which you
+ * <p> Class used to Connect & Control to SUMO via the TraaS API <p>
+ * <h2> Startup</h2>
+ * <p>The constructor does everything that is connection-based for you,
+ * you only need to pass the location of the Network- & Route files,
+ * or the SumoConfig. Default is <code>net.net.xml</code> and <code>net.rou.xml</code>.</p>
+ * <p>This class is also host to the all[...]s Lists / Hashmaps, which you
  * want to look into if you want to understand the inner workings of the
- * wrapper classes for the Objects contained by the simulation.
+ * wrapper classes for the Objects contained by the simulation. </p>
+ * <p>This Simulation implements AutoClosable via {@link #close()} </p>
  * @see org.group_three.model
  * @author Luca
  */
-public class SimController {
+public class SimController implements AutoCloseable{
 
     private static final Logger log =
             Logger.getLogger(SimController.class.getName());
@@ -278,10 +281,12 @@ public class SimController {
 
 
 
-    /**
-     * closes the SumoTraciConnection
+    /**<h2>close</h2>
+     * <p>Overrides {@link AutoCloseable#close()}</p>
+     * - and closes the SumoTraciConnection.
      * @author Luca
      * */
+    @Override
     public void close(){
 
         try {
@@ -516,7 +521,7 @@ public class SimController {
      * @see Statistic
      * @author Luca
      * */
-    public void finishStatCollector(){
+    public void queueryStatCollector(){
 
         Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
         for(VehicleRec vrec : VehicleRec.collect(this)){

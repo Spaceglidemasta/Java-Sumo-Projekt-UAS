@@ -437,9 +437,9 @@ public class SimView2D {
 
             //temporary for testing
             if(simcon.getTime() == 60){
-                simcon.finishStatCollector();
+                simcon.queueryStatCollector();
                 simcon.printStats();
-                simcon.exportStats();
+                //simcon.exportStats();
             }
         }
 

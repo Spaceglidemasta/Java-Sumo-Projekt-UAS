@@ -1,13 +1,23 @@
 package org.group_three.service;
 
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.group_three.constants.Documents;
 import org.group_three.utils.Formatting;
+import org.group_three.utils.PathUtils;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
 
 /**<h1>StatCollector</h1>
@@ -22,12 +32,15 @@ public class StatCollector {
 
 
     private String name;
+    private String subject;
+    private List<String> description;
     private List<Statistic<?>> statistics;
 
     public StatCollector(String name, Statistic<?> ... args) {
         this.name = name;
         //List.of is immutable -> pass it into ArrayList<> init to make it mutable.
         this.statistics = new ArrayList<>(List.of(args));
+        this.description = new ArrayList<>();
     }
 
     /**
@@ -41,12 +54,33 @@ public class StatCollector {
         return statistics.size();
     }
 
+    public List<String> getDescription() {return description;}
+
+    public void setDescription(List<String> paragraphs) {this.description = paragraphs;}
+
+
+    /**Adds a paragraph to the description.
+     * @param paragraph The paragraph to be added.
+     * @return the size of the description after insertion.
+     * @author Luca
+     * @see StatCollector#setDescription(List)
+     * */
+    public int addDescriptionParagraph(String paragraph) {
+        description.add(paragraph);
+        return description.size();
+    }
 
     public void setName(String name) {this.name = name;}
 
     public String getName() {
         return name;
     }
+
+    public String getSubject() { return subject; }
+
+    public void setSubject(String subject) { this.subject = subject; }
+
+    public int getStatisticsCount(){return statistics.size();}
 
     /**
      * Prints the whole Statistic Collection.
@@ -55,11 +89,110 @@ public class StatCollector {
      * */
     public void print() throws Exception {
         System.out.println(name + ": ");
-        for(Statistic<?> stat : statistics ){
+        for(Statistic<?> stat : statistics){
             stat.print();
         }
     }
 
+    /**
+     * <p> Exports all Statistics contained by this StatCollector as a single .pdf file. </p>
+     * <p> The output directory is always ./output/ </p>
+     * <p> WARNING: CREATES FILES</p>
+     * @see StatCollector#writeIntroPDF(PDPageContentStream)
+     * @see StatCollector#writeStatisticPDF(PDPageContentStream, Statistic)
+     * @see PathUtils#prepareOutputPath(String)
+     * @return <code>true</code> if successful, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean exportAsPDF() {
+
+        //like "with" from python
+        try(
+                PDDocument pdd = new PDDocument();
+        ) {
+
+            PDPage introPage = new PDPage();
+            pdd.addPage(introPage);
+
+            //super safety!!!
+            try(
+                    PDPageContentStream introStream = new PDPageContentStream(pdd, introPage);
+            ) {
+
+                writeIntroPDF(introStream);
+
+            } catch (IOException e) {
+                log.log(Level.WARNING, "Adding intro Page to " + name + " failed:", e);
+                return false;
+            }
+
+            //Document Information
+            PDDocumentInformation pddInfo = pdd.getDocumentInformation();
+            pddInfo.setAuthor(Documents.pdfAuthorShip);
+            pddInfo.setTitle(name);
+            pddInfo.setSubject(subject);
+            //sets the names of the statistics as the keywords.
+            //setKeywords accepts a String containing the keywords separated by comma.
+            pddInfo.setKeywords(
+                    statistics.stream()
+                            .map(Statistic::getName)
+                            .collect(Collectors.joining(", "))
+            );
+
+            //I got told this vvv is unclean. All other alternatives seemed worse.
+            int successfulWrites = 0;
+            int writeCount = 0;
+
+            for(Statistic<?> stat : statistics) {
+
+                PDPage statPage = new PDPage();
+                pdd.addPage(statPage);
+
+                try(
+                        PDPageContentStream conStream = new PDPageContentStream(pdd, statPage)
+                ) {
+
+                   writeStatisticPDF(conStream, stat);
+
+                   successfulWrites++;
+
+                } catch (IOException e) {
+
+                    log.log(Level.WARNING,
+                            "Writing page " + (writeCount + 1) + " with Statistic " + stat.getName() + " failed: ", e);
+
+                } finally {
+
+                    writeCount++;
+                }
+            }
+
+            Path out = PathUtils.prepareOutputPath(
+                    Formatting.uniquegen(name, ".pdf")
+            ); //may throw
+
+            pdd.save(out.toFile());
+
+            log.info("StatisticCollection with " +  successfulWrites + " of " + writeCount +
+                    " successful written Statistics saved as PDF to \"" + out + "\".");
+
+
+        } catch (IOException e) {
+            log.log(Level.WARNING, "Exporting to PDF failed: " , e);
+            return false;
+        }
+
+        return true;
+    }
+
+
+    private void writeIntroPDF(PDPageContentStream conStream) throws IOException{
+
+    }
+
+    private void writeStatisticPDF(PDPageContentStream conStream, Statistic<?> stat) throws IOException {
+
+    }
 
 
     /**<h2>exportAsZip</h2>

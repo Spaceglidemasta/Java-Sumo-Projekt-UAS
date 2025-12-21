@@ -70,6 +70,7 @@ public final class Formatting {
 
         long id = (long) (System.currentTimeMillis() * Math.random());
 
-        return prefix + id + suffix;
+        //replaces all consecutive whitespaces with one underscore
+        return prefix.replaceAll("\\s+", "_") + id + suffix;
     }
 }
