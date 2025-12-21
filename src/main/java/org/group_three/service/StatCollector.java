@@ -1,13 +1,9 @@
 package org.group_three.service;
 
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentInformation;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.group_three.constants.Documents;
+
 import org.group_three.utils.Formatting;
-import org.group_three.utils.PathUtils;
+
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,7 +28,6 @@ public class StatCollector {
 
 
     private String name;
-    private String subject;
     private List<String> description;
     private List<Statistic<?>> statistics;
 
@@ -76,10 +71,6 @@ public class StatCollector {
         return name;
     }
 
-    public String getSubject() { return subject; }
-
-    public void setSubject(String subject) { this.subject = subject; }
-
     public int getStatisticsCount(){return statistics.size();}
 
     /**
@@ -94,6 +85,42 @@ public class StatCollector {
         }
     }
 
+
+
+
+    /**<h2>exportAsZip</h2>
+     * Exports the Statistics contained by this StatCollector to one zipped folder in output.
+     * @return <code>true</code> if successful, <code>false</code> if not.
+     * @see Statistic#outAsZippedCSV(ZipOutputStream)
+     * @author Luca
+     * */
+    public boolean exportAsZip() {
+
+        String filename = Formatting.uniquegen(name, ".zip");
+
+        try (FileOutputStream fos = new FileOutputStream("output/" + filename);
+             ZipOutputStream zip = new ZipOutputStream(fos)) {
+
+            int successful = 0;
+            int all = 0;
+            for (Statistic<?> stat : statistics) {
+                if(stat.outAsZippedCSV(zip)) successful++;
+                all++;
+            }
+
+            log.info("Exporting (" + successful + " / " + all +  ") Statistics to output/" + filename + " was successful.");
+            return true;
+
+
+        } catch (Exception e) {
+            log.warning("Exporting to a zipped folder failed: " + Arrays.toString(e.getStackTrace()));
+            return false;
+        }
+
+
+    }
+
+    /*This was an old attempt at outputting pdfs using PDFbox. I kept this is here for artistic purposes.
     /**
      * <p> Exports all Statistics contained by this StatCollector as a single .pdf file. </p>
      * <p> The output directory is always ./output/ </p>
@@ -103,7 +130,7 @@ public class StatCollector {
      * @see PathUtils#prepareOutputPath(String)
      * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
-     * */
+     *
     public boolean exportAsPDF() {
 
         //like "with" from python
@@ -193,40 +220,7 @@ public class StatCollector {
     private void writeStatisticPDF(PDPageContentStream conStream, Statistic<?> stat) throws IOException {
 
     }
-
-
-    /**<h2>exportAsZip</h2>
-     * Exports the Statistics contained by this StatCollector to one zipped folder in output.
-     * @return <code>true</code> if successful, <code>false</code> if not.
-     * @see Statistic#outAsZippedCSV(ZipOutputStream)
-     * @author Luca
-     * */
-    public boolean exportAsZip() {
-
-        String filename = Formatting.uniquegen(name, ".zip");
-
-        try (FileOutputStream fos = new FileOutputStream("output/" + filename);
-             ZipOutputStream zip = new ZipOutputStream(fos)) {
-
-            int successful = 0;
-            int all = 0;
-            for (Statistic<?> stat : statistics) {
-                if(stat.outAsZippedCSV(zip)) successful++;
-                all++;
-            }
-
-            log.info("Exporting (" + successful + " / " + all +  ") Statistics to output/" + filename + " was successful.");
-            return true;
-
-
-        } catch (Exception e) {
-            log.warning("Exporting to a zipped folder failed: " + Arrays.toString(e.getStackTrace()));
-            return false;
-        }
-
-
-    }
-
+    */
 
 
 

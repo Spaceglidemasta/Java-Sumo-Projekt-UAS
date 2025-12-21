@@ -528,7 +528,7 @@ public class SimController implements AutoCloseable{
             vehStat.add(vrec);
         }
 
-        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
@@ -569,13 +569,19 @@ public class SimController implements AutoCloseable{
 
     }
 
-    /**Exports the Stat Collection to a .gz.tar
+    /**Exports the Stat Collection to a .zip
      * @see StatCollector#exportAsZip()
      * @author Luca
      * */
     public void exportStats(){
         statcol.exportAsZip();
     }
+
+    /**Exports the Stat Collection to a .pdf
+     * @see
+     * @author Luca
+     * */
+    public void exportStatstoPDF() {  }
 
 
     /**

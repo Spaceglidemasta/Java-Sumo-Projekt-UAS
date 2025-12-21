@@ -57,11 +57,6 @@ public class WTrafficLight extends WObject {
         this.customProgram.add(phase);
     }
 
-
-    public String getID() {
-        return id;
-    }
-
     /**
      * Adds a WLink to the local instance allWlinks list
      * @param wlink the WLink to be added
