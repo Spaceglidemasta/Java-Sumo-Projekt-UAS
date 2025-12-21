@@ -3,6 +3,7 @@ package org.group_three.ui;
 import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoPosition2D;
 import javafx.scene.paint.Color;
+import org.group_three.model.WEdge;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -184,6 +185,25 @@ public final class Meth {
 
 		return vector2DS;
 	}
+
+
+    /**
+     * Calculates the sum of all elements contained in the given List.
+     * @param list The Iterable containing numbers
+     * @return the sum
+     * @author Luca
+     * @see WEdge#getVehDensitySum()
+     * */
+    public static double sumOfList(Iterable<? extends Number> list){
+
+        double out = 0;
+
+        for(Number num : list){
+            out += num.doubleValue();
+        }
+
+        return out;
+    }
 
 	//---------------------------------------------------ClassMethods---------------------------------------------------
 

@@ -2,6 +2,7 @@ package org.group_three.ui;
 
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
+import org.group_three.debug.StaticTester;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
@@ -111,7 +112,7 @@ public class FakeInteractions {
         }
 
         //set selected simulation as the main, global / static simulation.
-        simcon.setMainstc(true);
+        simcon.setAsMainsimcon(true);
 
         WPolygon.loadAllPolys(simcon);
 
@@ -121,7 +122,6 @@ public class FakeInteractions {
         StaticTester.TableToCSVExample();
         */
 
-        //StaticTester.StatisticGraphExample();
 
         //simcon.saveState(".state.xml");
 

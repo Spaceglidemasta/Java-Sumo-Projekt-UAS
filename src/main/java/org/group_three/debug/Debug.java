@@ -6,6 +6,8 @@ import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 import javafx.util.Duration;
 
+import java.util.logging.Logger;
+
 
 /**
  * Debug class so nice debug messages can be displayed
@@ -16,7 +18,7 @@ import javafx.util.Duration;
  * */
 public final class Debug {
 
-
+    private static final Logger logger = Logger.getLogger(Debug.class.getName());
 
     private static final boolean MAIN_CON_DEBUG = true;
     public static boolean JAVAFX_FULL_DEBUG = false;
@@ -154,6 +156,7 @@ public final class Debug {
             }
             area.setText(sb.toString());
             area.positionCaret(area.getLength());
+
         }
     }
 }

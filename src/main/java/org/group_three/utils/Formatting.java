@@ -1,15 +1,15 @@
 package org.group_three.utils;
 
 
-import org.group_three.debug.annotations.StaticClass;
+import org.group_three.service.Table;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Utility class for formatting.
  * @author Luca
  * */
-@StaticClass
 public final class Formatting {
 
 
@@ -33,6 +33,29 @@ public final class Formatting {
         formatted.append("\n");
 
         return formatted.toString();
+    }
+
+    /**<h2>arrayToString</h2>
+     * Method to determine how an Array should be cast into a String.
+     * <br>Looks messy at first glance, but is actually very clean
+     * and deterministic.
+     * @param array The array to be converted
+     * @return the cast String
+     * @author Luca
+     * @see Table#print()
+     * */
+    public static String arrayToString(Object array) {
+        if (array instanceof Object[] o) return Arrays.deepToString(o);
+        if (array instanceof int[] a) return Arrays.toString(a);
+        if (array instanceof long[] a) return Arrays.toString(a);
+        if (array instanceof double[] a) return Arrays.toString(a);
+        if (array instanceof float[] a) return Arrays.toString(a);
+        if (array instanceof boolean[] a) return Arrays.toString(a);
+        if (array instanceof char[] a) return Arrays.toString(a);
+        if (array instanceof byte[] a) return Arrays.toString(a);
+        if (array instanceof short[] a) return Arrays.toString(a);
+
+        return "<unknown array>";
     }
 
     /**

@@ -4,33 +4,43 @@ import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
+import org.group_three.constants.enums.ValueStyle;
 import org.group_three.debug.Debug;
-import org.group_three.debug.annotations.CreatesFiles;
 import org.group_three.debug.annotations.MayReturnNull;
+import org.group_three.debug.annotations.PrintStyle;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
+import org.group_three.service.StatCollector;
+import org.group_three.service.Statistic;
 import org.group_three.utils.Formatting;
+import org.group_three.utils.StatUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * <h1>SimController</h1>
  * Class used to Connect & Control to SUMO via the TraaS API <br>
- * The constructor does everything for you, you only need
- * to SimController.close() the Simulation after you are done.
+ * The constructor does everything that is connection-based for you,
+ * you only need to simcon.close() the simulation after you are done. <br><br>
+ * This class is also host to the all[...]s Lists / Hashmaps, which you
+ * want to look into if you want to understand the inner workings of the
+ * wrapper classes for the Objects contained by the simulation.
+ * @see org.group_three.model
  * @author Luca
  */
 public class SimController {
+
+    private static final Logger log =
+            Logger.getLogger(SimController.class.getName());
 
 	//The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
     private SumoTraciConnection stc; //
@@ -43,7 +53,16 @@ public class SimController {
     // WObjects Collectors
     private List<WTrafficLight> allWTLs = new ArrayList<>();
     private List<WPolygon> allPolys = new ArrayList<>();
-    private HashMap<String, WEdge> allroads = new HashMap<String, WEdge>();
+    private HashMap<String, WEdge> allroads = new HashMap<>();
+    private HashMap<String, WVehicle> allVehicles = new HashMap<>();
+
+    //Statistics
+    private StatCollector statcol;
+    private long vehicleMaxDenseValue = 0;
+
+
+
+
 
 // ******************************************************
 //                      SIMULATION
@@ -54,12 +73,12 @@ public class SimController {
     }
 
     public SimController(String cfg) {
-        Debug.print("SimController invoked");
+        log.info("SimController invoked");
 
         try {
 
             // get folder location of Project
-            File jarDir = getSumoLoc();
+            File jarDir = getProjectLocation();
 
             // opens said folder
             File resourcesDir = new File(jarDir, "SumoConfig");
@@ -71,16 +90,15 @@ public class SimController {
             // possible location of sumo.exe in %SUMO_HOME%/bin
             File sumoExe = decideSumo(sumoHome, resourcesDir);
 
-            Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
+            log.info("sumo.exe found: " + sumoExe.getAbsolutePath());
 
             // opens the sumocfg file inside the resources Folder
             File sumocfg = new File(resourcesDir, cfg);
-            Debug.print(sumocfg.getAbsolutePath());
             if (!sumocfg.exists()) {
-                throw new Exception(cfg + " not found");
+                throw new FileNotFoundException(cfg + " not found");
             }
             else {
-                Debug.print("sumocfg file found");
+                log.info("sumocfg file found at " + sumocfg.getAbsolutePath());
             }
 
             // establishes the connection to sumo with the route and network via TraaS
@@ -98,47 +116,20 @@ public class SimController {
             stc.do_timestep();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Error in SimController init: " + Arrays.toString(e.getStackTrace()));
         }
 
-        Debug.print("SimController startup was successfull");
-        Debug.toConsole("SimController startup was successfull");
-    }
-
-    /**
-     * decides where the sumo.exe is.
-     * @param sumoHome The location of env %SUMO_HOME%
-     * @param resourcesDir The location of SumoConfig
-     * @return Which one was decided upon. sumoHome most of the time
-     * @author Luca
-     * */
-    private static File decideSumo(String sumoHome, File resourcesDir) throws Exception {
-        //A ? B : C <=> if A then B else C
-        File sumoExeHome = (sumoHome != null)
-                ? new File(sumoHome + "/bin/sumo.exe")
-                : null;
-
-        // possible location of sumo.exe in resources
-        File sumoExeResources = new File(resourcesDir, "sumo.exe");
-
-        // Decide final path
-        File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
-                ? sumoExeHome
-                : sumoExeResources;
-
-        if (!sumoExe.exists()) {
-            throw new Exception("sumo.exe not found");
-        }
-        return sumoExe;
+        log.info("SimController startup was successful");
+        Debug.toConsole("SimController startup was successful");
     }
 
     public SimController(String net, String rou){
-        Debug.print("SimController invoked");
+        log.info("SimController invoked");
 
         //try & catch to catch exceptions
         try {
             // get folder location of Project
-            File jarDir = getSumoLoc();
+            File jarDir = getProjectLocation();
 
             // opens said folder
             File resourcesDir = new File(jarDir, "SumoConfig");
@@ -151,25 +142,25 @@ public class SimController {
             //A ? B : C <=> if A then B else C
             File sumoExe = decideSumo(sumoHome, resourcesDir);
 
-            Debug.print("sumo.exe found: " + sumoExe.getAbsolutePath());
+            log.info("sumo.exe found: " + sumoExe.getAbsolutePath());
 
             // opens the network file inside the resources Folder
             File networknet = new File(resourcesDir, net);
-            Debug.print(networknet.getAbsolutePath());
+
             if (!networknet.exists()) {
                 throw new Exception(net + " not found");
             }
             else {
-                Debug.print("network file found");
+                log.info("network file found at: " + networknet.getAbsolutePath());
             }
             // opens the route file inside the resources Folder
             File routenet = new File(resourcesDir, rou);
-            Debug.print(routenet.getAbsolutePath());
+
             if (!routenet.exists()) {
                 throw new Exception(rou + " not found");
             }
             else {
-                Debug.print("route file found");
+                log.info("route file found at: " + routenet.getAbsolutePath());
             }
 
             // establishes the connection to sumo with the route and network via TraaS
@@ -189,17 +180,47 @@ public class SimController {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Error in SimController init: " + Arrays.toString(e.getStackTrace()));
         }
 
-        Debug.print("SimController startup was successfull");
-        Debug.toConsole("SimController startup was successfull");
+        log.info("SimController startup was successful");
+        Debug.toConsole("SimController startup was successful");
 
     }
 
     /**
+     * decides where the sumo.exe is.
+     * @param sumoHome The location of env %SUMO_HOME%
+     * @param resourcesDir The location of SumoConfig
+     * @return Which one was decided upon. sumoHome most of the time
+     * @author Luca
+     * */
+    private static File decideSumo(String sumoHome, File resourcesDir) throws FileNotFoundException {
+        //A ? B : C <=> if A then B else C
+        File sumoExeHome = (sumoHome != null)
+                ? new File(sumoHome + "/bin/sumo.exe")
+                : null;
+
+        // possible location of sumo.exe in resources
+        File sumoExeResources = new File(resourcesDir, "sumo.exe");
+
+        // Decide final path
+        File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
+                ? sumoExeHome
+                : sumoExeResources;
+
+        if (!sumoExe.exists()) {
+            throw new FileNotFoundException("sumo.exe not found");
+        }
+        return sumoExe;
+    }
+
+
+
+
+    /**
      * Does 1 step in the simulation.
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean step(){
@@ -207,7 +228,7 @@ public class SimController {
         try {
             stc.do_timestep();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Step execution failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
 
@@ -218,7 +239,7 @@ public class SimController {
     /**
      * Does n steps in the simulation.
      * @param n The number of steps to be done
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean step(int n){
@@ -227,8 +248,7 @@ public class SimController {
             try {
                 stc.do_timestep();
             } catch (Exception e) {
-                Debug.print("CRITICAL ERROR:");
-                e.printStackTrace();
+                log.severe("CRITICAL ERROR: " + Arrays.toString(e.getStackTrace()));
                 return false;
             }
 
@@ -241,7 +261,7 @@ public class SimController {
     /**
      * Sets the Time of the Simulation to (time), needs to be in the Future.
      * @param time The time in the future to travel to.
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean timetravel_to(double time){
@@ -249,7 +269,7 @@ public class SimController {
         try {
             stc.do_timestep(time);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("execution failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
 
@@ -268,75 +288,77 @@ public class SimController {
             if(stc != null && !stc.isClosed()) stc.close();
         }
         catch (IllegalStateException ise){
-            ise.printStackTrace();
+            log.severe("closing failed: " + Arrays.toString(ise.getStackTrace()));
         }
     }
 
     /**Saves the State as a file. The format and output depends on the extension.
+     * <p> WARNING Creates Files </p>
      * @param filetype the extension. Include the dot: saveState(".xml")
      *                 ".csv" and ".xml" are the only ones we found to make sense.
      * @return The filename, or null if without success.
      * @author Luca
      * */
     @MayReturnNull
-    @CreatesFiles
     public String saveState(String filetype){
 
         if(!Files.exists(Path.of("output"))){
-            Debug.print("There was not \"output\" directory found. Are you running from a .jar? Make one.");
+            log.warning("There was not \"output\" directory found. Are you running from a .jar? Make one.");
+            log.warning("saveState aborted");
             return null;
         }
 
         try {
             String filename = Formatting.uniquegen("savedState_", filetype);
             stc.do_job_set(Simulation.saveState("output/" + filename));
-            Debug.print("State successfully saved to output/" + filename);
+            log.info("State successfuly saved to output/" + filename);
             return filename;
         }
         catch (Exception e){
-            e.printStackTrace();
-            Debug.print("There was an error saving the State.");
+            log.warning("There was an error saving the State: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
 
     /**
      * @author Luca
-     * @return the location(FILE) the Project is located in.
+     * @return the location(FILE) the Project is located in, or null if failed.
      * Knows if the Program is compiled & executed or a jar file
     **/
-    public static File getSumoLoc() {
+    @MayReturnNull
+    public static File getProjectLocation() {
 
         //the location of this class in the URL format
         URL mainURL = SimController.class.getProtectionDomain().getCodeSource().getLocation();
-        URI mainURI = null;
+        URI mainURI;
 
         //"cast" to URI format
         try {
             mainURI = mainURL.toURI();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("Converting URL to URI failed; \"" + mainURL.toString() + "\" contains URI invalid characters.");
+            return null;
         }
-        //checks if the last "cast" was successfull.
-        assert mainURI != null;
+        //checks if the last "cast" was successful.
+
 
         //transforms the URI to a FILE
         File jarDir = new File(mainURI);
 
         //if compiled to a Jar
         if(jarDir.isFile()){
-            Debug.print("Jar Execution detected");
+            log.info("Jar Execution detected");
             return jarDir.getParentFile();
         }
 
         //if compiled normally
-        Debug.print("Compiled Execution detected");
+        log.info("Compiled Execution detected");
         return jarDir.getParentFile().getParentFile().getParentFile();
 
     }
 
     /**
-     * @return steptime as int, or <code>-1</code> if failed
+     * @return step-time as int, or <code>-1</code> if failed
      * @author Luca
      * */
     public int getTime(){
@@ -346,19 +368,24 @@ public class SimController {
             return Math.toIntExact(Math.round(time));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getting Time failed: " + Arrays.toString(e.getStackTrace()));
             return -1;
         }
     }
 
     /**
-     * Returns the global / static _mainsim.
+     * Returns the global / static mainsimcon.
      * @author Luca
      * */
     @MayReturnNull
     public static SimController getMainsimcon() {
 
-        if(mainsimcon == null || mainsimcon.getStc().isClosed()) return null;
+        if(mainsimcon == null || mainsimcon.getStc().isClosed()) {
+
+            log.warning("Mainsimcon is closed or null.");
+
+            return null;
+        }
 
         return mainsimcon;
 
@@ -369,7 +396,7 @@ public class SimController {
      * Beware that this overwrites the old one
      * @author Luca
      * */
-    public void setMainstc(boolean close_old){
+    public void setAsMainsimcon(boolean close_old){
 
         if(mainsimcon != null && !mainsimcon.getStc().isClosed() && close_old){
             mainsimcon.close();
@@ -377,8 +404,190 @@ public class SimController {
 
         mainsimcon = this;
 
-        Debug.print("Main SUMO Simulation was overwritten.");
+        log.info("Main SUMO Simulation was overwritten.");
     }
+
+    // ******************************************************
+    //                      Statistics
+    // ******************************************************
+
+    //I tried using OOP, but Records cannot inherit other Records, which means I cannot
+    //create an abstract "GeneralRecord" with collect(), which then gets overridden by
+    //its children. It wouldn't improve code anyway.
+
+    /**<h2>VehicleRec</h2>
+     * Record for holding Vehicle Data. Includes a collect method which is used
+     * to collect necessary data.
+     * @see WVehicle
+     * @author Luca
+     * */
+    public record VehicleRec(String vehID, double avgspeed, SumoColor color) {
+
+        public static List<VehicleRec> collect(SimController simcon){
+
+            List<VehicleRec> data = new ArrayList<>();
+
+            for(WVehicle wveh : simcon.getAllVehicles().values()){
+
+                VehicleRec vrec = new VehicleRec(
+                        wveh.getID(),
+                        wveh.getAvgSpeed(),
+                        wveh.getColor()
+                );
+
+                data.add(vrec);
+
+            }
+
+            return data;
+        }
+
+    }
+
+    /**<h2>EdgeRec</h2>
+     * Record for holding Edge Data. Includes a collect method which is used
+     * to collect necessary data.
+     * @see WEdge
+     * @author Luca
+     * */
+    public record EdgeRec(String name, double usage, double length) {
+
+        public static List<EdgeRec> collect(SimController simcon){
+
+            List<EdgeRec> data = new ArrayList<>();
+
+            for(WEdge wEdge : simcon.getAllroads().values()){
+
+                EdgeRec vrec = new EdgeRec(
+                        wEdge.getName(),
+                        wEdge.getOccupancyRatio(),
+                        wEdge.getLength()
+                );
+
+                data.add(vrec);
+
+            }
+
+            return data;
+        }
+
+
+    }
+
+    /**<h2>VehDensPerSecond</h2>
+     * Record for holding the Vehicle Density of each road per second.
+     * @see WEdge
+     * @author Luca
+     * */
+    public record VehDensPerSecond(@PrintStyle(ValueStyle.COLUMN) int ... vehicles_on_edges) {
+
+        public static List<VehDensPerSecond> collect(SimController simcon){
+
+            List<VehDensPerSecond> data = new ArrayList<>();
+
+
+            for(int step = 0; step < simcon.getTime() - 1; step++){
+
+                List<Integer> vehDenseThisStep = new ArrayList<>();
+
+                for(WEdge wEdge : simcon.getAllroads().values()){
+
+                    vehDenseThisStep.add(wEdge.getVehDensityPerStep().get(step));
+
+                }
+
+                VehDensPerSecond densrec = new VehDensPerSecond( vehDenseThisStep.stream().mapToInt(i->i).toArray());
+
+                data.add(densrec);
+            }
+
+            return data;
+        }
+
+
+    }
+
+    /**<h2>finishStatCollector</h2>
+     * Finishes the StatCollector attribute.
+     * <p>Uses the records defined at the top as types for the Statistic Template.
+     * Adding statistics works by adding a record as SimController attribute and
+     * adding it to the StatCollector via Statistic< Record >.</p>
+     * @see StatCollector
+     * @see Statistic
+     * @author Luca
+     * */
+    public void finishStatCollector(){
+
+        Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
+        for(VehicleRec vrec : VehicleRec.collect(this)){
+            vehStat.add(vrec);
+        }
+
+        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Occupancy Ratio", "Length (m)");
+        for(EdgeRec erec : EdgeRec.collect(this)){
+            edgeStat.add(erec);
+        }
+
+        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
+                getAllroads()
+                .values()
+                .stream() //stream data to allow mapping
+                .map(WEdge::getName) // the same as edge -> edge.getName() lambda
+                .toArray(String[]::new)); //tells it to convert to String[] instead of Object[]
+        for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
+            vehDensStat.add(vdrec);
+        }
+
+        statcol = new StatCollector(
+                "StatCollector_" + System.currentTimeMillis(),
+                vehStat.getFilteredRows(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255))),
+                edgeStat,
+                vehDensStat
+        );
+
+        log.fine("StatCollector assembling was successful.");
+
+    }
+
+    /**Prints all collected stats of this Simulation.
+     * @see StatCollector#print()
+     * @author Luca
+     * */
+    public void printStats(){
+
+        try {
+            statcol.print();
+        } catch (Exception e){
+            log.warning("Printing Stat collection failed: " + Arrays.toString(e.getStackTrace()));
+        }
+
+
+    }
+
+    /**Exports the Stat Collection to a .gz.tar
+     * @see StatCollector#exportAsZip()
+     * @author Luca
+     * */
+    public void exportStats(){
+        statcol.exportAsZip();
+    }
+
+
+    /**
+     * Updates necessary Telemetry for the Statistic Collection.
+     * @author Luca
+     * @see WEdge#addVehDensityCount()
+     * */
+    public void updateTelemetry(){
+
+        vehicleMaxDenseValue += allVehicles.size();
+
+        for(WEdge edge : allroads.values()){
+            edge.addVehDensityCount();
+        }
+
+    }
+
 
     // ******************************************************
     // **                   Getters                        **
@@ -403,7 +612,7 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Trafficlight.getIDList());
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
 
@@ -423,10 +632,11 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Vehicle.getIDList());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
     }
 
     /**
@@ -441,10 +651,11 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Route.getIDList());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
     }
 
     /**
@@ -460,10 +671,11 @@ public class SimController {
 
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
     }
 
     /**
@@ -479,20 +691,17 @@ public class SimController {
 
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
     }
 
 
     // ******************************************************
-    // **                   Edges                          **
+    // **                   Edges & Lanes                  **
     // ******************************************************
-
-
-
-
 
 
     /**
@@ -506,10 +715,10 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Lane.getIDList());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
     }
 
     //
@@ -530,7 +739,7 @@ public class SimController {
             return ((SumoGeometry) stc.do_job_get(Lane.getShape(laneID))).coords;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -548,10 +757,10 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Edge.getLaneNumber(edgeID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
     }
 
     // ******************************************************
@@ -559,7 +768,8 @@ public class SimController {
     // ******************************************************
 
     /**
-     * Basicly the normal Vehicle.add(), but it handles the VehicleID setting logic for you.
+     * <h2>addVehicle</h2>
+     * Basically the normal Vehicle.add(), but it handles the VehicleID setting logic for you.
      *
      * @param typeID The type of the Vehicle; Use constants.Vehicle for this.
      * @param routeID The ID of the route where the Vehicle is supposed to land
@@ -580,10 +790,11 @@ public class SimController {
             return new WVehicle(newVIDstr, stc);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
+
 
     }
 
@@ -603,7 +814,7 @@ public class SimController {
             return RID;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -620,19 +831,24 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Route.getEdges(RID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
 
 
     /**
-     * @return Average vehicle-speed from all loaded Vehicles.
+     * @return Average vehicle-speed from all loaded Vehicles, or -1.0d if failed.
      * @author Luca
      * */
     public double getAverageVehSpeed(){
 
         SumoStringList allVIDs = getVehicleIDList();
+
+        if(allVIDs == null) {
+            log.severe("getAverageVehSpeed failed. VehicleIDList is null.");
+            return -1.0d;
+        }
 
         double speedcount = 0;
         double vehcount = 0;
@@ -650,8 +866,7 @@ public class SimController {
     // **               Traffic Lights                     **
     // ******************************************************
 
-    //Old Text of mine when I thought we don't need a TL Wrapper-Class.
-
+    //Old Text of mine when I thought we don't need a TL Wrapper-Class:
     /*"Why is this not its own Wrapper-Class like WVehicle?"
      * There simply aren't enough functions & attributes to a TL
      * that we need, that it's worth to build its own class.
@@ -679,7 +894,7 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Trafficlight.getControlledJunctions(TLID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -694,9 +909,10 @@ public class SimController {
             return (SumoStringList) stc.do_job_get(Trafficlight.getControlledLanes(TLID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
-        return null;
+
     }
 
     /**
@@ -710,13 +926,14 @@ public class SimController {
             return (SumoLinkList) stc.do_job_get(Trafficlight.getControlledLinks(linkID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
-        return null;
+
     }
 
     /**This function supposedly returns it in meters but since one meter
-     * equals one coordinate unit, they can just be used as the width in coordinates)
+     * equals one coordinate unit, they can just be used as the width in coordinates
      * @param laneID ID of the chosen lane with format:("E1_0")
      * @return Returns the width of a chosen lane.
      * @author Leon
@@ -727,9 +944,10 @@ public class SimController {
             return (Double) stc.do_job_get(Lane.getWidth(laneID));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
-        return null;
+
     }
 
 
@@ -738,20 +956,20 @@ public class SimController {
      * Sets the Phase Index [0:2] of the TL. <br>
      * @param TLID Traffic Light ID
      * @param iPhase Phase index as int, starting at 0 (?)
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean setTLPhase(String TLID, int iPhase){
 
         try {
-            Debug.toConsole("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
+            log.fine("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
             stc.do_job_set(Trafficlight.setPhase(TLID, iPhase));
+            return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("setter failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
-        return true;
     }
 
     /**
@@ -761,34 +979,33 @@ public class SimController {
      * @author Luca
      */
     public int getTLPhase(String TLID) {
-        int iphase;
         try {
-            iphase = (int) stc.do_job_get(Trafficlight.getPhase(TLID));
+            return (int) stc.do_job_get(Trafficlight.getPhase(TLID));
         }
         catch (Exception e){
-            e.printStackTrace();
-            iphase = -1;
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return -1;
         }
-        return iphase;
     }
 
     /**
      * Sets the Length of the current Phase of the given TL.
      * @param TLID Traffic Light ID
      * @param dur new Duration in seconds(?)( <- This not my questionmark, the TraaS doc also has a "?")
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
     public boolean setTLPhaseLen(String TLID, double dur){
 
         try {
             stc.do_job_set(Trafficlight.setPhaseDuration(TLID, dur));
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
 
-        return true;
+
     }
 
     /**
@@ -800,15 +1017,15 @@ public class SimController {
      * */
     @MayReturnNull
     public String getTLParam(String TLID, String param){
-        String retparam;
+
         try {
-            retparam = (String) stc.do_job_get(Trafficlight.getParameter(TLID,param));
+            return  (String) stc.do_job_get(Trafficlight.getParameter(TLID,param));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
-        return retparam;
+
     }
 
 
@@ -817,7 +1034,8 @@ public class SimController {
      * @param TLID TrafficLight ID
      * @param param the parameter which is supposed to change
      * @param value the value that is to be inserted in the given parameter
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
+     * @author Luca
      * */
     public boolean setTLParam(String TLID, String param, String value){
         try {
@@ -825,7 +1043,7 @@ public class SimController {
             return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("setter failed: " + Arrays.toString(e.getStackTrace()));
             return false;
         }
     }
@@ -840,17 +1058,17 @@ public class SimController {
      * @author Luca
      * */
     @MayReturnNull
-    public List<String> getJunctionIDList() {
+    public SumoStringList getJunctionIDList() {
 
         try {
             // This so badly done by the TU Dresden that I don't have another choice but to unchecked cast this
-            return (List<String>) stc.do_job_get(Junction.getIDList());
+            return (SumoStringList) stc.do_job_get(Junction.getIDList());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
         }
 
-        return null;
     }
 
 
@@ -870,7 +1088,7 @@ public class SimController {
             return (SumoPosition2D) stc.do_job_get(Junction.getPosition(juncID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -885,7 +1103,7 @@ public class SimController {
         try {
             return ((SumoGeometry) stc.do_job_get(Junction.getShape(laneID))).coords;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -900,7 +1118,7 @@ public class SimController {
         try {
             return (SumoGeometry) stc.do_job_get(Polygon.getShape(pid));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -926,11 +1144,18 @@ public class SimController {
             return allWTLs;
     }
 
+    /**
+     * @return the Road / WEdge of allRoads via the given Edge ID
+     * @param EID  EdgeID
+     * @author Luca
+     * */
     @MayReturnNull
     public WEdge getRoad(String EID) {
         return getAllroads().get(EID);
     }
 
+
+    public long getVehicleMaxDenseValue() { return vehicleMaxDenseValue; }
 
 
     public void setAllWTLs(List<WTrafficLight> allWTLs) {
@@ -943,6 +1168,14 @@ public class SimController {
 
     public void setAllroads(HashMap<String, WEdge> allroads) {
         this.allroads = allroads;
+    }
+
+    public HashMap<String, WVehicle> getAllVehicles() {
+        return allVehicles;
+    }
+
+    public void setAllVehicles(HashMap<String, WVehicle> allVehicles) {
+        this.allVehicles = allVehicles;
     }
 
 
@@ -980,6 +1213,18 @@ public class SimController {
         return allroads.size();
     }
 
+    /**
+     * Adds a WVehicle to the WVehicle Collection of this SimController.
+     * @param id The id of the Vehicle. Used for hashing
+     * @param vehicle The WVehicle to be added.
+     * @return the new size of the collector List
+     * @author Luca
+     * */
+    public int addToAllVehicles(String id, WVehicle vehicle){
+        allVehicles.put(id, vehicle);
+        return allVehicles.size();
+    }
+
 
 
     /**
@@ -999,16 +1244,17 @@ public class SimController {
             return stc.do_job_get(scmd);
         }
         catch (Exception e){
-            Debug.print("GET JOB FAILED: " + scmd.toString());
-            e.printStackTrace();
+            log.severe("GET JOB FAILED: " + scmd.toString() + "\n"
+            + Arrays.toString(e.getStackTrace()));
+            return null;
+
         }
-        return null;
     }
 
     /**
      * Setter of the Simulation
      * @param scmd The SumoCommand to be executed upon the Simulation.
-     * @return <code>true</code> if successfull, <code>false</code> if not.
+     * @return <code>true</code> if successful, <code>false</code> if not.
      * @example
      * <code>
      * simcon.jobset(Vehicle.add(vehID, typeID, routeID, depart, speed, lane))
@@ -1017,13 +1263,12 @@ public class SimController {
     public boolean jobset(SumoCommand scmd){
         try {
             stc.do_job_set(scmd);
+            return true;
         }
         catch (Exception e){
-            Debug.print("DO JOB FAILED: " + scmd.toString());
-            e.printStackTrace();
+            log.severe("SET JOB FAILED: " + scmd.toString() + "\n"
+                    + Arrays.toString(e.getStackTrace()));
             return false;
         }
-
-        return true;
     }
 }

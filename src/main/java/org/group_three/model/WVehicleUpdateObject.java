@@ -4,9 +4,9 @@ package org.group_three.model;
  * <h1>WVehicleUpdateObject </h1>
  * An Update Class for the WVehicle Class. <br>
  * Its attributes are public & final, so you can determine
- * if an update was successfull via <br>
+ * if an update was successful via <br>
  * <code> if(wvuo.pos == false) {Debug.print("Position update failed!");} </code> <br>
- * or just check all attributes with <code>wvuo.successfull()</code>.
+ * or just check all attributes with <code>wvuo.successful()</code>.
  * @author Luca
  * */
 class WVehicleUpdateObject {
@@ -28,7 +28,7 @@ class WVehicleUpdateObject {
         this.speed = speed;
     }
 
-    public boolean successfull() {
+    public boolean successful() {
 
         if(!pos) return false;
         if(!angle) return false;

@@ -156,6 +156,8 @@ public class SimControlController {
 
 		//Debug.print("Step clicked.");
 
+        SimController simcon = SimController.getMainsimcon();
+        if(simcon == null) return;
 
 		SimController.getMainsimcon().step();
 		SimView2D.update();
@@ -170,7 +172,8 @@ public class SimControlController {
 	private void onPlayClicked() {
 		//Debug.print("Play clicked.");
 		//setPlay(!isPlay());
-		setPlay(true);
+
+        if(SimController.getMainsimcon() != null) setPlay(true);
 	}
 
 	/**
