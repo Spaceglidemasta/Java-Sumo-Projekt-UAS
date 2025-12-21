@@ -5,10 +5,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.SimView2D;
 import org.group_three.ui.world.WorldRoute;
+import org.group_three.ui.world.WorldTrafficLight;
 import org.group_three.ui.world.WorldVehicle;
 
 /**
@@ -61,6 +63,23 @@ public class TrafficLightDetailsController {
 	private CheckBox override;
 
 
+	private WorldTrafficLight worldTrafficLight;
+
+	public void setup(WorldTrafficLight worldTrafficLight) {
+		this.worldTrafficLight = worldTrafficLight;
+
+		id.setText(this.worldTrafficLight.getId());
+		displayName.setText(this.worldTrafficLight.getDisplayName());
+		sumoId.setText("StopLineIndex: " + this.worldTrafficLight.getwLink().getTLIndex());
+		override.setSelected(this.worldTrafficLight.getwTrafficLight().isCustomPhasesActive());
+
+		override.selectedProperty().addListener((_, _, newValue) -> {
+			this.worldTrafficLight.getwTrafficLight().setCustomPhasesActive(newValue);
+		});
+
+
+
+	}
 
 
 	/**

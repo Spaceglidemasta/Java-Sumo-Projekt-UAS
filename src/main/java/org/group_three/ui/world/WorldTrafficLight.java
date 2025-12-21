@@ -21,6 +21,10 @@ public class WorldTrafficLight extends WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	public WTrafficLight getwTrafficLight() {
+		return wTrafficLight;
+	}
+
 	/**
 	 * The WTrafficLight object which is grouping the WLink classes.
 	 *
@@ -28,6 +32,10 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final WTrafficLight wTrafficLight;
+
+	public WLink getwLink() {
+		return wLink;
+	}
 
 	/**
 	 * The WLink object which owns this class.
@@ -126,7 +134,7 @@ public class WorldTrafficLight extends WorldObject {
 	@Override
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
 		trafficLightDetailsController = fxmlLoader.getController();
-		Debug.print("trafficLightDetailsController");
+		trafficLightDetailsController.setup(this);
 	}
 
 }
