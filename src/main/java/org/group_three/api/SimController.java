@@ -8,13 +8,16 @@ import org.group_three.constants.enums.ValueStyle;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.annotations.PrintStyle;
+import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.service.StatCollector;
 import org.group_three.service.Statistic;
+import org.group_three.ui.SimView2D;
 import org.group_three.utils.Formatting;
+import org.group_three.utils.PathUtils;
 import org.group_three.utils.StatUtils;
 
 import java.io.File;
@@ -25,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.logging.Logger;
+
+import static org.group_three.utils.PathUtils.getRelativePath;
 
 /**
  * <h1>SimController</h1>
@@ -214,6 +219,134 @@ public class SimController {
         }
         return sumoExe;
     }
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Gets called after selecting one or multiple Files. <br>
+	 * Loads the Simulation with the selected files and sets it to main.
+	 * @param paths A List of Paths to be opened via SimController(...)
+	 * @author Luca, Joel
+	 * */
+	public static boolean loadSimulation(List<File> paths) throws InvalidFilesSelected {
+
+		File network = null;
+		File route = null;
+		File config = null;
+
+		switch (paths.size()) {
+			//No files selected => Exception
+			case 0:
+				Debug.toConsole("InvalidFilesSelected: No Files Selected");
+				throw new InvalidFilesSelected("No Files Selected");
+
+				//1 File selected => expect .sumocfg file
+			case 1:
+				//Throw custom exception if not .sumocfg file
+				if (!paths.getFirst().toString().matches(".*\\.sumocfg$")) {
+					Debug.toConsole("InvalidFilesSelected: Selected File is not of type .sumocfg");
+					throw new InvalidFilesSelected("Selected File is not of type .sumocfg");
+				}
+				//convert path to a relative path based on the SumoConfig path
+				config = paths.getFirst();
+				break;
+
+			//2 Files selected => expect route and network file
+			case 2:
+				// check if both filetypes are present, and in which order
+				if (       paths.get(0).toString().matches(".*\\.net\\.xml$")
+						&& paths.get(1).toString().matches(".*\\.rou\\.xml$")) {
+					//convert path to a relative path based on the SumoConfig path
+					network = paths.get(0);
+					route = paths.get(1);
+
+				} else if (paths.get(0).toString().matches(".*\\.rou\\.xml$")
+						&& paths.get(1).toString().matches(".*\\.net\\.xml$")) {
+					//convert path to a relative path based on the SumoConfig path
+					route = paths.get(0);
+					network = paths.get(1);
+				}
+				//throw custom error if they aren't
+				else {
+					Debug.toConsole("InvalidFilesSelected: Selected Files are of wrong format.");
+					Debug.toConsole(paths);
+					throw new InvalidFilesSelected("Selected Files are of wrong format.");
+				}
+
+				break;
+
+			// More than 2 files selected => throw custom error once again
+			default:
+				Debug.toConsole("InvalidFilesSelected: To many Files selected");
+				throw new InvalidFilesSelected("To many Files selected");
+
+		}
+
+
+		SimController simcon = null;
+		//check which constructor needs to be invoked
+		if (config != null) {
+			simcon = new SimController(getRelativePath(config.getAbsolutePath()));
+		} else {
+			simcon = new SimController( getRelativePath(network.getAbsolutePath()),
+					getRelativePath(route.getAbsolutePath()));
+		}
+
+		//load road network
+		if(config != null){
+
+			try {
+				//you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
+				File net = PathUtils.getNetFromSCFG(config);
+				WEdge.loadRoads(simcon, net);
+				//WEdge.printAll();
+				//WEdge.getRoad("132964154").print();
+			}
+			catch (Exception e){
+				Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
+				e.printStackTrace();
+			}
+
+		}  else {
+			WEdge.loadRoads(simcon, network);
+		}
+
+		//set selected simulation as the main, global / static simulation.
+		simcon.setAsMainsimcon(true);
+
+		WPolygon.loadAllPolys(simcon);
+
+		WTrafficLight.loadAll(simcon);
+
+        /*
+        StaticTester.TableToCSVExample();
+        */
+
+
+		//simcon.saveState(".state.xml");
+
+
+		// Create a new World for the opened simulation
+		SimView2D.newWorld();
+
+		//DEPRECATED    VVVV         DONT USE
+		//StatUtils.exportState(PathUtils.outputgen());
+
+		return true;
+	}
+
+
+
+
+
+
 
 
 
