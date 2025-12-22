@@ -33,16 +33,19 @@ import static org.group_three.utils.PathUtils.getRelativePath;
 
 /**
  * <h1>SimController</h1>
- * Class used to Connect & Control to SUMO via the TraaS API <br>
- * The constructor does everything that is connection-based for you,
- * you only need to simcon.close() the simulation after you are done. <br><br>
- * This class is also host to the all[...]s Lists / Hashmaps, which you
+ * <p> Class used to Connect & Control to SUMO via the TraaS API <p>
+ * <h2> Startup</h2>
+ * <p>The constructor does everything that is connection-based for you,
+ * you only need to pass the location of the Network- & Route files,
+ * or the SumoConfig. Default is <code>net.net.xml</code> and <code>net.rou.xml</code>.</p>
+ * <p>This class is also host to the all[...]s Lists / Hashmaps, which you
  * want to look into if you want to understand the inner workings of the
- * wrapper classes for the Objects contained by the simulation.
+ * wrapper classes for the Objects contained by the simulation. </p>
+ * <p>This Simulation implements AutoClosable via {@link #close()} </p>
  * @see org.group_three.model
  * @author Luca
  */
-public class SimController {
+public class SimController implements AutoCloseable{
 
     private static final Logger log =
             Logger.getLogger(SimController.class.getName());
@@ -220,22 +223,14 @@ public class SimController {
         return sumoExe;
     }
 
-
-
-
-
-
-
-
-
-
-	/**
+    //this was migrated here, so the structure may be weird
+	/**<h2>loadSimulation</h2>
 	 * Gets called after selecting one or multiple Files. <br>
 	 * Loads the Simulation with the selected files and sets it to main.
 	 * @param paths A List of Paths to be opened via SimController(...)
 	 * @author Luca, Joel
 	 * */
-	public static boolean loadSimulation(List<File> paths) throws InvalidFilesSelected {
+	public static void loadSimulation(List<File> paths) throws InvalidFilesSelected {
 
 		File network = null;
 		File route = null;
@@ -244,14 +239,14 @@ public class SimController {
 		switch (paths.size()) {
 			//No files selected => Exception
 			case 0:
-				Debug.toConsole("InvalidFilesSelected: No Files Selected");
+				log.severe("InvalidFilesSelected: No Files Selected");
 				throw new InvalidFilesSelected("No Files Selected");
 
 				//1 File selected => expect .sumocfg file
 			case 1:
 				//Throw custom exception if not .sumocfg file
 				if (!paths.getFirst().toString().matches(".*\\.sumocfg$")) {
-					Debug.toConsole("InvalidFilesSelected: Selected File is not of type .sumocfg");
+                    log.severe("InvalidFilesSelected: Selected File is not of type .sumocfg");
 					throw new InvalidFilesSelected("Selected File is not of type .sumocfg");
 				}
 				//convert path to a relative path based on the SumoConfig path
@@ -275,7 +270,7 @@ public class SimController {
 				}
 				//throw custom error if they aren't
 				else {
-					Debug.toConsole("InvalidFilesSelected: Selected Files are of wrong format.");
+                    log.severe("InvalidFilesSelected: Selected Files are of wrong format.");
 					Debug.toConsole(paths);
 					throw new InvalidFilesSelected("Selected Files are of wrong format.");
 				}
@@ -284,11 +279,10 @@ public class SimController {
 
 			// More than 2 files selected => throw custom error once again
 			default:
-				Debug.toConsole("InvalidFilesSelected: To many Files selected");
+                log.severe("InvalidFilesSelected: To many Files selected");
 				throw new InvalidFilesSelected("To many Files selected");
 
 		}
-
 
 		SimController simcon = null;
 		//check which constructor needs to be invoked
@@ -306,11 +300,10 @@ public class SimController {
 				//you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
 				File net = PathUtils.getNetFromSCFG(config);
 				WEdge.loadRoads(simcon, net);
-				//WEdge.printAll();
-				//WEdge.getRoad("132964154").print();
+
 			}
 			catch (Exception e){
-				Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
+                log.severe("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
 				e.printStackTrace();
 			}
 
@@ -325,21 +318,8 @@ public class SimController {
 
 		WTrafficLight.loadAll(simcon);
 
-        /*
-        StaticTester.TableToCSVExample();
-        */
-
-
-		//simcon.saveState(".state.xml");
-
-
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
-
-		//DEPRECATED    VVVV         DONT USE
-		//StatUtils.exportState(PathUtils.outputgen());
-
-		return true;
 	}
 
 
@@ -411,10 +391,12 @@ public class SimController {
 
 
 
-    /**
-     * closes the SumoTraciConnection
+    /**<h2>close</h2>
+     * <p>Overrides {@link AutoCloseable#close()}</p>
+     * - and closes the SumoTraciConnection.
      * @author Luca
      * */
+    @Override
     public void close(){
 
         try {
@@ -649,14 +631,14 @@ public class SimController {
      * @see Statistic
      * @author Luca
      * */
-    public void finishStatCollector(){
+    public void queueryStatCollector(){
 
         Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
         }
 
-        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
@@ -672,10 +654,10 @@ public class SimController {
         }
 
         statcol = new StatCollector(
-                "StatCollector_" + System.currentTimeMillis(),
+                "BasicStats",
                 vehStat.getFilteredRows(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255))),
-                edgeStat,
-                vehDensStat
+                edgeStat //,
+                //vehDensStat
         );
 
         log.fine("StatCollector assembling was successful.");
@@ -697,12 +679,20 @@ public class SimController {
 
     }
 
-    /**Exports the Stat Collection to a .gz.tar
+    /**Exports the Stat Collection to a .zip
      * @see StatCollector#exportAsZip()
      * @author Luca
      * */
     public void exportStats(){
         statcol.exportAsZip();
+    }
+
+    /**Exports the Stat Collection to a .pdf
+     * @see
+     * @author Luca
+     * */
+    public void exportStatstoPDF() {
+        statcol.exportAsPDF();
     }
 
 

@@ -24,6 +24,15 @@ import java.util.logging.Logger;
 
 import static org.group_three.utils.Formatting.arrayToString;
 
+/**
+ * <h1>Table</h1>
+ * Table class to store information.
+ * <p>Type variable extends to Record, so you can have different types
+ * per Row / Tupel, but equal types per Column / Attribute. SQL orientated.</p>
+ * @author Luca
+ * @see Statistic
+ * @see PrintStyle
+ * */
 public class Table<T extends Record> {
 
     private static final Logger log =
@@ -188,10 +197,9 @@ public class Table<T extends Record> {
                         }
                     }
                 } else {
-                    sb.append(value);
+                    sb.append(value).append(" | ");
                 }
             }
-            sb.append(" |");
             System.out.println(sb);
         }
 
