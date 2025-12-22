@@ -30,14 +30,14 @@
 			<version>${javafx.version}</version>
 		</dependency>
 
-        <!-- Markdown → HTML -->
+        <!-- Markdown -> HTML, vulnerability doesnt effect us -->
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
-            <artifactId>flexmark</artifactId>
+            <artifactId>flexmark-all</artifactId>
             <version>0.42.14</version>
         </dependency>
 
-        <!-- HTML → PDF -->
+        <!-- HTML -> PDF -->
         <dependency>
             <groupId>com.openhtmltopdf</groupId>
             <artifactId>openhtmltopdf-pdfbox</artifactId>

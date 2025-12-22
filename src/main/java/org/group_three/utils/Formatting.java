@@ -14,21 +14,21 @@ public final class Formatting {
 
 
     /**Turns a List of Objects into a String, with elements separated by commas and ended by a newline.
-     * @param touple The List of Objects.
+     * @param tuple The List of Objects.
      * @return the formatted String
      * @author Luca
      * */
-    public static String toCSVformat(List<?> touple){
+    public static String toCSVformat(List<?> tuple){
         StringBuilder formatted = new StringBuilder();
         int i = 0;
 
-        for(Object element : touple){
+        for(Object element : tuple){
             i++;
             formatted.append("\"");
             formatted.append(element.toString());
             formatted.append("\"");
 
-            if(touple.size() != i) formatted.append(",");
+            if(tuple.size() != i) formatted.append(",");
         }
         formatted.append("\n");
 

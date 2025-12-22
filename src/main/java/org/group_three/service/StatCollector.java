@@ -2,11 +2,22 @@ package org.group_three.service;
 
 
 
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import com.sun.glass.ui.GlassRobot;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.options.MutableDataSet;
+import org.group_three.constants.Documents;
 import org.group_three.utils.Formatting;
+import org.group_three.utils.PathUtils;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
 
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,6 +131,213 @@ public class StatCollector {
 
     }
 
+    /**
+     * Exports the bundle of statistics into a single PDF document.
+     * @return <code>true</code> if successful, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean exportAsPDF() {
+
+        try {
+
+            String templatemd = Files.readString(
+                    Path.of(Documents.DOC_LOCATION + "template.md")
+            );
+            MutableDataSet options = new MutableDataSet();
+            options.set(Parser.EXTENSIONS, List.of(TablesExtension.create()));
+
+            Parser parser = Parser.builder(options).build();
+            HtmlRenderer hrenderer = HtmlRenderer.builder(options).build();
+
+            //modify the main body
+
+            String withFrontpage = buildFrontPage(templatemd);
+
+            String finished = buildMainBody(withFrontpage);
+
+            //finish the build
+
+            Node document = parser.parse(finished);
+
+            String body = hrenderer.render(document);
+            //                                                      remove quotes from data
+            String html = Documents.wrapHTMLbody(body.replaceAll("&quot;", ""));
+
+            Path out = PathUtils.prepareOutputPath(
+                    Formatting.uniquegen(name, ".pdf")
+            );
+
+            buildPDF(html, out);
+
+            log.info("Statistics of " + name + " were exported as a PDF successfully.");
+
+
+        } catch (IOException e) {
+            log.log(Level.WARNING, "Exporting as PDF failed.", e);
+            return false;
+        }
+
+        return true;
+    }
+
+    /* Reasons why I extracted this from exportAsPDF():
+    * 1. It would really clutter the rest of the function, with what is logically only one step.
+    * 2. It can have use later, as creating a PDF document out of an HTML String and a Path is not uncommon.
+    * 3. It makes clear which part of exportAsPDF() throws the IOException, making it simpler / cleaner to handle.
+    * */
+    /**
+     * Builds a PDF out of a given Html String and the output Path
+     * @param html the Html Document as String
+     * @param out the path to the output, including the filename
+     * @author Luca
+     * @see StatCollector#exportAsPDF()
+     * */
+    private void buildPDF(String html, Path out) throws IOException {
+
+        OutputStream os = Files.newOutputStream(out);
+
+        PdfRendererBuilder builder = new PdfRendererBuilder();
+
+        builder.withHtmlContent(html, null);
+
+        builder.toStream(os);
+
+        builder.run(); //this may throw
+    }
+
+    /**
+     * Private method to build the Front page of the Statistics PDF
+     * @param doc the read template as String
+     * @return the transformed template as String
+     * @author Luca
+     * */
+    private String buildFrontPage(String doc){
+
+        String out = doc.replace(Documents.Vars.HEADER, name);
+
+        out = out.replace(
+                Documents.Vars.DESCRIPTION,
+                String.join("<br>",
+                        Documents.wrapStrings(description,"<p>", "</p>")
+                )
+        );
+
+        //this is so clean
+        out = out.replace(
+                Documents.Vars.TABLEOFCONTENT,
+                Documents.wrapStrings(
+                        statistics.stream()
+                                .map(stat -> stat.getName())
+                                .toList(),
+                        "- ",
+                        "\n"
+                )
+        );
+
+        return out;
+    }
+
+    /**
+     * Builds the main body of the HTML by calling {@link StatCollector#buildStatistic(Statistic)}
+     * and adding a new page for every statistic.
+     * @param doc the Markdown document as String
+     * @return the main body as Markdown
+     * */
+    private String buildMainBody(String doc) {
+
+        StringBuilder sb = new StringBuilder(doc);
+
+        for(Statistic<?> stat : statistics) {
+            sb.append(buildStatistic(stat));
+            sb.append(Documents.HTMLNEWPAGE);
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Builds one statistic in Markdown Syntax.
+     * <p>
+     *     Follows the Syntax: <br>
+     *     stat.name <br>
+     *     stat.content as table
+     * </p>
+     * @param stat The statistic to build
+     * @return the finished head & table as String
+     * @author Luca
+     * */
+    private String buildStatistic(Statistic<?> stat) {
+
+        StringBuilder sb = new StringBuilder()
+
+        .append("\n\n## " + stat.getName() + "\n\n");
+
+        List<? extends Record> content = stat.getContent();
+        List<String> csvList = new ArrayList<>();
+
+        //Headers
+        csvList.add(String.join(",", stat.getAttributeNames()));
+
+        //content
+        for(int i = 0; i < content.size(); i++){
+            csvList.add(
+                    Formatting.toCSVformat(
+                        stat.rowToStringList(i)
+                    )
+            );
+        }
+
+        sb.append(
+                csvToMarkdownTable(csvList)
+        );
+
+        log.info("Building Statistic " + stat.getName() + " was successful.");
+
+        return sb.toString();
+    }
+
+    /**
+     * Converts a csv Table to a Markdown table
+     * @param csv The csv Table where each row is one element
+     * @return the table in Markdown format
+     * @author Luca
+     * @see Formatting#toCSVformat(List)
+     * */
+    public static String csvToMarkdownTable(List<String> csv) {
+
+        if (csv.isEmpty()) return "";
+
+        StringBuilder md = new StringBuilder();
+
+        // Header
+        String[] headers = csv.getFirst().split(",");
+        md.append("| ");
+        md.append(String.join(" | ", headers));
+        md.append(" |");
+        md.append("\n");
+
+        // Separator
+        md.append("| ");
+        md.append("--- | ".repeat(headers.length - 1));
+        md.append("--- |");
+        md.append("\n");
+
+        // Rows
+        for (int i = 1; i < csv.size(); i++) {
+            String[] cells = csv.get(i).split(",");
+            md.append("| ");
+            md.append(Arrays.stream(cells)
+                    .map(String::trim)
+                    .collect(Collectors.joining(" | ")));
+            md.append(" |");
+            md.append("\n");
+        }
+
+        return md.toString();
+    }
+
+
+
     /*This was an old attempt at outputting pdfs using PDFbox. I kept this is here for artistic purposes.
     /**
      * <p> Exports all Statistics contained by this StatCollector as a single .pdf file. </p>
@@ -155,7 +373,7 @@ public class StatCollector {
 
             //Document Information
             PDDocumentInformation pddInfo = pdd.getDocumentInformation();
-            pddInfo.setAuthor(Documents.pdfAuthorShip);
+            pddInfo.setAuthor(Documents.PDF_AUTHOR_SHIP);
             pddInfo.setTitle(name);
             pddInfo.setSubject(subject);
             //sets the names of the statistics as the keywords.

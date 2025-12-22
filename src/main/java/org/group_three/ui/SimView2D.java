@@ -439,12 +439,10 @@ public class SimView2D {
             if(simcon.getTime() == 60){
                 simcon.queueryStatCollector();
                 simcon.printStats();
-                simcon.exportStats();
+                //simcon.exportStatstoPDF();
 
             }
         }
-
-
 
         updateVehicles(worldStaticRenderTarget);
 

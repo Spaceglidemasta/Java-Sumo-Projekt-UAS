@@ -223,22 +223,14 @@ public class SimController implements AutoCloseable{
         return sumoExe;
     }
 
-
-
-
-
-
-
-
-
-
-	/**
+    //this was migrated here, so the structure may be weird
+	/**<h2>loadSimulation</h2>
 	 * Gets called after selecting one or multiple Files. <br>
 	 * Loads the Simulation with the selected files and sets it to main.
 	 * @param paths A List of Paths to be opened via SimController(...)
 	 * @author Luca, Joel
 	 * */
-	public static boolean loadSimulation(List<File> paths) throws InvalidFilesSelected {
+	public static void loadSimulation(List<File> paths) throws InvalidFilesSelected {
 
 		File network = null;
 		File route = null;
@@ -247,14 +239,14 @@ public class SimController implements AutoCloseable{
 		switch (paths.size()) {
 			//No files selected => Exception
 			case 0:
-				Debug.toConsole("InvalidFilesSelected: No Files Selected");
+				log.severe("InvalidFilesSelected: No Files Selected");
 				throw new InvalidFilesSelected("No Files Selected");
 
 				//1 File selected => expect .sumocfg file
 			case 1:
 				//Throw custom exception if not .sumocfg file
 				if (!paths.getFirst().toString().matches(".*\\.sumocfg$")) {
-					Debug.toConsole("InvalidFilesSelected: Selected File is not of type .sumocfg");
+                    log.severe("InvalidFilesSelected: Selected File is not of type .sumocfg");
 					throw new InvalidFilesSelected("Selected File is not of type .sumocfg");
 				}
 				//convert path to a relative path based on the SumoConfig path
@@ -278,7 +270,7 @@ public class SimController implements AutoCloseable{
 				}
 				//throw custom error if they aren't
 				else {
-					Debug.toConsole("InvalidFilesSelected: Selected Files are of wrong format.");
+                    log.severe("InvalidFilesSelected: Selected Files are of wrong format.");
 					Debug.toConsole(paths);
 					throw new InvalidFilesSelected("Selected Files are of wrong format.");
 				}
@@ -287,11 +279,10 @@ public class SimController implements AutoCloseable{
 
 			// More than 2 files selected => throw custom error once again
 			default:
-				Debug.toConsole("InvalidFilesSelected: To many Files selected");
+                log.severe("InvalidFilesSelected: To many Files selected");
 				throw new InvalidFilesSelected("To many Files selected");
 
 		}
-
 
 		SimController simcon = null;
 		//check which constructor needs to be invoked
@@ -309,11 +300,10 @@ public class SimController implements AutoCloseable{
 				//you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
 				File net = PathUtils.getNetFromSCFG(config);
 				WEdge.loadRoads(simcon, net);
-				//WEdge.printAll();
-				//WEdge.getRoad("132964154").print();
+
 			}
 			catch (Exception e){
-				Debug.print("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
+                log.severe("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
 				e.printStackTrace();
 			}
 
@@ -328,21 +318,8 @@ public class SimController implements AutoCloseable{
 
 		WTrafficLight.loadAll(simcon);
 
-        /*
-        StaticTester.TableToCSVExample();
-        */
-
-
-		//simcon.saveState(".state.xml");
-
-
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
-
-		//DEPRECATED    VVVV         DONT USE
-		//StatUtils.exportState(PathUtils.outputgen());
-
-		return true;
 	}
 
 
@@ -677,10 +654,10 @@ public class SimController implements AutoCloseable{
         }
 
         statcol = new StatCollector(
-                "StatCollector_" + System.currentTimeMillis(),
+                "BasicStats",
                 vehStat.getFilteredRows(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255))),
-                edgeStat,
-                vehDensStat
+                edgeStat //,
+                //vehDensStat
         );
 
         log.fine("StatCollector assembling was successful.");
@@ -714,7 +691,9 @@ public class SimController implements AutoCloseable{
      * @see
      * @author Luca
      * */
-    public void exportStatstoPDF() {  }
+    public void exportStatstoPDF() {
+        statcol.exportAsPDF();
+    }
 
 
     /**

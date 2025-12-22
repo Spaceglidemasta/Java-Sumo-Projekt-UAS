@@ -141,7 +141,7 @@ public class ToolbarController {
 		if (mergedPath.toString().equals(loadedSimulation))
 			return; // ----------- add a check to not display the currently loaded file in recently opend
 
-		// Normally we would handle errors with booleans (like every professional C lib), but apparently we need custom Exceptions.
+
 		try {
 			SimController.loadSimulation(paths);
 			setLoadedSimulation(mergedPath.toString());

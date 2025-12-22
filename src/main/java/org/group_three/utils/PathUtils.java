@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -68,7 +67,7 @@ public final class PathUtils {
      * @author Luca
      * */
     public static Path prepareOutputPath(String filename) throws IOException {
-        Path outputDir = Path.of(Documents.outputDirName);
+        Path outputDir = Path.of(Documents.OUTPUT_DIR_NAME);
         Files.createDirectories(outputDir);
         return outputDir.resolve(filename);
     }
