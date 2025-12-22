@@ -2,7 +2,6 @@ package org.group_three.service;
 
 
 import org.group_three.api.SimController;
-import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.utils.Formatting;
 
@@ -10,10 +9,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -82,12 +78,12 @@ public class Statistic<T extends Record> extends Table<T> {
 
     /**
      * Gets the Rows where <code>attribute</code> is <code>target</code><br>
-     * @example "statcol" in {@link SimController#queueryStatCollector()}
+     * @example "statcol" in {@link SimController#queueryStats()}
      * @return The rows as Statistic
      * @param predic The expression to filter for
      * @author Luca
      * */
-    public Statistic<T> getFilteredRows(Predicate<T> predic){
+    public Statistic<T> filter(Predicate<T> predic){
 
         Statistic<T> stat = new Statistic<>(name + "_filtered", attributeNames);
 

@@ -1,11 +1,23 @@
 package org.group_three.constants;
 
+import org.group_three.constants.enums.CSSdoc;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.logging.Logger;
+
 public final class Documents {
+
+    private static final Logger log =
+            Logger.getLogger(Documents.class.getName());
+
     private Documents() {};
 
     public final static String OUTPUT_DIR_NAME = "output";
     public final static String PDF_AUTHOR_SHIP = "group_three";
     public final static String DOC_LOCATION = "src/main/resources/org/group_three/documents/";
+    public final static String STYLE_LOCATION = "src/main/resources/org/group_three/documents/style";
 
     public static final class Vars {
         public final static String HEADER = "{{H1}}";
@@ -18,19 +30,20 @@ public final class Documents {
     public static final String HTMLNEWPAGE = "<div class=\"page-break\"></div>";
 
     /**
-     * Wraps the body around a header containing the Style sheet.
+     * Wraps the body around a header containing a given Style sheet.
      * @param body the body as String
+     * @param style The stylesheet to be embedded.
      * @return the whole html document as String
      * @author Luca
      * */
-    public static String wrapHTMLbody(String body) {
+    public static String wrapHTMLbody(String body, CSSdoc style) throws IOException {
         return """
                 <!DOCTYPE html>
                 <html>
                 <head>
                     <meta charset="UTF-8" />
                     <style>
-                       \s""" + defaultCSS + """
+                       \s""" + getCSS(style) + """
                     </style>
                 </head>
                 <body>
@@ -40,9 +53,43 @@ public final class Documents {
                 """;
     }
 
+
+    public static String getCSS(CSSdoc select) throws IOException {
+
+        Path style = Path.of(STYLE_LOCATION);
+
+        switch (select) {
+
+            case YOUNG:
+                return Files.readString(
+                        style.resolve("young.css")
+                );
+
+            case SERIOUS:
+                return Files.readString(
+                        style.resolve("serious.css")
+                );
+
+            case MINIMALISTIC:
+                return Files.readString(
+                        style.resolve("minimalistic.css")
+                );
+
+            case NO_STYLE:
+                return "";
+
+            default:
+                return defaultCSS;
+
+        }
+
+
+
+    }
+
     /**
      * Default CSS String
-     * @see Documents#wrapHTMLbody(String)
+     * @see Documents#wrapHTMLbody(String, CSSdoc)
      * */
     private final static String defaultCSS =
                 """

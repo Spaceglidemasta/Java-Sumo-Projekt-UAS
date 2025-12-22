@@ -65,8 +65,10 @@ public class SimController implements AutoCloseable{
     private HashMap<String, WVehicle> allVehicles = new HashMap<>();
 
     //Statistics
-    private StatCollector statcol;
-    private long vehicleMaxDenseValue = 0;
+    private final StatCollector statcol = new StatCollector(
+            this,
+            "BasicStats"
+    );
 
 
 
@@ -631,17 +633,21 @@ public class SimController implements AutoCloseable{
      * @see Statistic
      * @author Luca
      * */
-    public void queueryStatCollector(){
+    public void queueryStats(){
 
         Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
         }
+        statcol.addStatistic(vehStat
+                .filter(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255)))
+        );
 
         Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
+        statcol.addStatistic(edgeStat);
 
         Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
                 getAllroads()
@@ -652,13 +658,7 @@ public class SimController implements AutoCloseable{
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
-
-        statcol = new StatCollector(
-                "BasicStats",
-                vehStat.getFilteredRows(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255))),
-                edgeStat //,
-                //vehDensStat
-        );
+        statcol.addStatistic(vehDensStat);
 
         log.fine("StatCollector assembling was successful.");
 
@@ -697,17 +697,13 @@ public class SimController implements AutoCloseable{
 
 
     /**
-     * Updates necessary Telemetry for the Statistic Collection.
+     * Collects necessary Telemetry for the Statistic Collection.
      * @author Luca
-     * @see WEdge#addVehDensityCount()
+     * @see StatCollector#collect()
      * */
-    public void updateTelemetry(){
+    public void collectTelemetry(){
 
-        vehicleMaxDenseValue += allVehicles.size();
-
-        for(WEdge edge : allroads.values()){
-            edge.addVehDensityCount();
-        }
+        statcol.collect();
 
     }
 
@@ -1277,9 +1273,7 @@ public class SimController implements AutoCloseable{
         return getAllroads().get(EID);
     }
 
-
-    public long getVehicleMaxDenseValue() { return vehicleMaxDenseValue; }
-
+    public StatCollector getStatcol() {return statcol; }
 
     public void setAllWTLs(List<WTrafficLight> allWTLs) {
         this.allWTLs = allWTLs;
