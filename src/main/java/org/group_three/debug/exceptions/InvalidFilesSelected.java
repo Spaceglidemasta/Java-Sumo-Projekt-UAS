@@ -5,7 +5,7 @@ package org.group_three.debug.exceptions;
  * were selected to Start a Simulation
  * @author Luca
  * */
-public class InvalidFilesSelected extends Exception{
+public class InvalidFilesSelected extends RuntimeException{
 
     public InvalidFilesSelected(){}
 

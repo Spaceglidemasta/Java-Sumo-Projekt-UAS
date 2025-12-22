@@ -1,6 +1,7 @@
 package org.group_three.service;
 
 
+import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.utils.Formatting;
@@ -63,12 +64,12 @@ public class Statistic<T extends Record> extends Table<T> {
     }
 
     /**
-     * Prints out the Statistic in the follow format:
-     * <code>name</code>:
+     * Prints out the Statistic in the following format: <p>
+     * <code>name</code>:</p> <p>
      * | Head1  | Head2  | ... <br>
      * ------------------- ...<br>
      * | value1 | value2 | ...<br>
-     * | ...<br>
+     * | ...</p>
      * @see Table#print()
      * @author Luca
      * */
@@ -81,7 +82,7 @@ public class Statistic<T extends Record> extends Table<T> {
 
     /**
      * Gets the Rows where <code>attribute</code> is <code>target</code><br>
-     * @example Statistic.getRowWhere("plz", 63165) → List("Mühlheim am Main", ...)
+     * @example "statcol" in {@link SimController#queueryStatCollector()}
      * @return The rows as Statistic
      * @param predic The expression to filter for
      * @author Luca
@@ -103,8 +104,6 @@ public class Statistic<T extends Record> extends Table<T> {
      * Writes the table to a CSV file into ./output/...
      * @param zos The ZipOutputStream to stream the table content to.
      * @return <code>true</code> if success, <code>false</code> if not.
-     * @sources <a href="https://stackoverflow.com/a/10667865">Stack Overflow Answer by "Addicted"</a>
-     *          <a href="https://stackoverflow.com/a/18571348">Stack Overflow Answer by "Stewart"</a>
      * @author Luca
      * */
     public boolean outAsZippedCSV(ZipOutputStream zos) {

@@ -8,13 +8,16 @@ import org.group_three.constants.enums.ValueStyle;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.annotations.PrintStyle;
+import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.service.StatCollector;
 import org.group_three.service.Statistic;
+import org.group_three.ui.SimView2D;
 import org.group_three.utils.Formatting;
+import org.group_three.utils.PathUtils;
 import org.group_three.utils.StatUtils;
 
 import java.io.File;
@@ -26,18 +29,23 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static org.group_three.utils.PathUtils.getRelativePath;
+
 /**
  * <h1>SimController</h1>
- * Class used to Connect & Control to SUMO via the TraaS API <br>
- * The constructor does everything that is connection-based for you,
- * you only need to simcon.close() the simulation after you are done. <br><br>
- * This class is also host to the all[...]s Lists / Hashmaps, which you
+ * <p> Class used to Connect & Control to SUMO via the TraaS API <p>
+ * <h2> Startup</h2>
+ * <p>The constructor does everything that is connection-based for you,
+ * you only need to pass the location of the Network- & Route files,
+ * or the SumoConfig. Default is <code>net.net.xml</code> and <code>net.rou.xml</code>.</p>
+ * <p>This class is also host to the all[...]s Lists / Hashmaps, which you
  * want to look into if you want to understand the inner workings of the
- * wrapper classes for the Objects contained by the simulation.
+ * wrapper classes for the Objects contained by the simulation. </p>
+ * <p>This Simulation implements AutoClosable via {@link #close()} </p>
  * @see org.group_three.model
  * @author Luca
  */
-public class SimController {
+public class SimController implements AutoCloseable{
 
     private static final Logger log =
             Logger.getLogger(SimController.class.getName());
@@ -215,6 +223,111 @@ public class SimController {
         return sumoExe;
     }
 
+    //this was migrated here, so the structure may be weird
+	/**<h2>loadSimulation</h2>
+	 * Gets called after selecting one or multiple Files. <br>
+	 * Loads the Simulation with the selected files and sets it to main.
+	 * @param paths A List of Paths to be opened via SimController(...)
+	 * @author Luca, Joel
+	 * */
+	public static void loadSimulation(List<File> paths) throws InvalidFilesSelected {
+
+		File network = null;
+		File route = null;
+		File config = null;
+
+		switch (paths.size()) {
+			//No files selected => Exception
+			case 0:
+				log.severe("InvalidFilesSelected: No Files Selected");
+				throw new InvalidFilesSelected("No Files Selected");
+
+				//1 File selected => expect .sumocfg file
+			case 1:
+				//Throw custom exception if not .sumocfg file
+				if (!paths.getFirst().toString().matches(".*\\.sumocfg$")) {
+                    log.severe("InvalidFilesSelected: Selected File is not of type .sumocfg");
+					throw new InvalidFilesSelected("Selected File is not of type .sumocfg");
+				}
+				//convert path to a relative path based on the SumoConfig path
+				config = paths.getFirst();
+				break;
+
+			//2 Files selected => expect route and network file
+			case 2:
+				// check if both filetypes are present, and in which order
+				if (       paths.get(0).toString().matches(".*\\.net\\.xml$")
+						&& paths.get(1).toString().matches(".*\\.rou\\.xml$")) {
+					//convert path to a relative path based on the SumoConfig path
+					network = paths.get(0);
+					route = paths.get(1);
+
+				} else if (paths.get(0).toString().matches(".*\\.rou\\.xml$")
+						&& paths.get(1).toString().matches(".*\\.net\\.xml$")) {
+					//convert path to a relative path based on the SumoConfig path
+					route = paths.get(0);
+					network = paths.get(1);
+				}
+				//throw custom error if they aren't
+				else {
+                    log.severe("InvalidFilesSelected: Selected Files are of wrong format.");
+					Debug.toConsole(paths);
+					throw new InvalidFilesSelected("Selected Files are of wrong format.");
+				}
+
+				break;
+
+			// More than 2 files selected => throw custom error once again
+			default:
+                log.severe("InvalidFilesSelected: To many Files selected");
+				throw new InvalidFilesSelected("To many Files selected");
+
+		}
+
+		SimController simcon = null;
+		//check which constructor needs to be invoked
+		if (config != null) {
+			simcon = new SimController(getRelativePath(config.getAbsolutePath()));
+		} else {
+			simcon = new SimController( getRelativePath(network.getAbsolutePath()),
+					getRelativePath(route.getAbsolutePath()));
+		}
+
+		//load road network
+		if(config != null){
+
+			try {
+				//you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
+				File net = PathUtils.getNetFromSCFG(config);
+				WEdge.loadRoads(simcon, net);
+
+			}
+			catch (Exception e){
+                log.severe("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
+				e.printStackTrace();
+			}
+
+		}  else {
+			WEdge.loadRoads(simcon, network);
+		}
+
+		//set selected simulation as the main, global / static simulation.
+		simcon.setAsMainsimcon(true);
+
+		WPolygon.loadAllPolys(simcon);
+
+		WTrafficLight.loadAll(simcon);
+
+		// Create a new World for the opened simulation
+		SimView2D.newWorld();
+	}
+
+
+
+
+
+
+
 
 
 
@@ -278,10 +391,12 @@ public class SimController {
 
 
 
-    /**
-     * closes the SumoTraciConnection
+    /**<h2>close</h2>
+     * <p>Overrides {@link AutoCloseable#close()}</p>
+     * - and closes the SumoTraciConnection.
      * @author Luca
      * */
+    @Override
     public void close(){
 
         try {
@@ -516,14 +631,14 @@ public class SimController {
      * @see Statistic
      * @author Luca
      * */
-    public void finishStatCollector(){
+    public void queueryStatCollector(){
 
         Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
         }
 
-        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
@@ -539,10 +654,10 @@ public class SimController {
         }
 
         statcol = new StatCollector(
-                "StatCollector_" + System.currentTimeMillis(),
+                "BasicStats",
                 vehStat.getFilteredRows(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255))),
-                edgeStat,
-                vehDensStat
+                edgeStat //,
+                //vehDensStat
         );
 
         log.fine("StatCollector assembling was successful.");
@@ -564,12 +679,20 @@ public class SimController {
 
     }
 
-    /**Exports the Stat Collection to a .gz.tar
+    /**Exports the Stat Collection to a .zip
      * @see StatCollector#exportAsZip()
      * @author Luca
      * */
     public void exportStats(){
         statcol.exportAsZip();
+    }
+
+    /**Exports the Stat Collection to a .pdf
+     * @see
+     * @author Luca
+     * */
+    public void exportStatstoPDF() {
+        statcol.exportAsPDF();
     }
 
 
