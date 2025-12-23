@@ -31,6 +31,7 @@
 		</dependency>
 
         <!-- Markdown -> HTML, vulnerability doesnt effect us -->
+        <!-- We tried using "flexmark" without all, but "-all" has the table renderer. -->
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
             <artifactId>flexmark-all</artifactId>

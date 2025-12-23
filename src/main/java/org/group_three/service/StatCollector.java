@@ -3,12 +3,14 @@ package org.group_three.service;
 
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import com.sun.glass.ui.GlassRobot;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.options.MutableDataSet;
+import org.group_three.api.SimController;
 import org.group_three.constants.Documents;
+import org.group_three.constants.enums.CSSdoc;
+import org.group_three.model.WEdge;
 import org.group_three.utils.Formatting;
 import org.group_three.utils.PathUtils;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -37,43 +39,41 @@ public class StatCollector {
     private static final Logger log =
             Logger.getLogger(StatCollector.class.getName());
 
-
+    //Style
     private String name;
     private List<String> description;
+    private CSSdoc cssStyle = CSSdoc.DEFAULT;
+    
+    //functionality
     private List<Statistic<?>> statistics;
+    private SimController simcon = null;
 
-    public StatCollector(String name, Statistic<?> ... args) {
+    // Statistic Variables
+    private long vehicleMaxDenseValue = 0;
+    
+
+
+
+    public StatCollector(SimController simcon, String name, Statistic<?> ... args) {
+        this.simcon = simcon;
         this.name = name;
         //List.of is immutable -> pass it into ArrayList<> init to make it mutable.
         this.statistics = new ArrayList<>(List.of(args));
         this.description = new ArrayList<>();
     }
 
-    /**
-     * Adds a <code>Statistic</code> to the Collector
-     * @param stat The Statistic to Add
-     * @return the length of the collector-array after insertion
-     * @author Luca
-     * */
-    public int addStatistic(Statistic<?> stat){
-        statistics.add(stat);
-        return statistics.size();
-    }
+
 
     public List<String> getDescription() {return description;}
 
     public void setDescription(List<String> paragraphs) {this.description = paragraphs;}
 
+    public SimController getSimcon() {
+        return simcon;
+    }
 
-    /**Adds a paragraph to the description.
-     * @param paragraph The paragraph to be added.
-     * @return the size of the description after insertion.
-     * @author Luca
-     * @see StatCollector#setDescription(List)
-     * */
-    public int addDescriptionParagraph(String paragraph) {
-        description.add(paragraph);
-        return description.size();
+    public void setSimcon(SimController simcon) {
+        this.simcon = simcon;
     }
 
     public void setName(String name) {this.name = name;}
@@ -83,6 +83,38 @@ public class StatCollector {
     }
 
     public int getStatisticsCount(){return statistics.size();}
+
+    public long getVehicleMaxDenseValue() {
+        return vehicleMaxDenseValue;
+    }
+
+    public void setVehicleMaxDenseValue(long vehicleMaxDenseValue) {
+        this.vehicleMaxDenseValue = vehicleMaxDenseValue;
+    }
+
+    public CSSdoc getCssStyle() {
+        return cssStyle;
+    }
+
+    public void setCssStyle(CSSdoc cssStyle) {
+        this.cssStyle = cssStyle;
+    }
+
+    /**
+     * Collect the data needed for most Statistics. Need to be called every step.
+     * @see SimController#collectTelemetry()
+     * @author Luca
+     * */
+    public void collect(){
+
+        vehicleMaxDenseValue += simcon.getAllVehicles().size();
+
+        for(WEdge edge : simcon.getAllroads().values()){
+            edge.addVehDensityCount();
+        }
+
+
+    }
 
     /**
      * Prints the whole Statistic Collection.
@@ -96,8 +128,27 @@ public class StatCollector {
         }
     }
 
+    /**Adds a paragraph to the description.
+     * @param paragraph The paragraph to be added.
+     * @return the size of the description after insertion.
+     * @author Luca
+     * @see StatCollector#setDescription(List)
+     * */
+    public int addDescriptionParagraph(String paragraph) {
+        description.add(paragraph);
+        return description.size();
+    }
 
-
+    /**
+     * Adds a <code>Statistic</code> to the Collector
+     * @param stat The Statistic to Add
+     * @return the length of the collector-array after insertion
+     * @author Luca
+     * */
+    public int addStatistic(Statistic<?> stat){
+        statistics.add(stat);
+        return statistics.size();
+    }
 
     /**<h2>exportAsZip</h2>
      * Exports the Statistics contained by this StatCollector to one zipped folder in output.
@@ -131,11 +182,19 @@ public class StatCollector {
 
     }
 
+    // ******************************************************
+    // **                   PDF SECTION                    **
+    // ******************************************************
+
+
     /**
-     * Exports the bundle of statistics into a single PDF document.
+     * Exports the bundle of statistics into a single PDF document. <br>
+     * Select the CSS Style of the document via {@link StatCollector#setCssStyle(CSSdoc)}
      * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
+    //TODO Add up duplicates
+    //TODO normalize for missing vehicles
     public boolean exportAsPDF() {
 
         try {
@@ -143,6 +202,7 @@ public class StatCollector {
             String templatemd = Files.readString(
                     Path.of(Documents.DOC_LOCATION + "template.md")
             );
+            //very important. Your table syntax can be perfect, but you need this renderer.
             MutableDataSet options = new MutableDataSet();
             options.set(Parser.EXTENSIONS, List.of(TablesExtension.create()));
 
@@ -160,16 +220,17 @@ public class StatCollector {
             Node document = parser.parse(finished);
 
             String body = hrenderer.render(document);
-            //                                                      remove quotes from data
-            String html = Documents.wrapHTMLbody(body.replaceAll("&quot;", ""));
+
+            String html = Documents.wrapHTMLbody(
+                    body.replaceAll("&quot;", ""), //remove quotes from data
+                    cssStyle
+            );
 
             Path out = PathUtils.prepareOutputPath(
                     Formatting.uniquegen(name, ".pdf")
             );
 
-            buildPDF(html, out);
-
-            log.info("Statistics of " + name + " were exported as a PDF successfully.");
+            if (buildPDF(html, out)) log.info("Statistics of " + name + " were exported as a PDF successfully.");
 
 
         } catch (IOException e) {
@@ -192,17 +253,26 @@ public class StatCollector {
      * @author Luca
      * @see StatCollector#exportAsPDF()
      * */
-    private void buildPDF(String html, Path out) throws IOException {
+    private boolean buildPDF(String html, Path out) {
 
-        OutputStream os = Files.newOutputStream(out);
+        try (
+                OutputStream os = Files.newOutputStream(out)
+        ) {
+            PdfRendererBuilder builder = new PdfRendererBuilder();
 
-        PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.withHtmlContent(html, null);
 
-        builder.withHtmlContent(html, null);
+            builder.toStream(os);
 
-        builder.toStream(os);
+            builder.run(); //this may throw
 
-        builder.run(); //this may throw
+            return true;
+
+        } catch (IOException e) {
+            log.log(Level.WARNING, "Building PDF failed: ", e);
+            return false;
+        }
+
     }
 
     /**
@@ -227,7 +297,7 @@ public class StatCollector {
                 Documents.Vars.TABLEOFCONTENT,
                 Documents.wrapStrings(
                         statistics.stream()
-                                .map(stat -> stat.getName())
+                                .map(Statistic::getName) //IntelliJ bullied my lambda :(
                                 .toList(),
                         "- ",
                         "\n"
@@ -298,7 +368,7 @@ public class StatCollector {
 
     /**
      * Converts a csv Table to a Markdown table
-     * @param csv The csv Table where each row is one element
+     * @param csv The csv Table where each row is one element, and the header is the first
      * @return the table in Markdown format
      * @author Luca
      * @see Formatting#toCSVformat(List)
@@ -322,7 +392,7 @@ public class StatCollector {
         md.append("--- |");
         md.append("\n");
 
-        // Rows
+        // Stats
         for (int i = 1; i < csv.size(); i++) {
             String[] cells = csv.get(i).split(",");
             md.append("| ");
@@ -335,6 +405,10 @@ public class StatCollector {
 
         return md.toString();
     }
+
+
+
+
 
 
 
