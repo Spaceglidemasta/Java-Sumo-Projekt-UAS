@@ -557,7 +557,17 @@ public class SimController implements AutoCloseable{
             edgeStat.add(erec);
         }
         statcol.addStatistic(
-                edgeStat.sortBy(EdgeRec::usage)
+                edgeStat
+                        .aggregate(
+                                EdgeRec::name,
+                                (a,b) -> new EdgeRec(
+                                        a.name(),
+                                        a.usage() + b.usage(),
+                                        a.length() + b.length()
+
+                                )
+                        )
+                        .sortBy(EdgeRec::usage)
         );
 
         Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",

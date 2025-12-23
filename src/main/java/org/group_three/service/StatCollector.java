@@ -225,13 +225,13 @@ public class StatCollector {
                     cssStyle
             );
 
-            System.out.println(html);//comment out later
+            String filename =  Formatting.uniquegen(name, ".pdf");
 
             Path out = PathUtils.prepareOutputPath(
-                    Formatting.uniquegen(name, ".pdf")
+                    filename
             );
 
-            if (buildPDF(html, out)) log.info("Statistics of " + name + " were exported as a PDF successfully.");
+            if (buildPDF(html, out)) log.info("Statistics of " + filename + " were exported as a PDF successfully.");
 
 
         } catch (IOException e) {
