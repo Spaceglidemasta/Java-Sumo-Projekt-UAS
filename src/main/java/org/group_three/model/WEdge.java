@@ -78,10 +78,10 @@ public class WEdge extends WObject{
      * @return mean of relative load / occupancy ratio
      * @author Luca
      * @see WEdge#getVehDensityPerStep()
-     * @see SimController#getVehicleMaxDenseValue()
+     * @see org.group_three.service.StatCollector#()
      * */
     public double getOccupancyRatio(){
-        return (double) getVehDensitySum() / simcon.getVehicleMaxDenseValue();
+        return (double) getVehDensitySum() / simcon.getStatcol().getVehicleMaxDenseValue();
     }
 
     /**
