@@ -39,14 +39,18 @@ public class StatCollector {
     private static final Logger log =
             Logger.getLogger(StatCollector.class.getName());
 
-
+    //Style
     private String name;
     private List<String> description;
+    private CSSdoc cssStyle = CSSdoc.DEFAULT;
+    
+    //functionality
     private List<Statistic<?>> statistics;
     private SimController simcon = null;
 
     // Statistic Variables
     private long vehicleMaxDenseValue = 0;
+    
 
 
 
@@ -86,6 +90,14 @@ public class StatCollector {
 
     public void setVehicleMaxDenseValue(long vehicleMaxDenseValue) {
         this.vehicleMaxDenseValue = vehicleMaxDenseValue;
+    }
+
+    public CSSdoc getCssStyle() {
+        return cssStyle;
+    }
+
+    public void setCssStyle(CSSdoc cssStyle) {
+        this.cssStyle = cssStyle;
     }
 
     /**
@@ -176,7 +188,8 @@ public class StatCollector {
 
 
     /**
-     * Exports the bundle of statistics into a single PDF document.
+     * Exports the bundle of statistics into a single PDF document. <br>
+     * Select the CSS Style of the document via {@link StatCollector#setCssStyle(CSSdoc)}
      * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
@@ -210,7 +223,7 @@ public class StatCollector {
 
             String html = Documents.wrapHTMLbody(
                     body.replaceAll("&quot;", ""), //remove quotes from data
-                    CSSdoc.DEFAULT
+                    cssStyle
             );
 
             Path out = PathUtils.prepareOutputPath(

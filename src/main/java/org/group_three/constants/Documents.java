@@ -53,37 +53,29 @@ public final class Documents {
                 """;
     }
 
-
+    /** Reads out the requested css style sheet and returns it as String parsing into an HTML style.
+     * @param select a CSSdoc Enum representing the requested Style sheet
+     * @return the Style sheet as String
+     * @see Documents#wrapHTMLbody(String, CSSdoc) 
+     * @author Luca
+     * */
     public static String getCSS(CSSdoc select) throws IOException {
 
         Path style = Path.of(STYLE_LOCATION);
 
-        switch (select) {
-
-            case YOUNG:
-                return Files.readString(
-                        style.resolve("young.css")
-                );
-
-            case SERIOUS:
-                return Files.readString(
-                        style.resolve("serious.css")
-                );
-
-            case MINIMALISTIC:
-                return Files.readString(
-                        style.resolve("minimalistic.css")
-                );
-
-            case NO_STYLE:
-                return "";
-
-            default:
-                return defaultCSS;
-
-        }
-
-
+        return switch (select) {
+            case YOUNG -> Files.readString(
+                    style.resolve("young.css")
+            );
+            case SERIOUS -> Files.readString(
+                    style.resolve("serious.css")
+            );
+            case MINIMALISTIC -> Files.readString(
+                    style.resolve("minimalistic.css")
+            );
+            case NO_STYLE -> "";
+            default -> defaultCSS;
+        };
 
     }
 
@@ -119,7 +111,7 @@ public final class Documents {
                 
                 table tr td {
                     padding: 10px;
-                    border-bottom: 1px solid #ddd;\s
+                    border-bottom: 1px solid #ddd;
                 
                 }
                 """;

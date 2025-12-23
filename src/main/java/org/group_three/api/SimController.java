@@ -613,7 +613,10 @@ public class SimController implements AutoCloseable{
 
                 }
 
-                VehDensPerSecond densrec = new VehDensPerSecond( vehDenseThisStep.stream().mapToInt(i->i).toArray());
+                VehDensPerSecond densrec = new VehDensPerSecond(
+                        vehDenseThisStep.stream().mapToInt(
+                                i->i
+                        ).toArray());
 
                 data.add(densrec);
             }
@@ -641,6 +644,7 @@ public class SimController implements AutoCloseable{
         }
         statcol.addStatistic(vehStat
                 .filter(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255)))
+                .sortBy(VehicleRec::avgspeed)
         );
 
         Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
