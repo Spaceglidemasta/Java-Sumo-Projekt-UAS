@@ -289,11 +289,19 @@ public class SimController implements AutoCloseable{
 		SimController simcon = null;
 		//check which constructor needs to be invoked
 		if (config != null) {
+
 			simcon = new SimController(getRelativePath(config.getAbsolutePath()));
-		} else {
+
+		} else  if(route != null && network != null){
+
 			simcon = new SimController( getRelativePath(network.getAbsolutePath()),
 					getRelativePath(route.getAbsolutePath()));
-		}
+
+		} else {
+
+            log.severe("There was a problem initialising the SimController: route and / or network are null.");
+            return;
+        }
 
 		//load road network
 		if(config != null){
@@ -323,14 +331,6 @@ public class SimController implements AutoCloseable{
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
 	}
-
-
-
-
-
-
-
-
 
 
     /**
@@ -371,8 +371,7 @@ public class SimController implements AutoCloseable{
 
         return true;
     }
-
-
+    
     /**
      * Sets the Time of the Simulation to (time), needs to be in the Future.
      * @param time The time in the future to travel to.
@@ -390,8 +389,6 @@ public class SimController implements AutoCloseable{
 
         return true;
     }
-
-
 
     /**<h2>close</h2>
      * <p>Overrides {@link AutoCloseable#close()}</p>
@@ -692,10 +689,10 @@ public class SimController implements AutoCloseable{
     }
 
     /**Exports the Stat Collection to a .pdf
-     * @see
+     * @see StatCollector#exportAsPDF()
      * @author Luca
      * */
-    public void exportStatstoPDF() {
+    public void exportStatsToPDF() {
         statcol.exportAsPDF();
     }
 
