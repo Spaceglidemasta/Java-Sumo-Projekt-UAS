@@ -216,7 +216,6 @@ public class StatCollector {
             String finished = buildMainBody(withFrontpage);
 
             //finish the build
-
             Node document = parser.parse(finished);
 
             String body = hrenderer.render(document);
@@ -226,11 +225,13 @@ public class StatCollector {
                     cssStyle
             );
 
+            String filename =  Formatting.uniquegen(name, ".pdf");
+
             Path out = PathUtils.prepareOutputPath(
-                    Formatting.uniquegen(name, ".pdf")
+                    filename
             );
 
-            if (buildPDF(html, out)) log.info("Statistics of " + name + " were exported as a PDF successfully.");
+            if (buildPDF(html, out)) log.info("Statistics of " + filename + " were exported as a PDF successfully.");
 
 
         } catch (IOException e) {

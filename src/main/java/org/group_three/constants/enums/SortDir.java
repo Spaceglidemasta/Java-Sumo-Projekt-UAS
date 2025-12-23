@@ -1,6 +1,6 @@
 package org.group_three.constants.enums;
 
-public enum Sort {
+public enum SortDir {
     ASC,
     DESC,
 }

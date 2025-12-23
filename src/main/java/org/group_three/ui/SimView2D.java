@@ -435,13 +435,6 @@ public class SimView2D {
             WVehicle.loadnupdateAll(simcon);
             simcon.collectTelemetry();
 
-            //temporary for testing
-            if(simcon.getTime() == 60){
-                simcon.queueryStats();
-                //simcon.printStats();
-                simcon.exportStatstoPDF();
-
-            }
         }
 
         updateVehicles(worldStaticRenderTarget);
