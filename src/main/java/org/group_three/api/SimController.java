@@ -4,7 +4,7 @@ import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
-import org.group_three.constants.enums.ValueStyle;
+import org.group_three.constants.enums.AttributeStyle;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.annotations.PrintStyle;
@@ -15,6 +15,9 @@ import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.service.StatCollector;
 import org.group_three.service.Statistic;
+import org.group_three.service.records.EdgeRec;
+import org.group_three.service.records.VehDensPerSecond;
+import org.group_three.service.records.VehicleRec;
 import org.group_three.ui.SimView2D;
 import org.group_three.utils.Formatting;
 import org.group_three.utils.PathUtils;
@@ -371,7 +374,7 @@ public class SimController implements AutoCloseable{
 
         return true;
     }
-    
+
     /**
      * Sets the Time of the Simulation to (time), needs to be in the Future.
      * @param time The time in the future to travel to.
@@ -529,101 +532,6 @@ public class SimController implements AutoCloseable{
     //create an abstract "GeneralRecord" with collect(), which then gets overridden by
     //its children. It wouldn't improve code anyway.
 
-    /**<h2>VehicleRec</h2>
-     * Record for holding Vehicle Data. Includes a collect method which is used
-     * to collect necessary data.
-     * @see WVehicle
-     * @author Luca
-     * */
-    public record VehicleRec(String vehID, double avgspeed, SumoColor color) {
-
-        public static List<VehicleRec> collect(SimController simcon){
-
-            List<VehicleRec> data = new ArrayList<>();
-
-            for(WVehicle wveh : simcon.getAllVehicles().values()){
-
-                VehicleRec vrec = new VehicleRec(
-                        wveh.getID(),
-                        wveh.getAvgSpeed(),
-                        wveh.getColor()
-                );
-
-                data.add(vrec);
-
-            }
-
-            return data;
-        }
-
-    }
-
-    /**<h2>EdgeRec</h2>
-     * Record for holding Edge Data. Includes a collect method which is used
-     * to collect necessary data.
-     * @see WEdge
-     * @author Luca
-     * */
-    public record EdgeRec(String name, double usage, double length) {
-
-        public static List<EdgeRec> collect(SimController simcon){
-
-            List<EdgeRec> data = new ArrayList<>();
-
-            for(WEdge wEdge : simcon.getAllroads().values()){
-
-                EdgeRec vrec = new EdgeRec(
-                        wEdge.getName(),
-                        wEdge.getOccupancyRatio(),
-                        wEdge.getLength()
-                );
-
-                data.add(vrec);
-
-            }
-
-            return data;
-        }
-
-
-    }
-
-    /**<h2>VehDensPerSecond</h2>
-     * Record for holding the Vehicle Density of each road per second.
-     * @see WEdge
-     * @author Luca
-     * */
-    public record VehDensPerSecond(@PrintStyle(ValueStyle.COLUMN) int ... vehicles_on_edges) {
-
-        public static List<VehDensPerSecond> collect(SimController simcon){
-
-            List<VehDensPerSecond> data = new ArrayList<>();
-
-
-            for(int step = 0; step < simcon.getTime() - 1; step++){
-
-                List<Integer> vehDenseThisStep = new ArrayList<>();
-
-                for(WEdge wEdge : simcon.getAllroads().values()){
-
-                    vehDenseThisStep.add(wEdge.getVehDensityPerStep().get(step));
-
-                }
-
-                VehDensPerSecond densrec = new VehDensPerSecond(
-                        vehDenseThisStep.stream().mapToInt(
-                                i->i
-                        ).toArray());
-
-                data.add(densrec);
-            }
-
-            return data;
-        }
-
-
-    }
-
     /**<h2>finishStatCollector</h2>
      * Finishes the StatCollector attribute.
      * <p>Uses the records defined at the top as types for the Statistic Template.
@@ -640,7 +548,7 @@ public class SimController implements AutoCloseable{
             vehStat.add(vrec);
         }
         statcol.addStatistic(vehStat
-                .filter(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255)))
+                .filter(r -> StatUtils.equalSColor(r.color(), new SumoColor(255,0,0,255)))
                 .sortBy(VehicleRec::avgspeed)
         );
 
@@ -648,7 +556,9 @@ public class SimController implements AutoCloseable{
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
-        statcol.addStatistic(edgeStat);
+        statcol.addStatistic(
+                edgeStat.sortBy(EdgeRec::usage)
+        );
 
         Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
                 getAllroads()
@@ -659,7 +569,7 @@ public class SimController implements AutoCloseable{
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
-        statcol.addStatistic(vehDensStat);
+        //statcol.addStatistic(vehDensStat);
 
         log.fine("StatCollector assembling was successful.");
 
@@ -676,7 +586,6 @@ public class SimController implements AutoCloseable{
         } catch (Exception e){
             log.warning("Printing Stat collection failed: " + Arrays.toString(e.getStackTrace()));
         }
-
 
     }
 

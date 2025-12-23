@@ -216,7 +216,6 @@ public class StatCollector {
             String finished = buildMainBody(withFrontpage);
 
             //finish the build
-
             Node document = parser.parse(finished);
 
             String body = hrenderer.render(document);
@@ -225,6 +224,8 @@ public class StatCollector {
                     body.replaceAll("&quot;", ""), //remove quotes from data
                     cssStyle
             );
+
+            System.out.println(html);//comment out later
 
             Path out = PathUtils.prepareOutputPath(
                     Formatting.uniquegen(name, ".pdf")

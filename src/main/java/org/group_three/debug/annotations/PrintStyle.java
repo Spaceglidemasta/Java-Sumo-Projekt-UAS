@@ -2,7 +2,7 @@ package org.group_three.debug.annotations;
 
 
 
-import org.group_three.constants.enums.ValueStyle;
+import org.group_three.constants.enums.AttributeStyle;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -13,11 +13,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * This annotation allows for Stylisation of Lists as Record-Components
- * @see ValueStyle
+ * @see AttributeStyle
  * @author Luca
  * */
 @Retention(RUNTIME)
 @Target(RECORD_COMPONENT)
 public @interface PrintStyle {
-    ValueStyle value();
+    AttributeStyle value();
 }
