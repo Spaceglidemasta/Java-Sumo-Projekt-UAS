@@ -568,6 +568,7 @@ public class SimController implements AutoCloseable{
                                 )
                         )
                         .sortBy(EdgeRec::usage)
+                        .filter( r -> r.length() > 1000)
         );
 
         Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
