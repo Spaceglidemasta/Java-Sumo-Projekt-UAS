@@ -42,7 +42,7 @@ public class StatCollector {
     //Style
     private String name;
     private List<String> description;
-    private CSSdoc cssStyle = CSSdoc.DEFAULT;
+    private CSSdoc cssStyle = CSSdoc.MINIMALISTIC;
     
     //functionality
     private List<Statistic<?>> statistics;

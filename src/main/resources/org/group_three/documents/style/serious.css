@@ -1,0 +1,61 @@
+@page {
+    @bottom-center {
+    content:  counter(page) " / " counter(pages);
+    }
+}
+
+.page-break {
+    page-break-before: always;
+    page-break-after: always;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    margin: 40px;
+    line-height: 1.7;
+    color: #2c3e50;
+    background-color: #eeeeee;
+}
+
+h1 {
+    color: #1a1a1a;
+    text-align: center;
+    font-size: 48px;
+    font-family: 'Playfair Display', serif;
+    border-bottom: 3px solid #dcdcdc;
+}
+
+h2 {
+    color: #34495e;
+    font-size: 28px;
+    font-family: 'Merriweather', serif;
+    margin-top: 40px;
+    border-left: 3px solid #bdc3c7;
+    padding-left: 10px;
+}
+
+table {
+    width: 60%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-family: 'Georgia', serif;
+    background-color: #ffffff;
+}
+
+th {
+    background-color: #e3e3e3;
+    color: #2c3e50;
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 600;
+    border-bottom: 2px solid #bdc3c7;
+}
+
+td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 16px;
+    color: #34495e;
+}
