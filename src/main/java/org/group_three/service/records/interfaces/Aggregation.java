@@ -7,6 +7,7 @@ package org.group_three.service.records.interfaces;
  * article for Inspiration</p>
  * @author Luca
  * */
+@Deprecated
 public interface Aggregation<T extends Aggregation<T>> {
 
     /**
