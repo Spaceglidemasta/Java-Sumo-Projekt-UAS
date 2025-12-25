@@ -6,8 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 // import java.io.IOException; for what was that?
 
+import de.tudresden.sumo.objects.SumoColor;
+import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.Console;
@@ -18,6 +21,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
+import org.group_three.model.WEdge;
+import org.group_three.model.WVehicle;
+import org.group_three.service.StressTest;
 import org.group_three.ui.SimView2D;
 
 /**
@@ -345,51 +351,14 @@ public class ToolbarController {
 		console.show();
 	}
 
+    /**
+     * Function to perform a stresstest
+     *
+     * @author Leon
+     */
     @FXML
     private void onStressTestClick(){
-            SimController simcon = SimController.getMainsimcon();
-
-            if(simcon == null){
-                Debug.print("Main Simcon instance is null");
-                return;
-            }
-
-            List<WEdge> roads = simcon.getAllroads().values().stream().toList();
-
-            for (int i = (int) simcon.getNetworkLength(); i >= 99; i = i-100){
-                SumoStringList strings = new SumoStringList();
-
-                String routeId = null;
-
-                for(int j = 0; j < 2; j++) {
-                    int randomStart = ThreadLocalRandom.current().nextInt(roads.size());
-                    strings.add(roads.get(randomStart).getId());
-
-                    int randomEnd = ThreadLocalRandom.current().nextInt(roads.size());
-                    strings.add(roads.get(randomEnd).getId());
-
-                    routeId = SimController.getMainsimcon().addRoute(strings);
-
-                    if(routeId != null){
-                        break;
-                    }
-                }
-
-                if (routeId != null) {
-                    Debug.print("Try Create Veh: " + routeId);
-                    WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
-                            "DEFAULT_VEHTYPE",
-                            routeId,
-                            0,
-                            0,
-                            10
-                            ,0
-                    );
-                    if (wVehicle != null) wVehicle.setColor(new SumoColor(255,255,255,255));
-                }
-
-            }
-
+        new StressTest().Test();
         }
 
 	/**
