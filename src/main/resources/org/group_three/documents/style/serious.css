@@ -26,6 +26,7 @@ h1 {
 }
 
 h2 {
+    text-align: center;
     color: #34495e;
     font-size: 28px;
     font-family: 'Merriweather', serif;
@@ -35,6 +36,7 @@ h2 {
 }
 
 table {
+    margin: auto;
     width: 60%;
     border-collapse: collapse;
     margin-bottom: 30px;
