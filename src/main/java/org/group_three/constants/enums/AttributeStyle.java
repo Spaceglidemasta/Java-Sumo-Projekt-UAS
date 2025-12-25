@@ -6,7 +6,7 @@ package org.group_three.constants.enums;
  * @author Luca
  * @see org.group_three.debug.annotations.PrintStyle
  * */
-public enum ValueStyle {
+public enum AttributeStyle {
     ///  as one value
     VALUE,
     /// each entry as its own column

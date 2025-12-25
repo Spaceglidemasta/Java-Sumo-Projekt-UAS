@@ -19,7 +19,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import org.group_three.ui.SimView2D;
-import org.group_three.utils.Formatting;
 
 /**
  * Controller for the toolbar to manage button interactions,
@@ -283,6 +282,8 @@ public class ToolbarController {
 	private void onSimulationExportClicked() {
 		Debug.toConsole("Simulation -> Export");
 
+        /*
+
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Export simulation");
 
@@ -308,6 +309,19 @@ public class ToolbarController {
 
 			SimController.getMainsimcon().saveState(fileExtension);
 		}
+
+		*/
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon != null){
+
+            simcon.queueryStats();
+            //simcon.printStats();
+            simcon.exportStatsToPDF();
+
+        }
+
 	}
 
 	/**

@@ -1,28 +1,17 @@
 package org.group_three.service;
 
-import com.sun.jdi.InvalidTypeException;
-import javafx.scene.control.Tab;
-import org.group_three.constants.enums.ValueStyle;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.annotations.PrintStyle;
-import org.group_three.debug.exceptions.InvalidArgumentCount;
 import org.group_three.utils.Formatting;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 import java.util.logging.Logger;
-
-import static org.group_three.utils.Formatting.arrayToString;
 
 /**
  * <h1>Table</h1>
