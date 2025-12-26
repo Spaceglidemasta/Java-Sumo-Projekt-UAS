@@ -30,6 +30,21 @@
 			<version>${javafx.version}</version>
 		</dependency>
 
+        <!-- Markdown -> HTML, vulnerability doesnt effect us -->
+        <!-- We tried using "flexmark" without all, but "-all" has the table renderer. -->
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>0.42.14</version>
+        </dependency>
+
+        <!-- HTML -> PDF -->
+        <dependency>
+            <groupId>com.openhtmltopdf</groupId>
+            <artifactId>openhtmltopdf-pdfbox</artifactId>
+            <version>1.0.10</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.eclipse.sumo</groupId>

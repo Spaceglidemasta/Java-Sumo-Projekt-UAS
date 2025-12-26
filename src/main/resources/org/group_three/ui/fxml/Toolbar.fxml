@@ -53,6 +53,7 @@
       <Menu mnemonicParsing="false" text="Settings">
           <items>
                <MenuItem mnemonicParsing="false" onAction="#onConsoleOpen" text="Open Console" />
+              <MenuItem mnemonicParsing="false" onAction="#onStressTestClick" text="Stress Test" />
           </items>
       </Menu>
     <Menu mnemonicParsing="false" onAction="#onHelpClicked" text="Help" />

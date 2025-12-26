@@ -5,23 +5,26 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 // import java.io.IOException; for what was that?
 
+import de.tudresden.sumo.objects.SumoColor;
+import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.Console;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
-import org.group_three.ui.FakeInteractions;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
+import org.group_three.model.WEdge;
+import org.group_three.model.WVehicle;
+import org.group_three.service.StressTest;
 import org.group_three.ui.SimView2D;
-import org.group_three.utils.Formatting;
 
 /**
  * Controller for the toolbar to manage button interactions,
@@ -143,9 +146,9 @@ public class ToolbarController {
 		if (mergedPath.toString().equals(loadedSimulation))
 			return; // ----------- add a check to not display the currently loaded file in recently opend
 
-		// Normally we would handle errors with booleans (like every professional C lib), but apparently we need custom Exceptions.
+
 		try {
-			FakeInteractions.loadSimulation(paths);
+			SimController.loadSimulation(paths);
 			setLoadedSimulation(mergedPath.toString());
 		} catch (InvalidFilesSelected ifs) {
 			ifs.printStackTrace();
@@ -285,6 +288,8 @@ public class ToolbarController {
 	private void onSimulationExportClicked() {
 		Debug.toConsole("Simulation -> Export");
 
+        /*
+
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Export simulation");
 
@@ -310,6 +315,19 @@ public class ToolbarController {
 
 			SimController.getMainsimcon().saveState(fileExtension);
 		}
+
+		*/
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon != null){
+
+            simcon.queueryStats();
+            //simcon.printStats();
+            simcon.exportStatsToPDF();
+
+        }
+
 	}
 
 	/**
@@ -332,6 +350,16 @@ public class ToolbarController {
 		Console console = Console.getInstance();  // Get the single instance of the Console
 		console.show();
 	}
+
+    /**
+     * Function to perform a stresstest
+     *
+     * @author Leon
+     */
+    @FXML
+    private void onStressTestClick(){
+        new StressTest().Test();
+        }
 
 	/**
 	 * Function for "Help" Tab in toolbar

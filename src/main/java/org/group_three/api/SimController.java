@@ -4,17 +4,23 @@ import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
-import org.group_three.constants.enums.ValueStyle;
+import org.group_three.constants.enums.AttributeStyle;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.annotations.PrintStyle;
+import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
 import org.group_three.model.WTrafficLight;
 import org.group_three.model.WVehicle;
 import org.group_three.service.StatCollector;
 import org.group_three.service.Statistic;
+import org.group_three.service.records.EdgeRec;
+import org.group_three.service.records.VehDensPerSecond;
+import org.group_three.service.records.VehicleRec;
+import org.group_three.ui.SimView2D;
 import org.group_three.utils.Formatting;
+import org.group_three.utils.PathUtils;
 import org.group_three.utils.StatUtils;
 
 import java.io.File;
@@ -26,18 +32,23 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static org.group_three.utils.PathUtils.getRelativePath;
+
 /**
  * <h1>SimController</h1>
- * Class used to Connect & Control to SUMO via the TraaS API <br>
- * The constructor does everything that is connection-based for you,
- * you only need to simcon.close() the simulation after you are done. <br><br>
- * This class is also host to the all[...]s Lists / Hashmaps, which you
+ * <p> Class used to Connect & Control to SUMO via the TraaS API <p>
+ * <h2> Startup</h2>
+ * <p>The constructor does everything that is connection-based for you,
+ * you only need to pass the location of the Network- & Route files,
+ * or the SumoConfig. Default is <code>net.net.xml</code> and <code>net.rou.xml</code>.</p>
+ * <p>This class is also host to the all[...]s Lists / Hashmaps, which you
  * want to look into if you want to understand the inner workings of the
- * wrapper classes for the Objects contained by the simulation.
+ * wrapper classes for the Objects contained by the simulation. </p>
+ * <p>This Simulation implements AutoClosable via {@link #close()} </p>
  * @see org.group_three.model
  * @author Luca
  */
-public class SimController {
+public class SimController implements AutoCloseable{
 
     private static final Logger log =
             Logger.getLogger(SimController.class.getName());
@@ -57,8 +68,10 @@ public class SimController {
     private HashMap<String, WVehicle> allVehicles = new HashMap<>();
 
     //Statistics
-    private StatCollector statcol;
-    private long vehicleMaxDenseValue = 0;
+    private final StatCollector statcol = new StatCollector(
+            this,
+            "BasicStats"
+    );
 
 
 
@@ -215,7 +228,112 @@ public class SimController {
         return sumoExe;
     }
 
+    //this was migrated here, so the structure may be weird
+	/**<h2>loadSimulation</h2>
+	 * Gets called after selecting one or multiple Files. <br>
+	 * Loads the Simulation with the selected files and sets it to main.
+	 * @param paths A List of Paths to be opened via SimController(...)
+	 * @author Luca, Joel
+	 * */
+	public static void loadSimulation(List<File> paths) throws InvalidFilesSelected {
 
+		File network = null;
+		File route = null;
+		File config = null;
+
+		switch (paths.size()) {
+			//No files selected => Exception
+			case 0:
+				log.severe("InvalidFilesSelected: No Files Selected");
+				throw new InvalidFilesSelected("No Files Selected");
+
+				//1 File selected => expect .sumocfg file
+			case 1:
+				//Throw custom exception if not .sumocfg file
+				if (!paths.getFirst().toString().matches(".*\\.sumocfg$")) {
+                    log.severe("InvalidFilesSelected: Selected File is not of type .sumocfg");
+					throw new InvalidFilesSelected("Selected File is not of type .sumocfg");
+				}
+				//convert path to a relative path based on the SumoConfig path
+				config = paths.getFirst();
+				break;
+
+			//2 Files selected => expect route and network file
+			case 2:
+				// check if both filetypes are present, and in which order
+				if (       paths.get(0).toString().matches(".*\\.net\\.xml$")
+						&& paths.get(1).toString().matches(".*\\.rou\\.xml$")) {
+					//convert path to a relative path based on the SumoConfig path
+					network = paths.get(0);
+					route = paths.get(1);
+
+				} else if (paths.get(0).toString().matches(".*\\.rou\\.xml$")
+						&& paths.get(1).toString().matches(".*\\.net\\.xml$")) {
+					//convert path to a relative path based on the SumoConfig path
+					route = paths.get(0);
+					network = paths.get(1);
+				}
+				//throw custom error if they aren't
+				else {
+                    log.severe("InvalidFilesSelected: Selected Files are of wrong format.");
+					Debug.toConsole(paths);
+					throw new InvalidFilesSelected("Selected Files are of wrong format.");
+				}
+
+				break;
+
+			// More than 2 files selected => throw custom error once again
+			default:
+                log.severe("InvalidFilesSelected: To many Files selected");
+				throw new InvalidFilesSelected("To many Files selected");
+
+		}
+
+		SimController simcon = null;
+		//check which constructor needs to be invoked
+		if (config != null) {
+
+			simcon = new SimController(getRelativePath(config.getAbsolutePath()));
+
+		} else  if(route != null && network != null){
+
+			simcon = new SimController( getRelativePath(network.getAbsolutePath()),
+					getRelativePath(route.getAbsolutePath()));
+
+		} else {
+
+            log.severe("There was a problem initialising the SimController: route and / or network are null.");
+            return;
+        }
+
+		//load road network
+		if(config != null){
+
+			try {
+				//you always need the network file for this, so you'll need to extract it from the sumocfg if u use one
+				File net = PathUtils.getNetFromSCFG(config);
+				WEdge.loadRoads(simcon, net);
+
+			}
+			catch (Exception e){
+                log.severe("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
+				e.printStackTrace();
+			}
+
+		}  else {
+			WEdge.loadRoads(simcon, network);
+		}
+
+		//set selected simulation as the main, global / static simulation.
+		simcon.setAsMainsimcon(true);
+
+		WPolygon.loadAllPolys(simcon);
+
+		WTrafficLight.loadAll(simcon);
+
+		// Create a new World for the opened simulation
+		SimView2D.newWorld();
+	}
 
 
     /**
@@ -257,7 +375,6 @@ public class SimController {
         return true;
     }
 
-
     /**
      * Sets the Time of the Simulation to (time), needs to be in the Future.
      * @param time The time in the future to travel to.
@@ -276,12 +393,12 @@ public class SimController {
         return true;
     }
 
-
-
-    /**
-     * closes the SumoTraciConnection
+    /**<h2>close</h2>
+     * <p>Overrides {@link AutoCloseable#close()}</p>
+     * - and closes the SumoTraciConnection.
      * @author Luca
      * */
+    @Override
     public void close(){
 
         try {
@@ -415,98 +532,6 @@ public class SimController {
     //create an abstract "GeneralRecord" with collect(), which then gets overridden by
     //its children. It wouldn't improve code anyway.
 
-    /**<h2>VehicleRec</h2>
-     * Record for holding Vehicle Data. Includes a collect method which is used
-     * to collect necessary data.
-     * @see WVehicle
-     * @author Luca
-     * */
-    public record VehicleRec(String vehID, double avgspeed, SumoColor color) {
-
-        public static List<VehicleRec> collect(SimController simcon){
-
-            List<VehicleRec> data = new ArrayList<>();
-
-            for(WVehicle wveh : simcon.getAllVehicles().values()){
-
-                VehicleRec vrec = new VehicleRec(
-                        wveh.getID(),
-                        wveh.getAvgSpeed(),
-                        wveh.getColor()
-                );
-
-                data.add(vrec);
-
-            }
-
-            return data;
-        }
-
-    }
-
-    /**<h2>EdgeRec</h2>
-     * Record for holding Edge Data. Includes a collect method which is used
-     * to collect necessary data.
-     * @see WEdge
-     * @author Luca
-     * */
-    public record EdgeRec(String name, double usage, double length) {
-
-        public static List<EdgeRec> collect(SimController simcon){
-
-            List<EdgeRec> data = new ArrayList<>();
-
-            for(WEdge wEdge : simcon.getAllroads().values()){
-
-                EdgeRec vrec = new EdgeRec(
-                        wEdge.getName(),
-                        wEdge.getOccupancyRatio(),
-                        wEdge.getLength()
-                );
-
-                data.add(vrec);
-
-            }
-
-            return data;
-        }
-
-
-    }
-
-    /**<h2>VehDensPerSecond</h2>
-     * Record for holding the Vehicle Density of each road per second.
-     * @see WEdge
-     * @author Luca
-     * */
-    public record VehDensPerSecond(@PrintStyle(ValueStyle.COLUMN) int ... vehicles_on_edges) {
-
-        public static List<VehDensPerSecond> collect(SimController simcon){
-
-            List<VehDensPerSecond> data = new ArrayList<>();
-
-
-            for(int step = 0; step < simcon.getTime() - 1; step++){
-
-                List<Integer> vehDenseThisStep = new ArrayList<>();
-
-                for(WEdge wEdge : simcon.getAllroads().values()){
-
-                    vehDenseThisStep.add(wEdge.getVehDensityPerStep().get(step));
-
-                }
-
-                VehDensPerSecond densrec = new VehDensPerSecond( vehDenseThisStep.stream().mapToInt(i->i).toArray());
-
-                data.add(densrec);
-            }
-
-            return data;
-        }
-
-
-    }
-
     /**<h2>finishStatCollector</h2>
      * Finishes the StatCollector attribute.
      * <p>Uses the records defined at the top as types for the Statistic Template.
@@ -516,17 +541,34 @@ public class SimController {
      * @see Statistic
      * @author Luca
      * */
-    public void finishStatCollector(){
+    public void queueryStats(){
 
         Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
         }
+        statcol.addStatistic(vehStat
+                .filter(r -> StatUtils.equalSColor(r.color(), new SumoColor(255,0,0,255)))
+                .sortBy(VehicleRec::avgspeed)
+        );
 
-        Statistic<EdgeRec> edgeStat = new Statistic<EdgeRec>("Edges", "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
+        statcol.addStatistic(
+                edgeStat
+                        .aggregate(
+                                EdgeRec::name,
+                                (a,b) -> new EdgeRec(
+                                        a.name(),
+                                        a.usage() + b.usage(),
+                                        a.length() + b.length()
+
+                                )
+                        )
+                        .sortBy(EdgeRec::usage)
+        );
 
         Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
                 getAllroads()
@@ -537,13 +579,7 @@ public class SimController {
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
-
-        statcol = new StatCollector(
-                "StatCollector_" + System.currentTimeMillis(),
-                vehStat.getFilteredRows(r -> StatUtils.equalSColor(r.color, new SumoColor(255,0,0,255))),
-                edgeStat,
-                vehDensStat
-        );
+        //statcol.addStatistic(vehDensStat);
 
         log.fine("StatCollector assembling was successful.");
 
@@ -561,10 +597,9 @@ public class SimController {
             log.warning("Printing Stat collection failed: " + Arrays.toString(e.getStackTrace()));
         }
 
-
     }
 
-    /**Exports the Stat Collection to a .gz.tar
+    /**Exports the Stat Collection to a .zip
      * @see StatCollector#exportAsZip()
      * @author Luca
      * */
@@ -572,19 +607,23 @@ public class SimController {
         statcol.exportAsZip();
     }
 
+    /**Exports the Stat Collection to a .pdf
+     * @see StatCollector#exportAsPDF()
+     * @author Luca
+     * */
+    public void exportStatsToPDF() {
+        statcol.exportAsPDF();
+    }
+
 
     /**
-     * Updates necessary Telemetry for the Statistic Collection.
+     * Collects necessary Telemetry for the Statistic Collection.
      * @author Luca
-     * @see WEdge#addVehDensityCount()
+     * @see StatCollector#collect()
      * */
-    public void updateTelemetry(){
+    public void collectTelemetry(){
 
-        vehicleMaxDenseValue += allVehicles.size();
-
-        for(WEdge edge : allroads.values()){
-            edge.addVehDensityCount();
-        }
+        statcol.collect();
 
     }
 
@@ -719,6 +758,25 @@ public class SimController {
             return null;
         }
 
+    }
+
+    /**
+     * Function to return the length of the entire network
+     * in SUMO-meters
+     * @return the length of the network
+     * @author Leon
+     */
+    public double getNetworkLength(){
+        double total = 0;
+        try{
+            for (WEdge edge : allroads.values()) {
+                total += edge.getLength();
+            }
+        }
+        catch (Exception e){
+        log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+        }
+        return total;
     }
 
     //
@@ -1154,9 +1212,7 @@ public class SimController {
         return getAllroads().get(EID);
     }
 
-
-    public long getVehicleMaxDenseValue() { return vehicleMaxDenseValue; }
-
+    public StatCollector getStatcol() {return statcol; }
 
     public void setAllWTLs(List<WTrafficLight> allWTLs) {
         this.allWTLs = allWTLs;

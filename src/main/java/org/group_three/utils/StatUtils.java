@@ -9,20 +9,23 @@ import org.group_three.api.SimController;
 import java.util.List;
 
 /**
- * Class for collecting statistics.
- * <s>Can be instantiated to collect stats of one Simulation,
- * but also</s> has plenty of Static functions.
+ * Utility Class for Statistics.
  * @author Luca
  * */
-public class StatUtils {
-
-    private SimController simcon;
-    private List<String> content;
+public final class StatUtils {
 
 
+    /**
+     * Compares the values of the given SumoColors,
+     * including the opacity. Commutative.
+     * @param first first color
+     * @param sec second color
+     * @return If both SumoColors are of equal values.
+     * @author Luca
+     * */
     public static boolean equalSColor(SumoColor first, SumoColor sec){
         return (
-                first.r == sec.r
+                   first.r == sec.r
                 && first.b == sec.b
                 && first.g == sec.g
                 && first.a == sec.a

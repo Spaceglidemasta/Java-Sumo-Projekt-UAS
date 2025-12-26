@@ -1,5 +1,6 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoStringList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
@@ -15,6 +16,7 @@ import org.group_three.ui.world.WorldRoad;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 
 /**
  * The controller for the RoadDetails.
@@ -167,6 +169,7 @@ public class RoadDetailsController {
 			}
 		}
 	}
+
 
 	/**
 	 * The setup method for this class to fill it with data.
