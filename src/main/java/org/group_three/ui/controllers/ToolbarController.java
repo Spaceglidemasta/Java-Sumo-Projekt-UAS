@@ -341,7 +341,7 @@ public class ToolbarController {
 	}
 
 	/**
-	 * Function to open the console tab in the Settings meny
+	 * Function to open the console tab in the Settings menu
 	 *
 	 * @author Leon
 	 */

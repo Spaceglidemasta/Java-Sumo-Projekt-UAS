@@ -59,8 +59,13 @@ public class BodyController {
 	@SuppressWarnings("JavadocDeclaration")
 	private static AnchorPane detailsPanel;
 
+    @FXML
+    private AnchorPane statisticsAnchor;
 
-	/**
+    @FXML
+    private static AnchorPane statisticsPanel;
+
+    /**
 	 * The method to initialize the BodyController.
 	 * Gets called after FXML body creation.
 	 *

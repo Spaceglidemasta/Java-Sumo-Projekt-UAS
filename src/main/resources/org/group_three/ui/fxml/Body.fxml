@@ -113,7 +113,7 @@
                                                                            <children>
                                                                               <AnchorPane>
                                                                                  <children>
-                                                                                    <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="AverageSpeed" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                                    <Text fontSmoothingType="LCD" style="-fx-fill: white;" strokeType="OUTSIDE" strokeWidth="0.0" text="Average Speed" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                                  </children>
                                                                               </AnchorPane>
                                                                            </children>
@@ -134,7 +134,7 @@
                                                                            <children>
                                                                               <AnchorPane>
                                                                                  <children>
-                                                                                    <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="50 km/h" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                                    <Text fontSmoothingType="LCD" strokeType="OUTSIDE" style="-fx-fill: white;" strokeWidth="0.0" text="50 km/h" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                                  </children>
                                                                               </AnchorPane>
                                                                            </children>
