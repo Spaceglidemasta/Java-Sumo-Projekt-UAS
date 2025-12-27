@@ -1165,6 +1165,41 @@ public class SimController implements AutoCloseable{
     }
 
     /**
+     * Returns the Traffic Light phase duration <br>
+     * @param TLID ID of the Traffic Light
+     * @return Duration of the Phase, <code>-1</code> if getter failed.
+     * @author Leon
+     */
+    public String getRYGState(String TLID) {
+        try {
+            return (String) stc.do_job_get(Trafficlight.getRedYellowGreenState(TLID));
+        }
+        catch (Exception e){
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return "failed";
+        }
+    }
+
+    /**
+     * Returns the Traffic Light phase duration <br>
+     * @param TLID ID of the Traffic Light
+     * @return Duration of the Phase, <code>-1</code> if getter failed.
+     * @author Leon
+     */
+    public boolean setRYGState(String TLID, String state) {
+        try {
+            stc.do_job_set(Trafficlight.setRedYellowGreenState(TLID, state));
+            return true;
+        }
+        catch (Exception e){
+            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return false;
+        }
+    }
+
+
+
+    /**
      * Sets the Length of the current Phase of the given TL.
      * @param TLID Traffic Light ID
      * @param dur new Duration in seconds(?)( <- This not my questionmark, the TraaS doc also has a "?")
