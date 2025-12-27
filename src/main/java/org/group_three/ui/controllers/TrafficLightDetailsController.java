@@ -1,5 +1,8 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.cmd.Trafficlight;
+import it.polito.appeal.traci.SumoTraciConnection;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -47,6 +50,8 @@ public class TrafficLightDetailsController {
 	@FXML
 	private TextField sumoId;
 
+    private  boolean active = false;
+
 	@FXML
 	private TextField remainingRedTime;
 	@FXML
@@ -54,11 +59,13 @@ public class TrafficLightDetailsController {
 	@FXML
 	private TextField remainingGreenTime;
 	@FXML
-	private TextField redTime;
+	private Button redButton;
 	@FXML
-	private TextField yellowTime;
+	private Button yellowButton;
 	@FXML
-	private TextField greenTime;
+	private Button greenButton;
+    @FXML
+    private Button resetButton;
 	@FXML
 	private CheckBox override;
 
@@ -70,14 +77,12 @@ public class TrafficLightDetailsController {
 
 		id.setText(this.worldTrafficLight.getId());
 		displayName.setText(this.worldTrafficLight.getDisplayName());
-		sumoId.setText("StopLineIndex: " + this.worldTrafficLight.getwLink().getTLIndex());
+		sumoId.setText(this.worldTrafficLight.getwTrafficLight().getId());
 		override.setSelected(this.worldTrafficLight.getwTrafficLight().isCustomPhasesActive());
 
 		override.selectedProperty().addListener((_, _, newValue) -> {
 			this.worldTrafficLight.getwTrafficLight().setCustomPhasesActive(newValue);
 		});
-
-
 
 	}
 
@@ -93,6 +98,9 @@ public class TrafficLightDetailsController {
 
 	}
 
+    @FXML
+    private void onCheckBoxClicked(ActionEvent event) {
+        this.active = override.isSelected();    }
 
 	/**
 	 * The event to toggle view locking of the vehicle.
@@ -100,8 +108,13 @@ public class TrafficLightDetailsController {
 	 * @author Joel
 	 */
 	@FXML
-	private void onRemaningRedTimeClicked() {
-		Debug.print("onRemaningRedTimeClicked");
+	private void onRedButtonClicked() {
+        if(active){
+            String stateString = SimController.getMainsimcon().getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+            int length = stateString.length();
+            String rString = "r".repeat(length);
+            SimController.getMainsimcon().setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
+        }
 	}
 
 	/**
@@ -110,8 +123,13 @@ public class TrafficLightDetailsController {
 	 * @author Joel
 	 */
 	@FXML
-	private void onRemaningYellowTimeClicked() {
-		Debug.print("onRemaningYellowTimeClicked");
+	private void onYellowButtonClicked() {
+        if(active){
+            String stateString = SimController.getMainsimcon().getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+            int length = stateString.length();
+            String rString = "y".repeat(length);
+            SimController.getMainsimcon().setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
+        }
 	}
 
 	/**
@@ -120,10 +138,24 @@ public class TrafficLightDetailsController {
 	 * @author Joel
 	 */
 	@FXML
-	private void onRemaningGreenTimeClicked() {
-		Debug.print("onRemaningGreenTimeClicked");
+	private void onGreenButtonClicked() {
+        if(active){
+            String stateString = SimController.getMainsimcon().getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+            int length = stateString.length();
+            String rString = "G".repeat(length);
+            SimController.getMainsimcon().setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
+        }
 	}
 
+
+    private SumoTraciConnection stc;
+
+    @FXML
+    private void onResetButtonClicked() throws Exception {
+        if(active){
+            Debug.print("Reset Button");
+        }
+    }
 
 
 

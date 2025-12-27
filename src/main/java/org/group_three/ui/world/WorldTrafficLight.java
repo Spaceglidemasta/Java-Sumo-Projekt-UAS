@@ -105,7 +105,7 @@ public class WorldTrafficLight extends WorldObject {
 		wTrafficLight.pr*/
 
 
-		Debug.print(wTrafficLight.getProgram().programs.get(wTrafficLight.getProgramID()));
+		//Debug.print(wTrafficLight.getProgram().programs.get(wTrafficLight.getProgramID()));
 
 	}
 
