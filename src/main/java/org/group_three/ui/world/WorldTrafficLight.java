@@ -1,5 +1,6 @@
 package org.group_three.ui.world;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
@@ -8,6 +9,7 @@ import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.TrafficLightDetailsController;
 
 /**
  * The class to render TrafficLights.
@@ -19,6 +21,10 @@ public class WorldTrafficLight extends WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	public WTrafficLight getwTrafficLight() {
+		return wTrafficLight;
+	}
+
 	/**
 	 * The WTrafficLight object which is grouping the WLink classes.
 	 *
@@ -26,6 +32,10 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final WTrafficLight wTrafficLight;
+
+	public WLink getwLink() {
+		return wLink;
+	}
 
 	/**
 	 * The WLink object which owns this class.
@@ -42,6 +52,7 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final Vector2D size;
+	private TrafficLightDetailsController trafficLightDetailsController;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -85,7 +96,7 @@ public class WorldTrafficLight extends WorldObject {
 
 		setInteractable(true);
 		setSphereCollision(size.y / 2);
-		detailClassPath = ""; // not added yet
+		detailClassPath = "/org/group_three/ui/fxml/TrafficLightDetails.fxml";
 
 		/*wTrafficLight.getPhaseIndex();
 		wLink.getTLIndex();
@@ -94,7 +105,7 @@ public class WorldTrafficLight extends WorldObject {
 		wTrafficLight.pr*/
 
 
-		//Debug.print(wTrafficLight.getProgramID());
+		//Debug.print(wTrafficLight.getProgram().programs.get(wTrafficLight.getProgramID()));
 
 	}
 
@@ -118,6 +129,12 @@ public class WorldTrafficLight extends WorldObject {
 		}
 
 		drawRectangle(size.div(2), color);
+	}
+
+	@Override
+	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
+		trafficLightDetailsController = fxmlLoader.getController();
+		trafficLightDetailsController.setup(this);
 	}
 
 }
