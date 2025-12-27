@@ -4,10 +4,10 @@ import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
-import org.group_three.constants.enums.AttributeStyle;
+import org.group_three.constants.Settings;
+import org.group_three.constants.Sumo;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
-import org.group_three.debug.annotations.PrintStyle;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
@@ -16,6 +16,7 @@ import org.group_three.model.WVehicle;
 import org.group_three.service.StatCollector;
 import org.group_three.service.Statistic;
 import org.group_three.service.records.EdgeRec;
+import org.group_three.service.records.RouteTarget;
 import org.group_three.service.records.VehDensPerSecond;
 import org.group_three.service.records.VehicleRec;
 import org.group_three.ui.SimView2D;
@@ -30,6 +31,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.group_three.utils.PathUtils.getRelativePath;
@@ -55,8 +57,6 @@ public class SimController implements AutoCloseable{
 
 	//The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
     private SumoTraciConnection stc; //
-    private static final String networkfname = "net.net.xml";
-    private static final String routefname = "net.rou.xml";
 
     // Easy mode
     private static SimController mainsimcon = null;
@@ -72,6 +72,7 @@ public class SimController implements AutoCloseable{
             this,
             "BasicStats"
     );
+    HashMap<String, List<RouteTarget>> ttdistribution = new HashMap<>();
 
 
 
@@ -82,7 +83,7 @@ public class SimController implements AutoCloseable{
 // ******************************************************
 
     public SimController(){
-        this(networkfname, routefname);
+        this(Settings.NETFILENAME, Settings.ROUTEFILENAME);
     }
 
     public SimController(String cfg) {
@@ -94,11 +95,11 @@ public class SimController implements AutoCloseable{
             File jarDir = getProjectLocation();
 
             // opens said folder
-            File resourcesDir = new File(jarDir, "SumoConfig");
+            File resourcesDir = new File(jarDir, Settings.CFGDIRECTORYNAME);
 
 
             // Try SUMO_HOME/bin/sumo.exe, otherwise use resourcesDir/sumo.exe
-            String sumoHome = System.getenv("SUMO_HOME");
+            String sumoHome = System.getenv(Settings.SUMOHOME);
 
             // possible location of sumo.exe in %SUMO_HOME%/bin
             File sumoExe = decideSumo(sumoHome, resourcesDir);
@@ -208,14 +209,15 @@ public class SimController implements AutoCloseable{
      * @return Which one was decided upon. sumoHome most of the time
      * @author Luca
      * */
+    //TODO REMOVE
     private static File decideSumo(String sumoHome, File resourcesDir) throws FileNotFoundException {
         //A ? B : C <=> if A then B else C
         File sumoExeHome = (sumoHome != null)
-                ? new File(sumoHome + "/bin/sumo.exe")
+                ? new File(sumoHome + "/bin/" + Settings.SUMOEXENAME)
                 : null;
 
         // possible location of sumo.exe in resources
-        File sumoExeResources = new File(resourcesDir, "sumo.exe");
+        File sumoExeResources = new File(resourcesDir, Settings.SUMOEXENAME);
 
         // Decide final path
         File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
@@ -316,8 +318,8 @@ public class SimController implements AutoCloseable{
 
 			}
 			catch (Exception e){
-                log.severe("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
-				e.printStackTrace();
+                log.log(Level.SEVERE,"CRITICAL ERROR: STREETS CANNOT BE RENDERED", e);
+
 			}
 
 		}  else {
@@ -329,7 +331,9 @@ public class SimController implements AutoCloseable{
 
 		WPolygon.loadAllPolys(simcon);
 
-		WTrafficLight.loadAll(simcon);
+		List<WTrafficLight> alltls = WTrafficLight.loadAll(simcon);
+
+        alltls.getFirst().getProgram();
 
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
@@ -629,6 +633,91 @@ public class SimController implements AutoCloseable{
     }
 
 
+    /**<p>Calculates a Route from each Edge to each Edge, together with the length of each route.</p>
+     * <p>This is then getting mapped with a HashMap in the following format:<br>
+     * <code>StartEdgeID -> List<{EndEdgeID, lengthOfRoute}></code> <br>
+     * This is then stored in <code>ttdistribution</code>, which can be retrieved again via its getter.</p>
+     * @return said HashMap
+     * @author Luca
+     * */
+    public HashMap<String, List<RouteTarget>> calcFullTravelTimeDist(){
+
+        long startTimeMs = System.currentTimeMillis();
+        stc.printSumoError(false);
+        stc.printSumoOutput(false);
+
+        log.info("Calculating full Travel-Time-Distribution... (This may take a few seconds)");
+
+        HashMap<String, List<RouteTarget>> outhash = new HashMap<>();
+
+        List<WEdge> aEID = getAllroads()
+                .values().stream().toList();
+
+        for(WEdge from : aEID){
+
+            List<RouteTarget> rts = new ArrayList<>();
+
+            for(WEdge to : aEID){
+                SumoStage sst = findRoute(from.getId(), to.getId());
+
+                rts.add(
+                        new RouteTarget(
+                                to.getId(),
+                                sst.length
+                        )
+                );
+
+                //Debug.print("From: " + from.getId() + ", to: " + to.getId() + " -> " + WEdge.getRouteLength(sst.edges));
+            }
+            //for(WEdge from : aEID) scope
+            outhash.put(
+                    from.getId(),
+                    rts
+            );
+        }
+
+        log.info("calcTravelTimeDist ran in " +
+                ((System.currentTimeMillis() - startTimeMs) / 1000) +
+                 "s"
+        );
+        stc.printSumoError(true);
+        stc.printSumoOutput(true);
+
+        ttdistribution = outhash;
+        return outhash;
+    }
+
+
+    /**<p>Calculates a Route from one Edge to all other Edges, together with the length of each route.
+     * This works via SUMO, which calculates this via Dijsktra.</p>
+     * @param EID the start point as EdgeID.
+     * @return a List containing all endpoint-edges and route-lengths, each stored in a RouteTarget Record. <br>
+     *         Important: if the <code>RouteTarget#length()</code> is <code>0.0d</code>, finding a Route failed.
+     * @author Luca
+     * */
+    public List<RouteTarget> calcPartialTTDist(String EID) {
+
+        //disable Warnings for routes which cant be connected
+        stc.printSumoError(false);
+        stc.printSumoOutput(false);
+
+        List<RouteTarget> outlist = allroads.values().stream().map(
+                e -> new RouteTarget(
+                        e.getId(),
+                        findRoute(
+                                EID,
+                                e.getId()
+                        ).length
+                )
+        ).toList();
+
+        stc.printSumoError(true);
+        stc.printSumoOutput(true);
+
+        return outlist;
+    }
+
+
     // ******************************************************
     // **                   Getters                        **
     // ******************************************************
@@ -872,6 +961,34 @@ public class SimController implements AutoCloseable{
         }
         catch (Exception e) {
             log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
+        }
+    }
+
+    /**
+     * Find a Route between 2 Edges
+     * @param fromEID First edge
+     * @param toEID second edge
+     * @return a SumoStage representing the route
+     * @author Luca
+     * */
+    public SumoStage findRoute(String fromEID, String toEID) {
+        try {
+            return (SumoStage) stc.do_job_get(Simulation.findRoute(
+                    fromEID,
+                    toEID,
+                    Sumo.DEFAULT_VEHICLE,
+                    0.0d,
+                    0 //I hope this is correct. The lack of documentation for TraaS is sickening.
+                    )
+            );
+
+        } catch (Exception e) {
+            log.log(
+                    Level.WARNING,
+                    "Finding a suitable Route from " + fromEID + " to " + toEID  + " failed.",
+                    e
+            );
             return null;
         }
     }
@@ -1263,6 +1380,10 @@ public class SimController implements AutoCloseable{
         return allVehicles.size();
     }
 
+
+    public HashMap<String, List<RouteTarget>> getTtdistribution() {
+        return ttdistribution;
+    }
 
 
     /**

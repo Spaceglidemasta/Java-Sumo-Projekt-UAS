@@ -132,7 +132,7 @@ public class Statistic<T extends Record> extends Table<T> {
                         Comparator.comparing(attmethod)
                 ).toList();
 
-        Statistic<T> outstat = new Statistic<T>(name + "sorted", attributeNames);
+        Statistic<T> outstat = new Statistic<>(name + "sorted", attributeNames);
 
         if(sorttype == SortDir.ASC) outstat.content = sortcon;
         else outstat.content = sortcon.reversed();

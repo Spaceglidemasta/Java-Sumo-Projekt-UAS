@@ -1,5 +1,6 @@
 package org.group_three.ui;
 
+import javafx.animation.AnimationTimer;
 import org.group_three.constants.UI;
 
 import javafx.application.Application;
@@ -31,11 +32,14 @@ public class MainApp extends Application {
 		launch(args);
 	}
 
+
+    private AnimationTimer fpsTimer;
+
 	/**
 	 * The applications start method which can be called after the application was created.
 	 *
 	 * @param stage The default stage which is created by the Application class
-	 * @author Joel
+	 * @author Joel, Luca
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -61,6 +65,25 @@ public class MainApp extends Application {
 
 		// Initialize the Keyboard class so it listens to keyboard events
 		Keyboard.initialize(mainScene);
+
+        fpsTimer = new AnimationTimer() {
+            private long lastTime = 0;
+            private int frames = 0;
+
+            @Override
+            public void handle(long now) {
+                frames++;
+                if (lastTime == 0) lastTime = now;
+
+                if (now - lastTime >= 1_000_000_000L) {
+                    System.out.println("FPS: " + frames);
+                    frames = 0;
+                    lastTime = now;
+                }
+            }
+        };
+
+        fpsTimer.start();
 	}
 
 	//--------------------------------------------------StartMethods--------------------------------------------------
@@ -112,6 +135,18 @@ public class MainApp extends Application {
 
 		return null;
 	}
+
+    /**
+     * Gets automaticall called by JavaFX when the window is closed.
+     * @author Luca
+     * */
+    @Override
+    public void stop() {
+        if (fpsTimer != null) {
+            fpsTimer.stop();
+        }
+    }
+
 
 	//--------------------------------------------------Methods--------------------------------------------------
 
