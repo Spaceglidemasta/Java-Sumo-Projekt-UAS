@@ -437,6 +437,8 @@ public class SimView2D {
 
         }
 
+
+
         updateVehicles(worldStaticRenderTarget);
 
 		world.requestUpdate();

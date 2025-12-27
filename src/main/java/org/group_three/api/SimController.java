@@ -850,6 +850,25 @@ public class SimController implements AutoCloseable{
 
     }
 
+    /**
+     * Function to return the length of the entire network
+     * in SUMO-meters
+     * @return the length of the network
+     * @author Leon
+     */
+    public double getNetworkLength(){
+        double total = 0;
+        try{
+            for (WEdge edge : allroads.values()) {
+                total += edge.getLength();
+            }
+        }
+        catch (Exception e){
+        log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+        }
+        return total;
+    }
+
     //
 
 

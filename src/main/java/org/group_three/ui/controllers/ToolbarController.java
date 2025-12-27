@@ -6,8 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 // import java.io.IOException; for what was that?
 
+import de.tudresden.sumo.objects.SumoColor;
+import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.Console;
@@ -18,6 +21,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
+import org.group_three.model.WEdge;
+import org.group_three.model.WVehicle;
+import org.group_three.service.StressTest;
 import org.group_three.ui.SimView2D;
 
 /**
@@ -344,6 +350,16 @@ public class ToolbarController {
 		Console console = Console.getInstance();  // Get the single instance of the Console
 		console.show();
 	}
+
+    /**
+     * Function to perform a stresstest
+     *
+     * @author Leon
+     */
+    @FXML
+    private void onStressTestClick(){
+        new StressTest().Test();
+        }
 
 	/**
 	 * Function for "Help" Tab in toolbar
