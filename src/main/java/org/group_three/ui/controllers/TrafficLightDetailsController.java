@@ -10,6 +10,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
+import org.group_three.model.WTrafficLight;
 import org.group_three.ui.Meth;
 import org.group_three.ui.SimView2D;
 import org.group_three.ui.world.WorldRoute;
@@ -110,10 +111,15 @@ public class TrafficLightDetailsController {
 	@FXML
 	private void onRedButtonClicked() {
         if(active){
-            String stateString = SimController.getMainsimcon().getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+
+            WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+
+            String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+
             int length = stateString.length();
             String rString = "r".repeat(length);
-            SimController.getMainsimcon().setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
+
+            wtl.setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
         }
 	}
 
@@ -125,10 +131,14 @@ public class TrafficLightDetailsController {
 	@FXML
 	private void onYellowButtonClicked() {
         if(active){
-            String stateString = SimController.getMainsimcon().getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+
+            WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+
+            String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
             int length = stateString.length();
             String rString = "y".repeat(length);
-            SimController.getMainsimcon().setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
+
+            wtl.setRYGState(this.worldTrafficLight.getwTrafficLight().getId(), rString);
         }
 	}
 
@@ -140,10 +150,15 @@ public class TrafficLightDetailsController {
 	@FXML
 	private void onGreenButtonClicked() {
         if(active){
-            String stateString = SimController.getMainsimcon().getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+
+            WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+
+            String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+
             int length = stateString.length();
             String rString = "G".repeat(length);
-            SimController.getMainsimcon().setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
+
+            wtl.setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
         }
 	}
 

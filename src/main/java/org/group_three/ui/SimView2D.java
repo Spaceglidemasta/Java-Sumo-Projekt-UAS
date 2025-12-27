@@ -332,7 +332,7 @@ public class SimView2D {
             return;
         }
 
-        for (WTrafficLight wTrafficLight : simcon.getAllWTLs()) {
+        for (WTrafficLight wTrafficLight : simcon.getAllWTLs().values()) {
 			wTrafficLight.loadLinkedStateColors();
 
 			for (WLink wLink : wTrafficLight.getAllWlinks()) {
@@ -362,7 +362,7 @@ public class SimView2D {
             return;
         }
 
-		for (WTrafficLight wTrafficLight : simcon.getAllWTLs()) {
+		for (WTrafficLight wTrafficLight : simcon.getAllWTLs().values()) {
 			wTrafficLight.loadLinkedStateColors();
 		}
 	}
