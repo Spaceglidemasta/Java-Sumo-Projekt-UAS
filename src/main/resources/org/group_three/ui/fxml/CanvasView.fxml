@@ -32,7 +32,7 @@
                   <Circle fill="#00000033" radius="32.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <AnchorPane maxHeight="64.0" maxWidth="64.0" minHeight="64.0" minWidth="64.0" prefHeight="64.0" prefWidth="64.0">
                      <children>
-                        <Line endY="4.0" layoutX="32.0" startY="32.0" stroke="WHITE" strokeWidth="5.0" />
+                        <Line endY="4.0" layoutX="32.0" startY="32.0" stroke="WHITE" strokeWidth="3.0" />
                      </children>
                   </AnchorPane>
                </children>
