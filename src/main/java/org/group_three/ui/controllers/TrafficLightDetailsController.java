@@ -1,6 +1,9 @@
 package org.group_three.ui.controllers;
 
 import de.tudresden.sumo.cmd.Trafficlight;
+import de.tudresden.sumo.objects.SumoTLSController;
+import de.tudresden.sumo.objects.SumoTLSPhase;
+import de.tudresden.sumo.objects.SumoTLSProgram;
 import it.polito.appeal.traci.SumoTraciConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +20,9 @@ import org.group_three.ui.world.WorldRoute;
 import org.group_three.ui.world.WorldTrafficLight;
 import org.group_three.ui.world.WorldVehicle;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * The controller for the VehicleDetails.
  *
@@ -24,14 +30,6 @@ import org.group_three.ui.world.WorldVehicle;
  */
 public class TrafficLightDetailsController {
 
-	/**
-	 * The world object id.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private TextField id;
 
 	/**
 	 * The world objects display name.
@@ -51,14 +49,20 @@ public class TrafficLightDetailsController {
 	@FXML
 	private TextField sumoId;
 
-    private  boolean active = false;
+    /**
+     * The phase time.
+     *
+     * @author Joel
+     */
+    @SuppressWarnings("JavadocDeclaration")
+    @FXML
+    private TextField phaseTime;
 
-	@FXML
-	private TextField remainingRedTime;
-	@FXML
-	private TextField remainingYellowTime;
-	@FXML
-	private TextField remainingGreenTime;
+    @FXML
+    private TextField selectedLink;
+
+    @FXML
+    private TextField changePhaseDuration = null;
 	@FXML
 	private Button redButton;
 	@FXML
@@ -66,30 +70,41 @@ public class TrafficLightDetailsController {
 	@FXML
 	private Button greenButton;
     @FXML
+    private Button applyButton;
+    @FXML
     private Button resetButton;
-	@FXML
-	private CheckBox override;
+    @FXML
+    private Button saveCurrentStateButton;
 
 
-	private WorldTrafficLight worldTrafficLight;
+    private WorldTrafficLight worldTrafficLight;
 
-	public void setup(WorldTrafficLight worldTrafficLight) {
+    private SumoTLSController sumoTLSController;
+
+    private String pendingRYGState = null;
+
+    private SumoTLSController savedProgram;
+
+    private boolean isManualPhaseTimeSet = false;
+
+    public void setup(WorldTrafficLight worldTrafficLight) {
 		this.worldTrafficLight = worldTrafficLight;
 
-		id.setText(this.worldTrafficLight.getId());
+        phaseTime.setText(Double.toString(this.worldTrafficLight.getwTrafficLight().getPhaseLen()));
+        selectedLink.setText("StopLineIndex: " + this.worldTrafficLight.getwLink().getTLIndex());
 		displayName.setText(this.worldTrafficLight.getDisplayName());
 		sumoId.setText(this.worldTrafficLight.getwTrafficLight().getId());
-		override.setSelected(this.worldTrafficLight.getwTrafficLight().isCustomPhasesActive());
-
-		override.selectedProperty().addListener((_, _, newValue) -> {
-			this.worldTrafficLight.getwTrafficLight().setCustomPhasesActive(newValue);
-		});
-
 	}
+
+    public void update() {
+        if (!isManualPhaseTimeSet) {
+            phaseTime.setText(Double.toString(this.worldTrafficLight.getwTrafficLight().getPhaseLen()));
+        }
+    }
 
 
 	/**
-	 * The initialize method of the vehicle details panel.
+	 * The initialize method of the traffic light details panel.
 	 *
 	 * @author Joel
 	 */
@@ -99,76 +114,113 @@ public class TrafficLightDetailsController {
 
 	}
 
-    @FXML
-    private void onCheckBoxClicked(ActionEvent event) {
-        this.active = override.isSelected();    }
 
-	/**
-	 * The event to toggle view locking of the vehicle.
-	 *
-	 * @author Joel
-	 */
+
 	@FXML
 	private void onRedButtonClicked() {
-        if(active){
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
 
-            WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+        int selectedLaneIndex = this.worldTrafficLight.getwLink().getTLIndex();
+        StringBuilder stateBuilder = new StringBuilder(stateString);
 
-            String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+        if (selectedLaneIndex >= 0 && selectedLaneIndex < stateBuilder.length()) {
+            stateBuilder.setCharAt(selectedLaneIndex, 'r');
+            pendingRYGState = stateBuilder.toString();
+	    }
+    }
 
-            int length = stateString.length();
-            String rString = "r".repeat(length);
 
-            wtl.setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
-        }
-	}
-
-	/**
-	 * The event to toggle view locking of the vehicle.
-	 *
-	 * @author Joel
-	 */
 	@FXML
 	private void onYellowButtonClicked() {
-        if(active){
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
 
-            WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+        int selectedLaneIndex = this.worldTrafficLight.getwLink().getTLIndex();
+        StringBuilder stateBuilder = new StringBuilder(stateString);
 
-            String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
-            int length = stateString.length();
-            String rString = "y".repeat(length);
-
-            wtl.setRYGState(this.worldTrafficLight.getwTrafficLight().getId(), rString);
+        if (selectedLaneIndex >= 0 && selectedLaneIndex < stateBuilder.length()) {
+            stateBuilder.setCharAt(selectedLaneIndex, 'y');
+            pendingRYGState = stateBuilder.toString();
         }
-	}
+    }
 
-	/**
-	 * The event to toggle view locking of the vehicle.
-	 *
-	 * @author Joel
-	 */
+
 	@FXML
 	private void onGreenButtonClicked() {
-        if(active){
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
 
-            WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
+        int selectedLaneIndex = this.worldTrafficLight.getwLink().getTLIndex();
+        StringBuilder stateBuilder = new StringBuilder(stateString);
 
-            String stateString = wtl.getRYGState(this.worldTrafficLight.getwTrafficLight().getId());
-
-            int length = stateString.length();
-            String rString = "G".repeat(length);
-
-            wtl.setRYGState(this.worldTrafficLight.getwTrafficLight().getId(),rString);
+        if (selectedLaneIndex >= 0 && selectedLaneIndex < stateBuilder.length()) {
+            stateBuilder.setCharAt(selectedLaneIndex, 'G');
+            pendingRYGState = stateBuilder.toString();
         }
-	}
-
-
-    private SumoTraciConnection stc;
+    }
 
     @FXML
-    private void onResetButtonClicked() throws Exception {
-        if(active){
-            Debug.print("Reset Button");
+    private void onSaveCurrentStateClicked(){
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        savedProgram = wtl.getProgram();
+
+        for (Map.Entry<String, SumoTLSProgram> entry : savedProgram.programs.entrySet()) {
+            String subID = entry.getKey();
+            SumoTLSProgram program = entry.getValue();
+
+            System.out.println("Program SubID: " + subID);
+            System.out.println("Type: " + program.type);
+            System.out.println("Current Phase Index: " + program.currentPhaseIndex);
+            System.out.println("Phases:");
+            for (SumoTLSPhase phase : program.phases) {
+                System.out.println(" - " + phase.phasedef);
+            }
+            System.out.println("----------------------------");
+        }
+    }
+
+
+    @FXML
+    private void onApplyButtonClicked() {
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        SumoTLSController controller = wtl.getProgram();
+        SumoTLSProgram program = controller.get("0");
+        int currentPhaseIdx = program.currentPhaseIndex;
+
+        SumoTLSProgram newProgram = new SumoTLSProgram();
+        newProgram.subID = program.subID;
+        newProgram.type = program.type;
+        newProgram.currentPhaseIndex = program.currentPhaseIndex;
+
+        newProgram.phases = new ArrayList<>();
+        for (int i = 0; i < program.phases.size(); i++) {
+            if (i == currentPhaseIdx) {
+                SumoTLSPhase updatedPhase = new SumoTLSPhase(
+                        (int) program.phases.get(i).duration,
+                        pendingRYGState != null ? pendingRYGState : program.phases.get(i).phasedef
+                );
+                newProgram.phases.add(updatedPhase);
+            } else {
+                newProgram.phases.add(program.phases.get(i));
+            }
+        }
+        wtl.setProgram(newProgram);
+    }
+
+
+    @FXML
+    private void onResetButtonClicked() {
+        if (savedProgram != null) {
+            SumoTLSProgram program = savedProgram.programs.get("0");
+            if (program != null) {
+                WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+                wtl.setProgram(program);
+            } else {
+                System.out.println("No program found for key '0'.");
+            }
+        } else {
+            System.out.println("No saved program to reset to.");
         }
     }
 

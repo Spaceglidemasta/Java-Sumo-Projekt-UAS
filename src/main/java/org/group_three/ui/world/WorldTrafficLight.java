@@ -129,6 +129,8 @@ public class WorldTrafficLight extends WorldObject {
 		}
 
 		drawRectangle(size.div(2), color);
+
+        updateDetailsPanel();
 	}
 
 	@Override
@@ -136,5 +138,13 @@ public class WorldTrafficLight extends WorldObject {
 		trafficLightDetailsController = fxmlLoader.getController();
 		trafficLightDetailsController.setup(this);
 	}
+
+    @Override
+    public void updateDetailsPanel() {
+        if (trafficLightDetailsController == null) {
+            return;
+        }
+        trafficLightDetailsController.update();
+    }
 
 }

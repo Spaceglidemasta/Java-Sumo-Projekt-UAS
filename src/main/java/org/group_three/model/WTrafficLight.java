@@ -120,10 +120,13 @@ public class WTrafficLight extends WObject {
      * @return true if success, false if not
      * @author Luca
      * */
-    public boolean setProgram(String PID) {
+    public boolean setProgramID(String PID) {
 
         return simcon.jobset(Trafficlight.setProgram(id, PID));
+    }
 
+    public boolean setProgram(SumoTLSProgram tls) {
+        return simcon.jobset(Trafficlight.setCompleteRedYellowGreenDefinition(id, tls));
     }
 
     /**
