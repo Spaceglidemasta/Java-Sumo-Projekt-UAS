@@ -33,7 +33,7 @@ public class WorldVehicleRoute extends WorldRoute {
 	 */
 	@Override
 	public void update() {
-		drawCollision();
+		super.update();
 		//if (worldVehicle == null) return;
 
 		//if (Meth.getRelativeLocation(worldVehicle.getPosition(), worldVehicle.getRotation(), Meth.addRelativeLocation(getPosition(), getRotation(), updatedRoutePoints.getFirst())).x <= 0) {
