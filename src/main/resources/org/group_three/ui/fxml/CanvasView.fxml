@@ -17,8 +17,8 @@
             <Canvas fx:id="worldDynamicRenderTarget" height="200.0" onMouseClicked="#onMouseClicked" onMouseDragged="#onCanvasDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onCanvasPressed" onScroll="#onScroll" scaleY="-1.0" width="200.0" />
             <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" spacing="8.0" StackPane.alignment="TOP_RIGHT">
                <children>
-                  <CheckBox mnemonicParsing="false" text="High Contrast" HBox.hgrow="NEVER" />
-                  <CheckBox mnemonicParsing="false" selected="true" text="(Poly) Environment" HBox.hgrow="NEVER" />
+                  <CheckBox fx:id="highContrastToggle" mnemonicParsing="false" text="High Contrast" HBox.hgrow="NEVER" />
+                  <CheckBox fx:id="environmentToggle" mnemonicParsing="false" selected="true" text="(Poly) Environment" HBox.hgrow="NEVER" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

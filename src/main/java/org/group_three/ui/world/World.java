@@ -101,6 +101,14 @@ public class World {
 	@SuppressWarnings("JavadocDeclaration")
 	private final Color worldColor = UI.worldColor;
 
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
 	/**
 	 * The background color of the world view.
 	 * Visualizes out of bounds.
@@ -108,7 +116,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private final Color backgroundColor = UI.worldColor;
+	private Color backgroundColor = UI.worldColor;
 
 
 	/**
@@ -418,7 +426,7 @@ public class World {
 	 */
 	private void update() {
 		graphicsContext.save();
-		graphicsContext.setFill(backgroundColor);
+		graphicsContext.setFill(UI.highContrast ? Color.BLACK : backgroundColor);
 		graphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
 		graphicsContext.restore();
 

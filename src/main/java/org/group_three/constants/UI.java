@@ -28,10 +28,11 @@ public final class UI {
 	public static final boolean forceShowSphereCollision = false;
 	// The default world color.
 	public static final Color worldColor = new Color(0.2,0.5,0.2,1);
+	public static final Color worldHighContrastColor = new Color(0,0,0,1);
 	// The default road color.
 	public static final Color roadColor = new Color(0.1,0.1,0.1,1);
 	// A bool to decide if misc polygons should be rendered.
-	public static final boolean showPolys = true;
+	public static boolean showPolys = true;
 	// A Vector2D to decide how far one can zoom in and out of the UI. (x = min, y = max)
 	public static final Vector2D zoomLimit = new Vector2D(0.1, 10);
 	// The limit to decide the minimum and maximum value of the speedModificator.
@@ -46,6 +47,8 @@ public final class UI {
 			{"XML", "*.xml"},
 			{"CSV", "*.csv"}
 	};
+
+	public static boolean highContrast = false;
 
 
 	// The minimal window width.

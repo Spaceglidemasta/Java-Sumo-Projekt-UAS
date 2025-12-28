@@ -2,6 +2,8 @@ package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
+import javafx.scene.control.CheckBox;
+import org.group_three.constants.UI;
 import org.group_three.ui.*;
 import org.group_three.debug.Debug;
 
@@ -45,6 +47,11 @@ public class CanvasController {
 	private Vector2D last = new Vector2D();
 	private Vector2D delta = new Vector2D();
 
+	@FXML
+	private CheckBox environmentToggle;
+	@FXML
+	private CheckBox highContrastToggle;
+
 	/**
 	 * Comment
 	 *
@@ -64,6 +71,16 @@ public class CanvasController {
 		SimView2D.initialize(worldStaticRenderTarget,
 				worldDynamicRenderTarget,
 				renderTargetBounds);
+
+		environmentToggle.selectedProperty().addListener((_, _, value) -> {
+			UI.showPolys = value;
+			SimView2D.getWorld().requestUpdate();
+		});
+
+		highContrastToggle.selectedProperty().addListener((_, _, value) -> {
+			UI.highContrast = value;
+			SimView2D.getWorld().requestUpdate();
+		});
 	}
 
 	/**
@@ -175,4 +192,15 @@ public class CanvasController {
 	}
 
 	// draw handler needed so it doesn't waste performance
+
+
+
+
+
+
+
+
+
+
+
 }
