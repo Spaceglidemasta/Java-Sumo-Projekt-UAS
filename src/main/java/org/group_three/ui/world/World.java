@@ -148,6 +148,7 @@ public class World {
 	 */
 	public World() {
 		SimControlController.setPlay(false);
+		CanvasController.rotationIndicatorStatic.setRotate(0);
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------
