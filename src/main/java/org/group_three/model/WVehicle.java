@@ -12,6 +12,8 @@ import org.group_three.ui.Meth;
 import java.util.logging.Logger;
 import java.util.List;
 
+import java.util.Objects;
+
 /**
  * <h1>WVehicle</h1>
  * A Wrapper Class for Vehicle which uses only the VehicleID to get and set values.
@@ -171,13 +173,13 @@ public class WVehicle {
      * @return Lane Index
      * @author Luca
      * */
-    public SumoPosition2D getLanePosition(){
+    public double getLanePosition(){
         try {
-            return (SumoPosition2D) stc.do_job_get(Vehicle.getLanePosition(vehID));
+            return (double) stc.do_job_get(Vehicle.getLanePosition(vehID));
         }
         catch (Exception e){
             e.printStackTrace();
-            return null;
+            return 0;
         }
     }
 
@@ -516,6 +518,46 @@ public class WVehicle {
         }
         return true;
     }
+
+
+	/**
+	 * Recalculates the route
+	 * @return true if successful, false if not
+	 * @author Joel
+	 * */
+	public boolean reroute() {
+		try {
+			stc.do_job_set(Vehicle.rerouteEffort(vehID));
+		}
+		catch (Exception _){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Changes the route to a new targets
+	 * @return true if successful, false if not
+	 * @author Joel
+	 * */
+	public void changeRoute(SumoStringList newRouteTargets) {//, boolean keepRouteHistory) {
+		SumoStringList newRoute = new SumoStringList();
+
+		if (false) {//keepRouteHistory) {
+			for (String edge : getRouteEdges()) {
+				newRoute.add(edge);
+				if (Objects.equals(edge, getRouteEdges().get(getRouteIndex()))) break;
+			}
+		} else {
+			newRoute.add(getRouteEdges().get(getRouteIndex()));
+		}
+
+		newRoute.addAll(newRouteTargets);
+		setRoute(newRoute);
+		reroute();
+	}
+
+
 
     /**
      * <h1>Boogie Wonderland - Earth, Wind & Fire, The Emotions</h1>

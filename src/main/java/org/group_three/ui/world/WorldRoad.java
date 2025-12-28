@@ -123,7 +123,7 @@ public class WorldRoad extends WorldObject {
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	RoadDetailsController roadDetailsController;
+	public RoadDetailsController roadDetailsController;
 
 	/**
 	 * A method to set up the details panel when the object is selected.
@@ -135,6 +135,13 @@ public class WorldRoad extends WorldObject {
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
 		roadDetailsController = fxmlLoader.getController();
 		roadDetailsController.setup(this);
+	}
+
+	@Override
+	public void deselect() {
+		if (roadDetailsController != null) {
+			roadDetailsController.deselect();
+		}
 	}
 
 	/**

@@ -69,7 +69,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private VehicleDetailsController vehicleDetailsController;
+	public VehicleDetailsController vehicleDetailsController;
 
 	/**
 	 * The wVehicle object for this class.
@@ -253,6 +253,18 @@ public class WorldVehicle extends WorldObject {
 	public void remove() {
 		super.remove();
 		if (vehicleDetailsController != null) vehicleDetailsController.kill();
+	}
+
+	@Override
+	public void select() {
+		super.select();
+		vehicleDetailsController.createWorlVehicleRoute();
+	}
+
+	@Override
+	public void deselect() {
+		super.deselect();
+		vehicleDetailsController.removeWorlVehicleRoute();
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------

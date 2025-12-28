@@ -19,8 +19,9 @@ import java.util.List;
  */
 public class WorldRoute extends WorldObject {
 
-	private List<String> route;
-	private final List<Vector2D> routePoints = new ArrayList<>();
+	protected List<String> route;
+
+	protected List<Vector2D> routePoints = new ArrayList<>();
 
 	public WorldRoute(World world, Canvas canvas, String displayName, List<String> route) {
 		super(world, canvas, displayName);
@@ -36,7 +37,11 @@ public class WorldRoute extends WorldObject {
 	public void update() {
 		super.update();
 
-		//drawLine(routePoints, 1, Color.RED);
+		drawLine(routePoints, 1, Color.RED);
+	}
+
+	public List<Vector2D> getRoutePoints() {
+		return routePoints;
 	}
 
 	public List<String> getRoute() {
@@ -55,14 +60,29 @@ public class WorldRoute extends WorldObject {
 		this.route = route;
 
 		routePoints.clear();
+
 		for (String edge : route) {
 			List<String> lanes = simcon.getRoad(edge).getLaneIDs();
 
-			routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
+			List<List<Vector2D>> allLanePoints = new ArrayList<>();
+			for (String lane : lanes) {
+				allLanePoints.add(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lane)));
+			}
 
-			/*for (String lane : lanes.get(lanes.size()/2)) {
-				routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lane)));
-			}*/
+			int laneCount = allLanePoints.size();
+
+			for (int i = 0; i < allLanePoints.getFirst().size(); i++) {
+				Vector2D point = new Vector2D();
+				for (int b = 0; b < laneCount; b++) {
+					point = point.add(allLanePoints.get(b).get(i));
+				}
+				point = point.div(laneCount);
+				routePoints.add(point);
+			}
+
+
+
+			//routePoints.addAll(Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(lanes.get(lanes.size()/2))));
 		}
 	}
 }
