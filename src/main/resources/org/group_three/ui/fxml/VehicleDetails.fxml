@@ -58,6 +58,15 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
+                                    <Label styleClass="white-text" text="SpeedFactor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
                                     <Label styleClass="white-text" text="Color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
@@ -108,7 +117,12 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <TextField fx:id="speed" promptText="speed" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                    <TextField fx:id="speed" editable="false" promptText="speed" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <TextField fx:id="speedFactor" promptText="speedFactor" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
@@ -118,7 +132,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <TextField fx:id="route" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                    <Button fx:id="selectRouteButton" mnemonicParsing="false" onAction="#onRouteSelectPressed" text="Select" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">

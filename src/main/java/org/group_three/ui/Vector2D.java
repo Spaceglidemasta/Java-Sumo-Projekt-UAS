@@ -270,6 +270,29 @@ public class Vector2D {
 		return new Vector2D(Math.abs(x), Math.abs(y));
 	}
 
+	/**
+	 * A method to get the relative location or difference vector to another vector.
+	 * The difference is with no angle consideration aka angle 0°.
+	 *
+	 * @param to The relative location from this to the given Vector2D.
+	 * @return The difference vector.
+	 * @author Joel
+	 */
+	public Vector2D getRelativeLocation(Vector2D to) {
+		return Meth.getRelativeLocation(this, 0, to);
+	}
+
+	/**
+	 * A method to get the distance between to Vector2D's.
+	 *
+	 * @param to The distance from this to the given Vector2D.
+	 * @return The distance as a double.
+	 * @author Joel
+	 */
+	public double getDistance(Vector2D to) {
+		return this.getRelativeLocation(to).length();
+	}
+
 	//--------------------------------------------------Methods--------------------------------------------------
 
 }
