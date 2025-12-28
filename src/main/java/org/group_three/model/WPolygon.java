@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * <h1>Polygon Wrapper Class</h1>
  * Wrapper for polygons all around the network.
+ * @see SumoGeometry
  * @author Luca
  * */
 public class WPolygon extends WObject {
@@ -37,7 +38,7 @@ public class WPolygon extends WObject {
 
     /**
      * Loads all Polygons from the Main Simulation into allPolys
-     * @return true of successfull, false if not.
+     * @return true of successful, false if not.
      * @author Luca
      * */
     public static boolean loadAllPolys(SimController simcon){

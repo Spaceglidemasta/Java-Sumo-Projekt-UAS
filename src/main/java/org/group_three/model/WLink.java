@@ -3,11 +3,12 @@ package org.group_three.model;
 import de.tudresden.sumo.objects.SumoColor;
 import org.group_three.ui.Vector2D;
 
-/**
- * Wrapper class for individual links of Traffic lights <br>
+/**<h1>WLink</h1>
+ * Class for individual links of Traffic lights <br>
  * Does not extend to WObject, because it's technically just an
  * Information holder, not a real wrapper for an Object in the
  * SUMO-Simulation.
+ * @see WTrafficLight
  * @author Luca
  */
 public class WLink {

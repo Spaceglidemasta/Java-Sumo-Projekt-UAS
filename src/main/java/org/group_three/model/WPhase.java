@@ -2,8 +2,9 @@ package org.group_three.model;
 
 import java.util.List;
 
-/**
+/**<h1>WPhase</h1>
  * Simple Phase Class for WTrafficLight
+ * @see WTrafficLight
  * @author Luca
  * */
 public class WPhase {

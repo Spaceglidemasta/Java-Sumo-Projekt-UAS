@@ -1,7 +1,7 @@
 package org.group_three.utils;
 
 import org.group_three.api.SimController;
-import org.group_three.debug.annotations.StaticClass;
+import org.group_three.constants.Documents;
 import org.group_three.debug.exceptions.SumoCfgParsingError;
 import org.group_three.debug.exceptions.XMLEmptyAttributeError;
 import org.w3c.dom.Document;
@@ -11,15 +11,20 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
 /**
  * Utility Class for Pathing
  * @author Luca
  * */
-@StaticClass
 public final class PathUtils {
+
+    private static final Logger log =
+            Logger.getLogger(PathUtils.class.getName());
 
     /**
      * Reads out the relative path / filename of the network file via XML parsing the .sumocfg file.
@@ -53,6 +58,18 @@ public final class PathUtils {
         if(netpathstr.isEmpty()) throw new XMLEmptyAttributeError("Value of network element is empty");
 
         return new File(parent, netpathstr);
+    }
+
+    /**
+     * Checks if the output directory is present, and creates one of not present.
+     * @param filename the name of the file
+     * @return the Path of the given filename
+     * @author Luca
+     * */
+    public static Path prepareOutputPath(String filename) throws IOException {
+        Path outputDir = Path.of(Documents.OUTPUT_DIR_NAME);
+        Files.createDirectories(outputDir);
+        return outputDir.resolve(filename);
     }
 
 
@@ -102,7 +119,7 @@ public final class PathUtils {
      */
     public static String getRelativePath(String absolutePath) {
         // get SumoConfig path
-        Path sumoConfigPath = Paths.get(new File(SimController.getSumoLoc(), "SumoConfig").getPath());
+        Path sumoConfigPath = Paths.get(new File(SimController.getProjectLocation(), "SumoConfig").getPath());
 
         // create and return a relative path based on the SumoConfig path
         return sumoConfigPath.relativize(Paths.get(absolutePath)).toString();

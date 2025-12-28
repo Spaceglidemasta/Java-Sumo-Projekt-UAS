@@ -12,13 +12,15 @@ import java.util.logging.Logger;
 
 
 /**
- * Traffic Light Wrapper Class
- *
- * @author Luca, Leon
+ * <h1>WTrafficLight</h1>
+ * Traffic Light Wrapper Class.
+ * @see org.group_three.model.WLink
+ * @see org.group_three.model.WPhase
+ * @author Luca
  * */
 public class WTrafficLight extends WObject {
 
-    Logger log = Logger.getLogger(WTrafficLight.class.getName());
+    static final Logger log = Logger.getLogger(WTrafficLight.class.getName());
 
     //unfinal this when adding add-link functionality
     private final List<WLink> allWlinks;
@@ -55,11 +57,6 @@ public class WTrafficLight extends WObject {
         this.customProgram.add(phase);
     }
 
-
-    public String getID() {
-        return id;
-    }
-
     /**
      * Adds a WLink to the local instance allWlinks list
      * @param wlink the WLink to be added
@@ -93,10 +90,6 @@ public class WTrafficLight extends WObject {
     public int getPhaseIndex() {
          return (int) simcon.jobget(Trafficlight.getPhase(id));
     }
-
-
-
-
 
     /**
      * Sets the phase length of the TL
@@ -154,9 +147,9 @@ public class WTrafficLight extends WObject {
     }
 
 
-    /** This only retrieves the states. You probably want to use loadLinkedStateColors()
+    /**This only retrieves the states. You probably want to use loadLinkedStateColors()
      * Get program ID from the id
-     * @return The states of all Linked Wlinks or null.
+     * @return The states of all Linked WLinks or null.
      * @author Luca
      * */
     @MayReturnNull
@@ -240,6 +233,7 @@ public class WTrafficLight extends WObject {
 
     /**<h2>loadAll</h2>
      * Loads all Traffic Lights and controlled Lanes into the Static variable allWTLs
+     * @param simcon the SimController this is to be invoked upon
      * @return Said List
      * @author Luca
      * */
@@ -279,6 +273,8 @@ public class WTrafficLight extends WObject {
             simcon.addToAllWTLs(wtl);
 
         }
+
+        log.fine("Loading all TrafficLights was successful.");
 
         return simcon.getAllWTLs();
     }

@@ -302,6 +302,14 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addJunctions(Canvas renderLayer) {
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon == null){
+            Debug.print("Main Simcon instance is null");
+            return;
+        }
+
 		for (String junctionId : SimController.getMainsimcon().getJunctionIDList()) {
 			new WorldJunction(
 					world,
@@ -464,7 +472,19 @@ public class SimView2D {
 	 */
 	public static void update() {
 		updateTrafficLights(worldStaticRenderTarget);
-		updateVehicles(worldStaticRenderTarget);
+
+
+        SimController simcon = SimController.getMainsimcon();
+
+        if(simcon != null){
+            WVehicle.loadnupdateAll(simcon);
+            simcon.collectTelemetry();
+
+        }
+
+
+
+        updateVehicles(worldStaticRenderTarget);
 
 		world.requestUpdate();
 	}

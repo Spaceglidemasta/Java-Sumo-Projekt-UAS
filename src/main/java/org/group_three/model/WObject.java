@@ -3,7 +3,11 @@ package org.group_three.model;
 import org.group_three.api.SimController;
 
 /**
- * Parent Class for all Wrapper Classes except WLink & WVehicle.
+ * <h1>WObject</h1>
+ * Parent Class for most Object-Wrapper-Classes.
+ * @see WEdge
+ * @see WTrafficLight
+ * @see WPolygon
  * @author Luca
  * */
 public abstract class WObject {

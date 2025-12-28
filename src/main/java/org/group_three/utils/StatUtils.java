@@ -2,33 +2,44 @@ package org.group_three.utils;
 
 
 import de.tudresden.sumo.cmd.Simulation;
+import de.tudresden.sumo.objects.SumoColor;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.api.SimController;
-import org.group_three.debug.annotations.CreatesFiles;
-import org.group_three.debug.annotations.StaticClass;
 
 import java.util.List;
 
 /**
- * Class for collecting statistics.
- * <s>Can be instantiated to collect stats of one Simulation,
- * but also</s> has plenty of Static functions.
+ * Utility Class for Statistics.
  * @author Luca
  * */
-@StaticClass
-public class StatUtils {
+public final class StatUtils {
 
-    private SimController simcon;
-    private List<String> content;
+
+    /**
+     * Compares the values of the given SumoColors,
+     * including the opacity. Commutative.
+     * @param first first color
+     * @param sec second color
+     * @return If both SumoColors are of equal values.
+     * @author Luca
+     * */
+    public static boolean equalSColor(SumoColor first, SumoColor sec){
+        return (
+                   first.r == sec.r
+                && first.b == sec.b
+                && first.g == sec.g
+                && first.a == sec.a
+                );
+    }
 
 
     /**
      * Exports the state of the Main simulation
+     * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
-     * @return true of successfull, false if not
+     * @return true of successful, false if not
      * @author Luca
      * */
-    @CreatesFiles
     @Deprecated
     public static boolean exportState(String filename) {
 
@@ -38,12 +49,12 @@ public class StatUtils {
 
     /**
      * Exports the state of the given simulation
+     * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
      * @param stc the SumoTraciConnection of the Simulation
-     * @return true of successfull, false if not
+     * @return true of successful, false if not
      * @author Luca
      * */
-    @CreatesFiles
     @Deprecated
     public static boolean exportState(String filename, SumoTraciConnection stc) {
         try {
@@ -57,12 +68,12 @@ public class StatUtils {
 
     /**
      * Exports the state of the given simulation
+     * <p> WARNING Creates Files </p>
      * @param filename The name of the file to be created
      * @param simcon the SimController of the Simulation
-     * @return true of successfull, false if not
+     * @return true of successful, false if not
      * @author Luca
      * */
-    @CreatesFiles
     @Deprecated
     public static boolean exportState(String filename, SimController simcon) {
 
