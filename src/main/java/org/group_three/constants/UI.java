@@ -3,6 +3,10 @@ package org.group_three.constants;
 import javafx.scene.paint.Color;
 import org.group_three.ui.Vector2D;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 public final class UI {
     private UI() {} //prevents init.
 
@@ -49,6 +53,9 @@ public final class UI {
 	};
 
 	public static boolean highContrast = false;
+	public static double vehicleScale = 1;
+	public static Vector2D viewFilter_VehicleSpeed = new Vector2D(0, -1);
+	public static List<Color> viewFilter_VehicleColor = new ArrayList<>();
 
 
 	// The minimal window width.
