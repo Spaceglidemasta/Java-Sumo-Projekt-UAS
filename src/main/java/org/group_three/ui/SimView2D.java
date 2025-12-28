@@ -176,6 +176,10 @@ public class SimView2D {
 				((WorldRoad) routeSelection).roadDetailsController.routeSelected(selected);
 			}
 
+			if (routeSelection.getClass() == WorldVehicle.class) {
+				((WorldVehicle) routeSelection).vehicleDetailsController.routeSelected(selected);
+			}
+
 			routeSelection = null;
 			return;
 		}

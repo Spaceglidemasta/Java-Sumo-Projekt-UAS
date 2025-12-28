@@ -1,14 +1,15 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.objects.SumoStringList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.SimView2D;
-import org.group_three.ui.world.WorldRoute;
-import org.group_three.ui.world.WorldVehicle;
+import org.group_three.ui.world.*;
 
 /**
  * The controller for the VehicleDetails.
@@ -107,7 +108,7 @@ public class VehicleDetailsController {
 	private WorldVehicle worldVehicle;
 
 	@FXML
-	private Button routeSelectButton;
+	private Button selectRouteButton;
 
 
 	/**
@@ -161,7 +162,70 @@ public class VehicleDetailsController {
 
 	@FXML
 	private void onRouteSelectPressed() {
+		SimView2D.setRouteSelection(worldVehicle);
+	}
 
+	private String targetRouteId;
+
+	public void routeSelected(WorldObject worldObject) {
+		Debug.print(worldObject.getClass());
+		Debug.print(WorldRoad.class);
+		Debug.print(((WorldRoad) worldObject).getwEdge().getId());
+		Debug.print(worldObject.getClass() == WorldRoad.class);
+		if ( worldObject.getClass() == WorldRoad.class) {
+			if (worldVehicleRoute != null) {
+				worldVehicleRoute.remove();
+				worldVehicleRoute = null;
+			}
+
+
+			SumoStringList route = new SumoStringList();
+			route.add(worldVehicle.getwVehicle().getRouteEdges().get(worldVehicle.getwVehicle().getRouteIndex()));
+			route.add(((WorldRoad) worldObject).getwEdge().getId());
+
+			Debug.print(route);
+
+			targetRouteId = SimController.getMainsimcon().addRoute(route);
+
+			Debug.print(targetRouteId);
+			//Debug.print(SimController.getMainsimcon().get);
+
+			if (targetRouteId != null) {
+
+				worldVehicle.getwVehicle().changeRoute(route);
+
+				//worldVehicle.getwVehicle().setRoute(targetRouteId);
+				//worldVehicle.getwVehicle().reroute();
+
+
+
+				worldVehicleRoute = new WorldVehicleRoute(
+						worldVehicle.getWorld(),
+						worldVehicle.getWorld().worldStaticRenderTarget,
+						"",
+						worldVehicle.getwVehicle().getRouteEdges(),
+						worldVehicle);
+
+			} else {
+				targetRouteId = null;
+			}
+
+		}
+	}
+
+	private WorldVehicleRoute worldVehicleRoute;
+
+	public void createWorlVehicleRoute() {
+		worldVehicleRoute = new WorldVehicleRoute(
+				worldVehicle.getWorld(),
+				worldVehicle.getWorld().worldStaticRenderTarget,
+				"",
+				worldVehicle.getwVehicle().getRouteEdges(),
+				worldVehicle);
+	}
+
+	public void removeWorlVehicleRoute() {
+		worldVehicleRoute.remove();
 	}
 
 	/**
@@ -205,7 +269,8 @@ public class VehicleDetailsController {
 		sumoId.setDisable(true);
 		speed.setDisable(true);
 		color.setDisable(true);
-		routeSelectButton.setDisable(true);
+		selectRouteButton.setDisable(true);
 		viewLockButton.setDisable(true);
+		speedFactor.setDisable(true);
 	}
 }

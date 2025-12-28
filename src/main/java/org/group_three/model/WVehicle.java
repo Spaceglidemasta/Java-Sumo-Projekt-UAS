@@ -10,6 +10,8 @@ import org.group_three.api.SimController;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 
+import java.util.Objects;
+
 /**
  * <h1>WVehicle</h1>
  * A Wrapper Class for Vehicle which uses only the VehicleID to get and set values.
@@ -468,6 +470,46 @@ public class WVehicle {
         }
         return true;
     }
+
+
+	/**
+	 * Recalculates the route
+	 * @return true if successful, false if not
+	 * @author Joel
+	 * */
+	public boolean reroute() {
+		try {
+			stc.do_job_set(Vehicle.rerouteEffort(vehID));
+		}
+		catch (Exception _){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Changes the route to a new targets
+	 * @return true if successful, false if not
+	 * @author Joel
+	 * */
+	public void changeRoute(SumoStringList newRouteTargets) {//, boolean keepRouteHistory) {
+		SumoStringList newRoute = new SumoStringList();
+
+		if (false) {//keepRouteHistory) {
+			for (String edge : getRouteEdges()) {
+				newRoute.add(edge);
+				if (Objects.equals(edge, getRouteEdges().get(getRouteIndex()))) break;
+			}
+		} else {
+			newRoute.add(getRouteEdges().get(getRouteIndex()));
+		}
+
+		newRoute.addAll(newRouteTargets);
+		setRoute(newRoute);
+		reroute();
+	}
+
+
 
     /**
      * <h1>Boogie Wonderland - Earth, Wind & Fire, The Emotions</h1>

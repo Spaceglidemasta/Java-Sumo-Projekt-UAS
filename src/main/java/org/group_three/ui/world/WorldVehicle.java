@@ -69,7 +69,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private VehicleDetailsController vehicleDetailsController;
+	public VehicleDetailsController vehicleDetailsController;
 
 	/**
 	 * The wVehicle object for this class.
@@ -255,24 +255,16 @@ public class WorldVehicle extends WorldObject {
 		if (vehicleDetailsController != null) vehicleDetailsController.kill();
 	}
 
-	private WorldVehicleRoute worldVehicleRoute;
-
 	@Override
 	public void select() {
 		super.select();
-
-		worldVehicleRoute = new WorldVehicleRoute(
-				getWorld(),
-				getWorld().worldStaticRenderTarget,
-				"",
-				getwVehicle().getRouteEdges(),
-				this);
+		vehicleDetailsController.createWorlVehicleRoute();
 	}
 
 	@Override
 	public void deselect() {
 		super.deselect();
-		worldVehicleRoute.remove();
+		vehicleDetailsController.removeWorlVehicleRoute();
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------
