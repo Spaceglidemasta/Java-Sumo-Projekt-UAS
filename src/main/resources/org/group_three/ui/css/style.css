@@ -76,17 +76,23 @@
     -fx-background-color: #444;
 }
 
-.replay-button {
-    -fx-background-image: url("../icons/replay-button.png");
+
+.playPause-button {
+    -fx-background-image: url("../icons/play-button.png");
     -fx-background-size: 28 28;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-color: transparent;
 }
 
-.replay-button:hover {
+.playPause-button:selected {
+    -fx-background-image: url("../icons/pause-button.png");
+}
+
+.playPause-button:hover {
     -fx-background-color: #444;
 }
+
 
 .step-button {
     -fx-background-image: url("../icons/next-button.png");
@@ -97,18 +103,6 @@
 }
 
 .step-button:hover {
-    -fx-background-color: #444;
-}
-
-.restep-button {
-    -fx-background-image: url("../icons/previous-button.png");
-    -fx-background-size: 28 28;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-    -fx-background-color: transparent;
-}
-
-.restep-button:hover {
     -fx-background-color: #444;
 }
 

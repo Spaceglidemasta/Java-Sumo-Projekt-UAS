@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.group_three.api.SimController;
@@ -35,6 +36,9 @@ public class SimControlController {
 	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private TextField speedModifier;
+
+	@FXML
+	private ToggleButton playPauseButton;
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -168,7 +172,6 @@ public class SimControlController {
 	 *
 	 * @author Joel
 	 */
-	@FXML
 	private void onPlayClicked() {
 		//Debug.print("Play clicked.");
 		//setPlay(!isPlay());
@@ -181,9 +184,17 @@ public class SimControlController {
 	 *
 	 * @author Joel
 	 */
-	@FXML
 	private void onPauseClicked() {
 		setPlay(false);
+	}
+
+	@FXML
+	private void onPlayPauseClicked() {
+		if (playPauseButton.isSelected()) {
+			onPlayClicked();
+		} else {
+			onPlayPauseClicked();
+		}
 	}
 
 	/**
