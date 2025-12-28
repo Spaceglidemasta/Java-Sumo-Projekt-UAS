@@ -340,17 +340,6 @@ public class ToolbarController {
 		Debug.toConsole("Settings");
 	}
 
-	/**
-	 * Function to open the console tab in the Settings meny
-	 *
-	 * @author Leon
-	 */
-	@FXML
-	private void onConsoleOpen() {
-		Console console = Console.getInstance();  // Get the single instance of the Console
-		console.show();
-	}
-
     /**
      * Function to perform a stresstest
      *
