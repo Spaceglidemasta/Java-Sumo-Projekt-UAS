@@ -193,7 +193,7 @@ public class SimControlController {
 		if (playPauseButton.isSelected()) {
 			onPlayClicked();
 		} else {
-			onPlayPauseClicked();
+			onPauseClicked();
 		}
 	}
 
