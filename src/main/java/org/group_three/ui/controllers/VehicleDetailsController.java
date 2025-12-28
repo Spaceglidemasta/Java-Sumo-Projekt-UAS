@@ -272,5 +272,6 @@ public class VehicleDetailsController {
 		selectRouteButton.setDisable(true);
 		viewLockButton.setDisable(true);
 		speedFactor.setDisable(true);
+		removeWorlVehicleRoute();
 	}
 }

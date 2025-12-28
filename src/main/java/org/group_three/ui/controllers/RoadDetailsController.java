@@ -210,35 +210,15 @@ public class RoadDetailsController {
 			targetRouteId = SimController.getMainsimcon().addRoute(route);
 
 			Debug.print(targetRouteId);
-			//Debug.print(SimController.getMainsimcon().get);
 
 			if (targetRouteId != null) {
 
-				/*WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
-						"DEFAULT_VEHTYPE",
-						targetRouteId,
-						0,
-						0,
-						Integer.parseInt(vehicleSpawnSpeed.getText())
-						,0
-				);
-
-				wVehicle.reroute();*/
-
-				//SimController.getMainsimcon().generateFullRoute(targetRouteId);
-
-
-
-
-
-				Debug.print("Add WorldRoute");
 				worldRoute = new WorldRoute(
 						worldRoad.getWorld(),
 						worldRoad.getRenderTarget(),
 						"",
-						SimController.getMainsimcon().generateFullRoute(targetRouteId)//wVehicle.getRouteEdges()
+						SimController.getMainsimcon().generateFullRoute(targetRouteId)
 				);
-				//wVehicle.remove();
 			} else {
 				targetRouteId = null;
 			}
