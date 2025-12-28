@@ -8,6 +8,7 @@ import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.CanvasController;
 import org.group_three.ui.controllers.SimControlController;
 
 import java.util.*;
@@ -246,6 +247,7 @@ public class World {
 		}
 
 		viewerRotation = rotation;
+		CanvasController.rotationIndicatorStatic.setRotate(360-rotation);
 
 		requestUpdate();
 	}
