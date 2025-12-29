@@ -19,7 +19,6 @@ import java.util.Map;
  */
 public class TrafficLightDetailsController {
 
-
 	/**
 	 * The world objects display name.
 	 *
@@ -65,18 +64,14 @@ public class TrafficLightDetailsController {
     @FXML
     private TextField changePhaseDuration = null;
 
-	@FXML
-	private Button redButton;
-	@FXML
-	private Button yellowButton;
-	@FXML
-	private Button greenButton;
-    @FXML
-    private Button applyButton;
+    /**
+     * The reset button to restore saved state.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private Button resetButton;
-    @FXML
-    private Button saveCurrentStateButton;
 
 
     private static final String DEFAULT_PROGRAM_ID = "0";
@@ -111,15 +106,19 @@ public class TrafficLightDetailsController {
         selectedLink.setText("StopLineIndex: " + this.worldTrafficLight.getwLink().getTLIndex());
 		displayName.setText(this.worldTrafficLight.getDisplayName());
 		sumoId.setText(this.worldTrafficLight.getwTrafficLight().getId());
+
+        updateResetButtonState(this.worldTrafficLight.getwTrafficLight().getId());
 	}
 
     /**
      * The update method for this class to update its data.
+     * This update is called whenever a traffic light change occurs.
      *
      * @author Leon
      */
     public void update() {
-            phaseTime.setText(Double.toString(this.worldTrafficLight.getwTrafficLight().getPhaseLen()));
+        phaseTime.setText(Double.toString(this.worldTrafficLight.getwTrafficLight().getPhaseLen()));
+        updateResetButtonState(this.worldTrafficLight.getwTrafficLight().getId());
     }
 
 
@@ -187,7 +186,8 @@ public class TrafficLightDetailsController {
     }
 
     /**
-     * Saves the current program with the associated tlID.
+     * Saves the current program with the associated tlID
+     * in <code>savedControllers</code>.
      *
      * @author Leon
      */
@@ -195,7 +195,7 @@ public class TrafficLightDetailsController {
     private void onSaveCurrentStateClicked(){
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
         SumoTLSController currentController = wtl.getProgram();
-        String currentTLID = this.worldTrafficLight.getwTrafficLight().getId();
+        String currentTLID = wtl.getId();
         savedControllers.put(currentTLID, currentController);
     }
 
@@ -215,14 +215,14 @@ public class TrafficLightDetailsController {
         SumoTLSController controller = wtl.getProgram();
         SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
         int currentPhaseIdx = program.currentPhaseIndex;
-
         int newDuration = (int) program.phases.get(currentPhaseIdx).duration;
         String newPhase;
 
         String userInputDuration = changePhaseDuration.getText();
-        if (userInputDuration != null&& !userInputDuration.trim().isEmpty()) {
+        if (userInputDuration != null && !userInputDuration.trim().isEmpty()) {
             newDuration = Integer.parseInt(userInputDuration.trim());
-            // This sets the duration for the phase right after it is changed.
+
+            // This sets the duration for the phase right after the change is applied.
             // If this is not implemented, the user would have to wait one entire cycle to see the effect.
             wtl.setPhaseLen(newDuration);
         }
@@ -234,7 +234,6 @@ public class TrafficLightDetailsController {
         }
 
         SumoTLSPhase updatedPhase = new SumoTLSPhase(newDuration, newPhase);
-
         SumoTLSProgram newProgram = new SumoTLSProgram();
         newProgram.subID = program.subID;
         newProgram.type = program.type;
@@ -263,22 +262,23 @@ public class TrafficLightDetailsController {
     @FXML
     private void onResetButtonClicked() {
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
-        String currentTLID = this.worldTrafficLight.getwTrafficLight().getId();
+        String currentTLID = wtl.getId();
         if (savedControllers.containsKey(currentTLID)) {
             SumoTLSController savedController = savedControllers.get(currentTLID);
             SumoTLSProgram program = savedController.programs.get(DEFAULT_PROGRAM_ID);
-            if (program != null) {
-                String currentPhase = wtl.getRYGState(wtl.getId());
-                int currentCount = currentPhase.length();
-
-                String savedPhase = program.phases.getFirst().phasedef;
-                int savedCount = savedPhase.length();
-
-                if (currentCount == savedCount) {
-                    wtl.setProgram(program);
-                }
-            }
+            wtl.setProgram(program);
         }
+    }
+
+    /**
+     * Makes the reset buton disabled if there is no saved state to reset to,
+     * depending on selected tl
+     *
+     * @author Leon
+     */
+    private void updateResetButtonState(String tlId) {
+        boolean hasSavedController = savedControllers.containsKey(tlId);
+        resetButton.setDisable(!hasSavedController);
     }
 
 

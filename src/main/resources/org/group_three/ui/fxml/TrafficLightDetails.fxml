@@ -116,15 +116,15 @@
                                  <children>
                                     <HBox layoutX="4.0" layoutY="4.0" prefHeight="24.0" prefWidth="151.0" spacing="3.5" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="4.0">
                                        <children>
-                                          <Button fx:id="saveCurrentStateButton" mnemonicParsing="false" onMouseClicked="#onSaveCurrentStateClicked" prefHeight="25.0" prefWidth="146.0" text="Save current state" />
+                                          <Button mnemonicParsing="false" onMouseClicked="#onSaveCurrentStateClicked" prefHeight="25.0" prefWidth="146.0" text="Save current state" />
                                        </children></HBox>
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Button fx:id="redButton" layoutX="5.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onRedButtonClicked" text="Red" textFill="#e81111" />
-                                    <Button fx:id="yellowButton" layoutX="45.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onYellowButtonClicked" text="Yellow" textFill="#c6c328" />
-                                    <Button fx:id="greenButton" layoutX="99.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onGreenButtonClicked" prefWidth="54.0" text="Green" textFill="#24d730" />
+                                    <Button layoutX="5.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onRedButtonClicked" text="Red" textFill="#e81111" />
+                                    <Button layoutX="45.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onYellowButtonClicked" text="Yellow" textFill="#c6c328" />
+                                    <Button layoutX="99.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onGreenButtonClicked" prefWidth="54.0" text="Green" textFill="#24d730" />
                                  </children></AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
@@ -132,7 +132,7 @@
                                  </children></AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="74.0">
                                  <children>
-                                    <Button fx:id="applyButton" layoutX="3.0" layoutY="4.0" mnemonicParsing="false" onMouseClicked="#onApplyButtonClicked" prefHeight="25.0" prefWidth="72.0" text="Apply" />
+                                    <Button layoutX="3.0" layoutY="4.0" mnemonicParsing="false" onMouseClicked="#onApplyButtonClicked" prefHeight="25.0" prefWidth="72.0" text="Apply" />
                                     <Button fx:id="resetButton" alignment="CENTER" layoutX="81.0" layoutY="4.0" mnemonicParsing="false" onMouseClicked="#onResetButtonClicked" prefHeight="25.0" prefWidth="72.0" text="Reset" />
                                  </children></AnchorPane>
                            </children>
