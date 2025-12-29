@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The controller for the VehicleDetails.
+ * The controller for the TrafficLightDetails.
  *
- * @author Joel
+ * @author Leon
  */
 public class TrafficLightDetailsController {
 
@@ -30,7 +30,7 @@ public class TrafficLightDetailsController {
 	private TextField displayName;
 
 	/**
-	 * The sumo vehicle id.
+	 * The sumo traffic light id.
 	 *
 	 * @author Joel
 	 */
@@ -39,19 +39,32 @@ public class TrafficLightDetailsController {
 	private TextField sumoId;
 
     /**
-     * The phase time.
+     * The phase duration.
      *
-     * @author Joel
+     * @author Leon
      */
     @SuppressWarnings("JavadocDeclaration")
     @FXML
     private TextField phaseTime;
 
+    /**
+     * The selected link (or stop line).
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private TextField selectedLink;
 
+    /**
+     * The text field to change the phase duration.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private TextField changePhaseDuration = null;
+
 	@FXML
 	private Button redButton;
 	@FXML
@@ -65,14 +78,32 @@ public class TrafficLightDetailsController {
     @FXML
     private Button saveCurrentStateButton;
 
-    private static final String DEFAULT_PROGRAM_ID = "0";
 
+    private static final String DEFAULT_PROGRAM_ID = "0";
     private WorldTrafficLight worldTrafficLight;
 
+    /**
+     * pendingRYGState is the edited state by the user.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     private String pendingRYGState = null;
-
+    /**
+     * savedControllers is the tlID together with the program of that tl in a hashmap.
+     * This allows the user to have tl-states from multiple different tls saved simultaneously.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     private static final Map<String, SumoTLSController> savedControllers = new HashMap<>();
 
+
+    /**
+     * The setup method for this class to fill it with data.
+     *
+     * @author Leon
+     */
     public void setup(WorldTrafficLight worldTrafficLight) {
 		this.worldTrafficLight = worldTrafficLight;
 
@@ -82,6 +113,11 @@ public class TrafficLightDetailsController {
 		sumoId.setText(this.worldTrafficLight.getwTrafficLight().getId());
 	}
 
+    /**
+     * The update method for this class to update its data.
+     *
+     * @author Leon
+     */
     public void update() {
             phaseTime.setText(Double.toString(this.worldTrafficLight.getwTrafficLight().getPhaseLen()));
     }
@@ -94,28 +130,50 @@ public class TrafficLightDetailsController {
 	 */
 	@FXML
 	private void initialize() {
-
-
 	}
 
-
+    /**
+     * Modifies the tls current state string to be used later. <br>
+     * This function works in tandem with <code>buttonUpdater</code>.
+     *
+     * @author Leon
+     */
 	@FXML
 	private void onRedButtonClicked() {
         buttonUpdater('r');
     }
 
-
+    /**
+     * Modifies the tls current state string to be used later. <br>
+     * This function works in tandem with <code>buttonUpdater</code>.
+     *
+     * @author Leon
+     */
 	@FXML
 	private void onYellowButtonClicked() {
         buttonUpdater('y');
     }
 
-
+    /**
+     * Modifies the tls current state string to be used later. <br>
+     * This function works in tandem with <code>buttonUpdater</code>.
+     *
+     * @author Leon
+     */
 	@FXML
 	private void onGreenButtonClicked() {
         buttonUpdater('G');
     }
 
+
+    /**
+     * This method modifies the character in the position that is dictated by the lane index
+     * and sets it to the char that was passed in by one of the function above.
+     * The string is then saved for later use.
+     *
+     * @param newState is the char that was set by one of the three previous functions.
+     * @author Leon
+     */
     private void buttonUpdater(char newState) {
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
         String state = wtl.getRYGState(wtl.getId());
@@ -128,6 +186,11 @@ public class TrafficLightDetailsController {
         }
     }
 
+    /**
+     * Saves the current program with the associated tlID.
+     *
+     * @author Leon
+     */
     @FXML
     private void onSaveCurrentStateClicked(){
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
@@ -137,6 +200,15 @@ public class TrafficLightDetailsController {
     }
 
 
+    /**
+     * This method applies all changes that have been made by the user.
+     * If only one of two parameters have been changed
+     * (phase length or phase state), the other one remains set to its default.
+     * When the updating happens, only the current phase is modified,
+     * leaving the other ones unchanged.
+     *
+     * @author Leon
+     */
     @FXML
     private void onApplyButtonClicked() {
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
@@ -150,6 +222,8 @@ public class TrafficLightDetailsController {
         String userInputDuration = changePhaseDuration.getText();
         if (userInputDuration != null&& !userInputDuration.trim().isEmpty()) {
             newDuration = Integer.parseInt(userInputDuration.trim());
+            // This sets the duration for the phase right after it is changed.
+            // If this is not implemented, the user would have to wait one entire cycle to see the effect.
             wtl.setPhaseLen(newDuration);
         }
 
@@ -166,6 +240,7 @@ public class TrafficLightDetailsController {
         newProgram.type = program.type;
         newProgram.currentPhaseIndex = program.currentPhaseIndex;
 
+        // Only changed the phase that matches the one that is currently active.
         newProgram.phases = new ArrayList<>();
         for (int i = 0; i < program.phases.size(); i++) {
             if (i == currentPhaseIdx) {
@@ -178,6 +253,13 @@ public class TrafficLightDetailsController {
     }
 
 
+    /**
+     * This method resets the tls program to the one that was saved.
+     * Looks if the tlID is in the hashmap, so that it can be restored
+     * correctly. This also allows for many states to be saved simultaneously.
+     *
+     * @author Leon
+     */
     @FXML
     private void onResetButtonClicked() {
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
