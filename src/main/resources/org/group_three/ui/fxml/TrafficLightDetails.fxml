@@ -7,141 +7,94 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.TrafficLightDetailsController">
-   <children>
-      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <SplitPane dividerPositions="0.29797979797979796">
-              <items>
-                <AnchorPane minWidth="64.0">
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <Label layoutX="-1.0" prefHeight="32.0" prefWidth="75.0" styleClass="white-text" text="Sumo Id" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <padding>
-                                          <Insets left="8.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <Label layoutX="-1.0" prefHeight="31.0" prefWidth="76.0" styleClass="white-text" text="Display Name" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
-                                       <padding>
-                                          <Insets left="8.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <Label layoutX="-3.0" layoutY="-1.0" prefHeight="35.0" prefWidth="74.0" styleClass="white-text" text="Selected link">
-                                       <padding>
-                                          <Insets left="8.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <Label styleClass="white-text" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <padding>
-                                          <Insets left="8.0" />
-                                       </padding>
-                                    </Label>
-                                    <Label layoutX="-1.0" layoutY="-1.0" prefHeight="35.0" prefWidth="74.0" styleClass="white-text" text="Phase time">
-                                       <padding>
-                                          <Insets left="8.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0" />
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <Label layoutX="-1.0" layoutY="-1.0" styleClass="white-text" text="Phase" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
-                                       <padding>
-                                          <Insets left="8.0" />
-                                       </padding>
-                                    </Label>
-                                 </children></AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="74.0">
-                                 <children>
-                                    <Label layoutX="-3.0" layoutY="-1.0" prefHeight="33.0" prefWidth="79.0" styleClass="white-text" text="Change phase duration">
-                                       <padding>
-                                          <Insets left="8.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
-                              <Label prefHeight="32.0" prefWidth="75.0" styleClass="white-text" text="Sumo Id">
-                                 <padding>
-                                    <Insets left="8.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minWidth="128.0">
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <TextField fx:id="sumoId" editable="false" layoutX="4.0" layoutY="5.0" prefHeight="24.0" prefWidth="173.0" promptText="sumoId" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0" />
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <TextField fx:id="displayName" editable="false" layoutX="4.0" layoutY="7.0" prefHeight="22.0" prefWidth="171.0" promptText="displayName" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="5.0" />
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <TextField fx:id="selectedLink" editable="false" layoutX="4.0" layoutY="3.0" prefHeight="25.0" prefWidth="146.0" promptText="selectedLink" />
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane layoutX="10.0" layoutY="74.0" minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <TextField fx:id="phaseTime" editable="false" layoutX="4.0" layoutY="4.0" prefHeight="25.0" prefWidth="146.0" promptText="phaseTime" />
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <HBox layoutX="4.0" layoutY="4.0" prefHeight="24.0" prefWidth="151.0" spacing="3.5" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="4.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" onMouseClicked="#onSaveCurrentStateClicked" prefHeight="25.0" prefWidth="146.0" text="Save current state" />
-                                       </children></HBox>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <Button layoutX="5.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onRedButtonClicked" text="Red" textFill="#e81111" />
-                                    <Button layoutX="45.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onYellowButtonClicked" text="Yellow" textFill="#c6c328" />
-                                    <Button layoutX="99.0" layoutY="3.0" mnemonicParsing="false" onMouseClicked="#onGreenButtonClicked" prefWidth="54.0" text="Green" textFill="#24d730" />
-                                 </children></AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <TextField fx:id="changePhaseDuration" layoutX="4.0" layoutY="4.0" promptText="changePhaseDuration" />
-                                 </children></AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="74.0">
-                                 <children>
-                                    <Button layoutX="3.0" layoutY="4.0" mnemonicParsing="false" onMouseClicked="#onApplyButtonClicked" prefHeight="25.0" prefWidth="72.0" text="Apply" />
-                                    <Button fx:id="resetButton" alignment="CENTER" layoutX="81.0" layoutY="4.0" mnemonicParsing="false" onMouseClicked="#onResetButtonClicked" prefHeight="25.0" prefWidth="72.0" text="Reset" />
-                                 </children></AnchorPane>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
-         </content>
-      </ScrollPane>
-   </children>
+    <children>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <content>
+                <SplitPane dividerPositions="0.304">
+                    <items>
+                        <AnchorPane minWidth="64.0">
+                            <children>
+                                <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0">
+                                            <children>
+                                                <Label styleClass="white-text" text="Selected link" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <padding>
+                                                        <Insets left="8.0" />
+                                                    </padding>
+                                                </Label>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                            <children>
+                                                <Label styleClass="white-text" text="Phase time" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <padding>
+                                                        <Insets left="8.0" />
+                                                    </padding>
+                                                </Label>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0" />
+                                        <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                            <children>
+                                                <Label style="-fx-background-color: #333;" styleClass="white-text" text="Change traffic light" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <padding>
+                                                        <Insets left="8.0" />
+                                                    </padding>
+                                                </Label>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="32.0" prefHeight="32.0" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane minWidth="128.0">
+                            <children>
+                                <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                            <children>
+                                                <TextField fx:id="selectedLink" editable="false" promptText="selectedLink" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                            <children>
+                                                <TextField fx:id="phaseTime" promptText="phaseTime" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                            <children>
+                                                <Button layoutX="4.0" layoutY="3.0" mnemonicParsing="false" onAction="#onSaveCurrentStateClicked" text="Save current state" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0" />
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                            <children>
+                                                <Button layoutX="116.0" layoutY="3.0" mnemonicParsing="false" onAction="#onGreenButtonClicked" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #27c62f;" text="Green" textAlignment="CENTER" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0" />
+                                                <Button layoutX="4.0" layoutY="3.0" mnemonicParsing="false" onAction="#onRedButtonClicked" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: #e11e1e;" text="Red" textAlignment="CENTER" />
+                                                <Button layoutX="60.0" layoutY="3.0" mnemonicParsing="false" onAction="#onYellowButtonClicked" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: #dbe12d;" text="Yellow" textAlignment="CENTER" />
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="124.0">
+                                            <children>
+                                                <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="115.0">
+                                                    <children>
+                                                        <Button layoutX="19.0" layoutY="3.0" mnemonicParsing="false" onAction="#onApplyButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Apply" textAlignment="CENTER" />
+                                                    </children>
+                                                </AnchorPane>
+                                                <Button fx:id="resetButton" layoutX="86.0" layoutY="3.0" mnemonicParsing="false" onAction="#onResetButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Reset" textAlignment="CENTER" />
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </items>
+                </SplitPane>
+            </content>
+        </ScrollPane>
+    </children>
 </AnchorPane>

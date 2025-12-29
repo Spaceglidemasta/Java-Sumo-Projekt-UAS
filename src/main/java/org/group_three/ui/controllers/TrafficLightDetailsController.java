@@ -19,26 +19,8 @@ import java.util.Map;
  */
 public class TrafficLightDetailsController {
 
-	/**
-	 * The world objects display name.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private TextField displayName;
-
-	/**
-	 * The sumo traffic light id.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private TextField sumoId;
-
     /**
-     * The phase duration.
+     * The text field to view and change the phase duration.
      *
      * @author Leon
      */
@@ -54,15 +36,6 @@ public class TrafficLightDetailsController {
     @SuppressWarnings("JavadocDeclaration")
     @FXML
     private TextField selectedLink;
-
-    /**
-     * The text field to change the phase duration.
-     *
-     * @author Leon
-     */
-    @SuppressWarnings("JavadocDeclaration")
-    @FXML
-    private TextField changePhaseDuration = null;
 
     /**
      * The reset button to restore saved state.
@@ -103,9 +76,7 @@ public class TrafficLightDetailsController {
 		this.worldTrafficLight = worldTrafficLight;
 
         phaseTime.setText(Double.toString(this.worldTrafficLight.getwTrafficLight().getPhaseLen()));
-        selectedLink.setText("StopLineIndex: " + this.worldTrafficLight.getwLink().getTLIndex());
-		displayName.setText(this.worldTrafficLight.getDisplayName());
-		sumoId.setText(this.worldTrafficLight.getwTrafficLight().getId());
+        selectedLink.setText(Integer.toString(this.worldTrafficLight.getwLink().getTLIndex()));
 
         updateResetButtonState(this.worldTrafficLight.getwTrafficLight().getId());
 	}
@@ -218,10 +189,10 @@ public class TrafficLightDetailsController {
         int newDuration = (int) program.phases.get(currentPhaseIdx).duration;
         String newPhase;
 
-        String userInputDuration = changePhaseDuration.getText();
+        String userInputDuration = phaseTime.getText();
         if (userInputDuration != null && !userInputDuration.trim().isEmpty()) {
-            newDuration = Integer.parseInt(userInputDuration.trim());
-
+            double parsedValue = Double.parseDouble(userInputDuration.trim());
+            newDuration = (int) parsedValue;
             // This sets the duration for the phase right after the change is applied.
             // If this is not implemented, the user would have to wait one entire cycle to see the effect.
             wtl.setPhaseLen(newDuration);
