@@ -168,7 +168,7 @@ public class WorldVehicleRoute extends WorldRoute {
 
 
 		drawLine(reachedPoints, 1, Color.RED);
-		Debug.print("superUpdate");
+		//Debug.print("superUpdate");
 	}
 
 	String lastLaneId = "";
