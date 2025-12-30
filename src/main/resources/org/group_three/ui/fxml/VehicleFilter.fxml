@@ -101,7 +101,7 @@
                                           <fx:include source="VehicleFilter_ColorListEntry.fxml" />
                                           <AnchorPane minHeight="32.0" prefHeight="32.0">
                                              <children>
-                                                <Button mnemonicParsing="false" text="Add" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                                <Button mnemonicParsing="false" onAction="#onColorAddButtonClicked" text="Add" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                              </children>
                                           </AnchorPane>
                                        </children>

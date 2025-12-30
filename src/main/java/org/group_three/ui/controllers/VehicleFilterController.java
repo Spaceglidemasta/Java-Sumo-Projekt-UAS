@@ -1,9 +1,19 @@
 package org.group_three.ui.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
+import org.group_three.ui.SimView2D;
 import org.group_three.ui.Vector2D;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class VehicleFilterController {
@@ -11,6 +21,8 @@ public class VehicleFilterController {
 	@FXML private TextField speedMin;
 
 	@FXML private TextField speedMax;
+
+	@FXML private VBox colorFilterList;
 
 
 	@FXML
@@ -35,4 +47,33 @@ public class VehicleFilterController {
 			}
 		});
 	}
+
+	@FXML
+	private void onColorAddButtonClicked() {
+		FXMLLoader loader = new FXMLLoader(
+				SimView2D.class.getResource("/org/group_three/ui/fxml/VehicleFilter_ColorListEntry.fxml")
+		);
+
+		Node detailsNode;
+		try {
+			detailsNode = loader.load();
+			((VehicleFilterColorController) loader.getController()).setup(this);
+
+			// set constraints
+			//AnchorPane.setLeftAnchor(detailsNode, 0.0);
+			//AnchorPane.setRightAnchor(detailsNode, 0.0);
+			//AnchorPane.setTopAnchor(detailsNode, 0.0);
+			//AnchorPane.setBottomAnchor(detailsNode, 0.0);
+
+			// remove old details panel data and add new panel (from selected param)
+			//colorFilterList.getChildren().clear();
+			colorFilterList.getChildren().add(colorFilterList.getChildren().size()-1, detailsNode);
+
+		} catch (IOException e) {
+			//e.printStackTrace();
+			//return null;
+		}
+	}
+
+	//public List<Color> colorList = new ArrayList<>();
 }
