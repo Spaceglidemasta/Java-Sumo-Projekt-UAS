@@ -2,6 +2,8 @@ package org.group_three.ui;
 
 import de.tudresden.sumo.objects.SumoPosition2D;
 
+import java.util.Objects;
+
 /**
  * The Vector2D class contains two double components: x and y.
  * Can be used to represent 2D world coordinates for example.
@@ -89,6 +91,13 @@ public class Vector2D {
 	@Override
 	public String toString() {
 		return "Vector2D{x=" + x + ", y=" + y + "}";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		Vector2D vector2D = (Vector2D) o;
+		return Double.compare(x, vector2D.x) == 0 && Double.compare(y, vector2D.y) == 0;
 	}
 
 
