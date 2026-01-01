@@ -432,11 +432,11 @@ public class World {
 
 
 	private boolean requestedUpdate = false;
-	private Timeline timeline;
+	public final Timeline timeline;
 
 	private void updateTick() {
 		// skip if no update is requested
-		//if (!requestedUpdate) return;
+		if (!requestedUpdate) return;
 
 		// update canvas
 		update();
