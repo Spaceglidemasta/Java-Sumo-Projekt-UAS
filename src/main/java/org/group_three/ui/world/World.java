@@ -1,8 +1,12 @@
 package org.group_three.ui.world;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
@@ -149,6 +153,10 @@ public class World {
 	public World() {
 		SimControlController.setPlay(false);
 		CanvasController.rotationIndicatorStatic.setRotate(0);
+
+		timeline = new Timeline(new KeyFrame(Duration.seconds(1/UI.maxSimulationViewFps), e -> updateTick()) );
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------
@@ -418,8 +426,25 @@ public class World {
 	 * @see #update()
 	 */
 	public void requestUpdate() {
-		update();
+		requestedUpdate = true;
 	}
+
+
+
+	private boolean requestedUpdate = false;
+	private Timeline timeline;
+
+	private void updateTick() {
+		// skip if no update is requested
+		//if (!requestedUpdate) return;
+
+		// update canvas
+		update();
+
+		// set requestUpdate to false after updating
+		requestedUpdate = false;
+	}
+
 
 	/**
 	 * A method to render the world bounds and background.
