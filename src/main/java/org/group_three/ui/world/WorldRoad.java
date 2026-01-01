@@ -152,8 +152,6 @@ public class WorldRoad extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
-
 		drawRectangle(size, UI.highContrast ? Color.WHITE : color);
 	}
 

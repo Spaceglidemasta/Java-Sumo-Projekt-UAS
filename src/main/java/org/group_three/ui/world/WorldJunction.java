@@ -85,8 +85,6 @@ public class WorldJunction extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
-
 		drawPolygon(shape, UI.highContrast ? Color.WHITE : color);
 	}
 

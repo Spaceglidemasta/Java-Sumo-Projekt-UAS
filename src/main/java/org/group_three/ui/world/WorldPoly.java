@@ -119,7 +119,6 @@ public class WorldPoly extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
 		if (!UI.showPolys) return;
 
 		drawPolygon(shape, UI.highContrast ? highContrastColor : defaultColor);

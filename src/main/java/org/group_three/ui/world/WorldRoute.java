@@ -35,8 +35,6 @@ public class WorldRoute extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
-
 		drawLine(routePoints, 1, Color.RED);
 	}
 

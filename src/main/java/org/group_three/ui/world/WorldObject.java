@@ -609,9 +609,7 @@ public abstract class WorldObject {
 	 *
 	 * @author Joel
 	 */
-	public void update() {
-		drawCollision();
-	}
+	public abstract void update();
 
 	public Vector2D getDrawLocation() {
 		return Meth.addRelativeLocation(
