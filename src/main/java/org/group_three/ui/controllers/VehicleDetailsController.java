@@ -74,32 +74,6 @@ public class VehicleDetailsController {
 	private ColorPicker color;
 
 	/**
-	 * The route of the vehicle to display.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private TextField route;
-
-	/**
-	 * The button to toggle view locking to the vehicle.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private Button viewLockButton;
-
-	/**
-	 * The state of the vehicle view lock.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private boolean viewLocked = false;
-
-	/**
 	 * The world vehicle that is owning this class.
 	 *
 	 * @author Joel
@@ -107,6 +81,12 @@ public class VehicleDetailsController {
 	@SuppressWarnings("JavadocDeclaration")
 	private WorldVehicle worldVehicle;
 
+	/**
+	 * The button to enable route selection.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private Button selectRouteButton;
 
@@ -138,26 +118,6 @@ public class VehicleDetailsController {
 						//throw new RuntimeException(e);
 					}
 				});
-	}
-
-	/**
-	 * The event to toggle view locking of the vehicle.
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private void onViewLockPressed() {
-		viewLocked = !viewLocked;
-		viewLockButton.setText(viewLocked ? "Unlock" : "Lock");
-
-		Debug.print(SimView2D.getWorld().getViewerPosition());
-		Debug.print(worldVehicle.getPosition());
-
-		Debug.print(Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), worldVehicle.getPosition()));
-
-		//SimView2D.getWorld().setViewerPosition(worldVehicle.getPosition().negate());
-		//SimView2D.getWorld().setViewerRotation(worldVehicle.getRotation());
-		SimView2D.getWorld().requestUpdate();
 	}
 
 	@FXML
@@ -270,7 +230,6 @@ public class VehicleDetailsController {
 		speed.setDisable(true);
 		color.setDisable(true);
 		selectRouteButton.setDisable(true);
-		viewLockButton.setDisable(true);
 		speedFactor.setDisable(true);
 		removeWorlVehicleRoute();
 	}
