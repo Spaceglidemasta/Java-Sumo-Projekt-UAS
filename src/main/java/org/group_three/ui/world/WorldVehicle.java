@@ -6,10 +6,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
+import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.SimControlController;
 import org.group_three.ui.controllers.VehicleDetailsController;
 
 import static org.group_three.ui.Meth.ClrToSumoClr;
@@ -209,6 +211,9 @@ public class WorldVehicle extends WorldObject {
 		setColor(wVehicle.getColor());
 
 		updateDetailsPanel();
+
+		previousFramePosition = currentFramePosition;
+		currentFramePosition = getPosition();
 	}
 
 	private boolean filterCheck() {
@@ -223,6 +228,8 @@ public class WorldVehicle extends WorldObject {
 		return true;
 	}
 
+
+
 	/**
 	 * The method to update the render of the vehicle.
 	 *
@@ -230,7 +237,6 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
 		Image visualImage = iconManager.getIcon(getColor());
 
 		if (UI.vehicleScale != getScale()) setScale(UI.vehicleScale);
@@ -239,8 +245,16 @@ public class WorldVehicle extends WorldObject {
 
 		//wVehicle.boogieWonderland();
 
+		if (!previousFramePosition.equals(new Vector2D())) {
+			//Debug.print(SimControlController.timeline.getCurrentTime());
+			//setPosition(Meth.lerp(previousFramePosition, currentFramePosition, 1/SimControlController.timeline.getCurrentTime().toSeconds()));
+		}
+
 		drawImage(size.div(2), visualImage);
 	}
+
+	private Vector2D currentFramePosition = new Vector2D();
+	private Vector2D previousFramePosition = new Vector2D();
 
 	/**
 	 * A method to set up the details panel when the object is selected.

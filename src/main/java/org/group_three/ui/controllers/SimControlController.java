@@ -57,7 +57,7 @@ public class SimControlController {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private static Timeline timeline;
+	public static Timeline timeline;
 
 	/**
 	 * A boolean to tell if the simulation is currently playing.
