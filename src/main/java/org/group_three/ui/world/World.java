@@ -293,28 +293,11 @@ public class World {
 
 	/**
 	 * Sets the world viewer's position.
-	 * <br> world bounds limit doesn't account for rotation yet, well or scale, disabled for now
 	 *
 	 * @param position The position as a Vector2D.
 	 * @author Joel
 	 */
 	public void setViewerPosition(Vector2D position) {
-		/*if (position.x < -(worldSize.x/2)) {
-			position.x = -(worldSize.x/2);
-		} else if (position.x > (worldSize.x/2)) {
-			position.x = (worldSize.x/2);
-		} else {
-			viewerPosition.x = position.x;
-		}
-
-		if (position.y < -(worldSize.y/2)) {
-			position.y = -(worldSize.y/2);
-		} else if (position.y > (worldSize.y/2)) {
-			position.y = (worldSize.y/2);
-		} else {
-			viewerPosition.y = position.y;
-		}*/
-
 		viewerPosition = position;
 
 		requestUpdate();
@@ -487,28 +470,23 @@ public class World {
 
 			if (distanceToObject <= worldObject.getSphereCollision()) {
 				if (worldObject.useBoxCollision()) {
+					// BoxCollision
 					Vector2D relativeHitPosition = Meth.getRelativeLocation(worldObject.getPosition(), worldObject.getRotation(), worldPosition);
 					Vector2D relativeHalfHeightHit = relativeHitPosition.abs();
-					//Debug.print(relativeHalfHeightHit);
 
 					// add only to box collision hit list if hit is inside of collision
 					if (worldObject.getBoxCollision().x >= relativeHalfHeightHit.x &&
 							worldObject.getBoxCollision().y >= relativeHalfHeightHit.y
 					) {
 						boxCollisionHits.add(worldObject);
-						//Debug.print("BoxCollision");
 					}
 
 				} else {
+					// SphereCollision
 					distances.add(distanceToObject);
 					interactableObjects.add(worldObject);
-
-					//Debug.print("SphereCollision");
 				}
 			}
-
-			//Debug.print(distanceToObject);
-			//Debug.print(boxCollisionHits.size());
 		}
 
 		if (!boxCollisionHits.isEmpty()) return boxCollisionHits.getFirst();
