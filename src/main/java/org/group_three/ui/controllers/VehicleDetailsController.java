@@ -133,9 +133,9 @@ public class VehicleDetailsController {
 		Debug.print(((WorldRoad) worldObject).getwEdge().getId());
 		Debug.print(worldObject.getClass() == WorldRoad.class);
 		if ( worldObject.getClass() == WorldRoad.class) {
-			if (worldVehicleRoute != null) {
-				worldVehicleRoute.remove();
-				worldVehicleRoute = null;
+			if (worldRoute != null) {
+				worldRoute.remove();
+				worldRoute = null;
 			}
 
 
@@ -159,12 +159,11 @@ public class VehicleDetailsController {
 
 
 
-				worldVehicleRoute = new WorldVehicleRoute(
+				worldRoute = new WorldRoute(
 						worldVehicle.getWorld(),
 						worldVehicle.getWorld().worldStaticRenderTarget,
 						"",
-						worldVehicle.getwVehicle().getRouteEdges(),
-						worldVehicle);
+						worldVehicle.getwVehicle().getRouteEdges());
 
 			} else {
 				targetRouteId = null;
@@ -173,19 +172,18 @@ public class VehicleDetailsController {
 		}
 	}
 
-	private WorldVehicleRoute worldVehicleRoute;
+	private WorldRoute worldRoute;
 
 	public void createWorlVehicleRoute() {
-		worldVehicleRoute = new WorldVehicleRoute(
+		worldRoute = new WorldRoute(
 				worldVehicle.getWorld(),
 				worldVehicle.getWorld().worldStaticRenderTarget,
 				"",
-				worldVehicle.getwVehicle().getRouteEdges(),
-				worldVehicle);
+				worldVehicle.getwVehicle().getRouteEdges());
 	}
 
 	public void removeWorlVehicleRoute() {
-		worldVehicleRoute.remove();
+		worldRoute.remove();
 	}
 
 	/**
