@@ -967,6 +967,32 @@ public class SimController implements AutoCloseable{
         }
     }
 
+	/**
+	 * Generates a full route list based on a route id
+	 * @param routeId The route id to generate a full route from
+	 * @return The created route list or null if route id is not valid.
+	 * @author Joel
+	 * */
+	@MayReturnNull
+	public SumoStringList generateFullRoute(String routeId){
+		WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
+				"DEFAULT_VEHTYPE",
+				routeId,
+				0,
+				0,
+				0
+				,0
+		);
+
+		wVehicle.reroute();
+		SumoStringList route = wVehicle.getRouteEdges();
+		wVehicle.remove();
+
+		return route;
+	}
+
+
+
     /**
      * Returns all the Edges inside a Route
      * @param RID RouteID

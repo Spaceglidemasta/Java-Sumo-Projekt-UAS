@@ -3,6 +3,7 @@ package org.group_three.ui.world;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
+import org.group_three.constants.UI;
 import org.group_three.model.WEdge;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
@@ -123,7 +124,7 @@ public class WorldRoad extends WorldObject {
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	RoadDetailsController roadDetailsController;
+	public RoadDetailsController roadDetailsController;
 
 	/**
 	 * A method to set up the details panel when the object is selected.
@@ -137,6 +138,13 @@ public class WorldRoad extends WorldObject {
 		roadDetailsController.setup(this);
 	}
 
+	@Override
+	public void deselect() {
+		if (roadDetailsController != null) {
+			roadDetailsController.deselect();
+		}
+	}
+
 	/**
 	 * The update method which is used to draw the WorldRoad in the world.
 	 *
@@ -144,9 +152,7 @@ public class WorldRoad extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
-
-		drawRectangle(size, color);
+		drawRectangle(size, UI.highContrast ? Color.WHITE : color);
 	}
 
 	/**

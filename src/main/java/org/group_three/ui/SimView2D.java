@@ -78,6 +78,24 @@ public class SimView2D {
 	@SuppressWarnings("JavadocDeclaration")
 	private static WorldObject selected;
 
+
+	public static WorldObject getRouteSelection() {
+		return routeSelection;
+	}
+
+	public static void setRouteSelection(WorldObject routeSelection) {
+		SimView2D.routeSelection = routeSelection;
+	}
+
+	/**
+	 * A boolean to reroute the selection process,
+	 * to allow for route selection.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private static WorldObject routeSelection;
+
 	/**
 	 * All currently active vehicle id's.
 	 *
@@ -149,12 +167,39 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	public static void setSelected(WorldObject selected) {
+
+		if (routeSelection != null) {
+
+			Debug.print(routeSelection.getClass() == WorldRoad.class);
+
+			if (routeSelection.getClass() == WorldRoad.class) {
+				((WorldRoad) routeSelection).roadDetailsController.routeSelected(selected);
+			}
+
+			if (routeSelection.getClass() == WorldVehicle.class) {
+				((WorldVehicle) routeSelection).vehicleDetailsController.routeSelected(selected);
+			}
+
+			routeSelection = null;
+			return;
+		}
+
+
 		if (SimView2D.selected == selected) return;
 
+		// deselect old object
+		if (SimView2D.selected != null) {
+			SimView2D.selected.deselect();
+		}
+
+		// select new object
 		SimView2D.selected = selected;
+		if (selected != null) {
+			selected.select();
+		}
 
 		// update details panel
-		SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+		//SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
 	}
 
 	//--------------------------------------------------SetterClassMethods--------------------------------------------------
@@ -169,6 +214,8 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	public static void newWorld() {
+		if (world != null) world.timeline.stop();
+
 		world = new World();
 
 		world.worldStaticRenderTarget = worldStaticRenderTarget;

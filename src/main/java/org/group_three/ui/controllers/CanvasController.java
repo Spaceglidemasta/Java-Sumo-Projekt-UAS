@@ -2,6 +2,9 @@ package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.AnchorPane;
+import org.group_three.constants.UI;
 import org.group_three.ui.*;
 import org.group_three.debug.Debug;
 
@@ -45,6 +48,16 @@ public class CanvasController {
 	private Vector2D last = new Vector2D();
 	private Vector2D delta = new Vector2D();
 
+	@FXML
+	private CheckBox environmentToggle;
+	@FXML
+	private CheckBox highContrastToggle;
+	@FXML
+	private AnchorPane rotationBase;
+	public static AnchorPane rotationBaseStatic;
+	@FXML private AnchorPane rotationIndicator;
+	public static AnchorPane rotationIndicatorStatic;
+
 	/**
 	 * Comment
 	 *
@@ -54,6 +67,8 @@ public class CanvasController {
 	@FXML
 	public void initialize() throws IOException {
 		Debug.toConsole("Canvas loaded.");
+		rotationIndicatorStatic = rotationIndicator;
+		rotationBaseStatic = rotationBase;
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
@@ -64,6 +79,16 @@ public class CanvasController {
 		SimView2D.initialize(worldStaticRenderTarget,
 				worldDynamicRenderTarget,
 				renderTargetBounds);
+
+		environmentToggle.selectedProperty().addListener((_, _, value) -> {
+			UI.showPolys = value;
+			SimView2D.getWorld().requestUpdate();
+		});
+
+		highContrastToggle.selectedProperty().addListener((_, _, value) -> {
+			UI.highContrast = value;
+			SimView2D.getWorld().requestUpdate();
+		});
 	}
 
 	/**
@@ -175,4 +200,15 @@ public class CanvasController {
 	}
 
 	// draw handler needed so it doesn't waste performance
+
+
+
+
+
+
+
+
+
+
+
 }

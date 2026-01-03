@@ -49,7 +49,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label style="-fx-background-color: #333;" styleClass="white-text" text="Add" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label text="Add" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -117,7 +117,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <Label style="-fx-background-color: #333;" styleClass="white-text" text="Vehicles" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <Label text="Vehicles" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets left="8.0" />
                                        </padding>
@@ -141,7 +141,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <TextField fx:id="vehicleSpawnRoute" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                    <Button fx:id="routeSelectButton" mnemonicParsing="false" onAction="#onRouteSelectPressed" text="Select" textAlignment="CENTER" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
