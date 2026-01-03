@@ -83,15 +83,6 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <Label styleClass="white-text" text="View" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <padding>
-                                          <Insets left="8.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
                            </children>
                         </VBox>
                      </children>
@@ -133,11 +124,6 @@
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
                                     <Button fx:id="selectRouteButton" mnemonicParsing="false" onAction="#onRouteSelectPressed" text="Select" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane minHeight="32.0" prefHeight="32.0">
-                                 <children>
-                                    <Button fx:id="viewLockButton" mnemonicParsing="false" onAction="#onViewLockPressed" text="Lock" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                  </children>
                               </AnchorPane>
                            </children>

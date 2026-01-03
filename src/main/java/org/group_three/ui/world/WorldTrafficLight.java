@@ -118,8 +118,6 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
-
 		Color color = Color.GRAY;
 		try {
 			color = Meth.SumoClrToClr(wLink.getColor());

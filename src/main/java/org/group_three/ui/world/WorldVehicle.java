@@ -6,11 +6,15 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
+import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.SimControlController;
 import org.group_three.ui.controllers.VehicleDetailsController;
+
+import java.rmi.server.UID;
 
 import static org.group_three.ui.Meth.ClrToSumoClr;
 import static org.group_three.ui.Meth.SumoClrToClr;
@@ -24,13 +28,24 @@ public class WorldVehicle extends WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	public static double getScale() {
+		return scale;
+	}
+
+	public static void setScale(double scale) {
+		WorldVehicle.scale = scale;
+		WorldVehicle.size = new Vector2D(5 * scale, 2.5 * scale);
+	}
+
 	/**
 	 * The scale of the vehicle.
 	 *
 	 * @author Luca, Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private static double scale_size = 1;
+	private static double scale = UI.vehicleScale;
+
+
 
 	/**
 	 * The scaled size of the vehicle
@@ -38,7 +53,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Luca, Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private static final Vector2D size = new Vector2D(5 * scale_size, 2.5 * scale_size);
+	private static Vector2D size = new Vector2D(5 * scale, 2.5 * scale);
 
 
 	/**
@@ -200,6 +215,20 @@ public class WorldVehicle extends WorldObject {
 		updateDetailsPanel();
 	}
 
+	private boolean filterCheck() {
+		// speed filter check
+		double speed = getwVehicle().getSpeed();
+		if (speed < UI.viewFilter_VehicleSpeed.x) return false;
+		if (UI.viewFilter_VehicleSpeed.y != -1 && speed > UI.viewFilter_VehicleSpeed.y) return false;
+
+		// color filter check
+		if (!UI.viewFilter_VehicleColor.isEmpty() && !UI.viewFilter_VehicleColor.contains(getColor())) return false;
+
+		return true;
+	}
+
+
+
 	/**
 	 * The method to update the render of the vehicle.
 	 *
@@ -207,10 +236,11 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
 		Image visualImage = iconManager.getIcon(getColor());
 
+		if (UI.vehicleScale != getScale()) setScale(UI.vehicleScale);
 
+		if (!filterCheck()) return;
 
 		//wVehicle.boogieWonderland();
 

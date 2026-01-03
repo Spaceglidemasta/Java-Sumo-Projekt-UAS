@@ -6,9 +6,11 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import org.group_three.debug.Debug;
+import org.group_three.service.Statistic;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * A class to create and manage colored icon variants.
@@ -18,6 +20,8 @@ import java.util.Map;
  * @author Joel
  */
 public class ColoredIconManager {
+
+	private static final Logger log = Logger.getLogger(ColoredIconManager.class.getName());
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -120,7 +124,7 @@ public class ColoredIconManager {
 			// Create icon with specified color if icon doesn't exist yet and add it to map
 			icon = addImageTint(color);
 			icons.put(color, icon);
-			Debug.print("IconCount: " + icons.size());
+			log.info("Created icon for color: " + color.toString() + " - TotalIconCount: " + icons.size());
 		}
 
 		return icon;
