@@ -543,16 +543,27 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(){
 
-        Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
+        Statistic<VehicleRec> vehStat = new Statistic<>(
+                "Vehicles",
+                "Vehicle ID", "Average Speed", "Color"
+        );
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
         }
         statcol.addStatistic(vehStat
-                .filter(r -> StatUtils.equalSColor(r.color(), new SumoColor(255,0,0,255)))
+                .filter(
+                        r -> StatUtils.equalSColor(
+                                r.color(),
+                                new SumoColor(255,0,0,255)
+                        )
+                )
                 .sortBy(VehicleRec::avgspeed)
         );
 
-        Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>(
+                "Edges", "Name",
+                "Occupancy Ratio", "Length (m)"
+        );
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
@@ -570,12 +581,15 @@ public class SimController implements AutoCloseable{
                         .sortBy(EdgeRec::usage)
         );
 
-        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
+        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>(
+                "VehicleDensityPerEdge",
+
                 getAllroads()
                 .values()
                 .stream() //stream data to allow mapping
                 .map(WEdge::getName) // the same as edge -> edge.getName() lambda
                 .toArray(String[]::new)); //tells it to convert to String[] instead of Object[]
+
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
