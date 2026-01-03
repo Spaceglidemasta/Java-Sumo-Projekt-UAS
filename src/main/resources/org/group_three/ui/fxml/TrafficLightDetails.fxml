@@ -88,6 +88,7 @@
                                                 <Button fx:id="resetButton" layoutX="86.0" layoutY="3.0" mnemonicParsing="false" onAction="#onResetButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Reset" textAlignment="CENTER" />
                                             </children>
                                         </AnchorPane>
+                              <Button fx:id="adaptiveStateButton" alignment="CENTER" mnemonicParsing="false" onAction="#onAdaptiveButtonClicked" text="Adaptive mode" textAlignment="CENTER" />
                                     </children>
                                 </VBox>
                             </children>

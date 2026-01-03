@@ -6,6 +6,7 @@ import de.tudresden.sumo.objects.SumoTLSProgram;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.group_three.debug.Debug;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.world.WorldTrafficLight;
 import java.util.ArrayList;
@@ -37,6 +38,14 @@ public class TrafficLightDetailsController {
     @FXML
     private TextField selectedLink;
 
+//    /**
+//     *
+//     *
+//     * @author Leon
+//     */
+//    @SuppressWarnings("JavadocDeclaration")
+//    @FXML
+//    private TextField timeTillNextChange;
     /**
      * The reset button to restore saved state.
      *
@@ -46,6 +55,9 @@ public class TrafficLightDetailsController {
     @FXML
     private Button resetButton;
 
+
+    @FXML
+    private Button adaptiveStateButton;
 
     private static final String DEFAULT_PROGRAM_ID = "0";
     private WorldTrafficLight worldTrafficLight;
@@ -66,7 +78,9 @@ public class TrafficLightDetailsController {
     @SuppressWarnings("JavadocDeclaration")
     private static final Map<String, SumoTLSController> savedControllers = new HashMap<>();
 
-
+    private static final Map<String, SumoTLSController> adaptiveSavedStates = new HashMap<>();
+    //  private double timeRemainingSeconds = -1;
+//    private static boolean firstCountdown = true;
     /**
      * The setup method for this class to fill it with data.
      *
@@ -75,10 +89,12 @@ public class TrafficLightDetailsController {
     public void setup(WorldTrafficLight worldTrafficLight) {
 		this.worldTrafficLight = worldTrafficLight;
 
-        phaseTime.setText(Double.toString(this.worldTrafficLight.getwTrafficLight().getPhaseLen()));
+        phaseTime.setText(Double.toString(getRealPhaseLength()));
         selectedLink.setText(Integer.toString(this.worldTrafficLight.getwLink().getTLIndex()));
 
         updateResetButtonState(this.worldTrafficLight.getwTrafficLight().getId());
+//        this.timeRemainingSeconds = getTimeUntilNextState();
+//        timeTillNextChange.setText(Double.toString(timeRemainingSeconds));
 	}
 
     /**
@@ -88,8 +104,16 @@ public class TrafficLightDetailsController {
      * @author Leon
      */
     public void update() {
-        phaseTime.setText(Double.toString(this.worldTrafficLight.getwTrafficLight().getPhaseLen()));
+        phaseTime.setText(Double.toString(getRealPhaseLength()));
         updateResetButtonState(this.worldTrafficLight.getwTrafficLight().getId());
+
+//        if (timeRemainingSeconds > 0) {
+//            timeRemainingSeconds--;
+//        } else {
+//            firstCountdown = false;
+//            timeRemainingSeconds = getTimeUntilNextState();
+//        }
+//        timeTillNextChange.setText(Double.toString(timeRemainingSeconds));
     }
 
 
@@ -102,6 +126,17 @@ public class TrafficLightDetailsController {
 	private void initialize() {
 	}
 
+    private double getRealPhaseLength(){
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        SumoTLSController controller = wtl.getProgram();
+        SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
+        SumoTLSPhase phase = program.phases.get(wtl.getPhaseIndex());
+
+        if(phase.minDur > 0){
+            return phase.minDur;
+        }
+        return wtl.getPhaseLen();
+    }
     /**
      * Modifies the tls current state string to be used later. <br>
      * This function works in tandem with <code>buttonUpdater</code>.
@@ -253,5 +288,99 @@ public class TrafficLightDetailsController {
     }
 
 
+    @FXML
+    private void onAdaptiveButtonClicked() {
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        String currentText = adaptiveStateButton.getText();
+        if (currentText.equals("Adaptive mode")) {
+
+
+            SumoTLSController currentController = wtl.getProgram();
+            String currentTLID = wtl.getId();
+            if (!adaptiveSavedStates.containsKey(currentTLID)) {
+                adaptiveSavedStates.put(currentTLID, currentController);
+            }
+            adaptiveStateButton.setText("Static mode");
+
+
+            String currentPhaseDef = wtl.getRYGState(currentTLID);
+
+            StringBuilder redState = new StringBuilder();
+            int numLanes = currentPhaseDef.length();
+            for (int i = 0; i < numLanes; i++) {
+                redState.append('r');
+            }
+
+            SumoTLSController controller = wtl.getProgram();
+            SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
+
+            SumoTLSPhase redPhase = new SumoTLSPhase(1000, redState.toString());
+            SumoTLSProgram newProgram = new SumoTLSProgram();
+            newProgram.subID = program.subID;
+            newProgram.type = program.type;
+            newProgram.currentPhaseIndex = program.currentPhaseIndex;
+            newProgram.phases = new ArrayList<>();
+            for (int i = 0; i < program.phases.size(); i++) {
+                if (i == program.currentPhaseIndex) {
+                    newProgram.phases.add(redPhase);
+                } else {
+                    newProgram.phases.add(program.phases.get(i));
+                }
+            }
+            wtl.setPhaseLen(1000);
+            wtl.setProgram(newProgram);
+
+        } else {
+            String currentTLID = wtl.getId();
+            if (adaptiveSavedStates.containsKey(currentTLID)) {
+                SumoTLSController savedController = adaptiveSavedStates.get(currentTLID);
+                SumoTLSProgram program = savedController.programs.get(DEFAULT_PROGRAM_ID);
+                wtl.setPhaseLen(program.phases.get(program.currentPhaseIndex).duration);
+                wtl.setProgram(program);
+            }
+            adaptiveStateButton.setText("Adaptive mode");
+        }
+    }
+
+//    private double getTimeUntilNextState() {
+//        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+//        SumoTLSController controller = wtl.getProgram();
+//        SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
+//        int currentPhaseIdx = program.currentPhaseIndex;
+//        SumoTLSPhase currentPhase = program.phases.get(currentPhaseIdx);
+//
+//        String phaseString = currentPhase.phasedef;
+//        int tlIndex = this.worldTrafficLight.getwLink().getTLIndex();
+//
+//        int remainingTime = 0;
+//
+//        for (int i = currentPhaseIdx; i < program.phases.size(); i++) {
+//            SumoTLSPhase phase = program.phases.get(i);
+//            String phaseDef = phase.phasedef;
+//            double minDur = phase.minDur;
+//            int duration = (int) phase.duration;
+//            if (tlIndex >= phaseDef.length()) {
+//                break;
+//            }
+//            char stateChar = phaseDef.charAt(tlIndex);
+//            char currentChar = phaseString.charAt(tlIndex);
+//
+//            if (stateChar == currentChar) {
+//                if(minDur > 0){
+//                    remainingTime += (int) minDur;
+//                }
+//                else remainingTime += duration;
+//            } else {
+//                break;
+//            }
+//        }
+//        if(firstCountdown){
+//            return remainingTime;
+//        }
+//        else{
+//            return remainingTime - 1;
+//        }
+//
+//    }
 
 }
