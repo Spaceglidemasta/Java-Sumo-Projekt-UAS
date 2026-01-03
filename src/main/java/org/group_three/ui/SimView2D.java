@@ -214,6 +214,8 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	public static void newWorld() {
+		if (world != null) world.timeline.stop();
+
 		world = new World();
 
 		world.worldStaticRenderTarget = worldStaticRenderTarget;

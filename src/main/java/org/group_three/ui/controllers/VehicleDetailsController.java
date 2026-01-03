@@ -74,32 +74,6 @@ public class VehicleDetailsController {
 	private ColorPicker color;
 
 	/**
-	 * The route of the vehicle to display.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private TextField route;
-
-	/**
-	 * The button to toggle view locking to the vehicle.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private Button viewLockButton;
-
-	/**
-	 * The state of the vehicle view lock.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private boolean viewLocked = false;
-
-	/**
 	 * The world vehicle that is owning this class.
 	 *
 	 * @author Joel
@@ -107,6 +81,12 @@ public class VehicleDetailsController {
 	@SuppressWarnings("JavadocDeclaration")
 	private WorldVehicle worldVehicle;
 
+	/**
+	 * The button to enable route selection.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	@FXML
 	private Button selectRouteButton;
 
@@ -140,26 +120,6 @@ public class VehicleDetailsController {
 				});
 	}
 
-	/**
-	 * The event to toggle view locking of the vehicle.
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private void onViewLockPressed() {
-		viewLocked = !viewLocked;
-		viewLockButton.setText(viewLocked ? "Unlock" : "Lock");
-
-		Debug.print(SimView2D.getWorld().getViewerPosition());
-		Debug.print(worldVehicle.getPosition());
-
-		Debug.print(Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), worldVehicle.getPosition()));
-
-		//SimView2D.getWorld().setViewerPosition(worldVehicle.getPosition().negate());
-		//SimView2D.getWorld().setViewerRotation(worldVehicle.getRotation());
-		SimView2D.getWorld().requestUpdate();
-	}
-
 	@FXML
 	private void onRouteSelectPressed() {
 		SimView2D.setRouteSelection(worldVehicle);
@@ -173,9 +133,9 @@ public class VehicleDetailsController {
 		Debug.print(((WorldRoad) worldObject).getwEdge().getId());
 		Debug.print(worldObject.getClass() == WorldRoad.class);
 		if ( worldObject.getClass() == WorldRoad.class) {
-			if (worldVehicleRoute != null) {
-				worldVehicleRoute.remove();
-				worldVehicleRoute = null;
+			if (worldRoute != null) {
+				worldRoute.remove();
+				worldRoute = null;
 			}
 
 
@@ -199,12 +159,11 @@ public class VehicleDetailsController {
 
 
 
-				worldVehicleRoute = new WorldVehicleRoute(
+				worldRoute = new WorldRoute(
 						worldVehicle.getWorld(),
 						worldVehicle.getWorld().worldStaticRenderTarget,
 						"",
-						worldVehicle.getwVehicle().getRouteEdges(),
-						worldVehicle);
+						worldVehicle.getwVehicle().getRouteEdges());
 
 			} else {
 				targetRouteId = null;
@@ -213,19 +172,18 @@ public class VehicleDetailsController {
 		}
 	}
 
-	private WorldVehicleRoute worldVehicleRoute;
+	private WorldRoute worldRoute;
 
 	public void createWorlVehicleRoute() {
-		worldVehicleRoute = new WorldVehicleRoute(
+		worldRoute = new WorldRoute(
 				worldVehicle.getWorld(),
 				worldVehicle.getWorld().worldStaticRenderTarget,
 				"",
-				worldVehicle.getwVehicle().getRouteEdges(),
-				worldVehicle);
+				worldVehicle.getwVehicle().getRouteEdges());
 	}
 
 	public void removeWorlVehicleRoute() {
-		worldVehicleRoute.remove();
+		worldRoute.remove();
 	}
 
 	/**
@@ -270,7 +228,6 @@ public class VehicleDetailsController {
 		speed.setDisable(true);
 		color.setDisable(true);
 		selectRouteButton.setDisable(true);
-		viewLockButton.setDisable(true);
 		speedFactor.setDisable(true);
 		removeWorlVehicleRoute();
 	}
