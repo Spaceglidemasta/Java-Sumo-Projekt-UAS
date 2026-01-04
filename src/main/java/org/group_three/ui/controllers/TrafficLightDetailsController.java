@@ -156,6 +156,12 @@ public class TrafficLightDetailsController {
     private static final Map<String, String> adaptiveState = new HashMap<>(); // "IDLE" or "GREEN"
 
 
+    /**
+     * Default values
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     private static final String DEFAULT_PROGRAM_ID = "0";
     private static final int DEFAULT_IDLE_TIME = 1000;
     private static final int ADAPTIVE_CHECK_INTERVAL = 10;
