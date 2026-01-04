@@ -18,13 +18,7 @@ public class RecentlyOpenedData {
 	public static void load() {
 		File rOD = new File(UI.recentlyOpenedDataFileName);
 
-		if (!rOD.exists()) {
-			try {
-				rOD.createNewFile();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
+		if (!rOD.exists()) return;
 
 		try {
 			StringBuilder data = new StringBuilder();
@@ -40,7 +34,7 @@ public class RecentlyOpenedData {
 			Debug.print(data);
 
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		}
 
 	}
@@ -70,7 +64,7 @@ public class RecentlyOpenedData {
 			fileWriter.close();
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		}
 	}
 
@@ -87,7 +81,7 @@ public class RecentlyOpenedData {
 						}
 					}
 				} catch (Exception e) {
-					throw new RuntimeException(e);
+					//throw new RuntimeException(e);
 				}
 			}
 
