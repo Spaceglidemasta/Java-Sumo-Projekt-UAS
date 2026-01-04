@@ -6,11 +6,9 @@ import javafx.scene.Node;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
 import org.group_three.ui.SimView2D;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.world.WorldObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,14 +73,6 @@ public class VehicleFilterController {
 			detailsNode = loader.load();
 			((VehicleFilterColorController) loader.getController()).setup(this);
 
-			// set constraints
-			//AnchorPane.setLeftAnchor(detailsNode, 0.0);
-			//AnchorPane.setRightAnchor(detailsNode, 0.0);
-			//AnchorPane.setTopAnchor(detailsNode, 0.0);
-			//AnchorPane.setBottomAnchor(detailsNode, 0.0);
-
-			// remove old details panel data and add new panel (from selected param)
-			//colorFilterList.getChildren().clear();
 			colorFilterList.getChildren().add(colorFilterList.getChildren().size()-1, detailsNode);
 
 		} catch (IOException e) {
