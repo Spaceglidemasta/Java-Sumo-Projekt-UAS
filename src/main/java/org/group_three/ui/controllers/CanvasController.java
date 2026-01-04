@@ -30,13 +30,7 @@ public class CanvasController {
 	 */
 	@FXML
 	private Canvas worldStaticRenderTarget;
-	/**
-	 * for dynamic world elements: cars,...
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private Canvas worldDynamicRenderTarget;
+
 	/**
 	 * a reference to adjust the render target sizes dynamically on window resize
 	 *
@@ -75,11 +69,7 @@ public class CanvasController {
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
 
-		worldDynamicRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
-		worldDynamicRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
-
 		SimView2D.initialize(worldStaticRenderTarget,
-				worldDynamicRenderTarget,
 				renderTargetBounds);
 
 		environmentToggle.selectedProperty().addListener((_, _, value) -> {
