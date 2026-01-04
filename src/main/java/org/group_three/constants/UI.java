@@ -52,6 +52,8 @@ public final class UI {
 			{"CSV", "*.csv"}
 	};
 
+	public static final String recentlyOpenedDataFileName = "recentlyOpenedData.xml";
+
 	public static final double maxSimulationViewFps = 30;
 
 	public static boolean highContrast = false;

@@ -6,14 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 // import java.io.IOException; for what was that?
 
-import de.tudresden.sumo.objects.SumoColor;
-import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
-import org.group_three.debug.Console;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
 
@@ -21,9 +17,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
-import org.group_three.model.WEdge;
-import org.group_three.model.WVehicle;
 import org.group_three.service.StressTest;
+import org.group_three.ui.RecentlyOpenedData;
 import org.group_three.ui.SimView2D;
 
 /**
@@ -44,19 +39,17 @@ public class ToolbarController {
 	@FXML
 	private MenuItem simulationExport;
 
-	// TODO: Fix issues from multi file selection
-
 	/**
 	 * Initializes toolbar
 	 *
 	 * @author Joel
 	 */
 	@FXML
-	private void initialize() { //throws IOException  for what was that?
+	private void initialize() {
 		Debug.toConsole("Toolbar loaded.");
 
-		// --> add load recentlyLoadedSimulations from file code here <--
-		validateRecentlyLoadedSimulations();
+		RecentlyOpenedData.load();
+		RecentlyOpenedData.validate();
 
 		initializeOpenRecentList();
 	}
@@ -71,7 +64,7 @@ public class ToolbarController {
 		simulationOpenRecent.getItems().clear();
 
 		// add options
-		for (String path : recentlyLoadedSimulations) {
+		for (String path : RecentlyOpenedData.getSimulations()) {
 			//MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(path, path);
 			MenuItem item = new MenuItem(path);
 			item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
@@ -95,8 +88,6 @@ public class ToolbarController {
 		simulationExport.setDisable(disabled);
 	}
 
-	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {
-	};
 	private String loadedSimulation = null;
 
 	/**
@@ -118,12 +109,12 @@ public class ToolbarController {
 		setSimulationButtonStates(false);
 
 		// try to remove entry first before adding it at the start of the list to always have the newest selection at the first entry
-		recentlyLoadedSimulations.remove(loadedSimulation);
-		recentlyLoadedSimulations.addFirst(loadedSimulation);
+		RecentlyOpenedData.removeSimulation(loadedSimulation);
+		RecentlyOpenedData.addSimulation(loadedSimulation);
 
 		initializeOpenRecentList();
 
-		Debug.toConsole(recentlyLoadedSimulations.size());
+		Debug.toConsole(RecentlyOpenedData.getSimulations().size());
 	}
 
 	/**
@@ -134,7 +125,8 @@ public class ToolbarController {
 	 * @author Joel
 	 */
 	private void tryLoadingSimulation(List<File> paths) {
-		validateRecentlyLoadedSimulations();
+		RecentlyOpenedData.validate();
+		initializeOpenRecentList();
 
 		StringBuilder mergedPath = new StringBuilder();
 
@@ -154,37 +146,6 @@ public class ToolbarController {
 			ifs.printStackTrace();
 		}
 
-	}
-
-	/**
-	 * Function to validate the recently opened File locations,
-     * if no file is found in the entry is not displayed
-	 *
-	 * @author Joel
-	 */
-	private void validateRecentlyLoadedSimulations() {
-		List<String> fails = new ArrayList<String>() {
-		};
-
-		for (String path : recentlyLoadedSimulations) {
-			try {
-				new FileReader(path).close();
-			} catch (FileNotFoundException e) {
-				Debug.toConsole("FileNotFoundException " + e.getMessage());
-				// remove path if file at path doesn't exist
-				fails.add(path); // don't modify looping list while using it
-
-			} catch (IOException e) {
-				Debug.toConsole("IOException e " + e.getMessage());
-				throw new RuntimeException(e);
-			}
-		}
-
-		for (String path : fails) {
-			recentlyLoadedSimulations.remove(path);
-		}
-
-		initializeOpenRecentList(); // maybe? !makes ini run multiple times in some places right now, TODO:change that
 	}
 
 
