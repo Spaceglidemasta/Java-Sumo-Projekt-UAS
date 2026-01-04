@@ -1,5 +1,6 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.cmd.Edge;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
@@ -29,10 +30,10 @@ public class PDFCreationFilterController {
 	private CheckBox avgSpeed;
 
 	@FXML
-	private ComboBox edgeSort;
+	private ComboBox<EdgeSortOption> edgeSort;
 
 	@FXML
-	private ComboBox style;
+	private ComboBox<CSSStyle> style;
 
 	@FXML
 	private void initialize() {
