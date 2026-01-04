@@ -11,7 +11,7 @@ import javafx.geometry.VPos;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.Font;
 import org.group_three.api.SimController;
-import org.group_three.debug.Debug;
+import org.group_three.constants.UI;
 import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.Meth;
@@ -32,12 +32,21 @@ public class WorldTrafficLight extends WorldObject {
 		return wTrafficLight;
 	}
 
-	private boolean showCountdown = false;
-	private int remainingTimeUntilSwitch = 0;
+    /**
+     * time until the next switch of the tl.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
+    private int initialRemainingTimeUntilSwitch = 0;
 
-	private int initialRemainingTimeUntilSwitch = 0;
-
-	private int countdownStartSimTime = -1;
+    /**
+     * Countdown time (set to -1 if not initialized).
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
+    private int countdownStartSimTime = -1;
     /**
 	 * The WTrafficLight object which is grouping the WLink classes.
 	 *
@@ -126,8 +135,9 @@ public class WorldTrafficLight extends WorldObject {
 
 	/**
 	 * The update method which is used to draw the WorldTrafficLight in the world.
+     * It also draws the time if <code>showTLTiming</code> is true.
 	 *
-	 * @author Joel
+	 * @author Joel + Leon
 	 */
 	@Override
 	public void update() {
@@ -141,7 +151,7 @@ public class WorldTrafficLight extends WorldObject {
 
 		drawRectangle(size.div(2), color);
 
-		if (showCountdown) {
+		if (UI.showTLTiming) {
 			SimController sim = SimController.getMainsimcon();
 
             int currentSimTime = sim.getTime();
@@ -152,7 +162,7 @@ public class WorldTrafficLight extends WorldObject {
             }
 
             int elapsed = Math.max(0, currentSimTime - countdownStartSimTime);
-            remainingTimeUntilSwitch = Math.max(0, initialRemainingTimeUntilSwitch - elapsed);
+            int remainingTimeUntilSwitch = Math.max(0, initialRemainingTimeUntilSwitch - elapsed);
 
 
 			String text = Integer.toString(remainingTimeUntilSwitch);
@@ -193,27 +203,13 @@ public class WorldTrafficLight extends WorldObject {
         trafficLightDetailsController.update();
     }
 
-	@Override
-	public void select() {
-		super.select();
-		showCountdown = true;
-		remainingTimeUntilSwitch = getTimeUntilNextState();
-		initialRemainingTimeUntilSwitch = remainingTimeUntilSwitch;
-
-		SimController sim = SimController.getMainsimcon();
-		if (sim != null) {
-			countdownStartSimTime = Math.max(0, sim.getTime() - 1);
-		} else {
-			countdownStartSimTime = -1;
-		}
-	}
-
-	@Override
-	public void deselect() {
-		super.deselect();
-		showCountdown = false;
-	}
-
+    /**
+     * Method to calculate when the tl will switch next.
+     * It sums up the phase time (or the minDur) up until
+     * a change occurs (tl changes color)
+     *
+     * @author Leon
+     */
 	private int getTimeUntilNextState() {
         SumoTLSController controller = wTrafficLight.getProgram();
         SumoTLSProgram program = controller.get("0");

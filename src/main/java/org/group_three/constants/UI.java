@@ -55,6 +55,7 @@ public final class UI {
 	public static final double maxSimulationViewFps = 30;
 
 	public static boolean highContrast = false;
+	public static boolean showTLTiming = false;
 	public static double vehicleScale = 1;
 	public static Vector2D viewFilter_VehicleSpeed = new Vector2D(0, -1);
 	public static List<Color> viewFilter_VehicleColor = new ArrayList<>();

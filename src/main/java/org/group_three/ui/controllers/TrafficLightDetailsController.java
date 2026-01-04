@@ -68,6 +68,7 @@ public class TrafficLightDetailsController {
     private Button applyButton;
 
     private static final String DEFAULT_PROGRAM_ID = "0";
+    private static final int DEFAULT_IDLE_TIME = 1000;
     private WorldTrafficLight worldTrafficLight;
 
     /**
@@ -133,6 +134,12 @@ public class TrafficLightDetailsController {
 	private void initialize() {
 	}
 
+    /**
+     * Gets the true phase length of a phase, since configs that contain a minDur variable
+     * ignore the phase time and instead use the minDur variable as the phase time.
+     *+
+     * @author Leon
+     */
     private double getRealPhaseLength(){
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
         SumoTLSController controller = wtl.getProgram();
@@ -326,7 +333,7 @@ public class TrafficLightDetailsController {
      * Find all lanes with the maximum number of halting vehicles.
      *
      * @param tlID the traffic light ID
-     * @return a list of lane IDs that all have the maximum halting count, or empty list if no vehicles
+     * @return a list of lane IDs that all have the maximum halting count, or empty list if no vehicles are found
      * @author Leon
      */
     private List<String> findLanesWithMostHaltingVehicles(String tlID) {
@@ -435,8 +442,9 @@ public class TrafficLightDetailsController {
         SumoTLSController controller = wtl.getProgram();
         SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
         
-        SumoTLSPhase redPhase = new SumoTLSPhase(1000, redState.toString());
+        SumoTLSPhase redPhase = new SumoTLSPhase(DEFAULT_IDLE_TIME, redState.toString());
         SumoTLSProgram newProgram = new SumoTLSProgram();
+
         newProgram.subID = program.subID;
         newProgram.type = program.type;
         newProgram.currentPhaseIndex = program.currentPhaseIndex;
@@ -445,7 +453,7 @@ public class TrafficLightDetailsController {
             newProgram.phases.add(redPhase);
         }
         
-        wtl.setPhaseLen(1000);
+        wtl.setPhaseLen(DEFAULT_IDLE_TIME);
         wtl.setProgram(newProgram);
         adaptiveState.put(tlID, "IDLE");
         adaptiveStepCounters.put(tlID, 0);
