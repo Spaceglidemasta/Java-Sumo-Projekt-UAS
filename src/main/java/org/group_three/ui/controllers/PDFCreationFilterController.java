@@ -50,7 +50,7 @@ public class PDFCreationFilterController {
 		int lengthValue = Integer.parseInt("0" + length.getText());
 		//if (lengthValue == 0) lengthValue = 1;
 
-        if(color.getOpacity() == 0) Debug.print("Transparent");
+        Debug.print(color);
 
 		simcon.queueryStats(
 
@@ -58,7 +58,7 @@ public class PDFCreationFilterController {
 
 				"VehicleData",
 				avgSpeed.isSelected(),
-				(color.getValue() != Color.TRANSPARENT) ? Meth.ClrToSumoClr(color.getValue()) : null,
+				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
 				"EdgeData",
 				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
