@@ -63,7 +63,7 @@ public class SimController implements AutoCloseable{
     private static SimController mainsimcon = null;
 
     // WObjects Collectors
-    private List<WTrafficLight> allWTLs = new ArrayList<>();
+    private HashMap<String, WTrafficLight> allWTLs = new HashMap<>();
     private List<WPolygon> allPolys = new ArrayList<>();
     private HashMap<String, WEdge> allroads = new HashMap<>();
     private HashMap<String, WVehicle> allVehicles = new HashMap<>();
@@ -332,7 +332,7 @@ public class SimController implements AutoCloseable{
 
 		WPolygon.loadAllPolys(simcon);
 
-		List<WTrafficLight> alltls = WTrafficLight.loadAll(simcon);
+		List<WTrafficLight> alltls = WTrafficLight.loadAll(simcon).values().stream().toList();
 
         alltls.getFirst().getProgram();
 
@@ -548,16 +548,27 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(){
 
-        Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
+        Statistic<VehicleRec> vehStat = new Statistic<>(
+                "Vehicles",
+                "Vehicle ID", "Average Speed", "Color"
+        );
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
         }
         statcol.addStatistic(vehStat
-                .filter(r -> StatUtils.equalSColor(r.color(), new SumoColor(255,0,0,255)))
+                .filter(
+                        r -> StatUtils.equalSColor(
+                                r.color(),
+                                new SumoColor(255,0,0,255)
+                        )
+                )
                 .sortBy(VehicleRec::avgspeed)
         );
 
-        Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>(
+                "Edges", "Name",
+                "Occupancy Ratio", "Length (m)"
+        );
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
@@ -576,12 +587,15 @@ public class SimController implements AutoCloseable{
                         .filter( r -> r.length() > 1000)
         );
 
-        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
+        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>(
+                "VehicleDensityPerEdge",
+
                 getAllroads()
                 .values()
                 .stream() //stream data to allow mapping
                 .map(WEdge::getName) // the same as edge -> edge.getName() lambda
                 .toArray(String[]::new)); //tells it to convert to String[] instead of Object[]
+
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
@@ -1263,136 +1277,7 @@ public class SimController implements AutoCloseable{
 
 
 
-    /**
-     * Sets the Phase Index [0:2] of the TL. <br>
-     * @param TLID Traffic Light ID
-     * @param iPhase Phase index as int, starting at 0 (?)
-     * @return <code>true</code> if successful, <code>false</code> if not.
-     * @author Luca
-     * */
-    public boolean setTLPhase(String TLID, int iPhase){
 
-        try {
-            log.fine("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
-            stc.do_job_set(Trafficlight.setPhase(TLID, iPhase));
-            return true;
-        }
-        catch (Exception e){
-            log.severe("setter failed: " + Arrays.toString(e.getStackTrace()));
-            return false;
-        }
-    }
-
-    /**
-     * Returns the Traffic Light phase as Index [0:2] <br>
-     * @param TLID ID of the Traffic Light
-     * @return Phase of the TL, <code>-1</code> if getter failed.
-     * @author Luca
-     */
-    public int getTLPhase(String TLID) {
-        try {
-            return (int) stc.do_job_get(Trafficlight.getPhase(TLID));
-        }
-        catch (Exception e){
-            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
-            return -1;
-        }
-    }
-
-    /**
-     * Returns the Traffic Light phase duration <br>
-     * @param TLID ID of the Traffic Light
-     * @return Duration of the Phase, <code>-1</code> if getter failed.
-     * @author Leon
-     */
-    public String getRYGState(String TLID) {
-        try {
-            return (String) stc.do_job_get(Trafficlight.getRedYellowGreenState(TLID));
-        }
-        catch (Exception e){
-            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
-            return "failed";
-        }
-    }
-
-    /**
-     * Returns the Traffic Light phase duration <br>
-     * @param TLID ID of the Traffic Light
-     * @return Duration of the Phase, <code>-1</code> if getter failed.
-     * @author Leon
-     */
-    public boolean setRYGState(String TLID, String state) {
-        try {
-            stc.do_job_set(Trafficlight.setRedYellowGreenState(TLID, state));
-            return true;
-        }
-        catch (Exception e){
-            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
-            return false;
-        }
-    }
-
-
-
-    /**
-     * Sets the Length of the current Phase of the given TL.
-     * @param TLID Traffic Light ID
-     * @param dur new Duration in seconds(?)( <- This not my questionmark, the TraaS doc also has a "?")
-     * @return <code>true</code> if successful, <code>false</code> if not.
-     * @author Luca
-     * */
-    public boolean setTLPhaseLen(String TLID, double dur){
-
-        try {
-            stc.do_job_set(Trafficlight.setPhaseDuration(TLID, dur));
-            return true;
-        } catch (Exception e) {
-            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
-            return false;
-        }
-
-
-    }
-
-    /**
-     * Returns the requested Parameter of a Trafficlight
-     * @param TLID TrafficLight ID
-     * @param param The requested parameter
-     * @return <code>null</code> if failed, else the requested parameter
-     * @author Luca
-     * */
-    @MayReturnNull
-    public String getTLParam(String TLID, String param){
-
-        try {
-            return  (String) stc.do_job_get(Trafficlight.getParameter(TLID,param));
-        }
-        catch (Exception e){
-            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
-            return null;
-        }
-
-    }
-
-
-    /**
-     * Sets the given Parameter of a Trafficlight
-     * @param TLID TrafficLight ID
-     * @param param the parameter which is supposed to change
-     * @param value the value that is to be inserted in the given parameter
-     * @return <code>true</code> if successful, <code>false</code> if not.
-     * @author Luca
-     * */
-    public boolean setTLParam(String TLID, String param, String value){
-        try {
-            stc.do_job_set(Trafficlight.setParameter(TLID, param, value));
-            return true;
-        }
-        catch (Exception e){
-            log.severe("setter failed: " + Arrays.toString(e.getStackTrace()));
-            return false;
-        }
-    }
 
 
     // ******************************************************
@@ -1486,7 +1371,7 @@ public class SimController implements AutoCloseable{
         return allroads;
     }
 
-    public List<WTrafficLight> getAllWTLs() {
+    public HashMap<String, WTrafficLight> getAllWTLs() {
             return allWTLs;
     }
 
@@ -1502,7 +1387,7 @@ public class SimController implements AutoCloseable{
 
     public StatCollector getStatcol() {return statcol; }
 
-    public void setAllWTLs(List<WTrafficLight> allWTLs) {
+    public void setAllWTLs(HashMap<String, WTrafficLight> allWTLs) {
         this.allWTLs = allWTLs;
     }
 
@@ -1529,8 +1414,8 @@ public class SimController implements AutoCloseable{
      * @return the new size of the collector List
      * @author Luca
      * */
-    public int addToAllWTLs(WTrafficLight wtl){
-        allWTLs.add(wtl);
+    public int addToAllWTLs(String id, WTrafficLight wtl){
+        allWTLs.put(id, wtl);
         return allWTLs.size();
     }
 

@@ -53,6 +53,8 @@ public class CanvasController {
 	@FXML
 	private CheckBox highContrastToggle;
 	@FXML
+	private CheckBox tlTimingToggle;
+	@FXML
 	private AnchorPane rotationBase;
 	public static AnchorPane rotationBaseStatic;
 	@FXML private AnchorPane rotationIndicator;
@@ -87,6 +89,11 @@ public class CanvasController {
 
 		highContrastToggle.selectedProperty().addListener((_, _, value) -> {
 			UI.highContrast = value;
+			SimView2D.getWorld().requestUpdate();
+		});
+
+		tlTimingToggle.selectedProperty().addListener((_, _, value) -> {
+			UI.showTLTiming = value;
 			SimView2D.getWorld().requestUpdate();
 		});
 	}

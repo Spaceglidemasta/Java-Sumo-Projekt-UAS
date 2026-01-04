@@ -114,7 +114,7 @@ public class Statistic<T extends Record> extends Table<T> {
     /**
      * SortDir by the given attribute.
      * @param attribute The name of the attribute you want to sort by.
-     * @return A new Statistic, sorted by <code>attribute</code>.
+     * @return A new Statistic, sorted by <code>attribute</code> (DESC).
      * @author Luca
      * */
     public <U extends Comparable<? super U>>
@@ -145,7 +145,7 @@ public class Statistic<T extends Record> extends Table<T> {
                         Comparator.comparing(keyExtractor)
                 ).toList();
 
-        Statistic<T> outstat = new Statistic<T>(name + "sorted", attributeNames);
+        Statistic<T> outstat = new Statistic<>(name + "sorted", attributeNames);
 
         if(sorttype == SortDir.ASC) outstat.content = sortcon;
         else outstat.content = sortcon.reversed();

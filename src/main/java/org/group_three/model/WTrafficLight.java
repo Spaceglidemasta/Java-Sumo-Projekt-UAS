@@ -66,7 +66,7 @@ public class WTrafficLight extends WObject {
         allWlinks.add(wlink);
     }
 
-    public List<WTrafficLight> getAllWTLs() {
+    public HashMap<String, WTrafficLight> getAllWTLs() {
         return simcon.getAllWTLs();
     }
 
@@ -120,10 +120,13 @@ public class WTrafficLight extends WObject {
      * @return true if success, false if not
      * @author Luca
      * */
-    public boolean setProgram(String PID) {
+    public boolean setProgramID(String PID) {
 
         return simcon.jobset(Trafficlight.setProgram(id, PID));
+    }
 
+    public boolean setProgram(SumoTLSProgram tls) {
+        return simcon.jobset(Trafficlight.setCompleteRedYellowGreenDefinition(id, tls));
     }
 
     /**
@@ -155,6 +158,101 @@ public class WTrafficLight extends WObject {
     @MayReturnNull
     public String getLinkStates() {
         return (String) simcon.jobget(Trafficlight.getRedYellowGreenState(id));
+    }
+
+    /**
+     * Sets the Phase Index [0:2] of the TL. <br>
+     * @param TLID Traffic Light ID
+     * @param iPhase Phase index as int, starting at 0 (?)
+     * @return <code>true</code> if successful, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean setTLPhase(String TLID, int iPhase){
+
+        log.fine("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
+        return simcon.jobset(Trafficlight.setPhase(TLID, iPhase));
+    }
+
+    /**
+     * Returns the Traffic Light phase as Index [0:2] <br>
+     * @param TLID ID of the Traffic Light
+     * @return Phase of the TL, <code>null</code> if getter failed.
+     * @author Luca
+     */
+    public int getTLPhase(String TLID) {
+
+        return (int) simcon.jobget(Trafficlight.getPhase(TLID));
+
+
+
+    }
+
+    /**
+     * Returns the Traffic Light phase duration <br>
+     * @param TLID ID of the Traffic Light
+     * @return Duration of the Phase, <code>-1</code> if getter failed.
+     * @author Leon
+     */
+    public String getRYGState(String TLID) {
+
+        return (String) simcon.jobget(Trafficlight.getRedYellowGreenState(TLID));
+
+    }
+
+    /**
+     * Returns the Traffic Light phase duration <br>
+     * @param TLID ID of the Traffic Light
+     * @return Duration of the Phase, <code>-1</code> if getter failed.
+     * @author Leon
+     */
+    public boolean setRYGState(String TLID, String state) {
+
+         return simcon.jobset(Trafficlight.setRedYellowGreenState(TLID, state));
+
+    }
+
+
+
+    /**
+     * Sets the Length of the current Phase of the given TL.
+     * @param TLID Traffic Light ID
+     * @param dur new Duration in seconds(?)( <- This not my questionmark, the TraaS doc also has a "?")
+     * @return <code>true</code> if successful, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean setTLPhaseLen(String TLID, double dur){
+
+        return simcon.jobset(Trafficlight.setPhaseDuration(TLID, dur));
+
+    }
+
+    /**
+     * Returns the requested Parameter of a Trafficlight
+     * @param TLID TrafficLight ID
+     * @param param The requested parameter
+     * @return <code>null</code> if failed, else the requested parameter
+     * @author Luca
+     * */
+    @MayReturnNull
+    public String getTLParam(String TLID, String param){
+
+        return  (String) simcon.jobget(Trafficlight.getParameter(TLID,param));
+
+    }
+
+
+    /**
+     * Sets the given Parameter of a Trafficlight
+     * @param TLID TrafficLight ID
+     * @param param the parameter which is supposed to change
+     * @param value the value that is to be inserted in the given parameter
+     * @return <code>true</code> if successful, <code>false</code> if not.
+     * @author Luca
+     * */
+    public boolean setTLParam(String TLID, String param, String value){
+
+        return simcon.jobset(Trafficlight.setParameter(TLID, param, value));
+
     }
 
 
@@ -253,7 +351,7 @@ public class WTrafficLight extends WObject {
      * @return Said List
      * @author Luca
      * */
-    public static List<WTrafficLight> loadAll(SimController simcon) {
+    public static HashMap<String, WTrafficLight> loadAll(SimController simcon) {
 
         SumoStringList allTLIDs = simcon.getTrafficLightsIDList();
 
@@ -286,7 +384,7 @@ public class WTrafficLight extends WObject {
 
             }
 
-            simcon.addToAllWTLs(wtl);
+            simcon.addToAllWTLs(TLID, wtl);
 
         }
 
