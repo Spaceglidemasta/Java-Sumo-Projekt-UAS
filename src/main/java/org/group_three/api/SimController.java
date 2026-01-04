@@ -419,7 +419,6 @@ public class SimController implements AutoCloseable{
     /**Saves the State as a file. The format and output depends on the extension.
      * <p> WARNING Creates Files </p>
      * @param filetype the extension. Include the dot: saveState(".xml")
-     *                 ".csv" and ".xml" are the only ones we found to make sense.
      * @return The filename, or null if without success.
      * @author Luca
      * */
@@ -744,7 +743,7 @@ public class SimController implements AutoCloseable{
      * @see StatCollector#exportAsZip()
      * @author Luca
      * */
-    public void exportStats(){
+    public void exportStatsAsZippedCSVs(){
         statcol.exportAsZip();
     }
 

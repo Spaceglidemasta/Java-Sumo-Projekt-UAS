@@ -293,7 +293,9 @@ public class ToolbarController {
 
         if(simcon != null){
 
-	        simcon.saveState(".csv");
+            simcon.queueryStats();
+
+	        simcon.exportStatsAsZippedCSVs();
 
         }
 

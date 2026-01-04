@@ -246,6 +246,7 @@ public class Statistic<T extends Record> extends Table<T> implements Iterable<T>
      * @author Luca
      */
     @MayReturnNull
+    @Deprecated
     public Function<Object, Object> getGraphOf(String x_attribute, String y_attribute) {
         // Source - https://stackoverflow.com/a/29584084
         // Posted by satnam, modified by community. See post 'Timeline' for change history
