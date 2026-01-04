@@ -1,6 +1,7 @@
 package org.group_three.ui.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import org.group_three.debug.Console;
 
 /**
@@ -18,6 +19,7 @@ public class TailController {
 	 */
 	@FXML
 	public void initialize() {
+		fpsDisplay = fps;
 	}
 
 	/**
@@ -29,6 +31,16 @@ public class TailController {
 	private void onConsoleOpen() {
 		Console console = Console.getInstance();  // Get the single instance of the Console
 		console.show();
+	}
+
+	@FXML
+	private Label fps;
+
+	private static Label fpsDisplay;
+
+	public static void setFPS(int fps) {
+		if (fpsDisplay == null) return;
+		fpsDisplay.setText("FPS: " + fps);
 	}
 
 }
