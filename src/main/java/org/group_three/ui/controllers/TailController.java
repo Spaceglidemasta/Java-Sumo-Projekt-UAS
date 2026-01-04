@@ -20,6 +20,23 @@ public class TailController {
 	@FXML
 	public void initialize() {
 		fpsDisplay = fps;
+
+		/*Timeline systemUsageUpdates = new Timeline(
+				new KeyFrame(Duration.seconds(1), e -> update())
+		);
+		systemUsageUpdates.setCycleCount(Timeline.INDEFINITE);
+		systemUsageUpdates.play();*/
+
+	}
+
+	@FXML
+	private Label cpu;
+	@FXML
+	private Label ram;
+
+	private void update() {
+		//cpu.setText("CPU: " + SystemUsage.getCpuUsage() + "%");
+		//ram.setText("RAM: " + SystemUsage.getRamUsage() + "/" + SystemUsage.getTotalRam() + "GB");
 	}
 
 	/**
