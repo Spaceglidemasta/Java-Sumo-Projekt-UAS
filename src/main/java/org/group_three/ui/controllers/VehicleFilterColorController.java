@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.group_three.debug.Debug;
+
+import java.util.Objects;
 
 public class VehicleFilterColorController {
 	@FXML
@@ -13,6 +16,7 @@ public class VehicleFilterColorController {
 
 	@FXML
 	private void onRemoveButtonClicked() {
+		vehicleFilterController.updatedColorPickerList(colorPicker, true);
 		((VBox) root.getParent()).getChildren().remove(root);
 	}
 
@@ -20,5 +24,10 @@ public class VehicleFilterColorController {
 
 	public void setup(VehicleFilterController vehicleFilterController) {
 		this.vehicleFilterController = vehicleFilterController;
+		vehicleFilterController.updatedColorPickerList(colorPicker, false);
+	}
+
+	@FXML
+	private void initialize() {
 	}
 }
