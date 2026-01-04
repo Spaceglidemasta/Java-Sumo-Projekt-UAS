@@ -51,7 +51,7 @@ public class PDFCreationFilterController {
 			return;
 		}
 
-		int lengthValue = Integer.parseInt(length.getText() + "0");
+		int lengthValue = Integer.parseInt("0" + length.getText());
 		//if (lengthValue == 0) lengthValue = 1;
 
 		simcon.queueryStats(
