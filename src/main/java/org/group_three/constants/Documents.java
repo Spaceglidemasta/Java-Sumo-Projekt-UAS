@@ -1,6 +1,6 @@
 package org.group_three.constants;
 
-import org.group_three.constants.enums.style.CSSdoc;
+import org.group_three.constants.enums.style.CSSStyle;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,7 +36,7 @@ public final class Documents {
      * @return the whole html document as String
      * @author Luca
      * */
-    public static String wrapHTMLbody(String body, CSSdoc style) throws IOException {
+    public static String wrapHTMLbody(String body, CSSStyle style) throws IOException {
         return """
                 <!DOCTYPE html>
                 <html>
@@ -54,12 +54,12 @@ public final class Documents {
     }
 
     /** Reads out the requested css style sheet and returns it as String parsing into an HTML style.
-     * @param select a CSSdoc Enum representing the requested Style sheet
+     * @param select a CSSStyle Enum representing the requested Style sheet
      * @return the Style sheet as String
-     * @see Documents#wrapHTMLbody(String, CSSdoc) 
+     * @see Documents#wrapHTMLbody(String, CSSStyle)
      * @author Luca
      * */
-    public static String getCSS(CSSdoc select) throws IOException {
+    public static String getCSS(CSSStyle select) throws IOException {
 
         Path style = Path.of(STYLE_LOCATION);
 
@@ -81,7 +81,7 @@ public final class Documents {
 
     /**
      * Default CSS String
-     * @see Documents#wrapHTMLbody(String, CSSdoc)
+     * @see Documents#wrapHTMLbody(String, CSSStyle)
      * */
     private final static String defaultCSS =
                 """
