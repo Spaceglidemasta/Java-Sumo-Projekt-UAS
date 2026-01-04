@@ -2,7 +2,9 @@ package org.group_three.ui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import org.group_three.api.SimController;
 import org.group_three.debug.Console;
+import org.group_three.service.Statistic;
 
 /**
  * The small bar at the bottom of the window.

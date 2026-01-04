@@ -224,6 +224,9 @@ public class WorldVehicle extends WorldObject {
 		// color filter check
 		if (!UI.viewFilter_VehicleColor.isEmpty() && !UI.viewFilter_VehicleColor.contains(getColor())) return false;
 
+		// pos filter check
+		if ((UI.viewFilter_PositionRadius != 0) && (UI.viewFilter_Position.getDistance(getPosition()) > UI.viewFilter_PositionRadius)) return false;
+
 		return true;
 	}
 

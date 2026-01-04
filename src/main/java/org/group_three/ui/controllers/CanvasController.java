@@ -108,6 +108,8 @@ public class CanvasController {
 		Vector2D nMP = mousePosition.sub(SimView2D.getWorld().getViewerPositionOffset());
 		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), nMP).mul(1 / SimView2D.getWorld().getViewerZoom());
 
+		SimView2D.clickInWorld(worldspaceMousePosition);
+
 		try {
 			WorldObject interacted = SimView2D.getWorld().interact(worldspaceMousePosition);
 			if (interacted != null) SimView2D.setSelected(interacted);

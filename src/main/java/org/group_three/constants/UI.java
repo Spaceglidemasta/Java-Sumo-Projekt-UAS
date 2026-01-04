@@ -61,6 +61,8 @@ public final class UI {
 	public static double vehicleScale = 1;
 	public static Vector2D viewFilter_VehicleSpeed = new Vector2D(0, -1);
 	public static List<Color> viewFilter_VehicleColor = new ArrayList<>();
+	public static Vector2D viewFilter_Position = new Vector2D();
+	public static double viewFilter_PositionRadius = 0;
 
 
 	// The minimal window width.
