@@ -7,6 +7,7 @@ import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.constants.Settings;
 import org.group_three.constants.Sumo;
 import org.group_three.constants.enums.stats.EdgeSortOption;
+import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
@@ -635,7 +636,9 @@ public class SimController implements AutoCloseable{
 
             String edgeStatName,
             EdgeSortOption edgeSortBy,
-            int minStreetLen
+            int minStreetLen,
+
+            CSSStyle style
 
                              ){
 
@@ -714,6 +717,8 @@ public class SimController implements AutoCloseable{
             vehDensStat.add(vdrec);
         }
         //statcol.addStatistic(vehDensStat);
+        
+        statcol.setCssStyle(style);
 
         log.fine("StatCollector assembling was successful.");
 

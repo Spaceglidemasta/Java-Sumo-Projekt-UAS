@@ -9,7 +9,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 import org.group_three.api.SimController;
 import org.group_three.constants.Documents;
-import org.group_three.constants.enums.style.CSSdoc;
+import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.model.WEdge;
 import org.group_three.utils.Formatting;
 import org.group_three.utils.PathUtils;
@@ -43,7 +43,7 @@ public class StatCollector implements Iterable<Statistic<?>> {
     //Style
     private String name;
     private List<String> description;
-    private CSSdoc cssStyle = CSSdoc.DEFAULT;
+    private CSSStyle cssStyle = CSSStyle.DEFAULT;
     
     //functionality
     private List<Statistic<?>> statistics;
@@ -101,11 +101,11 @@ public class StatCollector implements Iterable<Statistic<?>> {
         this.vehicleMaxDenseValue = vehicleMaxDenseValue;
     }
 
-    public CSSdoc getCssStyle() {
+    public CSSStyle getCssStyle() {
         return cssStyle;
     }
 
-    public void setCssStyle(CSSdoc cssStyle) {
+    public void setCssStyle(CSSStyle cssStyle) {
         this.cssStyle = cssStyle;
     }
 
@@ -197,7 +197,7 @@ public class StatCollector implements Iterable<Statistic<?>> {
 
     /**
      * Exports the bundle of statistics into a single PDF document. <br>
-     * Select the CSS Style of the document via {@link StatCollector#setCssStyle(CSSdoc)}
+     * Select the CSS Style of the document via {@link StatCollector#setCssStyle(CSSStyle)}
      * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
