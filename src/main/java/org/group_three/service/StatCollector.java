@@ -51,7 +51,7 @@ public class StatCollector {
     // Statistic Variables
     private long vehicleMaxDenseValue = 0;
     
-
+    //TODO add <U> sum(Function<T, U> f)
 
 
     public StatCollector(SimController simcon, String name, Statistic<?> ... args) {
