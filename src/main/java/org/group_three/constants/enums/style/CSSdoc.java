@@ -1,4 +1,4 @@
-package org.group_three.constants.enums;
+package org.group_three.constants.enums.style;
 
 public enum CSSdoc {
     DEFAULT,

@@ -1,6 +1,6 @@
 package org.group_three.constants;
 
-import org.group_three.constants.enums.CSSdoc;
+import org.group_three.constants.enums.style.CSSdoc;
 
 import java.io.IOException;
 import java.nio.file.Files;

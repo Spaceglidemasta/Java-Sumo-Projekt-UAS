@@ -65,6 +65,10 @@ public class Statistic<T extends Record> extends Table<T> implements Iterable<T>
         this.name = name;
     }
 
+    /**
+     * Simple Iterator for iterating through the content.
+     * @author Luca
+     * */
     @Override
     public Iterator<T> iterator() {
         return content.iterator();

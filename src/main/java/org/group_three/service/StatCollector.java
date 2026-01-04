@@ -9,7 +9,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 import org.group_three.api.SimController;
 import org.group_three.constants.Documents;
-import org.group_three.constants.enums.CSSdoc;
+import org.group_three.constants.enums.style.CSSdoc;
 import org.group_three.model.WEdge;
 import org.group_three.utils.Formatting;
 import org.group_three.utils.PathUtils;
@@ -63,6 +63,11 @@ public class StatCollector implements Iterable<Statistic<?>> {
         this.description = new ArrayList<>();
     }
 
+
+    /**
+     * Simple Iterator for iterating through all Statistics.
+     * @author Luca
+     * */
     @Override
     public Iterator<Statistic<?>> iterator() {
         return statistics.iterator();
