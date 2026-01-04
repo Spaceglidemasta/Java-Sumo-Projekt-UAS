@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.group_three.ui.MainApp;
 
 /**
  * Console class contains the controls for the console window
@@ -24,6 +25,7 @@ public class Console {
 
         debugStage = new Stage();
         debugStage.setTitle("Debug Window");
+		debugStage.getIcons().add(MainApp.getAppIcon());
 
         TextArea debugTextArea = new TextArea();
         debugTextArea.setEditable(false);
