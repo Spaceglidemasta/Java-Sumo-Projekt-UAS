@@ -13,6 +13,8 @@ import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 
+import javax.swing.text.html.CSS;
+
 public class PDFCreationFilterController {
 
 	public Stage stage;
@@ -30,12 +32,15 @@ public class PDFCreationFilterController {
 	private ComboBox edgeSort;
 
 	@FXML
+	private ComboBox style;
+
+	@FXML
 	private void initialize() {
-		edgeSort.getItems().addAll(
-				EdgeSortOption.usage,
-				EdgeSortOption.length,
-				EdgeSortOption.name);
-		edgeSort.getSelectionModel().selectFirst();
+		edgeSort.getItems().addAll(EdgeSortOption.values());
+		edgeSort.getSelectionModel().select(EdgeSortOption.usage);
+
+		style.getItems().addAll(CSSStyle.values());
+		style.getSelectionModel().select(CSSStyle.DEFAULT);
 	}
 
 	@FXML
@@ -50,15 +55,13 @@ public class PDFCreationFilterController {
 		int lengthValue = Integer.parseInt("0" + length.getText());
 		//if (lengthValue == 0) lengthValue = 1;
 
-        Debug.print(color);
-
 		simcon.queueryStats(
 
                 "Output_Collection",
 
 				"VehicleData",
 				avgSpeed.isSelected(),
-				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
+				(color.getValue() != Color.TRANSPARENT) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
 				"EdgeData",
 				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
