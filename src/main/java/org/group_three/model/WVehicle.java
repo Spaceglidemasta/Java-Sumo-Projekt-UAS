@@ -7,6 +7,7 @@ import de.tudresden.sumo.objects.SumoStringList;
 import it.polito.appeal.traci.SumoTraciConnection;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
+import org.group_three.constants.UI;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import java.util.logging.Logger;
@@ -600,16 +601,8 @@ public class WVehicle {
      * Dance, dance, dance (Boogie Wonderland), dance, dance, dance, dance<br>
      * Dance, dance (Boogie Wonderland), dance<br>
      * */
-    @Deprecated
-    public static void boogieWonderland(){
-        for(String VID : SimController.getMainsimcon().getVehicleIDList()){
-            SimController.getMainsimcon().jobset(Vehicle.setColor(VID, Meth.ClrToSumoClr(new Color(
-                    Math.random(),
-                    Math.random(),
-                    Math.random(),
-                    1
-            ))));
-        }
+    public void boogieWonderland(){
+		setColor(Meth.ClrToSumoClr(UI.getRandomVehicleColor()));
     }
 
 

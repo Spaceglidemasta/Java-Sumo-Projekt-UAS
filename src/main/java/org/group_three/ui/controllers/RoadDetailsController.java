@@ -7,6 +7,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.group_three.api.SimController;
+import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.model.WEdge;
 import org.group_three.model.WVehicle;
@@ -175,7 +176,8 @@ public class RoadDetailsController {
 						Integer.parseInt(vehicleSpawnSpeed.getText())
 						,0
 				);
-				if (wVehicle != null) wVehicle.setColor(Meth.ClrToSumoClr(vehicleSpawnColor.getValue()));
+				Color vColor = vehicleSpawnColor.getValue().getOpacity() == 0 ? UI.getRandomVehicleColor() : vehicleSpawnColor.getValue();
+				if (wVehicle != null) wVehicle.setColor(Meth.ClrToSumoClr(vColor));
 			}
 		}
 	}

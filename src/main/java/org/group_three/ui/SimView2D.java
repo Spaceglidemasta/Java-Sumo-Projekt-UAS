@@ -8,6 +8,7 @@ import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.model.*;
 import org.group_three.ui.controllers.BodyController;
+import org.group_three.ui.controllers.VehicleFilterController;
 import org.group_three.ui.world.*;
 
 import java.util.ArrayList;
@@ -200,6 +201,19 @@ public class SimView2D {
 
 		// update details panel
 		//SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+	}
+
+	public static void clickInWorld(Vector2D pos) {
+		if (vehicleFilterController != null) {
+			vehicleFilterController.receivePosition(pos);
+			vehicleFilterController = null;
+		}
+	}
+
+	private static VehicleFilterController vehicleFilterController;
+
+	public static void setRequestPosition(VehicleFilterController vehicleFilterController) {
+		SimView2D.vehicleFilterController = vehicleFilterController;
 	}
 
 	//--------------------------------------------------SetterClassMethods--------------------------------------------------
