@@ -106,7 +106,7 @@ public class WVehicle {
      * Gets you the SumoPosition2D of the Vehicle. Attributes are public.<br>
      * @example <code>
      * double x = v.getPos().x <br>
-     * double y = v.getPos().y
+     * double y = v.getPos().y = y
      * </code>
      * @return SumoPosition2D
      * @author Luca

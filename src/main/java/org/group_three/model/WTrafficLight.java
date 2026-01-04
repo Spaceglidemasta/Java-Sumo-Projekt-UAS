@@ -294,22 +294,6 @@ public class WTrafficLight extends WObject {
         return true;
     }
 
-    public double getLinkRemainingPhaseTime(int index){
-
-        double remain = 0.0d;
-
-        SumoTLSProgram program = getProgram().programs.get(id);
-
-        if(program == null){
-            log.warning("TrafficLight " + id + " does not have a TL program." );
-        }
-
-
-
-
-        return remain;
-    }
-
     /**
      * Loads the Colors for all Links of this TL via the simulation. <br>
      * Loaded Colors can then be retrieved via wLink.getColor()

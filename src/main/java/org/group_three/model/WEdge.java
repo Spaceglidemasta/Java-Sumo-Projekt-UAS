@@ -1,6 +1,5 @@
 package org.group_three.model;
 import de.tudresden.sumo.cmd.Edge;
-import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
@@ -16,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.logging.Logger;
@@ -63,12 +61,6 @@ public class WEdge extends WObject{
         return (long) Meth.sumOfList(vehDensityPerStep);
     }
 
-    /**
-     * Adds the number of vehicles that were present on this edge within the last step.
-     * <p>Used for statistics.</p>
-     * @return <code>true</code> if successful, <code>false</code> if not.
-     * @author Luca
-     * */
     public boolean addVehDensityCount(){
         try {
             vehDensityPerStep.add((int) simcon.jobget(Edge.getLastStepVehicleNumber(id)));
@@ -243,51 +235,6 @@ public class WEdge extends WObject{
     public  WEdge getRoad(String EID){
         return simcon.getAllroads().get(EID);
     }
-
-
-    /** Static method to calculate the length of a route.
-     * @param edges A list containing all WEdges of the Route.
-     * @return the sum of all lengths from each edge
-     * @author Luca
-     * */
-    public static double  getRouteLength(List<WEdge> edges){
-
-        return edges.stream().mapToDouble(
-                WEdge::getLength
-        ).sum();
-    }
-
-    /** Static method to calculate the length of a route.
-     * @param edges A SumoStringList containing all EdgeIDs
-     * @return the sum of all lengths from each edge
-     * @author Luca
-     * */
-    public static double  getRouteLength(SumoStringList edges){
-
-        SimController simcon = SimController.getMainsimcon();
-
-        if(simcon == null){
-            log.warning("SimController is null.");
-            return -1.0d;
-        }
-
-        HashMap<String, WEdge> edgehash = simcon.getAllroads();
-
-        double out = 0.0d;
-
-        for(String EID : edges){
-            WEdge wedge = edgehash.get(EID);
-
-            if(wedge == null) continue;
-
-            out += wedge.getLength();
-
-        }
-
-        return out;
-    }
-
-
 
 
 }
