@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import org.group_three.api.SimController;
 import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.constants.enums.style.CSSStyle;
+import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 
 public class PDFCreationFilterController {
@@ -46,8 +47,10 @@ public class PDFCreationFilterController {
 			return;
 		}
 
-		int lengthValue = Integer.parseInt(length.getText() + "0");
+		int lengthValue = Integer.parseInt("0" + length.getText());
 		//if (lengthValue == 0) lengthValue = 1;
+
+        if(color.getOpacity() == 0) Debug.print("Transparent");
 
 		simcon.queueryStats(
 
@@ -61,7 +64,7 @@ public class PDFCreationFilterController {
 				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
 				lengthValue,
 
-                CSSStyle.SERIOUS
+                CSSStyle.DEFAULT
 
 		);
 

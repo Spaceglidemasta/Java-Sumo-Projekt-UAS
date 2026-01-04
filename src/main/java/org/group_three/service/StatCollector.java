@@ -158,6 +158,15 @@ public class StatCollector implements Iterable<Statistic<?>> {
         return statistics.size();
     }
 
+    /**
+     * Clears the StatCollection by deleting all Statistics inside.
+     * @author Luca
+     * */
+    public void clear(){
+        statistics = new ArrayList<>();
+    }
+
+
     /**<h2>exportAsZip</h2>
      * Exports the Statistics contained by this StatCollector to one zipped folder in output.
      * @return <code>true</code> if successful, <code>false</code> if not.

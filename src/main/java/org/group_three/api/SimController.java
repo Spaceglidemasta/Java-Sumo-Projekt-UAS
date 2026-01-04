@@ -28,6 +28,7 @@ import org.group_three.utils.StatUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.foreign.SymbolLookup;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
@@ -549,7 +550,7 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(){
 
-        statcol = new StatCollector(this, "StatCollection");
+        statcol.clear();
 
         Statistic<VehicleRec> vehStat = new Statistic<>(
                 "Vehicles",
@@ -628,7 +629,7 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(
 
-            String CollectionName,
+            String collectionName,
 
             String vehicleStatName,
             boolean sortForVehSpeed,
@@ -642,8 +643,9 @@ public class SimController implements AutoCloseable{
 
                              ){
 
+        statcol.setName(collectionName);
 
-        statcol = new StatCollector(this, CollectionName);
+        statcol.clear();
 
         //first stat
 
@@ -717,7 +719,7 @@ public class SimController implements AutoCloseable{
             vehDensStat.add(vdrec);
         }
         //statcol.addStatistic(vehDensStat);
-        
+
         statcol.setCssStyle(style);
 
         log.fine("StatCollector assembling was successful.");
