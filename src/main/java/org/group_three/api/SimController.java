@@ -6,6 +6,7 @@ import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.constants.Settings;
 import org.group_three.constants.Sumo;
+import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
@@ -590,6 +591,113 @@ public class SimController implements AutoCloseable{
 
     }
 
+    /**<h2>finishStatCollector</h2>
+     * Finishes the StatCollector attribute.
+     * <p>Uses the records defined at the top as types for the Statistic Template.
+     * Adding statistics works by adding a record as SimController attribute and
+     * adding it to the StatCollector via Statistic< Record >.</p>
+     * @param vehicleStatName The name of the Vehicle Statistic
+     * @param sortForVehSpeed Sorts the Veh. Stat. for speed if true, for id if false
+     * @param vehColor The vehicle color to be filtered for. Give <code>null</code> if you don't want to filter
+     *                 by color.
+     * @param edgeStatName The name of the Edge statistic
+     * @param edgeSortBy What to sort the Edge Statistic by
+     * @param minStreetLen The minimum street length to be filtered for. Default should be 0
+     * @see StatCollector
+     * @see Statistic
+     * @see VehicleRec
+     * @see EdgeRec
+     * @author Luca
+     * */
+    public void queueryStats(
+
+            String vehicleStatName,
+            boolean sortForVehSpeed,
+            SumoColor vehColor,
+
+            String edgeStatName,
+            EdgeSortOption edgeSortBy,
+            int minStreetLen
+
+                             ){
+
+        //first stat
+
+        Statistic<VehicleRec> vehStat = new Statistic<>(
+                vehicleStatName,
+                "Vehicle ID", "Average Speed", "Color");
+
+        for(VehicleRec vrec : VehicleRec.collect(this)){
+            vehStat.add(vrec);
+        }
+
+        //if you don't want to filter for a color, give null as parameter
+        if(vehColor != null){
+            vehStat = vehStat
+                    .filter(
+                            r -> StatUtils.equalSColor(
+                                    r.color(), vehColor
+                            )
+                    );
+        }
+
+        if (sortForVehSpeed) {
+            vehStat = vehStat.sortBy(VehicleRec::vehID);
+        } else {
+            vehStat = vehStat.sortBy(VehicleRec::avgspeed);
+        }
+
+        statcol.addStatistic(
+                vehStat.sortBy(VehicleRec::avgspeed)
+        );
+
+        //second stat
+
+        Statistic<EdgeRec> edgeStat = new Statistic<>(edgeStatName, "Name", "Occupancy Ratio", "Length (m)");
+        for(EdgeRec erec : EdgeRec.collect(this)){
+            edgeStat.add(erec);
+        }
+
+        edgeStat = edgeStat.aggregate(
+                                EdgeRec::name,
+                                (a,b) -> new EdgeRec(
+                                        a.name(),
+                                        a.usage() + b.usage(),
+                                        a.length() + b.length()
+                                )
+                        );
+
+        if(edgeSortBy == EdgeSortOption.name)
+            edgeStat = edgeStat.sortBy(EdgeRec::name);
+
+        else if(edgeSortBy == EdgeSortOption.usage)
+            edgeStat = edgeStat.sortBy(EdgeRec::usage);
+
+        else
+            edgeStat = edgeStat.sortBy(EdgeRec::length);
+
+        edgeStat = edgeStat.filter( r -> r.length() > minStreetLen);
+
+        statcol.addStatistic(edgeStat);
+
+        //third stat
+
+        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
+                getAllroads()
+                        .values()
+                        .stream() //stream data to allow mapping
+                        .map(WEdge::getName) // the same as edge -> edge.getName() lambda
+                        .toArray(String[]::new)); //tells it to convert to String[] instead of Object[]
+
+        for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
+            vehDensStat.add(vdrec);
+        }
+        //statcol.addStatistic(vehDensStat);
+
+        log.fine("StatCollector assembling was successful.");
+
+    }
+
     /**Prints all collected stats of this Simulation.
      * @see StatCollector#print()
      * @author Luca
@@ -637,6 +745,7 @@ public class SimController implements AutoCloseable{
      * <p>This is then getting mapped with a HashMap in the following format:<br>
      * <code>StartEdgeID -> List<{EndEdgeID, lengthOfRoute}></code> <br>
      * This is then stored in <code>ttdistribution</code>, which can be retrieved again via its getter.</p>
+     * <p>WARNING: O(n²) instead of O(n log(n)) because the network is a directed Graph (one-way-streets)</p>
      * @return said HashMap
      * @author Luca
      * */

@@ -89,7 +89,7 @@ public class Statistic<T extends Record> extends Table<T> {
      * */
     public Statistic<T> filter(Predicate<T> predic){
 
-        Statistic<T> stat = new Statistic<>(name + "_filtered", attributeNames);
+        Statistic<T> stat = new Statistic<>(name, attributeNames);
 
         for(T rec : content) {
             if(predic.test(rec)) stat.add(rec);
@@ -132,7 +132,7 @@ public class Statistic<T extends Record> extends Table<T> {
                         Comparator.comparing(attmethod)
                 ).toList();
 
-        Statistic<T> outstat = new Statistic<>(name + "sorted", attributeNames);
+        Statistic<T> outstat = new Statistic<>(name, attributeNames);
 
         if(sorttype == SortDir.ASC) outstat.content = sortcon;
         else outstat.content = sortcon.reversed();
@@ -164,7 +164,7 @@ public class Statistic<T extends Record> extends Table<T> {
                         .stream()
                         .toList();
 
-        Statistic<T> outstat = new Statistic<>(name + "_aggregated", attributeNames);
+        Statistic<T> outstat = new Statistic<>(name, attributeNames);
         outstat.content = agglist;
 
         return  outstat;
