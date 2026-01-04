@@ -7,6 +7,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.TrafficLightDetailsController">
@@ -40,7 +41,7 @@
                                         <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0" />
                                         <AnchorPane minHeight="32.0" prefHeight="32.0">
                                             <children>
-                                                <Label style="-fx-background-color: #333;" styleClass="white-text" text="Change traffic light" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label styleClass="white-text" text="Change traffic light" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <padding>
                                                         <Insets left="8.0" />
                                                     </padding>
@@ -73,22 +74,50 @@
                                         </AnchorPane>
                                         <AnchorPane minHeight="32.0" prefHeight="32.0">
                                             <children>
-                                                <Button fx:id="greenButton" layoutX="116.0" layoutY="3.0" mnemonicParsing="false" onAction="#onGreenButtonClicked" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #27c62f;" text="Green" textAlignment="CENTER" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0" />
-                                                <Button fx:id="redButton" layoutX="4.0" layoutY="3.0" mnemonicParsing="false" onAction="#onRedButtonClicked" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: #e11e1e;" text="Red" textAlignment="CENTER" />
-                                                <Button fx:id="yellowButton" layoutX="60.0" layoutY="3.0" mnemonicParsing="false" onAction="#onYellowButtonClicked" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: #dbe12d;" text="Yellow" textAlignment="CENTER" />
+                                    <HBox layoutX="4.0" layoutY="2.857142925262451" spacing="3.5" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5">
+                                       <children>
+                                          <AnchorPane HBox.hgrow="ALWAYS">
+                                             <children>
+                                                            <Button fx:id="redButton" mnemonicParsing="false" onAction="#onRedButtonClicked" prefHeight="26.0" style="-fx-background-color: #e11e1e;" text="Red" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane HBox.hgrow="ALWAYS">
+                                             <children>
+                                                            <Button fx:id="yellowButton" mnemonicParsing="false" onAction="#onYellowButtonClicked" prefHeight="26.0" style="-fx-background-color: #dbe12d;" text="Yellow" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane HBox.hgrow="ALWAYS">
+                                             <children>
+                                                            <Button fx:id="greenButton" mnemonicParsing="false" onAction="#onGreenButtonClicked" prefHeight="26.0" style="-fx-background-color: #27c62f;" text="Green" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </HBox>
                                             </children>
                                         </AnchorPane>
                                         <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="124.0">
                                             <children>
-                                                <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="115.0">
-                                                    <children>
-                                                        <Button fx:id="applyButton" layoutX="19.0" layoutY="3.0" mnemonicParsing="false" onAction="#onApplyButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Apply" textAlignment="CENTER" />
-                                                    </children>
-                                                </AnchorPane>
-                                                <Button fx:id="resetButton" layoutX="86.0" layoutY="3.0" mnemonicParsing="false" onAction="#onResetButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Reset" textAlignment="CENTER" />
+                                    <HBox spacing="3.5" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5">
+                                       <children>
+                                                      <AnchorPane HBox.hgrow="ALWAYS">
+                                                          <children>
+                                                              <Button fx:id="applyButton" layoutX="19.0" layoutY="3.0" mnemonicParsing="false" onAction="#onApplyButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Apply" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                          </children>
+                                                      </AnchorPane>
+                                          <AnchorPane HBox.hgrow="ALWAYS">
+                                             <children>
+                                                            <Button fx:id="resetButton" mnemonicParsing="false" onAction="#onResetButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Reset" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </HBox>
                                             </children>
                                         </AnchorPane>
-                              <Button fx:id="adaptiveStateButton" alignment="CENTER" mnemonicParsing="false" onAction="#onAdaptiveButtonClicked" text="Adaptive mode" textAlignment="CENTER" />
+                              <AnchorPane>
+                                 <children>
+                                    <Button fx:id="adaptiveStateButton" alignment="CENTER" mnemonicParsing="false" onAction="#onAdaptiveButtonClicked" text="Adaptive mode" textAlignment="CENTER" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                 </children>
+                              </AnchorPane>
                                     </children>
                                 </VBox>
                             </children>
