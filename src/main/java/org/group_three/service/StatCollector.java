@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ import java.util.zip.ZipOutputStream;
  * @see Statistic
  * @author Luca
  * */
-public class StatCollector {
+public class StatCollector implements Iterable<Statistic<?>> {
 
     private static final Logger log =
             Logger.getLogger(StatCollector.class.getName());
@@ -62,7 +63,10 @@ public class StatCollector {
         this.description = new ArrayList<>();
     }
 
-
+    @Override
+    public Iterator<Statistic<?>> iterator() {
+        return statistics.iterator();
+    }
 
     public List<String> getDescription() {return description;}
 
