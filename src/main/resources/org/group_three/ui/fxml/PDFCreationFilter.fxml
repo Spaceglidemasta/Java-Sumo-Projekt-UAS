@@ -60,6 +60,15 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Style" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </VBox>
                      </children>
@@ -112,6 +121,11 @@
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
                                     <ComboBox fx:id="edgeSort" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <ComboBox fx:id="style" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                  </children>
                               </AnchorPane>
                            </children>
