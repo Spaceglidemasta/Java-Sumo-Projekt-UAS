@@ -1,16 +1,18 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.cmd.Lane;
 import de.tudresden.sumo.objects.SumoTLSController;
 import de.tudresden.sumo.objects.SumoTLSPhase;
 import de.tudresden.sumo.objects.SumoTLSProgram;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import org.group_three.debug.Debug;
+import org.group_three.api.SimController;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.world.WorldTrafficLight;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,14 +40,6 @@ public class TrafficLightDetailsController {
     @FXML
     private TextField selectedLink;
 
-//    /**
-//     *
-//     *
-//     * @author Leon
-//     */
-//    @SuppressWarnings("JavadocDeclaration")
-//    @FXML
-//    private TextField timeTillNextChange;
     /**
      * The reset button to restore saved state.
      *
@@ -55,9 +49,23 @@ public class TrafficLightDetailsController {
     @FXML
     private Button resetButton;
 
-
     @FXML
     private Button adaptiveStateButton;
+
+    @FXML
+    private Button redButton;
+
+    @FXML
+    private Button yellowButton;
+
+    @FXML
+    private Button greenButton;
+
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private Button applyButton;
 
     private static final String DEFAULT_PROGRAM_ID = "0";
     private WorldTrafficLight worldTrafficLight;
@@ -79,8 +87,12 @@ public class TrafficLightDetailsController {
     private static final Map<String, SumoTLSController> savedControllers = new HashMap<>();
 
     private static final Map<String, SumoTLSController> adaptiveSavedStates = new HashMap<>();
-    //  private double timeRemainingSeconds = -1;
-//    private static boolean firstCountdown = true;
+    
+    private static final Map<String, Integer> adaptiveStepCounters = new HashMap<>();
+    private static final Map<String, String> adaptiveState = new HashMap<>(); // "IDLE" or "GREEN"
+    private static final int ADAPTIVE_CHECK_INTERVAL = 10;
+    private static final int ADAPTIVE_GREEN_DURATION = 10;
+
     /**
      * The setup method for this class to fill it with data.
      *
@@ -93,8 +105,7 @@ public class TrafficLightDetailsController {
         selectedLink.setText(Integer.toString(this.worldTrafficLight.getwLink().getTLIndex()));
 
         updateResetButtonState(this.worldTrafficLight.getwTrafficLight().getId());
-//        this.timeRemainingSeconds = getTimeUntilNextState();
-//        timeTillNextChange.setText(Double.toString(timeRemainingSeconds));
+        updateAdaptiveButtonState(this.worldTrafficLight.getwTrafficLight().getId());
 	}
 
     /**
@@ -105,15 +116,11 @@ public class TrafficLightDetailsController {
      */
     public void update() {
         phaseTime.setText(Double.toString(getRealPhaseLength()));
-        updateResetButtonState(this.worldTrafficLight.getwTrafficLight().getId());
+        String tlID = this.worldTrafficLight.getwTrafficLight().getId();
 
-//        if (timeRemainingSeconds > 0) {
-//            timeRemainingSeconds--;
-//        } else {
-//            firstCountdown = false;
-//            timeRemainingSeconds = getTimeUntilNextState();
-//        }
-//        timeTillNextChange.setText(Double.toString(timeRemainingSeconds));
+        updateResetButtonState(tlID);
+        updateAdaptiveButtonState(tlID);
+        updateAdaptiveControl(tlID);
     }
 
 
@@ -137,6 +144,7 @@ public class TrafficLightDetailsController {
         }
         return wtl.getPhaseLen();
     }
+
     /**
      * Modifies the tls current state string to be used later. <br>
      * This function works in tandem with <code>buttonUpdater</code>.
@@ -241,11 +249,11 @@ public class TrafficLightDetailsController {
 
         SumoTLSPhase updatedPhase = new SumoTLSPhase(newDuration, newPhase);
         SumoTLSProgram newProgram = new SumoTLSProgram();
+
         newProgram.subID = program.subID;
         newProgram.type = program.type;
         newProgram.currentPhaseIndex = program.currentPhaseIndex;
 
-        // Only changed the phase that matches the one that is currently active.
         newProgram.phases = new ArrayList<>();
         for (int i = 0; i < program.phases.size(); i++) {
             if (i == currentPhaseIdx) {
@@ -269,6 +277,7 @@ public class TrafficLightDetailsController {
     private void onResetButtonClicked() {
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
         String currentTLID = wtl.getId();
+
         if (savedControllers.containsKey(currentTLID)) {
             SumoTLSController savedController = savedControllers.get(currentTLID);
             SumoTLSProgram program = savedController.programs.get(DEFAULT_PROGRAM_ID);
@@ -287,100 +296,238 @@ public class TrafficLightDetailsController {
         resetButton.setDisable(!hasSavedController);
     }
 
+    /**
+     * Update the adaptive toggle button text to reflect the stored state for the given tlId.
+     *
+     * @author Leon
+     */
+    private void updateAdaptiveButtonState(String tlId) {
+        boolean isAdaptiveActive = adaptiveSavedStates.containsKey(tlId);
+        adaptiveStateButton.setText(isAdaptiveActive ? "Static mode" : "Adaptive mode");
+    }
 
+    /**
+     * Enable or disable all control buttons and text fields.
+     *
+     * @param enabled true to enable controls, false to disable
+     * @author Leon
+     */
+    private void setControlsEnabled(boolean enabled) {
+        phaseTime.setEditable(enabled);
+        resetButton.setDisable(!enabled);
+        redButton.setDisable(!enabled);
+        yellowButton.setDisable(!enabled);
+        greenButton.setDisable(!enabled);
+        saveButton.setDisable(!enabled);
+        applyButton.setDisable(!enabled);
+    }
+
+    /**
+     * Find all lanes with the maximum number of halting vehicles.
+     *
+     * @param tlID the traffic light ID
+     * @return a list of lane IDs that all have the maximum halting count, or empty list if no vehicles
+     * @author Leon
+     */
+    private List<String> findLanesWithMostHaltingVehicles(String tlID) {
+        List<String> controlledLanes = SimController.getMainsimcon().getControlledLanes(tlID);
+        List<String> result = new ArrayList<>();
+        
+        if (controlledLanes == null || controlledLanes.isEmpty()) {
+            return result;
+        }
+        
+        int maxHaltingCars = 0;
+        Map<String, Integer> laneHaltingCounts = new HashMap<>();
+        
+        for (String laneID : controlledLanes) {
+            int carsHalting = (int) SimController.getMainsimcon().jobget(Lane.getLastStepHaltingNumber(laneID));
+            int haltingCount = 0;
+            if (carsHalting != 0) {
+                haltingCount = carsHalting;
+            }
+            
+            laneHaltingCounts.put(laneID, haltingCount);
+            if (haltingCount > maxHaltingCars) {
+                maxHaltingCars = haltingCount;
+            }
+        }
+        
+        if (maxHaltingCars > 0) {
+            for (String laneID : controlledLanes) {
+                if (laneHaltingCounts.get(laneID) == maxHaltingCars) {
+                    result.add(laneID);
+                }
+            }
+        }
+        
+        return result;
+    }
+
+    /**
+     * Set specific lanes to green while keeping all others red.
+     * The phase duration is set to ADAPTIVE_GREEN_DURATION.
+     *
+     * @param tlID the traffic light ID
+     * @param greenLaneIDs list of lane IDs to set to green
+     * @author Leon
+     */
+    private void setLanesToGreen(String tlID, List<String> greenLaneIDs) {
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        String currentRYGState = wtl.getRYGState(tlID);
+        List<String> controlledLanes = SimController.getMainsimcon().getControlledLanes(tlID);
+        
+        if (controlledLanes == null) {
+            return;
+        }
+        
+        StringBuilder greenState = new StringBuilder();
+        for (int i = 0; i < currentRYGState.length(); i++) {
+            greenState.append('r');
+        }
+        
+        for (String greenLaneID : greenLaneIDs) {
+            int laneIndex = controlledLanes.indexOf(greenLaneID);
+            if (laneIndex >= 0 && laneIndex < greenState.length()) {
+                greenState.setCharAt(laneIndex, 'G');
+            }
+        }
+        
+        SumoTLSController controller = wtl.getProgram();
+        SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
+        
+        SumoTLSPhase greenPhase = new SumoTLSPhase(ADAPTIVE_GREEN_DURATION, greenState.toString());
+        SumoTLSProgram newProgram = new SumoTLSProgram();
+
+        newProgram.subID = program.subID;
+        newProgram.type = program.type;
+        newProgram.currentPhaseIndex = program.currentPhaseIndex;
+        newProgram.phases = new ArrayList<>();
+        for (int i = 0; i < program.phases.size(); i++) {
+            if (i == program.currentPhaseIndex) {
+                newProgram.phases.add(greenPhase);
+            } else {
+                newProgram.phases.add(program.phases.get(i));
+            }
+        }
+        
+        wtl.setPhaseLen(ADAPTIVE_GREEN_DURATION);
+        wtl.setProgram(newProgram);
+        adaptiveState.put(tlID, "GREEN");
+        adaptiveStepCounters.put(tlID, 0);
+    }
+
+    /**
+     * Set all lanes controlled by the traffic light to red for 1000 seconds.
+     *
+     * @param tlID the traffic light ID
+     * @author Leon
+     */
+    private void setIdleState(String tlID) {
+        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
+        String currentRYGState = wtl.getRYGState(tlID);
+        
+        StringBuilder redState = new StringBuilder();
+        for (int i = 0; i < currentRYGState.length(); i++) {
+            redState.append('r');
+        }
+        
+        SumoTLSController controller = wtl.getProgram();
+        SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
+        
+        SumoTLSPhase redPhase = new SumoTLSPhase(1000, redState.toString());
+        SumoTLSProgram newProgram = new SumoTLSProgram();
+        newProgram.subID = program.subID;
+        newProgram.type = program.type;
+        newProgram.currentPhaseIndex = program.currentPhaseIndex;
+        newProgram.phases = new ArrayList<>();
+        for (int i = 0; i < program.phases.size(); i++) {
+            newProgram.phases.add(redPhase);
+        }
+        
+        wtl.setPhaseLen(1000);
+        wtl.setProgram(newProgram);
+        adaptiveState.put(tlID, "IDLE");
+        adaptiveStepCounters.put(tlID, 0);
+    }
+
+    /**
+     * Update method to check for current state. It counts the time that has passed
+     * and eather sets a lane to green if halting cars are detected, or back to idle
+     * if no cars are detected.
+     *
+     * @author Leon
+     */
+    private void updateAdaptiveControl(String tlID) {
+        if (!adaptiveSavedStates.containsKey(tlID)) {
+            return;
+        }
+        
+        String state = adaptiveState.getOrDefault(tlID, "IDLE");
+        Integer stepCounter = adaptiveStepCounters.getOrDefault(tlID, 0);
+        
+        if ("IDLE".equals(state)) {
+            if (stepCounter >= ADAPTIVE_CHECK_INTERVAL) {
+                List<String> lanesWithMostCars = findLanesWithMostHaltingVehicles(tlID);
+                if (!lanesWithMostCars.isEmpty()) {
+                    setLanesToGreen(tlID, lanesWithMostCars);
+                } else {
+                    adaptiveStepCounters.put(tlID, 0);
+                }
+            } else {
+                stepCounter++;
+                adaptiveStepCounters.put(tlID, stepCounter);
+            }
+        } else if ("GREEN".equals(state)) {
+            if (stepCounter >= ADAPTIVE_GREEN_DURATION) {
+                setIdleState(tlID);
+            } else {
+                stepCounter++;
+                adaptiveStepCounters.put(tlID, stepCounter);
+            }
+        }
+    }
+
+
+    /**
+     * Button manager for when the user clicks on the "Adaptive mode" button.
+     * If the button is clicked, the logic above applies and the simulation state is saved.
+     * By clicking on the button again it can be restored.
+     *
+     * @author Leon
+     */
     @FXML
     private void onAdaptiveButtonClicked() {
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
         String currentText = adaptiveStateButton.getText();
+        String currentTLID = wtl.getId();
+
         if (currentText.equals("Adaptive mode")) {
-
-
             SumoTLSController currentController = wtl.getProgram();
-            String currentTLID = wtl.getId();
+            
             if (!adaptiveSavedStates.containsKey(currentTLID)) {
                 adaptiveSavedStates.put(currentTLID, currentController);
             }
+
+            setIdleState(currentTLID);
             adaptiveStateButton.setText("Static mode");
-
-
-            String currentPhaseDef = wtl.getRYGState(currentTLID);
-
-            StringBuilder redState = new StringBuilder();
-            int numLanes = currentPhaseDef.length();
-            for (int i = 0; i < numLanes; i++) {
-                redState.append('r');
-            }
-
-            SumoTLSController controller = wtl.getProgram();
-            SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
-
-            SumoTLSPhase redPhase = new SumoTLSPhase(1000, redState.toString());
-            SumoTLSProgram newProgram = new SumoTLSProgram();
-            newProgram.subID = program.subID;
-            newProgram.type = program.type;
-            newProgram.currentPhaseIndex = program.currentPhaseIndex;
-            newProgram.phases = new ArrayList<>();
-            for (int i = 0; i < program.phases.size(); i++) {
-                if (i == program.currentPhaseIndex) {
-                    newProgram.phases.add(redPhase);
-                } else {
-                    newProgram.phases.add(program.phases.get(i));
-                }
-            }
-            wtl.setPhaseLen(1000);
-            wtl.setProgram(newProgram);
+            setControlsEnabled(false);
 
         } else {
-            String currentTLID = wtl.getId();
             if (adaptiveSavedStates.containsKey(currentTLID)) {
                 SumoTLSController savedController = adaptiveSavedStates.get(currentTLID);
                 SumoTLSProgram program = savedController.programs.get(DEFAULT_PROGRAM_ID);
                 wtl.setPhaseLen(program.phases.get(program.currentPhaseIndex).duration);
                 wtl.setProgram(program);
+                adaptiveSavedStates.remove(currentTLID);
             }
+            
+            adaptiveStepCounters.remove(currentTLID);
+            adaptiveState.remove(currentTLID);
+            
             adaptiveStateButton.setText("Adaptive mode");
+            setControlsEnabled(true);
         }
     }
-
-//    private double getTimeUntilNextState() {
-//        WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
-//        SumoTLSController controller = wtl.getProgram();
-//        SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
-//        int currentPhaseIdx = program.currentPhaseIndex;
-//        SumoTLSPhase currentPhase = program.phases.get(currentPhaseIdx);
-//
-//        String phaseString = currentPhase.phasedef;
-//        int tlIndex = this.worldTrafficLight.getwLink().getTLIndex();
-//
-//        int remainingTime = 0;
-//
-//        for (int i = currentPhaseIdx; i < program.phases.size(); i++) {
-//            SumoTLSPhase phase = program.phases.get(i);
-//            String phaseDef = phase.phasedef;
-//            double minDur = phase.minDur;
-//            int duration = (int) phase.duration;
-//            if (tlIndex >= phaseDef.length()) {
-//                break;
-//            }
-//            char stateChar = phaseDef.charAt(tlIndex);
-//            char currentChar = phaseString.charAt(tlIndex);
-//
-//            if (stateChar == currentChar) {
-//                if(minDur > 0){
-//                    remainingTime += (int) minDur;
-//                }
-//                else remainingTime += duration;
-//            } else {
-//                break;
-//            }
-//        }
-//        if(firstCountdown){
-//            return remainingTime;
-//        }
-//        else{
-//            return remainingTime - 1;
-//        }
-//
-//    }
 
 }

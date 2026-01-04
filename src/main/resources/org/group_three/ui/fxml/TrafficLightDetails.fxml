@@ -68,21 +68,21 @@
                                         </AnchorPane>
                                         <AnchorPane minHeight="32.0" prefHeight="32.0">
                                             <children>
-                                                <Button layoutX="4.0" layoutY="3.0" mnemonicParsing="false" onAction="#onSaveCurrentStateClicked" text="Save current state" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0" />
+                                                <Button fx:id="saveButton" layoutX="4.0" layoutY="3.0" mnemonicParsing="false" onAction="#onSaveCurrentStateClicked" text="Save current state" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0" />
                                             </children>
                                         </AnchorPane>
                                         <AnchorPane minHeight="32.0" prefHeight="32.0">
                                             <children>
-                                                <Button layoutX="116.0" layoutY="3.0" mnemonicParsing="false" onAction="#onGreenButtonClicked" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #27c62f;" text="Green" textAlignment="CENTER" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0" />
-                                                <Button layoutX="4.0" layoutY="3.0" mnemonicParsing="false" onAction="#onRedButtonClicked" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: #e11e1e;" text="Red" textAlignment="CENTER" />
-                                                <Button layoutX="60.0" layoutY="3.0" mnemonicParsing="false" onAction="#onYellowButtonClicked" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: #dbe12d;" text="Yellow" textAlignment="CENTER" />
+                                                <Button fx:id="greenButton" layoutX="116.0" layoutY="3.0" mnemonicParsing="false" onAction="#onGreenButtonClicked" prefHeight="26.0" prefWidth="52.0" style="-fx-background-color: #27c62f;" text="Green" textAlignment="CENTER" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0" />
+                                                <Button fx:id="redButton" layoutX="4.0" layoutY="3.0" mnemonicParsing="false" onAction="#onRedButtonClicked" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: #e11e1e;" text="Red" textAlignment="CENTER" />
+                                                <Button fx:id="yellowButton" layoutX="60.0" layoutY="3.0" mnemonicParsing="false" onAction="#onYellowButtonClicked" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: #dbe12d;" text="Yellow" textAlignment="CENTER" />
                                             </children>
                                         </AnchorPane>
                                         <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="124.0">
                                             <children>
                                                 <AnchorPane minHeight="32.0" prefHeight="32.0" prefWidth="115.0">
                                                     <children>
-                                                        <Button layoutX="19.0" layoutY="3.0" mnemonicParsing="false" onAction="#onApplyButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Apply" textAlignment="CENTER" />
+                                                        <Button fx:id="applyButton" layoutX="19.0" layoutY="3.0" mnemonicParsing="false" onAction="#onApplyButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Apply" textAlignment="CENTER" />
                                                     </children>
                                                 </AnchorPane>
                                                 <Button fx:id="resetButton" layoutX="86.0" layoutY="3.0" mnemonicParsing="false" onAction="#onResetButtonClicked" prefHeight="26.0" prefWidth="64.0" text="Reset" textAlignment="CENTER" />
