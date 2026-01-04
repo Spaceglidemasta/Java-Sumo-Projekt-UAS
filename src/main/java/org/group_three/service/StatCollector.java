@@ -63,6 +63,11 @@ public class StatCollector implements Iterable<Statistic<?>> {
         this.description = new ArrayList<>();
     }
 
+
+    /**
+     * Simple Iterator for iterating through all Statistics.
+     * @author Luca
+     * */
     @Override
     public Iterator<Statistic<?>> iterator() {
         return statistics.iterator();
