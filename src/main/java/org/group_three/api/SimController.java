@@ -7,6 +7,7 @@ import it.polito.appeal.traci.SumoTraciConnection;
 import org.group_three.constants.Settings;
 import org.group_three.constants.Sumo;
 import org.group_three.constants.enums.stats.EdgeSortOption;
+import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
@@ -69,7 +70,7 @@ public class SimController implements AutoCloseable{
     private HashMap<String, WVehicle> allVehicles = new HashMap<>();
 
     //Statistics
-    private final StatCollector statcol = new StatCollector(
+    private StatCollector statcol = new StatCollector(
             this,
             "BasicStats"
     );
@@ -548,6 +549,8 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(){
 
+        statcol = new StatCollector(this, "StatCollection");
+
         Statistic<VehicleRec> vehStat = new Statistic<>(
                 "Vehicles",
                 "Vehicle ID", "Average Speed", "Color"
@@ -625,15 +628,22 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(
 
+            String CollectionName,
+
             String vehicleStatName,
             boolean sortForVehSpeed,
             SumoColor vehColor,
 
             String edgeStatName,
             EdgeSortOption edgeSortBy,
-            int minStreetLen
+            int minStreetLen,
+
+            CSSStyle style
 
                              ){
+
+
+        statcol = new StatCollector(this, CollectionName);
 
         //first stat
 
@@ -707,6 +717,8 @@ public class SimController implements AutoCloseable{
             vehDensStat.add(vdrec);
         }
         //statcol.addStatistic(vehDensStat);
+        
+        statcol.setCssStyle(style);
 
         log.fine("StatCollector assembling was successful.");
 

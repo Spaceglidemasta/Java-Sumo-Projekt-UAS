@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.group_three.api.SimController;
 import org.group_three.constants.enums.stats.EdgeSortOption;
+import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.ui.Meth;
 
 public class PDFCreationFilterController {
@@ -49,13 +50,19 @@ public class PDFCreationFilterController {
 		//if (lengthValue == 0) lengthValue = 1;
 
 		simcon.queueryStats(
+
+                "Output_Collection",
+
 				"VehicleData",
 				avgSpeed.isSelected(),
 				(color.getValue() != Color.TRANSPARENT) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
 				"EdgeData",
 				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
-				lengthValue
+				lengthValue,
+
+                CSSStyle.SERIOUS
+
 		);
 
 		simcon.exportStatsToPDF();

@@ -9,7 +9,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 import org.group_three.api.SimController;
 import org.group_three.constants.Documents;
-import org.group_three.constants.enums.CSSdoc;
+import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.model.WEdge;
 import org.group_three.utils.Formatting;
 import org.group_three.utils.PathUtils;
@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ import java.util.zip.ZipOutputStream;
  * @see Statistic
  * @author Luca
  * */
-public class StatCollector {
+public class StatCollector implements Iterable<Statistic<?>> {
 
     private static final Logger log =
             Logger.getLogger(StatCollector.class.getName());
@@ -42,7 +43,7 @@ public class StatCollector {
     //Style
     private String name;
     private List<String> description;
-    private CSSdoc cssStyle = CSSdoc.DEFAULT;
+    private CSSStyle cssStyle = CSSStyle.DEFAULT;
     
     //functionality
     private List<Statistic<?>> statistics;
@@ -63,6 +64,14 @@ public class StatCollector {
     }
 
 
+    /**
+     * Simple Iterator for iterating through all Statistics.
+     * @author Luca
+     * */
+    @Override
+    public Iterator<Statistic<?>> iterator() {
+        return statistics.iterator();
+    }
 
     public List<String> getDescription() {return description;}
 
@@ -92,11 +101,11 @@ public class StatCollector {
         this.vehicleMaxDenseValue = vehicleMaxDenseValue;
     }
 
-    public CSSdoc getCssStyle() {
+    public CSSStyle getCssStyle() {
         return cssStyle;
     }
 
-    public void setCssStyle(CSSdoc cssStyle) {
+    public void setCssStyle(CSSStyle cssStyle) {
         this.cssStyle = cssStyle;
     }
 
@@ -188,7 +197,7 @@ public class StatCollector {
 
     /**
      * Exports the bundle of statistics into a single PDF document. <br>
-     * Select the CSS Style of the document via {@link StatCollector#setCssStyle(CSSdoc)}
+     * Select the CSS Style of the document via {@link StatCollector#setCssStyle(CSSStyle)}
      * @return <code>true</code> if successful, <code>false</code> if not.
      * @author Luca
      * */
