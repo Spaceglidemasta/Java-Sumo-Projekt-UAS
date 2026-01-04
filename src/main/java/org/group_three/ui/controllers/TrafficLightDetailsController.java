@@ -49,26 +49,66 @@ public class TrafficLightDetailsController {
     @FXML
     private Button resetButton;
 
+    /**
+     * The adaptive mode button to activate the adaptive tls.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private Button adaptiveStateButton;
 
+    /**
+     * The red button to change the state of a current tl to red when
+     * apply button is pressed. On its own, this button just stores
+     * a <code>pendingRYGState</code?>.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private Button redButton;
 
+    /**
+     * The yellow button to change the state of a current tl to yellow when
+     * apply button is pressed. On its own, this button just stores
+     * a <code>pendingRYGState</code?>.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private Button yellowButton;
 
+    /**
+     * The green button to change the state of a current tl to green when
+     * apply button is pressed. On its own, this button just stores
+     * a <code>pendingRYGState</code?>.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private Button greenButton;
 
+    /**
+     * The save button, to save the current state of that tl.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private Button saveButton;
 
+    /**
+     * The apply button, to apply all the changes made to that tl.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @FXML
     private Button applyButton;
 
-    private static final String DEFAULT_PROGRAM_ID = "0";
-    private static final int DEFAULT_IDLE_TIME = 1000;
     private WorldTrafficLight worldTrafficLight;
 
     /**
@@ -87,10 +127,37 @@ public class TrafficLightDetailsController {
     @SuppressWarnings("JavadocDeclaration")
     private static final Map<String, SumoTLSController> savedControllers = new HashMap<>();
 
+    /**
+     * adaptiveSavedStates is the tlID together with the program of that tl in a hashmap.
+     * This allows the user to have tl-states from multiple different tls saved simultaneously. Works
+     * similar to the Map above.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     private static final Map<String, SumoTLSController> adaptiveSavedStates = new HashMap<>();
-    
+
+    /**
+     * adaptiveStepCounters keeps track of the steps passed with the tlID, so that multiple tls can
+     * have the adaptive mode enabled
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     private static final Map<String, Integer> adaptiveStepCounters = new HashMap<>();
+
+    /**
+     * adaptiveState keeps track of the current state of tl with the tlID, so that multiple tls can
+     * keep track of current state.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     private static final Map<String, String> adaptiveState = new HashMap<>(); // "IDLE" or "GREEN"
+
+
+    private static final String DEFAULT_PROGRAM_ID = "0";
+    private static final int DEFAUL_IDLE_TIME = 1000;
     private static final int ADAPTIVE_CHECK_INTERVAL = 10;
     private static final int ADAPTIVE_GREEN_DURATION = 10;
 
@@ -442,7 +509,7 @@ public class TrafficLightDetailsController {
         SumoTLSController controller = wtl.getProgram();
         SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
         
-        SumoTLSPhase redPhase = new SumoTLSPhase(DEFAULT_IDLE_TIME, redState.toString());
+        SumoTLSPhase redPhase = new SumoTLSPhase(DEFAUL_IDLE_TIME, redState.toString());
         SumoTLSProgram newProgram = new SumoTLSProgram();
 
         newProgram.subID = program.subID;
@@ -453,7 +520,7 @@ public class TrafficLightDetailsController {
             newProgram.phases.add(redPhase);
         }
         
-        wtl.setPhaseLen(DEFAULT_IDLE_TIME);
+        wtl.setPhaseLen(DEFAUL_IDLE_TIME);
         wtl.setProgram(newProgram);
         adaptiveState.put(tlID, "IDLE");
         adaptiveStepCounters.put(tlID, 0);
