@@ -565,6 +565,26 @@ public abstract class WorldObject {
 		graphicsContext.restore();
 	}
 
+	/**
+	 * A method to draw a Text at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the rectangle.
+	 * @param color    The color of the rectangle.
+	 * @author Joel
+	 * @see #drawSquare(double, Color)
+	 */
+	public void drawText(String text, Vector2D halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillText(
+				text,
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
 	//--------------------------------------------------DrawMethods--------------------------------------------------
 
 
