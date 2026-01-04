@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -28,7 +29,7 @@ import java.util.zip.ZipOutputStream;
  * @see Table
  * @author Luca
  * */
-public class Statistic<T extends Record> extends Table<T> {
+public class Statistic<T extends Record> extends Table<T> implements Iterable<T> {
 
     private static final Logger log =
             Logger.getLogger(Statistic.class.getName());
@@ -62,6 +63,15 @@ public class Statistic<T extends Record> extends Table<T> {
     public Statistic(String name, List<String> atts){
         super(atts);
         this.name = name;
+    }
+
+    /**
+     * Simple Iterator for iterating through the content.
+     * @author Luca
+     * */
+    @Override
+    public Iterator<T> iterator() {
+        return content.iterator();
     }
 
     /**Clones this instance of Statistic

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+
+<AnchorPane minWidth="300.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.PDFCreationFilterController">
+   <children>
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <SplitPane dividerPositions="0.3">
+              <items>
+                <AnchorPane minWidth="64.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0" />
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Color Filter" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Sort by" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0" />
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Lenght Filter" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Sort by" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minWidth="128.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Vehicle Data" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <ColorPicker fx:id="color" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5">
+                                       <value>
+                                          <Color opacity="0.0" />
+                                       </value>
+                                    </ColorPicker>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <CheckBox fx:id="avgSpeed" mnemonicParsing="false" selected="true" text="Average Vehicle Speed" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets bottom="3.5" left="3.5" right="3.5" top="3.5" />
+                                       </padding>
+                                    </CheckBox>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <Label text="Edge Data" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets left="8.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <TextField fx:id="length" promptText="m" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="32.0" prefHeight="32.0">
+                                 <children>
+                                    <ComboBox fx:id="edgeSort" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+            <AnchorPane>
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onSave" text="Save" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

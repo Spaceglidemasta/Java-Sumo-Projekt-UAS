@@ -33,6 +33,7 @@
 -->
 
 <?import javafx.scene.SubScene?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -69,11 +70,7 @@
                     <tabs>
                       <Tab closable="false" text="Details">
                         <content>
-                          <AnchorPane fx:id="detailsAnchor" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <fx:include source="designer/DataPanelEntryExamples.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                 </children>
-                              </AnchorPane>
+                          <AnchorPane fx:id="detailsAnchor" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                         </content>
                       </Tab>
                       <Tab closable="false" text="Filters">
@@ -87,7 +84,18 @@
                       </Tab>
                         <Tab closable="false" text="Statistics &amp; Analytics">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <content>
+                                        <AnchorPane>
+                                             <children>
+                                                <fx:include maxHeight="800.0" minHeight="800.0" source="StatisticsAnalytics.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </ScrollPane>
+                                 </children></AnchorPane>
                            </content>
                         </Tab>
                     </tabs>
