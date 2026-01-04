@@ -88,11 +88,6 @@
                                  <children>
                                     <VBox fx:id="colorFilterList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
                                           <AnchorPane minHeight="32.0" prefHeight="32.0">
                                              <children>
                                                 <Button mnemonicParsing="false" onAction="#onColorAddButtonClicked" text="Add" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />

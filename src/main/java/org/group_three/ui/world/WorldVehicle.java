@@ -15,6 +15,7 @@ import org.group_three.ui.controllers.SimControlController;
 import org.group_three.ui.controllers.VehicleDetailsController;
 
 import java.rmi.server.UID;
+import java.util.Objects;
 
 import static org.group_three.ui.Meth.ClrToSumoClr;
 import static org.group_three.ui.Meth.SumoClrToClr;
@@ -245,10 +246,18 @@ public class WorldVehicle extends WorldObject {
 
 		if (!filterCheck()) return;
 
-		//wVehicle.boogieWonderland();
+		if (boogie) {
+			wVehicle.boogieWonderland();
+		} else {
+			if (getColor().getOpacity() != 0 && getColor().getOpacity() != 1) {
+				boogie = true;
+			}
+		}
 
 		drawImage(size.div(2), visualImage);
 	}
+
+	private boolean boogie = false;
 
 	/**
 	 * A method to set up the details panel when the object is selected.

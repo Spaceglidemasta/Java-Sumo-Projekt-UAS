@@ -3,14 +3,18 @@ package org.group_three.ui.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
 import org.group_three.ui.SimView2D;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.world.WorldObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class VehicleFilterController {
@@ -31,6 +35,7 @@ public class VehicleFilterController {
 				// set vehicle speed to a corrected value (for example "EEE" is not a valid speed) from the input
 				UI.viewFilter_VehicleSpeed = new Vector2D(Math.abs(Double.parseDouble(newText)), UI.viewFilter_VehicleSpeed.y);
 				speedMin.setText(String.valueOf(Math.abs(Double.parseDouble(newText))));
+				SimView2D.getWorld().requestUpdate();
 			} catch (Exception e) {
 				speedMin.textProperty().set(oldText);
 			}
@@ -41,6 +46,7 @@ public class VehicleFilterController {
 				// set vehicle speed to a corrected value (for example "EEE" is not a valid speed) from the input
 				UI.viewFilter_VehicleSpeed = new Vector2D(UI.viewFilter_VehicleSpeed.x, Math.abs(Double.parseDouble(newText)));
 				speedMax.setText(String.valueOf(Math.abs(Double.parseDouble(newText))));
+				SimView2D.getWorld().requestUpdate();
 			} catch (Exception e) {
 				speedMax.textProperty().set(oldText);
 			}
@@ -51,6 +57,7 @@ public class VehicleFilterController {
 				// set vehicle speed to a corrected value (for example "EEE" is not a valid speed) from the input
 				UI.viewFilter_PositionRadius = Math.abs(Double.parseDouble(newText));
 				radius.setText(String.valueOf(Math.abs(Double.parseDouble(newText))));
+				SimView2D.getWorld().requestUpdate();
 			} catch (Exception e) {
 				radius.textProperty().set(oldText);
 			}
@@ -91,7 +98,28 @@ public class VehicleFilterController {
 
 	public void receivePosition(Vector2D pos) {
 		UI.viewFilter_Position = pos;
+		SimView2D.getWorld().requestUpdate();
 	}
 
-	//public List<Color> colorList = new ArrayList<>();
+	private final List<ColorPicker> colorPickers = new ArrayList<>();
+
+	public void updatedColorPickerList(ColorPicker picker, boolean remove) {
+		if (remove) {
+			colorPickers.remove(picker);
+			picker.valueProperty().removeListener((_) -> onColorPickerValueChanged());
+		} else {
+			colorPickers.add(picker);
+			picker.valueProperty().addListener((_) -> onColorPickerValueChanged());
+		}
+		onColorPickerValueChanged();
+	}
+
+	private void onColorPickerValueChanged() {
+		UI.viewFilter_VehicleColor.clear();
+		for (ColorPicker picker : colorPickers) {
+			UI.viewFilter_VehicleColor.add(picker.getValue());
+		}
+
+		SimView2D.getWorld().requestUpdate();
+	}
 }

@@ -64,6 +64,11 @@ public final class UI {
 	public static Vector2D viewFilter_Position = new Vector2D();
 	public static double viewFilter_PositionRadius = 0;
 
+	public static final Color[] randomVehicleColors = {Color.LIGHTBLUE, Color.YELLOW, Color.ORANGE, Color.BLUE, Color.PINK, Color.RED, Color.GREEN, Color.LIGHTGREEN};
+	public static Color getRandomVehicleColor() {
+		return randomVehicleColors[Math.toIntExact(Math.round(Math.random() * 100)) % randomVehicleColors.length];
+	}
+
 
 	// The minimal window width.
 	public static final int appMinWidth = 960;
