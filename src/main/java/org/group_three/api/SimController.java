@@ -69,7 +69,7 @@ public class SimController implements AutoCloseable{
     private HashMap<String, WVehicle> allVehicles = new HashMap<>();
 
     //Statistics
-    private final StatCollector statcol = new StatCollector(
+    private StatCollector statcol = new StatCollector(
             this,
             "BasicStats"
     );
@@ -548,6 +548,8 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(){
 
+        statcol = new StatCollector(this, "StatCollection");
+
         Statistic<VehicleRec> vehStat = new Statistic<>(
                 "Vehicles",
                 "Vehicle ID", "Average Speed", "Color"
@@ -625,6 +627,8 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(
 
+            String CollectionName,
+
             String vehicleStatName,
             boolean sortForVehSpeed,
             SumoColor vehColor,
@@ -634,6 +638,9 @@ public class SimController implements AutoCloseable{
             int minStreetLen
 
                              ){
+
+
+        statcol = new StatCollector(this, CollectionName);
 
         //first stat
 
