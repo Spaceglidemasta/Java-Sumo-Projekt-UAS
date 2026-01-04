@@ -126,10 +126,10 @@ public class MainApp extends Application {
 	 * @author Joel
 	 */
     @MayReturnNull
-	public Image getAppIcon() {
+	public static Image getAppIcon() {
 		//add error handling, if no "icons" is found
 		try {
-			return new Image(getClass().getResourceAsStream(UI.appIcon));
+			return new Image(MainApp.class.getResourceAsStream(UI.appIcon));
 		} catch (Exception e) {
 			//throw new RuntimeException(e);
 		}

@@ -8,8 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 // import java.io.IOException; for what was that?
 
+import de.tudresden.sumo.objects.SumoColor;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import org.group_three.Main;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
+import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
 
@@ -18,6 +28,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import org.group_three.service.StressTest;
+import org.group_three.ui.MainApp;
+import org.group_three.ui.Meth;
 import org.group_three.ui.RecentlyOpenedData;
 import org.group_three.ui.SimView2D;
 
@@ -37,7 +49,9 @@ public class ToolbarController {
 	@FXML
 	private MenuItem simulationReload;
 	@FXML
-	private MenuItem simulationExport;
+	private MenuItem stressTest;
+	@FXML
+	private Menu export;
 
 	/**
 	 * Initializes toolbar
@@ -85,7 +99,8 @@ public class ToolbarController {
 	private void setSimulationButtonStates(boolean disabled) {
 		simulationClose.setDisable(disabled);
 		simulationReload.setDisable(true); // not implemented yet
-		simulationExport.setDisable(disabled);
+		export.setDisable(disabled);
+		stressTest.setDisable(disabled);
 	}
 
 	private String loadedSimulation = null;
@@ -193,11 +208,6 @@ public class ToolbarController {
 		}
 	}
 
-	/*private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
-		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
-		tryLoadingSimulation(item.getPath());
-	}*/
-
 	/**
 	 * Function to load a recently selected simulation
 	 *
@@ -246,7 +256,7 @@ public class ToolbarController {
 	 * @author Joel
 	 */
 	@FXML
-	private void onSimulationExportClicked() {
+	private void onExportCSV() {
 		Debug.toConsole("Simulation -> Export");
 
         /*
@@ -283,23 +293,64 @@ public class ToolbarController {
 
         if(simcon != null){
 
-            simcon.queueryStats();
-            //simcon.printStats();
-            simcon.exportStatsToPDF();
+	        simcon.saveState(".csv");
 
         }
 
 	}
 
 	/**
-	 * Function for "Settings" Tab in toolbar
+	 * A method to export gathered data from the simulation to a file.
 	 *
 	 * @author Joel
 	 */
 	@FXML
-	private void onSettingsClicked() {
-		Debug.toConsole("Settings");
+	private void onExportXML() {
+
+
+		SimController simcon = SimController.getMainsimcon();
+
+		if(simcon != null){
+
+			simcon.saveState(".xml");
+
+		}
+
 	}
+
+	/**
+	 * A method to export gathered data from the simulation to a file.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private void onExportPDF() {
+		SimController simcon = SimController.getMainsimcon();
+
+		if(simcon != null){
+
+			try {
+				Stage pdfFilter = new Stage();
+				pdfFilter.setTitle("Export as .pdf");
+				pdfFilter.getIcons().add(MainApp.getAppIcon());
+				pdfFilter.setResizable(false);
+
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
+
+				pdfFilter.setScene(new Scene(fxmlLoader.load()));
+
+				((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+
+				pdfFilter.show();
+
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+	}
+
+
 
     /**
      * Function to perform a stresstest
@@ -310,15 +361,5 @@ public class ToolbarController {
     private void onStressTestClick(){
         new StressTest().Test();
         }
-
-	/**
-	 * Function for "Help" Tab in toolbar
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private void onHelpClicked() {
-		Debug.toConsole("Help");
-	}
 
 }
