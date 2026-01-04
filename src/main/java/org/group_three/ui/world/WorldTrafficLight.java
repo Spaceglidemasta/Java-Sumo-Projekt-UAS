@@ -1,8 +1,15 @@
 package org.group_three.ui.world;
 
+import de.tudresden.sumo.objects.SumoTLSController;
+import de.tudresden.sumo.objects.SumoTLSPhase;
+import de.tudresden.sumo.objects.SumoTLSProgram;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.geometry.VPos;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.Font;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.model.WLink;
@@ -25,7 +32,13 @@ public class WorldTrafficLight extends WorldObject {
 		return wTrafficLight;
 	}
 
-	/**
+	private boolean showCountdown = false;
+	private int remainingTimeUntilSwitch = 0;
+
+	private int initialRemainingTimeUntilSwitch = 0;
+
+	private int countdownStartSimTime = -1;
+    /**
 	 * The WTrafficLight object which is grouping the WLink classes.
 	 *
 	 * @author Joel
@@ -128,6 +141,41 @@ public class WorldTrafficLight extends WorldObject {
 
 		drawRectangle(size.div(2), color);
 
+		if (showCountdown) {
+			SimController sim = SimController.getMainsimcon();
+
+            int currentSimTime = sim.getTime();
+            int baseRemaining = getTimeUntilNextState();
+            if (countdownStartSimTime < 0 || baseRemaining != initialRemainingTimeUntilSwitch) {
+                initialRemainingTimeUntilSwitch = baseRemaining;
+                countdownStartSimTime = Math.max(0, currentSimTime - 1);
+            }
+
+            int elapsed = Math.max(0, currentSimTime - countdownStartSimTime);
+            remainingTimeUntilSwitch = Math.max(0, initialRemainingTimeUntilSwitch - elapsed);
+
+
+			String text = Integer.toString(remainingTimeUntilSwitch);
+			GraphicsContext gc = getGraphicsContext();
+			gc.save();
+			setDrawTransform();
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			
+			double heightPx = getDrawSize(size.div(2)).y;
+			gc.setFont(Font.font(Math.max(10, heightPx * 0.6)));
+			double yOffset = -heightPx * 0.15;
+			gc.rotate(90);
+			gc.scale(-1, 1);
+
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(Math.max(1.0, heightPx * 0.08));
+			gc.strokeText(text, 0, yOffset);
+			gc.setFill(Color.WHITE);
+			gc.fillText(text, 0, yOffset);
+			gc.restore();
+		}
+		
         updateDetailsPanel();
 	}
 
@@ -144,5 +192,61 @@ public class WorldTrafficLight extends WorldObject {
         }
         trafficLightDetailsController.update();
     }
+
+	@Override
+	public void select() {
+		super.select();
+		showCountdown = true;
+		remainingTimeUntilSwitch = getTimeUntilNextState();
+		initialRemainingTimeUntilSwitch = remainingTimeUntilSwitch;
+
+		SimController sim = SimController.getMainsimcon();
+		if (sim != null) {
+			countdownStartSimTime = Math.max(0, sim.getTime() - 1);
+		} else {
+			countdownStartSimTime = -1;
+		}
+	}
+
+	@Override
+	public void deselect() {
+		super.deselect();
+		showCountdown = false;
+	}
+
+	private int getTimeUntilNextState() {
+        SumoTLSController controller = wTrafficLight.getProgram();
+        SumoTLSProgram program = controller.get("0");
+        int currentPhaseIdx = program.currentPhaseIndex;
+        SumoTLSPhase currentPhase = program.phases.get(currentPhaseIdx);
+        String phaseString = currentPhase.phasedef;
+        int tlIndex = wLink.getTLIndex();
+        int remainingTime = 0;
+
+        for (int i = currentPhaseIdx; i < program.phases.size(); i++) {
+            SumoTLSPhase phase = program.phases.get(i);
+            String phaseDef = phase.phasedef;
+            double minDur = phase.minDur;
+            int duration = (int) phase.duration;
+
+            if (tlIndex >= phaseDef.length()) {
+                break;
+            }
+
+            char stateChar = phaseDef.charAt(tlIndex);
+            char currentChar = phaseString.charAt(tlIndex);
+
+            if (stateChar == currentChar) {
+                if (minDur > 0) {
+                    remainingTime += (int) minDur;
+                } else {
+                    remainingTime += duration;
+                }
+            } else {
+                break;
+            }
+        }
+		return remainingTime;
+	}
 
 }

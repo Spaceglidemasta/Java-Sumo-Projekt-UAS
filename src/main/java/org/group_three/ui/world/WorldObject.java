@@ -9,7 +9,6 @@ import org.group_three.debug.Debug;
 
 import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
-import org.group_three.ui.SimView2D;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.controllers.BodyController;
 
