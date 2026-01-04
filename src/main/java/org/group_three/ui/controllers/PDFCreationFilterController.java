@@ -61,7 +61,7 @@ public class PDFCreationFilterController {
 
 				"VehicleData",
 				avgSpeed.isSelected(),
-				(color.getValue() != Color.TRANSPARENT) ? Meth.ClrToSumoClr(color.getValue()) : null,
+				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
 				"EdgeData",
 				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
