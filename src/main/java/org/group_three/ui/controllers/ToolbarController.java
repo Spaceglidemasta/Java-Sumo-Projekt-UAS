@@ -255,7 +255,8 @@ public class ToolbarController {
 	private void onExportCSV() {
 		Debug.toConsole("Simulation -> Export");
 
-		if (!SimController.isValid()) return;
+		// validate sim controller
+		if (SimController.getMainsimcon() == null) return;
 
 		try {
 			Stage pdfFilter = new Stage();
@@ -263,11 +264,11 @@ public class ToolbarController {
 			pdfFilter.getIcons().add(MainApp.getAppIcon());
 			pdfFilter.setResizable(false);
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/SaveWindow_CreationFilter.fxml"));
 
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-			((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+			((CreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
 
 			pdfFilter.show();
 
@@ -283,10 +284,11 @@ public class ToolbarController {
 	 */
 	@FXML
 	private void onExportXML() {
-		if (!SimController.isValid()) return;
+		// get sim controller and validate
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
-		SimController.getMainsimcon().saveState(".xml");
-
+		simcon.saveState(".xml");
 	}
 
 	/**
@@ -296,8 +298,8 @@ public class ToolbarController {
 	 */
 	@FXML
 	private void onExportPDF() {
-
-		if (!SimController.isValid()) return;
+		// validate sim controller
+		if (SimController.getMainsimcon() == null) return;
 
 		try {
 			Stage pdfFilter = new Stage();
@@ -305,11 +307,11 @@ public class ToolbarController {
 			pdfFilter.getIcons().add(MainApp.getAppIcon());
 			pdfFilter.setResizable(false);
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/SaveWindow_CreationFilter.fxml"));
 
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-			((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+			((CreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
 
 			pdfFilter.show();
 

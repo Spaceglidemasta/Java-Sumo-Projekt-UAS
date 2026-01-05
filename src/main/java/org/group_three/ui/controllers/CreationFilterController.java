@@ -18,7 +18,7 @@ import org.group_three.ui.Meth;
  *
  * @author Joel
  */
-public class PDFCreationFilterController {
+public class CreationFilterController {
 
 	/**
 	 * The stage which this FXML/Controller is part of.
@@ -96,8 +96,8 @@ public class PDFCreationFilterController {
 	 */
 	@FXML
 	private void onSave() {
+		// get sim controller and validate
 		SimController simcon = SimController.getMainsimcon();
-
 		if (simcon == null) {
 			// close window
 			stage.close();

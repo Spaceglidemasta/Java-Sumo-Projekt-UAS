@@ -65,7 +65,9 @@ public class StatisticsAnalyticsController {
 	private static List<Integer> avgVehicleSpeed = new ArrayList<>();
 
 	private static int getAverageSpeed() {
-		if (!SimController.isValid()) return 0;
+		// get sim controller and validate
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return 0;
 
 		double v = 0;
 		List<VehicleRec> vehicleRecs = VehicleRec.collect(SimController.getMainsimcon());
@@ -78,7 +80,9 @@ public class StatisticsAnalyticsController {
 	}
 
 	private static List<String> getEdgeDensityData() {
-		if (!SimController.isValid()) return new ArrayList<>();
+		// get sim controller and validate
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return new ArrayList<>();
 
 		List<EdgeRec> EdgeRecs = EdgeRec.collect(SimController.getMainsimcon());
 
