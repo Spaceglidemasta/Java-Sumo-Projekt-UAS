@@ -2,11 +2,12 @@ package org.group_three.service;
 
 
 import org.group_three.api.SimController;
+import org.group_three.constants.DefaultStasticValues;
+import org.group_three.constants.Documents;
 import org.group_three.constants.enums.SortDir;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.utils.Formatting;
 
-import javax.lang.model.type.NullType;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -37,7 +38,7 @@ public class Statistic<T extends Record> extends Table<T> implements Iterable<T>
     /// Name to be displayed.
     private String name;
     /// description for when showing the table.
-    private String description = "N/A";
+    private String description = DefaultStasticValues.NOT_AVAILABLE;
 
     public String getName() {
         return name;
@@ -112,7 +113,7 @@ public class Statistic<T extends Record> extends Table<T> implements Iterable<T>
      * */
     public Statistic<T> filter(Predicate<T> predic){
 
-        Statistic<T> stat = new Statistic<>(name + "_filtered", attributeNames);
+        Statistic<T> stat = new Statistic<>(name, attributeNames);
 
         for(T rec : content) {
             if(predic.test(rec)) stat.add(rec);
@@ -155,7 +156,7 @@ public class Statistic<T extends Record> extends Table<T> implements Iterable<T>
                         Comparator.comparing(keyExtractor)
                 ).toList();
 
-        Statistic<T> outstat = new Statistic<>(name + "sorted", attributeNames);
+        Statistic<T> outstat = new Statistic<>(name, attributeNames);
 
         if(sorttype == SortDir.ASC) outstat.content = sortcon;
         else outstat.content = sortcon.reversed();
@@ -187,7 +188,7 @@ public class Statistic<T extends Record> extends Table<T> implements Iterable<T>
                         .stream()
                         .toList();
 
-        Statistic<T> outstat = new Statistic<>(name + "_aggregated", attributeNames);
+        Statistic<T> outstat = new Statistic<>(name, attributeNames);
         outstat.content = agglist;
 
         return  outstat;
@@ -204,7 +205,7 @@ public class Statistic<T extends Record> extends Table<T> implements Iterable<T>
      * */
     public boolean outAsZippedCSV(ZipOutputStream zos) {
 
-        String filename = Formatting.uniquegen(name, ".csv");
+        String filename = Formatting.uniquegen(name, Documents.CSV_EXTENSION);
 
         if (content == null || content.isEmpty()) {
             log.warning("Table is empty. " + name + " was not exported.");

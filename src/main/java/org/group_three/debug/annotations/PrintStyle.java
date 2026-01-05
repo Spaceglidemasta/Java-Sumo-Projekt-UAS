@@ -2,7 +2,7 @@ package org.group_three.debug.annotations;
 
 
 
-import org.group_three.constants.enums.AttributeStyle;
+import org.group_three.constants.enums.style.AttributeStyle;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

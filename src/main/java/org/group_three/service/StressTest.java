@@ -3,6 +3,7 @@ package org.group_three.service;
 import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
+import org.group_three.constants.Sumo;
 import org.group_three.debug.Debug;
 import org.group_three.model.WEdge;
 import org.group_three.model.WVehicle;
@@ -25,30 +26,22 @@ public class StressTest {
      * more cars are created.
      * <br>
      * After some testing we found that 100 works well and the simulation tends not to crash.
-     *
-     * @author Leon
-     * */
+     *  */
     private int strength = 100;
     /**
      * The routs are randomly generated, and so the creation of a rout can fail, which results in
      * no car being created. This variable determines how many attempts to create a valid rout are made.
      * If you choose to increase the number, you might encounter some lag or even crashes.
-     *
-     * @author Leon
-     * */
+     *  */
     private int routTries = 2;
     /**
      * Determines the speed with which the car is spawned.
-     *
-     * @author Leon
-     * */
+     *  */
     private int startSpeed = 5;
 
     /**
      * Allows you to modify the color that the stress test cars are spawned with.
-     *
-     * @author Leon
-     * */
+     *  */
     private SumoColor color = new SumoColor(255, 255, 255, 255);
 
     public void setStrength(int strength) {
@@ -119,7 +112,7 @@ public class StressTest {
             }
             if (routeId != null) {
                 WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
-                        "DEFAULT_VEHTYPE",
+                        Sumo.DEFAULT_VEHICLE,
                         routeId,
                         0,
                         0,

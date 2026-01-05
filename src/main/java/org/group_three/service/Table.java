@@ -1,5 +1,6 @@
 package org.group_three.service;
 
+import org.group_three.constants.DefaultStasticValues;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.debug.annotations.PrintStyle;
 import org.group_three.utils.Formatting;
@@ -175,9 +176,9 @@ public class Table<T extends Record> {
 
                 Object value = comp.getAccessor().invoke(r);
 
-                PrintStyle ann = comp.getAnnotation(PrintStyle.class);
-                if (ann != null) {
-                    switch (ann.value()) {
+                PrintStyle style = comp.getAnnotation(PrintStyle.class);
+                if (style != null) {
+                    switch (style.value()) {
                         case VALUE -> sb.append(value);
                         case LIST  -> sb.append(Arrays.toString((int[]) value));
                         case COLUMN -> {
@@ -228,7 +229,7 @@ public class Table<T extends Record> {
                 }
 
             } catch (Exception e) {
-                out.add("<error>");
+                out.add(DefaultStasticValues.NOT_AVAILABLE);
             }
         }
 
@@ -267,7 +268,7 @@ public class Table<T extends Record> {
                 }
 
             } catch (Exception e) {
-                out.add("<error>");
+                out.add(DefaultStasticValues.NOT_AVAILABLE);
             }
         }
 
@@ -278,14 +279,10 @@ public class Table<T extends Record> {
      * Writes the table to a CSV file into ./output
      * <p> WARNING Creates Files </p>
      * @return <code>true</code> if success, <code>false</code> if not.
-     * @source <a href="https://stackoverflow.com/a/10667865">Stack Overflow Answer by "Addicted"</a>
      * @author Luca
      * */
+    @Deprecated
     public boolean outAsCSV(){
-
-        // Source - https://stackoverflow.com/a/10667865
-        // Posted by Addicted, modified by community. See post 'Timeline' for change history
-        // Retrieved 2025-12-14, License - CC BY-SA 4.0
 
         BufferedWriter out = null;
         String filename = Formatting.uniquegen("output/tout_", ".csv");
@@ -333,6 +330,7 @@ public class Table<T extends Record> {
      * @source <a href="https://stackoverflow.com/a/10667865">Stack Overflow Answer by "Addicted"</a>
      * @author Luca
      * */
+    @Deprecated
     public boolean outAsCSV(String pathstr){
 
         Path target = Path.of("output", pathstr);
