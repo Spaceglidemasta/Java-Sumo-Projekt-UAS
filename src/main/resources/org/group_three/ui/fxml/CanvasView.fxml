@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -36,6 +37,14 @@
                      </children>
                   </AnchorPane>
                </children>
+            </AnchorPane>
+            <AnchorPane maxHeight="20.0" maxWidth="80.0" minHeight="20.0" minWidth="80.0" prefHeight="20.0" prefWidth="80.0" StackPane.alignment="TOP_LEFT">
+               <children>
+                  <Slider fx:id="vehicleSizeSlider" blockIncrement="1.0" layoutX="2.7142856121063232" layoutY="1.0" majorTickUnit="1.0" max="8.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+               <StackPane.margin>
+                  <Insets left="80.0" top="15.0" />
+               </StackPane.margin>
             </AnchorPane>
          </children>
       </StackPane>
