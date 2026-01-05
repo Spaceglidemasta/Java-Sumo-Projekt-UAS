@@ -14,12 +14,11 @@
       <StackPane fx:id="renderTargetBounds" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Canvas fx:id="worldStaticRenderTarget" height="200.0" onMouseClicked="#onMouseClicked" onMouseDragged="#onCanvasDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onCanvasPressed" onScroll="#onScroll" scaleY="-1.0" width="200.0" />
-            <Canvas fx:id="worldDynamicRenderTarget" height="200.0" onMouseClicked="#onMouseClicked" onMouseDragged="#onCanvasDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onCanvasPressed" onScroll="#onScroll" scaleY="-1.0" width="200.0" />
             <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" spacing="8.0" StackPane.alignment="TOP_RIGHT">
                <children>
+                  <CheckBox fx:id="tlTimingToggle" mnemonicParsing="false" text="TL Timing" HBox.hgrow="NEVER" />
                   <CheckBox fx:id="highContrastToggle" mnemonicParsing="false" text="High Contrast" HBox.hgrow="NEVER" />
                   <CheckBox fx:id="environmentToggle" mnemonicParsing="false" selected="true" text="(Poly) Environment" HBox.hgrow="NEVER" />
-                  <CheckBox fx:id="tlTimingToggle" mnemonicParsing="false" text="TL Timing" HBox.hgrow="NEVER" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

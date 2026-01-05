@@ -34,15 +34,6 @@ public class SimView2D {
 	private static Canvas worldStaticRenderTarget;
 
 	/**
-	 * The canvas to moving objects on.
-	 * Not used yet.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings({"unused", "FieldCanBeLocal", "JavadocDeclaration"})
-	private static Canvas worldDynamicRenderTarget;
-
-	/**
 	 * Represents the window size of the simulation view.
 	 * Is used to adjust the canvas sizes, as they don't scale by default.
 	 *
@@ -114,13 +105,11 @@ public class SimView2D {
 	 * A method to initialize this class.
 	 *
 	 * @param wSRT The worldStaticRenderTarget.
-	 * @param wDRT The worldDynamicRenderTarget.
 	 * @param rTB  The renderBoundsPane.
 	 * @author Joel
 	 */
-	public static void initialize(Canvas wSRT, Canvas wDRT, Pane rTB) {
+	public static void initialize(Canvas wSRT, Pane rTB) {
 		worldStaticRenderTarget = wSRT;
-		worldDynamicRenderTarget = wDRT;
 		renderTargetBounds = rTB;
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 
