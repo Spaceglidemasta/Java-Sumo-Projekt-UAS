@@ -53,9 +53,6 @@ public class PDFCreationFilterController {
 			return;
 		}
 
-		int lengthValue = Integer.parseInt("0" + length.getText());
-		//if (lengthValue == 0) lengthValue = 1;
-
 		simcon.queueryStats(
 
                 "Output_Collection",
@@ -65,14 +62,19 @@ public class PDFCreationFilterController {
 				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
 				"EdgeData",
-				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
-				lengthValue,
+				edgeSort.getSelectionModel().getSelectedItem(),
+				Integer.parseInt("0" + length.getText()),
 
-                CSSStyle.DEFAULT
+                style.getSelectionModel().getSelectedItem()
 
 		);
 
-		simcon.exportStatsToPDF();
+		if (stage.getTitle().contains(".csv")) {
+			simcon.exportStatsAsZippedCSVs();
+		} else {
+			simcon.exportStatsToPDF();
+		}
+
 		stage.close();
 	}
 }

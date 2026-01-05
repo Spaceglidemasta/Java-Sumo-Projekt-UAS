@@ -437,7 +437,7 @@ public class World {
 	 */
 	private void update() {
 		graphicsContext.save();
-		graphicsContext.setFill(UI.highContrast ? Color.BLACK : backgroundColor);
+		graphicsContext.setFill(UI.highContrast ? UI.worldHighContrastColor : backgroundColor);
 		graphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
 		graphicsContext.restore();
 

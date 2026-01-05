@@ -52,7 +52,7 @@ public final class UI {
 			{"CSV", "*.csv"}
 	};
 
-	public static final String recentlyOpenedDataFileName = "recentlyOpenedData.xml";
+	public static final String recentlyOpenedDataFileName = "recentlyOpenedData.json";
 
 	public static final double maxSimulationViewFps = 30;
 

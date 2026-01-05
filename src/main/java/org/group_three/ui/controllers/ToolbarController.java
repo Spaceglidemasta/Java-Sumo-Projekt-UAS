@@ -259,46 +259,25 @@ public class ToolbarController {
 	private void onExportCSV() {
 		Debug.toConsole("Simulation -> Export");
 
-        /*
+		if(!SimController.isValid()) return;
 
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Export simulation");
+		try {
+			Stage pdfFilter = new Stage();
+			pdfFilter.setTitle("Export as .csv");
+			pdfFilter.getIcons().add(MainApp.getAppIcon());
+			pdfFilter.setResizable(false);
 
-		// desktop path, works for windows macOS and linux
-		String desktopPath = System.getProperty("user.home") + "/Desktop";
-		File desktopDir = new File(desktopPath);
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
 
+			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-		if (desktopDir.exists()) {
-			fileChooser.setInitialDirectory(desktopDir);
+			((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+
+			pdfFilter.show();
+
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-
-		// add selectable data types to the file chooser
-		for (String[] fileExtension : UI.simulationExportFileExtensions) {
-			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileExtension[0], fileExtension[1]));
-		}
-
-		fileChooser.setInitialFileName(Formatting.uniquegen("savedState_", ".xml"));
-
-		File file = fileChooser.showSaveDialog(null);
-		if (file != null) {
-			String fileExtension = fileChooser.getSelectedExtensionFilter().getExtensions().getFirst().substring(1);
-
-			SimController.getMainsimcon().saveState(fileExtension);
-		}
-
-		*/
-
-        SimController simcon = SimController.getMainsimcon();
-
-        if(simcon != null){
-
-            simcon.queueryStats();
-
-	        simcon.exportStatsAsZippedCSVs();
-
-        }
-
 	}
 
 	/**
@@ -308,15 +287,9 @@ public class ToolbarController {
 	 */
 	@FXML
 	private void onExportXML() {
+		if(!SimController.isValid()) return;
 
-
-		SimController simcon = SimController.getMainsimcon();
-
-		if(simcon != null){
-
-			simcon.saveState(".xml");
-
-		}
+		SimController.getMainsimcon().saveState(".xml");
 
 	}
 
@@ -327,28 +300,27 @@ public class ToolbarController {
 	 */
 	@FXML
 	private void onExportPDF() {
-		SimController simcon = SimController.getMainsimcon();
 
-		if(simcon != null){
+		if(!SimController.isValid()) return;
 
-			try {
-				Stage pdfFilter = new Stage();
-				pdfFilter.setTitle("Export as .pdf");
-				pdfFilter.getIcons().add(MainApp.getAppIcon());
-				pdfFilter.setResizable(false);
+		try {
+			Stage pdfFilter = new Stage();
+			pdfFilter.setTitle("Export as .pdf");
+			pdfFilter.getIcons().add(MainApp.getAppIcon());
+			pdfFilter.setResizable(false);
 
-				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
 
-				pdfFilter.setScene(new Scene(fxmlLoader.load()));
+			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-				((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+			((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
 
-				pdfFilter.show();
+			pdfFilter.show();
 
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
+
 
 	}
 
