@@ -1,5 +1,6 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.cmd.Edge;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 import org.group_three.api.SimController;
 import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.constants.enums.style.CSSStyle;
+import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 
 import javax.swing.text.html.CSS;
@@ -28,10 +30,10 @@ public class PDFCreationFilterController {
 	private CheckBox avgSpeed;
 
 	@FXML
-	private ComboBox edgeSort;
+	private ComboBox<EdgeSortOption> edgeSort;
 
 	@FXML
-	private ComboBox style;
+	private ComboBox<CSSStyle> style;
 
 	@FXML
 	private void initialize() {
@@ -60,13 +62,13 @@ public class PDFCreationFilterController {
 
 				"VehicleData",
 				avgSpeed.isSelected(),
-				(color.getValue() != Color.TRANSPARENT) ? Meth.ClrToSumoClr(color.getValue()) : null,
+				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
 				"EdgeData",
 				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
 				lengthValue,
 
-				(CSSStyle) style.getSelectionModel().getSelectedItem()
+                CSSStyle.DEFAULT
 
 		);
 

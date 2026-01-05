@@ -28,6 +28,7 @@ import org.group_three.utils.StatUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.foreign.SymbolLookup;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
@@ -418,7 +419,6 @@ public class SimController implements AutoCloseable{
     /**Saves the State as a file. The format and output depends on the extension.
      * <p> WARNING Creates Files </p>
      * @param filetype the extension. Include the dot: saveState(".xml")
-     *                 ".csv" and ".xml" are the only ones we found to make sense.
      * @return The filename, or null if without success.
      * @author Luca
      * */
@@ -549,7 +549,7 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(){
 
-        statcol = new StatCollector(this, "StatCollection");
+        statcol.clear();
 
         Statistic<VehicleRec> vehStat = new Statistic<>(
                 "Vehicles",
@@ -628,7 +628,7 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(
 
-            String CollectionName,
+            String collectionName,
 
             String vehicleStatName,
             boolean sortForVehSpeed,
@@ -642,8 +642,9 @@ public class SimController implements AutoCloseable{
 
                              ){
 
+        statcol.setName(collectionName);
 
-        statcol = new StatCollector(this, CollectionName);
+        statcol.clear();
 
         //first stat
 
@@ -717,7 +718,7 @@ public class SimController implements AutoCloseable{
             vehDensStat.add(vdrec);
         }
         //statcol.addStatistic(vehDensStat);
-        
+
         statcol.setCssStyle(style);
 
         log.fine("StatCollector assembling was successful.");
@@ -742,7 +743,7 @@ public class SimController implements AutoCloseable{
      * @see StatCollector#exportAsZip()
      * @author Luca
      * */
-    public void exportStats(){
+    public void exportStatsAsZippedCSVs(){
         statcol.exportAsZip();
     }
 
