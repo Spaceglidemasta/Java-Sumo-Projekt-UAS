@@ -22,12 +22,20 @@ public class WorldPoly extends WorldObject {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * The color of the poly which is being drawn.
+	 * The default color of the poly which is being drawn.
 	 *
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private final Color color;
+	private final Color defaultColor;
+
+	/**
+	 * The high contrast color of the poly which is being drawn.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final Color highContrastColor;
 
 	/**
 	 * The shape of the poly to draw.
@@ -51,7 +59,8 @@ public class WorldPoly extends WorldObject {
 	@SuppressWarnings("unused")
 	public WorldPoly() {
 		super();
-		this.color = null;
+		this.defaultColor = null;
+		this.highContrastColor = null;
 		this.shape = new ArrayList<>();
 		remove();
 	}
@@ -69,7 +78,16 @@ public class WorldPoly extends WorldObject {
 		super(world, canvas, poly.getType());
 
 		// convert the sumo color value from the poly to a javafx color value and set it
-		this.color = Meth.SumoClrToClr(poly.getColor());
+		this.defaultColor = Meth.SumoClrToClr(poly.getColor());
+
+		// convert the sumo color value from the poly to a javafx color value, adjust it for high contrast and set it
+		Color c = Meth.SumoClrToClr(poly.getColor()).grayscale();
+		this.highContrastColor = new Color(
+				c.getRed()*0.1,
+				c.getGreen()*0.1,
+				c.getBlue()*0.1,
+				c.getOpacity()
+				);
 
 
 		// get poly shape points
@@ -101,9 +119,9 @@ public class WorldPoly extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
+		if (!UI.showPolys) return;
 
-		if (UI.showPolys) drawPolygon(shape, color);
+		drawPolygon(shape, UI.highContrast ? highContrastColor : defaultColor);
 	}
 
 	//--------------------------------------------------Methods--------------------------------------------------

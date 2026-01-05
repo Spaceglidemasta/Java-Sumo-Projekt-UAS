@@ -10,6 +10,7 @@ import org.group_three.debug.Debug;
 import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.BodyController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -563,6 +564,26 @@ public abstract class WorldObject {
 		graphicsContext.restore();
 	}
 
+	/**
+	 * A method to draw a Text at the center of the WorldObject.
+	 *
+	 * @param halfSize The half size of the rectangle.
+	 * @param color    The color of the rectangle.
+	 * @author Joel
+	 * @see #drawSquare(double, Color)
+	 */
+	public void drawText(String text, Vector2D halfSize, Color color) {
+		graphicsContext.save();
+		graphicsContext.setFill(color);
+		setDrawTransform();
+		graphicsContext.fillText(
+				text,
+				getDrawSize(halfSize.x),
+				getDrawSize(halfSize.y)
+		);
+		graphicsContext.restore();
+	}
+
 	//--------------------------------------------------DrawMethods--------------------------------------------------
 
 
@@ -607,9 +628,7 @@ public abstract class WorldObject {
 	 *
 	 * @author Joel
 	 */
-	public void update() {
-		drawCollision();
-	}
+	public abstract void update();
 
 	public Vector2D getDrawLocation() {
 		return Meth.addRelativeLocation(
@@ -706,5 +725,16 @@ public abstract class WorldObject {
 	}
 
 	public void updateDetailsPanel() {
+	}
+
+	public boolean selected = false;
+	public void select() {
+		selected = true;
+		Debug.print(id + ": Selected.");
+		setupDetailsPanel(BodyController.setDetailsPanel(detailClassPath));
+	}
+	public void deselect() {
+		selected = false;
+		Debug.print(id + ": Deselected.");
 	}
 }

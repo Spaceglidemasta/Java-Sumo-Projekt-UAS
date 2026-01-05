@@ -8,6 +8,7 @@ import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.model.*;
 import org.group_three.ui.controllers.BodyController;
+import org.group_three.ui.controllers.VehicleFilterController;
 import org.group_three.ui.world.*;
 
 import java.util.ArrayList;
@@ -31,15 +32,6 @@ public class SimView2D {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private static Canvas worldStaticRenderTarget;
-
-	/**
-	 * The canvas to moving objects on.
-	 * Not used yet.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings({"unused", "FieldCanBeLocal", "JavadocDeclaration"})
-	private static Canvas worldDynamicRenderTarget;
 
 	/**
 	 * Represents the window size of the simulation view.
@@ -78,6 +70,24 @@ public class SimView2D {
 	@SuppressWarnings("JavadocDeclaration")
 	private static WorldObject selected;
 
+
+	public static WorldObject getRouteSelection() {
+		return routeSelection;
+	}
+
+	public static void setRouteSelection(WorldObject routeSelection) {
+		SimView2D.routeSelection = routeSelection;
+	}
+
+	/**
+	 * A boolean to reroute the selection process,
+	 * to allow for route selection.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private static WorldObject routeSelection;
+
 	/**
 	 * All currently active vehicle id's.
 	 *
@@ -95,13 +105,11 @@ public class SimView2D {
 	 * A method to initialize this class.
 	 *
 	 * @param wSRT The worldStaticRenderTarget.
-	 * @param wDRT The worldDynamicRenderTarget.
 	 * @param rTB  The renderBoundsPane.
 	 * @author Joel
 	 */
-	public static void initialize(Canvas wSRT, Canvas wDRT, Pane rTB) {
+	public static void initialize(Canvas wSRT, Pane rTB) {
 		worldStaticRenderTarget = wSRT;
-		worldDynamicRenderTarget = wDRT;
 		renderTargetBounds = rTB;
 		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 
@@ -149,12 +157,52 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	public static void setSelected(WorldObject selected) {
+
+		if (routeSelection != null) {
+
+			Debug.print(routeSelection.getClass() == WorldRoad.class);
+
+			if (routeSelection.getClass() == WorldRoad.class) {
+				((WorldRoad) routeSelection).roadDetailsController.routeSelected(selected);
+			}
+
+			if (routeSelection.getClass() == WorldVehicle.class) {
+				((WorldVehicle) routeSelection).vehicleDetailsController.routeSelected(selected);
+			}
+
+			routeSelection = null;
+			return;
+		}
+
+
 		if (SimView2D.selected == selected) return;
 
+		// deselect old object
+		if (SimView2D.selected != null) {
+			SimView2D.selected.deselect();
+		}
+
+		// select new object
 		SimView2D.selected = selected;
+		if (selected != null) {
+			selected.select();
+		}
 
 		// update details panel
-		SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+		//SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+	}
+
+	public static void clickInWorld(Vector2D pos) {
+		if (vehicleFilterController != null) {
+			vehicleFilterController.receivePosition(pos);
+			vehicleFilterController = null;
+		}
+	}
+
+	private static VehicleFilterController vehicleFilterController;
+
+	public static void setRequestPosition(VehicleFilterController vehicleFilterController) {
+		SimView2D.vehicleFilterController = vehicleFilterController;
 	}
 
 	//--------------------------------------------------SetterClassMethods--------------------------------------------------
@@ -169,6 +217,8 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	public static void newWorld() {
+		if (world != null) world.timeline.stop();
+
 		world = new World();
 
 		world.worldStaticRenderTarget = worldStaticRenderTarget;
@@ -332,7 +382,7 @@ public class SimView2D {
             return;
         }
 
-        for (WTrafficLight wTrafficLight : simcon.getAllWTLs()) {
+        for (WTrafficLight wTrafficLight : simcon.getAllWTLs().values()) {
 			wTrafficLight.loadLinkedStateColors();
 
 			for (WLink wLink : wTrafficLight.getAllWlinks()) {
@@ -362,7 +412,7 @@ public class SimView2D {
             return;
         }
 
-		for (WTrafficLight wTrafficLight : simcon.getAllWTLs()) {
+		for (WTrafficLight wTrafficLight : simcon.getAllWTLs().values()) {
 			wTrafficLight.loadLinkedStateColors();
 		}
 	}

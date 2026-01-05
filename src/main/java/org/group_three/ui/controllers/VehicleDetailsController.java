@@ -1,14 +1,15 @@
 package org.group_three.ui.controllers;
 
+import de.tudresden.sumo.objects.SumoStringList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
 import org.group_three.ui.SimView2D;
-import org.group_three.ui.world.WorldRoute;
-import org.group_three.ui.world.WorldVehicle;
+import org.group_three.ui.world.*;
 
 /**
  * The controller for the VehicleDetails.
@@ -55,6 +56,15 @@ public class VehicleDetailsController {
 	private TextField speed;
 
 	/**
+	 * The vehicle speed to display.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	@FXML
+	private TextField speedFactor;
+
+	/**
 	 * The vehicle color to display.
 	 *
 	 * @author Joel
@@ -64,38 +74,21 @@ public class VehicleDetailsController {
 	private ColorPicker color;
 
 	/**
-	 * The route of the vehicle to display.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private TextField route;
-
-	/**
-	 * The button to toggle view locking to the vehicle.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private Button viewLockButton;
-
-	/**
-	 * The state of the vehicle view lock.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private boolean viewLocked = false;
-
-	/**
 	 * The world vehicle that is owning this class.
 	 *
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private WorldVehicle worldVehicle;
+
+	/**
+	 * The button to enable route selection.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	@FXML
+	private Button selectRouteButton;
 
 
 	/**
@@ -106,13 +99,13 @@ public class VehicleDetailsController {
 	@FXML
 	private void initialize() {
 
-		speed.textProperty().addListener((_, oldText, newText) -> {
+		speedFactor.textProperty().addListener((_, oldText, newText) -> {
 			try {
 				// set vehicle speed to a corrected value (for example "EEE" is not a valid speed) from the input
-				worldVehicle.getwVehicle().setSpeed(Math.abs(Double.parseDouble(newText)));
-				speed.setText(String.valueOf(Math.abs(Double.parseDouble(newText))));
+				worldVehicle.getwVehicle().setSpeedFactor(Math.abs(Double.parseDouble(newText)));
+				speedFactor.setText(String.valueOf(Math.abs(Double.parseDouble(newText))));
 			} catch (Exception e) {
-				speed.textProperty().set(oldText);
+				speedFactor.textProperty().set(oldText);
 			}
 		});
 
@@ -127,24 +120,70 @@ public class VehicleDetailsController {
 				});
 	}
 
-	/**
-	 * The event to toggle view locking of the vehicle.
-	 *
-	 * @author Joel
-	 */
 	@FXML
-	private void onViewLockPressed() {
-		viewLocked = !viewLocked;
-		viewLockButton.setText(viewLocked ? "Unlock" : "Lock");
+	private void onRouteSelectPressed() {
+		SimView2D.setRouteSelection(worldVehicle);
+	}
 
-		Debug.print(SimView2D.getWorld().getViewerPosition());
-		Debug.print(worldVehicle.getPosition());
+	private String targetRouteId;
 
-		Debug.print(Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), worldVehicle.getPosition()));
+	public void routeSelected(WorldObject worldObject) {
+		Debug.print(worldObject.getClass());
+		Debug.print(WorldRoad.class);
+		Debug.print(((WorldRoad) worldObject).getwEdge().getId());
+		Debug.print(worldObject.getClass() == WorldRoad.class);
+		if ( worldObject.getClass() == WorldRoad.class) {
+			if (worldRoute != null) {
+				worldRoute.remove();
+				worldRoute = null;
+			}
 
-		//SimView2D.getWorld().setViewerPosition(worldVehicle.getPosition().negate());
-		//SimView2D.getWorld().setViewerRotation(worldVehicle.getRotation());
-		SimView2D.getWorld().requestUpdate();
+
+			SumoStringList route = new SumoStringList();
+			route.add(worldVehicle.getwVehicle().getRouteEdges().get(worldVehicle.getwVehicle().getRouteIndex()));
+			route.add(((WorldRoad) worldObject).getwEdge().getId());
+
+			Debug.print(route);
+
+			targetRouteId = SimController.getMainsimcon().addRoute(route);
+
+			Debug.print(targetRouteId);
+			//Debug.print(SimController.getMainsimcon().get);
+
+			if (targetRouteId != null) {
+
+				worldVehicle.getwVehicle().changeRoute(route);
+
+				//worldVehicle.getwVehicle().setRoute(targetRouteId);
+				//worldVehicle.getwVehicle().reroute();
+
+
+
+				worldRoute = new WorldRoute(
+						worldVehicle.getWorld(),
+						worldVehicle.getWorld().worldStaticRenderTarget,
+						"",
+						worldVehicle.getwVehicle().getRouteEdges());
+
+			} else {
+				targetRouteId = null;
+			}
+
+		}
+	}
+
+	private WorldRoute worldRoute;
+
+	public void createWorlVehicleRoute() {
+		worldRoute = new WorldRoute(
+				worldVehicle.getWorld(),
+				worldVehicle.getWorld().worldStaticRenderTarget,
+				"",
+				worldVehicle.getwVehicle().getRouteEdges());
+	}
+
+	public void removeWorlVehicleRoute() {
+		worldRoute.remove();
 	}
 
 	/**
@@ -160,13 +199,8 @@ public class VehicleDetailsController {
 		displayName.setText(worldVehicle.getDisplayName());
 		sumoId.setText(worldVehicle.getwVehicle().getID());
 		speed.setText(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
+		speedFactor.setText(String.valueOf(worldVehicle.getwVehicle().getSpeedFactor()));
 		color.setValue(worldVehicle.getColor());
-
-		new WorldRoute(
-				worldVehicle.getWorld(),
-				worldVehicle.getWorld().worldStaticRenderTarget,
-				"",
-				worldVehicle.getwVehicle().getRouteEdges());
 	}
 
 	/**
@@ -176,8 +210,8 @@ public class VehicleDetailsController {
 	 */
 	public void update() {
 		speed.setText(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
+		speedFactor.setText(String.valueOf(worldVehicle.getwVehicle().getSpeedFactor()));
 		color.setValue(worldVehicle.getColor());
-		route.setText(worldVehicle.getwVehicle().getRouteEdges().getLast());
 	}
 
 	/**
@@ -193,7 +227,8 @@ public class VehicleDetailsController {
 		sumoId.setDisable(true);
 		speed.setDisable(true);
 		color.setDisable(true);
-		route.setDisable(true);
-		viewLockButton.setDisable(true);
+		selectRouteButton.setDisable(true);
+		speedFactor.setDisable(true);
+		removeWorlVehicleRoute();
 	}
 }

@@ -2,6 +2,9 @@ package org.group_three.ui.controllers;
 
 import java.io.IOException;
 
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.AnchorPane;
+import org.group_three.constants.UI;
 import org.group_three.ui.*;
 import org.group_three.debug.Debug;
 
@@ -27,13 +30,7 @@ public class CanvasController {
 	 */
 	@FXML
 	private Canvas worldStaticRenderTarget;
-	/**
-	 * for dynamic world elements: cars,...
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private Canvas worldDynamicRenderTarget;
+
 	/**
 	 * a reference to adjust the render target sizes dynamically on window resize
 	 *
@@ -45,6 +42,18 @@ public class CanvasController {
 	private Vector2D last = new Vector2D();
 	private Vector2D delta = new Vector2D();
 
+	@FXML
+	private CheckBox environmentToggle;
+	@FXML
+	private CheckBox highContrastToggle;
+	@FXML
+	private CheckBox tlTimingToggle;
+	@FXML
+	private AnchorPane rotationBase;
+	public static AnchorPane rotationBaseStatic;
+	@FXML private AnchorPane rotationIndicator;
+	public static AnchorPane rotationIndicatorStatic;
+
 	/**
 	 * Comment
 	 *
@@ -54,16 +63,29 @@ public class CanvasController {
 	@FXML
 	public void initialize() throws IOException {
 		Debug.toConsole("Canvas loaded.");
+		rotationIndicatorStatic = rotationIndicator;
+		rotationBaseStatic = rotationBase;
 
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
 
-		worldDynamicRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
-		worldDynamicRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
-
 		SimView2D.initialize(worldStaticRenderTarget,
-				worldDynamicRenderTarget,
 				renderTargetBounds);
+
+		environmentToggle.selectedProperty().addListener((_, _, value) -> {
+			UI.showPolys = value;
+			SimView2D.getWorld().requestUpdate();
+		});
+
+		highContrastToggle.selectedProperty().addListener((_, _, value) -> {
+			UI.highContrast = value;
+			SimView2D.getWorld().requestUpdate();
+		});
+
+		tlTimingToggle.selectedProperty().addListener((_, _, value) -> {
+			UI.showTLTiming = value;
+			SimView2D.getWorld().requestUpdate();
+		});
 	}
 
 	/**
@@ -75,6 +97,8 @@ public class CanvasController {
 	private void onMouseClicked() {
 		Vector2D nMP = mousePosition.sub(SimView2D.getWorld().getViewerPositionOffset());
 		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), nMP).mul(1 / SimView2D.getWorld().getViewerZoom());
+
+		SimView2D.clickInWorld(worldspaceMousePosition);
 
 		try {
 			WorldObject interacted = SimView2D.getWorld().interact(worldspaceMousePosition);
@@ -175,4 +199,15 @@ public class CanvasController {
 	}
 
 	// draw handler needed so it doesn't waste performance
+
+
+
+
+
+
+
+
+
+
+
 }

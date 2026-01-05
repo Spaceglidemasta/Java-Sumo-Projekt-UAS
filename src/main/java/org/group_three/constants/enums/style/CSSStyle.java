@@ -1,6 +1,6 @@
-package org.group_three.constants.enums;
+package org.group_three.constants.enums.style;
 
-public enum CSSdoc {
+public enum CSSStyle {
     DEFAULT,
     MINIMALISTIC,
     YOUNG,

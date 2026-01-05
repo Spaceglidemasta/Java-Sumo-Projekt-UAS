@@ -68,40 +68,29 @@
                                  <children>
                                     <HBox layoutX="3.4285714626312256" layoutY="3.4285714626312256" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5">
                                        <children>
-                                          <TextField fx:id="speedMin" promptText="speedMin" />
-                                          <TextField fx:id="speedMax" promptText="speedMax" />
+                                          <TextField fx:id="speedMin" promptText="speedMin" text="0" />
+                                          <TextField fx:id="speedMax" promptText="speedMax" text="-1" />
                                        </children>
                                     </HBox>
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <HBox fx:id="posXYContainer" layoutX="3.4285714626312256" layoutY="3.4285714626312256" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5">
-                                       <children>
-                                          <TextField fx:id="posX" editable="false" promptText="posX" />
-                                          <TextField fx:id="posY" editable="false" promptText="posY" />
-                                       </children>
-                                    </HBox>
-                                    <Button fx:id="selectPosButton" mnemonicParsing="false" text="Select" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                    <Button mnemonicParsing="false" onAction="#onSelectPos" text="Select" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" prefHeight="32.0">
                                  <children>
-                                    <TextField fx:id="id" editable="false" promptText="radius" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                    <TextField fx:id="radius" promptText="radius" text="0" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="32.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <VBox fx:id="colorFilterList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
-                                          <fx:include source="VehicleFilter_ColorListEntry.fxml" />
                                           <AnchorPane minHeight="32.0" prefHeight="32.0">
                                              <children>
-                                                <Button mnemonicParsing="false" text="Add" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
+                                                <Button mnemonicParsing="false" onAction="#onColorAddButtonClicked" text="Add" AnchorPane.bottomAnchor="3.5" AnchorPane.leftAnchor="3.5" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.5" />
                                              </children>
                                           </AnchorPane>
                                        </children>

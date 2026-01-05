@@ -2,6 +2,8 @@ package org.group_three.ui;
 
 import de.tudresden.sumo.objects.SumoPosition2D;
 
+import java.util.Objects;
+
 /**
  * The Vector2D class contains two double components: x and y.
  * Can be used to represent 2D world coordinates for example.
@@ -89,6 +91,13 @@ public class Vector2D {
 	@Override
 	public String toString() {
 		return "Vector2D{x=" + x + ", y=" + y + "}";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		Vector2D vector2D = (Vector2D) o;
+		return Double.compare(x, vector2D.x) == 0 && Double.compare(y, vector2D.y) == 0;
 	}
 
 
@@ -268,6 +277,29 @@ public class Vector2D {
 	 */
 	public Vector2D abs() {
 		return new Vector2D(Math.abs(x), Math.abs(y));
+	}
+
+	/**
+	 * A method to get the relative location or difference vector to another vector.
+	 * The difference is with no angle consideration aka angle 0°.
+	 *
+	 * @param to The relative location from this to the given Vector2D.
+	 * @return The difference vector.
+	 * @author Joel
+	 */
+	public Vector2D getRelativeLocation(Vector2D to) {
+		return Meth.getRelativeLocation(this, 0, to);
+	}
+
+	/**
+	 * A method to get the distance between to Vector2D's.
+	 *
+	 * @param to The distance from this to the given Vector2D.
+	 * @return The distance as a double.
+	 * @author Joel
+	 */
+	public double getDistance(Vector2D to) {
+		return this.getRelativeLocation(to).length();
 	}
 
 	//--------------------------------------------------Methods--------------------------------------------------

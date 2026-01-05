@@ -46,16 +46,20 @@
             <MenuItem fx:id="simulationClose" disable="true" mnemonicParsing="false" onAction="#onSimulationCloseClicked" text="Close" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="simulationReload" disable="true" mnemonicParsing="false" onAction="#onSimulationReloadClicked" text="Reload" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="simulationExport" disable="true" mnemonicParsing="false" onAction="#onSimulationExportClicked" text="Export" />
          </items>
       </Menu>
-      <Menu mnemonicParsing="false" text="Settings">
+      <Menu mnemonicParsing="false" text="Other">
           <items>
-               <MenuItem mnemonicParsing="false" onAction="#onConsoleOpen" text="Open Console" />
-              <MenuItem mnemonicParsing="false" onAction="#onStressTestClick" text="Stress Test" />
+              <MenuItem fx:id="stressTest" disable="true" mnemonicParsing="false" onAction="#onStressTestClick" text="Stress Test" />
           </items>
       </Menu>
-    <Menu mnemonicParsing="false" onAction="#onHelpClicked" text="Help" />
+      <Menu fx:id="export" disable="true" mnemonicParsing="false" text="Export">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#onExportCSV" text=".csv" />
+            <MenuItem mnemonicParsing="false" onAction="#onExportXML" text=".xml" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#onExportPDF" text=".pdf" />
+         </items>
+      </Menu>
    </menus>
 </MenuBar>

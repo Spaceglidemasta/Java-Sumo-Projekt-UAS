@@ -6,14 +6,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 // import java.io.IOException; for what was that?
 
 import de.tudresden.sumo.objects.SumoColor;
-import de.tudresden.sumo.objects.SumoStringList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import org.group_three.Main;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
-import org.group_three.debug.Console;
+import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
 
@@ -21,9 +27,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
-import org.group_three.model.WEdge;
-import org.group_three.model.WVehicle;
 import org.group_three.service.StressTest;
+import org.group_three.ui.MainApp;
+import org.group_three.ui.Meth;
+import org.group_three.ui.RecentlyOpenedData;
 import org.group_three.ui.SimView2D;
 
 /**
@@ -42,9 +49,9 @@ public class ToolbarController {
 	@FXML
 	private MenuItem simulationReload;
 	@FXML
-	private MenuItem simulationExport;
-
-	// TODO: Fix issues from multi file selection
+	private MenuItem stressTest;
+	@FXML
+	private Menu export;
 
 	/**
 	 * Initializes toolbar
@@ -52,11 +59,11 @@ public class ToolbarController {
 	 * @author Joel
 	 */
 	@FXML
-	private void initialize() { //throws IOException  for what was that?
+	private void initialize() {
 		Debug.toConsole("Toolbar loaded.");
 
-		// --> add load recentlyLoadedSimulations from file code here <--
-		validateRecentlyLoadedSimulations();
+		RecentlyOpenedData.load();
+		RecentlyOpenedData.validate();
 
 		initializeOpenRecentList();
 	}
@@ -71,7 +78,7 @@ public class ToolbarController {
 		simulationOpenRecent.getItems().clear();
 
 		// add options
-		for (String path : recentlyLoadedSimulations) {
+		for (String path : RecentlyOpenedData.getSimulations()) {
 			//MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(path, path);
 			MenuItem item = new MenuItem(path);
 			item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
@@ -92,11 +99,10 @@ public class ToolbarController {
 	private void setSimulationButtonStates(boolean disabled) {
 		simulationClose.setDisable(disabled);
 		simulationReload.setDisable(true); // not implemented yet
-		simulationExport.setDisable(disabled);
+		export.setDisable(disabled);
+		stressTest.setDisable(disabled);
 	}
 
-	private List<String> recentlyLoadedSimulations = new ArrayList<String>() {
-	};
 	private String loadedSimulation = null;
 
 	/**
@@ -118,12 +124,12 @@ public class ToolbarController {
 		setSimulationButtonStates(false);
 
 		// try to remove entry first before adding it at the start of the list to always have the newest selection at the first entry
-		recentlyLoadedSimulations.remove(loadedSimulation);
-		recentlyLoadedSimulations.addFirst(loadedSimulation);
+		RecentlyOpenedData.removeSimulation(loadedSimulation);
+		RecentlyOpenedData.addSimulation(loadedSimulation);
 
 		initializeOpenRecentList();
 
-		Debug.toConsole(recentlyLoadedSimulations.size());
+		Debug.toConsole(RecentlyOpenedData.getSimulations().size());
 	}
 
 	/**
@@ -134,7 +140,8 @@ public class ToolbarController {
 	 * @author Joel
 	 */
 	private void tryLoadingSimulation(List<File> paths) {
-		validateRecentlyLoadedSimulations();
+		RecentlyOpenedData.validate();
+		initializeOpenRecentList();
 
 		StringBuilder mergedPath = new StringBuilder();
 
@@ -154,37 +161,6 @@ public class ToolbarController {
 			ifs.printStackTrace();
 		}
 
-	}
-
-	/**
-	 * Function to validate the recently opened File locations,
-     * if no file is found in the entry is not displayed
-	 *
-	 * @author Joel
-	 */
-	private void validateRecentlyLoadedSimulations() {
-		List<String> fails = new ArrayList<String>() {
-		};
-
-		for (String path : recentlyLoadedSimulations) {
-			try {
-				new FileReader(path).close();
-			} catch (FileNotFoundException e) {
-				Debug.toConsole("FileNotFoundException " + e.getMessage());
-				// remove path if file at path doesn't exist
-				fails.add(path); // don't modify looping list while using it
-
-			} catch (IOException e) {
-				Debug.toConsole("IOException e " + e.getMessage());
-				throw new RuntimeException(e);
-			}
-		}
-
-		for (String path : fails) {
-			recentlyLoadedSimulations.remove(path);
-		}
-
-		initializeOpenRecentList(); // maybe? !makes ini run multiple times in some places right now, TODO:change that
 	}
 
 
@@ -231,11 +207,6 @@ public class ToolbarController {
 			tryLoadingSimulation(files);
 		}
 	}
-
-	/*private void onSimulationOpenRecentClicked(MenuItem_RecentlyOpend item) {
-		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText() + " /" + item.getPath() + "/");
-		tryLoadingSimulation(item.getPath());
-	}*/
 
 	/**
 	 * Function to load a recently selected simulation
@@ -285,7 +256,7 @@ public class ToolbarController {
 	 * @author Joel
 	 */
 	@FXML
-	private void onSimulationExportClicked() {
+	private void onExportCSV() {
 		Debug.toConsole("Simulation -> Export");
 
         /*
@@ -323,33 +294,65 @@ public class ToolbarController {
         if(simcon != null){
 
             simcon.queueryStats();
-            //simcon.printStats();
-            simcon.exportStatsToPDF();
+
+	        simcon.exportStatsAsZippedCSVs();
 
         }
 
 	}
 
 	/**
-	 * Function for "Settings" Tab in toolbar
+	 * A method to export gathered data from the simulation to a file.
 	 *
 	 * @author Joel
 	 */
 	@FXML
-	private void onSettingsClicked() {
-		Debug.toConsole("Settings");
+	private void onExportXML() {
+
+
+		SimController simcon = SimController.getMainsimcon();
+
+		if(simcon != null){
+
+			simcon.saveState(".xml");
+
+		}
+
 	}
 
 	/**
-	 * Function to open the console tab in the Settings meny
+	 * A method to export gathered data from the simulation to a file.
 	 *
-	 * @author Leon
+	 * @author Joel
 	 */
 	@FXML
-	private void onConsoleOpen() {
-		Console console = Console.getInstance();  // Get the single instance of the Console
-		console.show();
+	private void onExportPDF() {
+		SimController simcon = SimController.getMainsimcon();
+
+		if(simcon != null){
+
+			try {
+				Stage pdfFilter = new Stage();
+				pdfFilter.setTitle("Export as .pdf");
+				pdfFilter.getIcons().add(MainApp.getAppIcon());
+				pdfFilter.setResizable(false);
+
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
+
+				pdfFilter.setScene(new Scene(fxmlLoader.load()));
+
+				((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+
+				pdfFilter.show();
+
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
 	}
+
+
 
     /**
      * Function to perform a stresstest
@@ -360,15 +363,5 @@ public class ToolbarController {
     private void onStressTestClick(){
         new StressTest().Test();
         }
-
-	/**
-	 * Function for "Help" Tab in toolbar
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private void onHelpClicked() {
-		Debug.toConsole("Help");
-	}
 
 }

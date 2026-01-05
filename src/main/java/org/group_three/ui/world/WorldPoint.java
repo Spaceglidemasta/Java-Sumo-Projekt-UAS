@@ -75,7 +75,6 @@ public class WorldPoint extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
 		drawSphere(radius, color);
 	}
 

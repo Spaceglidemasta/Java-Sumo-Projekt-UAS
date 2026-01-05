@@ -4,10 +4,12 @@ import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
-import org.group_three.constants.enums.AttributeStyle;
+import org.group_three.constants.Settings;
+import org.group_three.constants.Sumo;
+import org.group_three.constants.enums.stats.EdgeSortOption;
+import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
-import org.group_three.debug.annotations.PrintStyle;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.model.WEdge;
 import org.group_three.model.WPolygon;
@@ -16,6 +18,7 @@ import org.group_three.model.WVehicle;
 import org.group_three.service.StatCollector;
 import org.group_three.service.Statistic;
 import org.group_three.service.records.EdgeRec;
+import org.group_three.service.records.RouteTarget;
 import org.group_three.service.records.VehDensPerSecond;
 import org.group_three.service.records.VehicleRec;
 import org.group_three.ui.SimView2D;
@@ -25,11 +28,13 @@ import org.group_three.utils.StatUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.foreign.SymbolLookup;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.group_three.utils.PathUtils.getRelativePath;
@@ -55,23 +60,22 @@ public class SimController implements AutoCloseable{
 
 	//The connection to the Sumo simulation. Invoked in the constructor and destroyed with .close()
     private SumoTraciConnection stc; //
-    private static final String networkfname = "net.net.xml";
-    private static final String routefname = "net.rou.xml";
 
     // Easy mode
     private static SimController mainsimcon = null;
 
     // WObjects Collectors
-    private List<WTrafficLight> allWTLs = new ArrayList<>();
+    private HashMap<String, WTrafficLight> allWTLs = new HashMap<>();
     private List<WPolygon> allPolys = new ArrayList<>();
     private HashMap<String, WEdge> allroads = new HashMap<>();
     private HashMap<String, WVehicle> allVehicles = new HashMap<>();
 
     //Statistics
-    private final StatCollector statcol = new StatCollector(
+    private StatCollector statcol = new StatCollector(
             this,
             "BasicStats"
     );
+    HashMap<String, List<RouteTarget>> ttdistribution = new HashMap<>();
 
 
 
@@ -82,7 +86,7 @@ public class SimController implements AutoCloseable{
 // ******************************************************
 
     public SimController(){
-        this(networkfname, routefname);
+        this(Settings.NETFILENAME, Settings.ROUTEFILENAME);
     }
 
     public SimController(String cfg) {
@@ -94,11 +98,11 @@ public class SimController implements AutoCloseable{
             File jarDir = getProjectLocation();
 
             // opens said folder
-            File resourcesDir = new File(jarDir, "SumoConfig");
+            File resourcesDir = new File(jarDir, Settings.CFGDIRECTORYNAME);
 
 
             // Try SUMO_HOME/bin/sumo.exe, otherwise use resourcesDir/sumo.exe
-            String sumoHome = System.getenv("SUMO_HOME");
+            String sumoHome = System.getenv(Settings.SUMOHOME);
 
             // possible location of sumo.exe in %SUMO_HOME%/bin
             File sumoExe = decideSumo(sumoHome, resourcesDir);
@@ -208,14 +212,15 @@ public class SimController implements AutoCloseable{
      * @return Which one was decided upon. sumoHome most of the time
      * @author Luca
      * */
+    //TODO REMOVE
     private static File decideSumo(String sumoHome, File resourcesDir) throws FileNotFoundException {
         //A ? B : C <=> if A then B else C
         File sumoExeHome = (sumoHome != null)
-                ? new File(sumoHome + "/bin/sumo.exe")
+                ? new File(sumoHome + "/bin/" + Settings.SUMOEXENAME)
                 : null;
 
         // possible location of sumo.exe in resources
-        File sumoExeResources = new File(resourcesDir, "sumo.exe");
+        File sumoExeResources = new File(resourcesDir, Settings.SUMOEXENAME);
 
         // Decide final path
         File sumoExe = (sumoExeHome != null && sumoExeHome.exists())
@@ -316,8 +321,8 @@ public class SimController implements AutoCloseable{
 
 			}
 			catch (Exception e){
-                log.severe("CRITICAL ERROR: STREETS CANNOT BE RENDERED");
-				e.printStackTrace();
+                log.log(Level.SEVERE,"CRITICAL ERROR: STREETS CANNOT BE RENDERED", e);
+
 			}
 
 		}  else {
@@ -329,7 +334,9 @@ public class SimController implements AutoCloseable{
 
 		WPolygon.loadAllPolys(simcon);
 
-		WTrafficLight.loadAll(simcon);
+		List<WTrafficLight> alltls = WTrafficLight.loadAll(simcon).values().stream().toList();
+
+        alltls.getFirst().getProgram();
 
 		// Create a new World for the opened simulation
 		SimView2D.newWorld();
@@ -412,7 +419,6 @@ public class SimController implements AutoCloseable{
     /**Saves the State as a file. The format and output depends on the extension.
      * <p> WARNING Creates Files </p>
      * @param filetype the extension. Include the dot: saveState(".xml")
-     *                 ".csv" and ".xml" are the only ones we found to make sense.
      * @return The filename, or null if without success.
      * @author Luca
      * */
@@ -543,16 +549,29 @@ public class SimController implements AutoCloseable{
      * */
     public void queueryStats(){
 
-        Statistic<VehicleRec> vehStat = new Statistic<>("Vehicles", "Vehicle ID", "Average Speed", "Color");
+        statcol.clear();
+
+        Statistic<VehicleRec> vehStat = new Statistic<>(
+                "Vehicles",
+                "Vehicle ID", "Average Speed", "Color"
+        );
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
         }
         statcol.addStatistic(vehStat
-                .filter(r -> StatUtils.equalSColor(r.color(), new SumoColor(255,0,0,255)))
+                .filter(
+                        r -> StatUtils.equalSColor(
+                                r.color(),
+                                new SumoColor(255,0,0,255)
+                        )
+                )
                 .sortBy(VehicleRec::avgspeed)
         );
 
-        Statistic<EdgeRec> edgeStat = new Statistic<>("Edges", "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>(
+                "Edges", "Name",
+                "Occupancy Ratio", "Length (m)"
+        );
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
@@ -568,18 +587,139 @@ public class SimController implements AutoCloseable{
                                 )
                         )
                         .sortBy(EdgeRec::usage)
+                        .filter( r -> r.length() > 1000)
         );
 
-        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
+        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>(
+                "VehicleDensityPerEdge",
+
                 getAllroads()
                 .values()
                 .stream() //stream data to allow mapping
                 .map(WEdge::getName) // the same as edge -> edge.getName() lambda
                 .toArray(String[]::new)); //tells it to convert to String[] instead of Object[]
+
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
         //statcol.addStatistic(vehDensStat);
+
+        log.fine("StatCollector assembling was successful.");
+
+    }
+
+    /**<h2>finishStatCollector</h2>
+     * Finishes the StatCollector attribute.
+     * <p>Uses the records defined at the top as types for the Statistic Template.
+     * Adding statistics works by adding a record as SimController attribute and
+     * adding it to the StatCollector via Statistic< Record >.</p>
+     * @param vehicleStatName The name of the Vehicle Statistic
+     * @param sortForVehSpeed Sorts the Veh. Stat. for speed if true, for id if false
+     * @param vehColor The vehicle color to be filtered for. Give <code>null</code> if you don't want to filter
+     *                 by color.
+     * @param edgeStatName The name of the Edge statistic
+     * @param edgeSortBy What to sort the Edge Statistic by
+     * @param minStreetLen The minimum street length to be filtered for. Default should be 0
+     * @see StatCollector
+     * @see Statistic
+     * @see VehicleRec
+     * @see EdgeRec
+     * @author Luca
+     * */
+    public void queueryStats(
+
+            String collectionName,
+
+            String vehicleStatName,
+            boolean sortForVehSpeed,
+            SumoColor vehColor,
+
+            String edgeStatName,
+            EdgeSortOption edgeSortBy,
+            int minStreetLen,
+
+            CSSStyle style
+
+                             ){
+
+        statcol.setName(collectionName);
+
+        statcol.clear();
+
+        //first stat
+
+        Statistic<VehicleRec> vehStat = new Statistic<>(
+                vehicleStatName,
+                "Vehicle ID", "Average Speed", "Color");
+
+        for(VehicleRec vrec : VehicleRec.collect(this)){
+            vehStat.add(vrec);
+        }
+
+        //if you don't want to filter for a color, give null as parameter
+        if(vehColor != null){
+            vehStat = vehStat
+                    .filter(
+                            r -> StatUtils.equalSColor(
+                                    r.color(), vehColor
+                            )
+                    );
+        }
+
+        if (sortForVehSpeed) {
+            vehStat = vehStat.sortBy(VehicleRec::vehID);
+        } else {
+            vehStat = vehStat.sortBy(VehicleRec::avgspeed);
+        }
+
+        statcol.addStatistic(
+                vehStat.sortBy(VehicleRec::avgspeed)
+        );
+
+        //second stat
+
+        Statistic<EdgeRec> edgeStat = new Statistic<>(edgeStatName, "Name", "Occupancy Ratio", "Length (m)");
+        for(EdgeRec erec : EdgeRec.collect(this)){
+            edgeStat.add(erec);
+        }
+
+        edgeStat = edgeStat.aggregate(
+                                EdgeRec::name,
+                                (a,b) -> new EdgeRec(
+                                        a.name(),
+                                        a.usage() + b.usage(),
+                                        a.length() + b.length()
+                                )
+                        );
+
+        if(edgeSortBy == EdgeSortOption.name)
+            edgeStat = edgeStat.sortBy(EdgeRec::name);
+
+        else if(edgeSortBy == EdgeSortOption.usage)
+            edgeStat = edgeStat.sortBy(EdgeRec::usage);
+
+        else
+            edgeStat = edgeStat.sortBy(EdgeRec::length);
+
+        edgeStat = edgeStat.filter( r -> r.length() > minStreetLen);
+
+        statcol.addStatistic(edgeStat);
+
+        //third stat
+
+        Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
+                getAllroads()
+                        .values()
+                        .stream() //stream data to allow mapping
+                        .map(WEdge::getName) // the same as edge -> edge.getName() lambda
+                        .toArray(String[]::new)); //tells it to convert to String[] instead of Object[]
+
+        for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
+            vehDensStat.add(vdrec);
+        }
+        //statcol.addStatistic(vehDensStat);
+
+        statcol.setCssStyle(style);
 
         log.fine("StatCollector assembling was successful.");
 
@@ -603,7 +743,7 @@ public class SimController implements AutoCloseable{
      * @see StatCollector#exportAsZip()
      * @author Luca
      * */
-    public void exportStats(){
+    public void exportStatsAsZippedCSVs(){
         statcol.exportAsZip();
     }
 
@@ -625,6 +765,92 @@ public class SimController implements AutoCloseable{
 
         statcol.collect();
 
+    }
+
+
+    /**<p>Calculates a Route from each Edge to each Edge, together with the length of each route.</p>
+     * <p>This is then getting mapped with a HashMap in the following format:<br>
+     * <code>StartEdgeID -> List<{EndEdgeID, lengthOfRoute}></code> <br>
+     * This is then stored in <code>ttdistribution</code>, which can be retrieved again via its getter.</p>
+     * <p>WARNING: O(n²) instead of O(n log(n)) because the network is a directed Graph (one-way-streets)</p>
+     * @return said HashMap
+     * @author Luca
+     * */
+    public HashMap<String, List<RouteTarget>> calcFullTravelTimeDist(){
+
+        long startTimeMs = System.currentTimeMillis();
+        stc.printSumoError(false);
+        stc.printSumoOutput(false);
+
+        log.info("Calculating full Travel-Time-Distribution... (This may take a few seconds)");
+
+        HashMap<String, List<RouteTarget>> outhash = new HashMap<>();
+
+        List<WEdge> aEID = getAllroads()
+                .values().stream().toList();
+
+        for(WEdge from : aEID){
+
+            List<RouteTarget> rts = new ArrayList<>();
+
+            for(WEdge to : aEID){
+                SumoStage sst = findRoute(from.getId(), to.getId());
+
+                rts.add(
+                        new RouteTarget(
+                                to.getId(),
+                                sst.length
+                        )
+                );
+
+                //Debug.print("From: " + from.getId() + ", to: " + to.getId() + " -> " + WEdge.getRouteLength(sst.edges));
+            }
+            //for(WEdge from : aEID) scope
+            outhash.put(
+                    from.getId(),
+                    rts
+            );
+        }
+
+        log.info("calcTravelTimeDist ran in " +
+                ((System.currentTimeMillis() - startTimeMs) / 1000) +
+                 "s"
+        );
+        stc.printSumoError(true);
+        stc.printSumoOutput(true);
+
+        ttdistribution = outhash;
+        return outhash;
+    }
+
+
+    /**<p>Calculates a Route from one Edge to all other Edges, together with the length of each route.
+     * This works via SUMO, which calculates this via Dijsktra.</p>
+     * @param EID the start point as EdgeID.
+     * @return a List containing all endpoint-edges and route-lengths, each stored in a RouteTarget Record. <br>
+     *         Important: if the <code>RouteTarget#length()</code> is <code>0.0d</code>, finding a Route failed.
+     * @author Luca
+     * */
+    public List<RouteTarget> calcPartialTTDist(String EID) {
+
+        //disable Warnings for routes which cant be connected
+        stc.printSumoError(false);
+        stc.printSumoOutput(false);
+
+        List<RouteTarget> outlist = allroads.values().stream().map(
+                e -> new RouteTarget(
+                        e.getId(),
+                        findRoute(
+                                EID,
+                                e.getId()
+                        ).length
+                )
+        ).toList();
+
+        stc.printSumoError(true);
+        stc.printSumoOutput(true);
+
+        return outlist;
     }
 
 
@@ -877,6 +1103,32 @@ public class SimController implements AutoCloseable{
         }
     }
 
+	/**
+	 * Generates a full route list based on a route id
+	 * @param routeId The route id to generate a full route from
+	 * @return The created route list or null if route id is not valid.
+	 * @author Joel
+	 * */
+	@MayReturnNull
+	public SumoStringList generateFullRoute(String routeId){
+		WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
+				"DEFAULT_VEHTYPE",
+				routeId,
+				0,
+				0,
+				0
+				,0
+		);
+
+		wVehicle.reroute();
+		SumoStringList route = wVehicle.getRouteEdges();
+		wVehicle.remove();
+
+		return route;
+	}
+
+
+
     /**
      * Returns all the Edges inside a Route
      * @param RID RouteID
@@ -890,6 +1142,34 @@ public class SimController implements AutoCloseable{
         }
         catch (Exception e) {
             log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
+            return null;
+        }
+    }
+
+    /**
+     * Find a Route between 2 Edges
+     * @param fromEID First edge
+     * @param toEID second edge
+     * @return a SumoStage representing the route
+     * @author Luca
+     * */
+    public SumoStage findRoute(String fromEID, String toEID) {
+        try {
+            return (SumoStage) stc.do_job_get(Simulation.findRoute(
+                    fromEID,
+                    toEID,
+                    Sumo.DEFAULT_VEHICLE,
+                    0.0d,
+                    0 //I hope this is correct. The lack of documentation for TraaS is sickening.
+                    )
+            );
+
+        } catch (Exception e) {
+            log.log(
+                    Level.WARNING,
+                    "Finding a suitable Route from " + fromEID + " to " + toEID  + " failed.",
+                    e
+            );
             return null;
         }
     }
@@ -1010,101 +1290,7 @@ public class SimController implements AutoCloseable{
 
 
 
-    /**
-     * Sets the Phase Index [0:2] of the TL. <br>
-     * @param TLID Traffic Light ID
-     * @param iPhase Phase index as int, starting at 0 (?)
-     * @return <code>true</code> if successful, <code>false</code> if not.
-     * @author Luca
-     * */
-    public boolean setTLPhase(String TLID, int iPhase){
 
-        try {
-            log.fine("TrafficLight " + TLID + ": Phase changed to index " + iPhase);
-            stc.do_job_set(Trafficlight.setPhase(TLID, iPhase));
-            return true;
-        }
-        catch (Exception e){
-            log.severe("setter failed: " + Arrays.toString(e.getStackTrace()));
-            return false;
-        }
-    }
-
-    /**
-     * Returns the Traffic Light phase as Index [0:2] <br>
-     * @param TLID ID of the Traffic Light
-     * @return Phase of the TL, <code>-1</code> if getter failed.
-     * @author Luca
-     */
-    public int getTLPhase(String TLID) {
-        try {
-            return (int) stc.do_job_get(Trafficlight.getPhase(TLID));
-        }
-        catch (Exception e){
-            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
-            return -1;
-        }
-    }
-
-    /**
-     * Sets the Length of the current Phase of the given TL.
-     * @param TLID Traffic Light ID
-     * @param dur new Duration in seconds(?)( <- This not my questionmark, the TraaS doc also has a "?")
-     * @return <code>true</code> if successful, <code>false</code> if not.
-     * @author Luca
-     * */
-    public boolean setTLPhaseLen(String TLID, double dur){
-
-        try {
-            stc.do_job_set(Trafficlight.setPhaseDuration(TLID, dur));
-            return true;
-        } catch (Exception e) {
-            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
-            return false;
-        }
-
-
-    }
-
-    /**
-     * Returns the requested Parameter of a Trafficlight
-     * @param TLID TrafficLight ID
-     * @param param The requested parameter
-     * @return <code>null</code> if failed, else the requested parameter
-     * @author Luca
-     * */
-    @MayReturnNull
-    public String getTLParam(String TLID, String param){
-
-        try {
-            return  (String) stc.do_job_get(Trafficlight.getParameter(TLID,param));
-        }
-        catch (Exception e){
-            log.severe("getter failed: " + Arrays.toString(e.getStackTrace()));
-            return null;
-        }
-
-    }
-
-
-    /**
-     * Sets the given Parameter of a Trafficlight
-     * @param TLID TrafficLight ID
-     * @param param the parameter which is supposed to change
-     * @param value the value that is to be inserted in the given parameter
-     * @return <code>true</code> if successful, <code>false</code> if not.
-     * @author Luca
-     * */
-    public boolean setTLParam(String TLID, String param, String value){
-        try {
-            stc.do_job_set(Trafficlight.setParameter(TLID, param, value));
-            return true;
-        }
-        catch (Exception e){
-            log.severe("setter failed: " + Arrays.toString(e.getStackTrace()));
-            return false;
-        }
-    }
 
 
     // ******************************************************
@@ -1198,7 +1384,7 @@ public class SimController implements AutoCloseable{
         return allroads;
     }
 
-    public List<WTrafficLight> getAllWTLs() {
+    public HashMap<String, WTrafficLight> getAllWTLs() {
             return allWTLs;
     }
 
@@ -1214,7 +1400,7 @@ public class SimController implements AutoCloseable{
 
     public StatCollector getStatcol() {return statcol; }
 
-    public void setAllWTLs(List<WTrafficLight> allWTLs) {
+    public void setAllWTLs(HashMap<String, WTrafficLight> allWTLs) {
         this.allWTLs = allWTLs;
     }
 
@@ -1241,8 +1427,8 @@ public class SimController implements AutoCloseable{
      * @return the new size of the collector List
      * @author Luca
      * */
-    public int addToAllWTLs(WTrafficLight wtl){
-        allWTLs.add(wtl);
+    public int addToAllWTLs(String id, WTrafficLight wtl){
+        allWTLs.put(id, wtl);
         return allWTLs.size();
     }
 
@@ -1281,6 +1467,10 @@ public class SimController implements AutoCloseable{
         return allVehicles.size();
     }
 
+
+    public HashMap<String, List<RouteTarget>> getTtdistribution() {
+        return ttdistribution;
+    }
 
 
     /**

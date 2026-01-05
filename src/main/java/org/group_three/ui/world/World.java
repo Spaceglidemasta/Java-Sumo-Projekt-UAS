@@ -1,13 +1,18 @@
 package org.group_three.ui.world;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.CanvasController;
 import org.group_three.ui.controllers.SimControlController;
 
 import java.util.*;
@@ -101,6 +106,14 @@ public class World {
 	@SuppressWarnings("JavadocDeclaration")
 	private final Color worldColor = UI.worldColor;
 
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
 	/**
 	 * The background color of the world view.
 	 * Visualizes out of bounds.
@@ -108,7 +121,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private final Color backgroundColor = UI.worldColor;
+	private Color backgroundColor = UI.worldColor;
 
 
 	/**
@@ -139,6 +152,11 @@ public class World {
 	 */
 	public World() {
 		SimControlController.setPlay(false);
+		CanvasController.rotationIndicatorStatic.setRotate(0);
+
+		timeline = new Timeline(new KeyFrame(Duration.seconds(1/UI.maxSimulationViewFps), e -> updateTick()) );
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------
@@ -238,6 +256,7 @@ public class World {
 		}
 
 		viewerRotation = rotation;
+		CanvasController.rotationIndicatorStatic.setRotate(360-rotation);
 
 		requestUpdate();
 	}
@@ -274,28 +293,11 @@ public class World {
 
 	/**
 	 * Sets the world viewer's position.
-	 * <br> world bounds limit doesn't account for rotation yet, well or scale, disabled for now
 	 *
 	 * @param position The position as a Vector2D.
 	 * @author Joel
 	 */
 	public void setViewerPosition(Vector2D position) {
-		/*if (position.x < -(worldSize.x/2)) {
-			position.x = -(worldSize.x/2);
-		} else if (position.x > (worldSize.x/2)) {
-			position.x = (worldSize.x/2);
-		} else {
-			viewerPosition.x = position.x;
-		}
-
-		if (position.y < -(worldSize.y/2)) {
-			position.y = -(worldSize.y/2);
-		} else if (position.y > (worldSize.y/2)) {
-			position.y = (worldSize.y/2);
-		} else {
-			viewerPosition.y = position.y;
-		}*/
-
 		viewerPosition = position;
 
 		requestUpdate();
@@ -407,8 +409,25 @@ public class World {
 	 * @see #update()
 	 */
 	public void requestUpdate() {
-		update();
+		requestedUpdate = true;
 	}
+
+
+
+	private boolean requestedUpdate = false;
+	public final Timeline timeline;
+
+	private void updateTick() {
+		// skip if no update is requested
+		if (!requestedUpdate) return;
+
+		// update canvas
+		update();
+
+		// set requestUpdate to false after updating
+		requestedUpdate = false;
+	}
+
 
 	/**
 	 * A method to render the world bounds and background.
@@ -418,17 +437,9 @@ public class World {
 	 */
 	private void update() {
 		graphicsContext.save();
-		graphicsContext.setFill(backgroundColor);
+		graphicsContext.setFill(UI.highContrast ? Color.BLACK : backgroundColor);
 		graphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
 		graphicsContext.restore();
-
-
-		//graphicsContext.save();
-		//graphicsContext.setFill(worldColor);
-		//graphicsContext.translate(getViewerPosition().x + getViewerPositionOffset().x + getWorldOffset().x * getViewerZoom(), getViewerPosition().y + getViewerPositionOffset().y + getWorldOffset().y * getViewerZoom()); // Object Location
-		//graphicsContext.rotate(getViewerRotation());
-		//graphicsContext.fillRect((getWorldSize().x / 2) * getViewerZoom() * -1, (getWorldSize().y / 2) * getViewerZoom() * -1, getWorldSize().x * getViewerZoom(), getWorldSize().y * getViewerZoom());
-		//graphicsContext.restore();
 
 		for (WorldObject object : worldObjects) {
 			object.update();
@@ -459,28 +470,23 @@ public class World {
 
 			if (distanceToObject <= worldObject.getSphereCollision()) {
 				if (worldObject.useBoxCollision()) {
+					// BoxCollision
 					Vector2D relativeHitPosition = Meth.getRelativeLocation(worldObject.getPosition(), worldObject.getRotation(), worldPosition);
 					Vector2D relativeHalfHeightHit = relativeHitPosition.abs();
-					//Debug.print(relativeHalfHeightHit);
 
 					// add only to box collision hit list if hit is inside of collision
 					if (worldObject.getBoxCollision().x >= relativeHalfHeightHit.x &&
 							worldObject.getBoxCollision().y >= relativeHalfHeightHit.y
 					) {
 						boxCollisionHits.add(worldObject);
-						//Debug.print("BoxCollision");
 					}
 
 				} else {
+					// SphereCollision
 					distances.add(distanceToObject);
 					interactableObjects.add(worldObject);
-
-					//Debug.print("SphereCollision");
 				}
 			}
-
-			//Debug.print(distanceToObject);
-			//Debug.print(boxCollisionHits.size());
 		}
 
 		if (!boxCollisionHits.isEmpty()) return boxCollisionHits.getFirst();

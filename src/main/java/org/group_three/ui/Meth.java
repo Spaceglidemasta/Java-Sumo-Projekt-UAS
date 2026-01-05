@@ -186,6 +186,24 @@ public final class Meth {
 		return vector2DS;
 	}
 
+	/**
+	 * A method to convert a list of Vector2D's to the total length of the points combined.
+	 *
+	 * @param list The input list of Vector2D's.
+	 * @return The length of all Vector2D's together. -1 if failed.
+	 * @author Joel
+	 */
+	public static double getVector2DListLength(List<Vector2D> list) {
+		if (list.size() < 2) return -1;
+
+		double length = 0;
+		for (int i = 0; i < list.size()-1; i++) {
+			length += getRelativeLocation(list.get(i), 0, list.get(i+1)).length();
+		}
+
+		return length;
+	}
+
 
     /**
      * Calculates the sum of all elements contained in the given List.

@@ -6,11 +6,16 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
+import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
+import org.group_three.ui.controllers.SimControlController;
 import org.group_three.ui.controllers.VehicleDetailsController;
+
+import java.rmi.server.UID;
+import java.util.Objects;
 
 import static org.group_three.ui.Meth.ClrToSumoClr;
 import static org.group_three.ui.Meth.SumoClrToClr;
@@ -24,13 +29,24 @@ public class WorldVehicle extends WorldObject {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	public static double getScale() {
+		return scale;
+	}
+
+	public static void setScale(double scale) {
+		WorldVehicle.scale = scale;
+		WorldVehicle.size = new Vector2D(5 * scale, 2.5 * scale);
+	}
+
 	/**
 	 * The scale of the vehicle.
 	 *
 	 * @author Luca, Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private static double scale_size = 1;
+	private static double scale = UI.vehicleScale;
+
+
 
 	/**
 	 * The scaled size of the vehicle
@@ -38,7 +54,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Luca, Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private static final Vector2D size = new Vector2D(5 * scale_size, 2.5 * scale_size);
+	private static Vector2D size = new Vector2D(5 * scale, 2.5 * scale);
 
 
 	/**
@@ -69,7 +85,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private VehicleDetailsController vehicleDetailsController;
+	public VehicleDetailsController vehicleDetailsController;
 
 	/**
 	 * The wVehicle object for this class.
@@ -200,6 +216,23 @@ public class WorldVehicle extends WorldObject {
 		updateDetailsPanel();
 	}
 
+	private boolean filterCheck() {
+		// speed filter check
+		double speed = getwVehicle().getSpeed();
+		if (speed < UI.viewFilter_VehicleSpeed.x) return false;
+		if (UI.viewFilter_VehicleSpeed.y != -1 && speed > UI.viewFilter_VehicleSpeed.y) return false;
+
+		// color filter check
+		if (!UI.viewFilter_VehicleColor.isEmpty() && !UI.viewFilter_VehicleColor.contains(getColor())) return false;
+
+		// pos filter check
+		if ((UI.viewFilter_PositionRadius != 0) && (UI.viewFilter_Position.getDistance(getPosition()) > UI.viewFilter_PositionRadius)) return false;
+
+		return true;
+	}
+
+
+
 	/**
 	 * The method to update the render of the vehicle.
 	 *
@@ -207,15 +240,24 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@Override
 	public void update() {
-		super.update();
 		Image visualImage = iconManager.getIcon(getColor());
 
+		if (UI.vehicleScale != getScale()) setScale(UI.vehicleScale);
 
+		if (!filterCheck()) return;
 
-		//wVehicle.boogieWonderland();
+		if (boogie) {
+			wVehicle.boogieWonderland();
+		} else {
+			if (getColor().getOpacity() != 0 && getColor().getOpacity() != 1) {
+				boogie = true;
+			}
+		}
 
 		drawImage(size.div(2), visualImage);
 	}
+
+	private boolean boogie = false;
 
 	/**
 	 * A method to set up the details panel when the object is selected.
@@ -253,6 +295,18 @@ public class WorldVehicle extends WorldObject {
 	public void remove() {
 		super.remove();
 		if (vehicleDetailsController != null) vehicleDetailsController.kill();
+	}
+
+	@Override
+	public void select() {
+		super.select();
+		vehicleDetailsController.createWorlVehicleRoute();
+	}
+
+	@Override
+	public void deselect() {
+		super.deselect();
+		vehicleDetailsController.removeWorlVehicleRoute();
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------
