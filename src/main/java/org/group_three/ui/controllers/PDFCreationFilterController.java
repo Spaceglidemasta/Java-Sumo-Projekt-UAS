@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.group_three.api.SimController;
 import org.group_three.constants.DefaultStasticValues;
+import org.group_three.constants.Documents;
 import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.ui.Meth;
@@ -49,10 +50,6 @@ public class PDFCreationFilterController {
 			return;
 		}
 
-        //add "0" at the beginning, so that no input resolves to 0
-		int lengthValue = Integer.parseInt("0" + length.getText());
-
-
 		simcon.queueryStats(
 
                 DefaultStasticValues.STATCOLLECTION_NAME,
@@ -61,15 +58,20 @@ public class PDFCreationFilterController {
 				avgSpeed.isSelected(),
 				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
-				DefaultStasticValues.EDGESTAT_NAME,
-				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
-				lengthValue,
+                DefaultStasticValues.EDGESTAT_NAME,
+				edgeSort.getValue(),
+				Integer.parseInt("0" + length.getText()),
 
                 style.getValue()
 
 		);
 
-		simcon.exportStatsToPDF();
+		if (stage.getTitle().contains(Documents.CSV_EXTENSION)) {
+			simcon.exportStatsAsZippedCSVs();
+		} else {
+			simcon.exportStatsToPDF();
+		}
+
 		stage.close();
 	}
 }
