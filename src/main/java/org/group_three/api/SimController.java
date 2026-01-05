@@ -4,6 +4,8 @@ import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
+import org.group_three.constants.DefaultStasticValues;
+import org.group_three.constants.Documents;
 import org.group_three.constants.Settings;
 import org.group_three.constants.Sumo;
 import org.group_three.constants.enums.stats.EdgeSortOption;
@@ -28,7 +30,6 @@ import org.group_three.utils.StatUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.foreign.SymbolLookup;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
@@ -38,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.group_three.utils.PathUtils.getRelativePath;
+import static org.group_three.utils.PathUtils.prepareOutputPath;
 
 /**
  * <h1>SimController</h1>
@@ -73,7 +75,7 @@ public class SimController implements AutoCloseable{
     //Statistics
     private StatCollector statcol = new StatCollector(
             this,
-            "BasicStats"
+            DefaultStasticValues.STATCOLLECTION_NAME
     );
     HashMap<String, List<RouteTarget>> ttdistribution = new HashMap<>();
 
@@ -165,7 +167,7 @@ public class SimController implements AutoCloseable{
             File networknet = new File(resourcesDir, net);
 
             if (!networknet.exists()) {
-                throw new Exception(net + " not found");
+                throw new FileNotFoundException(net + " not found");
             }
             else {
                 log.info("network file found at: " + networknet.getAbsolutePath());
@@ -174,7 +176,7 @@ public class SimController implements AutoCloseable{
             File routenet = new File(resourcesDir, rou);
 
             if (!routenet.exists()) {
-                throw new Exception(rou + " not found");
+                throw new FileNotFoundException(rou + " not found");
             }
             else {
                 log.info("route file found at: " + routenet.getAbsolutePath());
@@ -425,16 +427,14 @@ public class SimController implements AutoCloseable{
     @MayReturnNull
     public String saveState(String filetype){
 
-        if(!Files.exists(Path.of("output"))){
-            log.warning("There was not \"output\" directory found. Are you running from a .jar? Make one.");
-            log.warning("saveState aborted");
-            return null;
-        }
+        String filename = Formatting.uniquegen("savedState_", filetype);
 
         try {
-            String filename = Formatting.uniquegen("savedState_", filetype);
-            stc.do_job_set(Simulation.saveState("output/" + filename));
-            log.info("State successfuly saved to output/" + filename);
+            prepareOutputPath(filename); //returning path is not used, because saveState takes relative path.
+
+            stc.do_job_set(Simulation.saveState(Documents.OUTPUT_DIR_NAME + "/" + filename));
+
+            log.info("State successfully saved to output/" + filename);
             return filename;
         }
         catch (Exception e){
@@ -491,7 +491,7 @@ public class SimController implements AutoCloseable{
             return Math.toIntExact(Math.round(time));
 
         } catch (Exception e) {
-            log.severe("getting Time failed: " + Arrays.toString(e.getStackTrace()));
+            log.warning("getting Time failed: " + Arrays.toString(e.getStackTrace()));
             return -1;
         }
     }
@@ -552,8 +552,10 @@ public class SimController implements AutoCloseable{
         statcol.clear();
 
         Statistic<VehicleRec> vehStat = new Statistic<>(
-                "Vehicles",
-                "Vehicle ID", "Average Speed", "Color"
+                DefaultStasticValues.VEHSTAT_NAME,
+                DefaultStasticValues.ATT_VEH_ID_NAME,
+                DefaultStasticValues.ATT_AVG_SPEED_NAME,
+                DefaultStasticValues.ATT_COLOR_NAME
         );
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
@@ -562,15 +564,17 @@ public class SimController implements AutoCloseable{
                 .filter(
                         r -> StatUtils.equalSColor(
                                 r.color(),
-                                new SumoColor(255,0,0,255)
+                                DefaultStasticValues.VEH_FILTER_COLOR
                         )
                 )
                 .sortBy(VehicleRec::avgspeed)
         );
 
         Statistic<EdgeRec> edgeStat = new Statistic<>(
-                "Edges", "Name",
-                "Occupancy Ratio", "Length (m)"
+                DefaultStasticValues.EDGESTAT_NAME,
+                DefaultStasticValues.ATT_EDGE_NAME_NAME,
+                DefaultStasticValues.ATT_OCRATIO_NAME,
+                DefaultStasticValues.ATT_LENGTH_NAME
         );
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
@@ -590,6 +594,7 @@ public class SimController implements AutoCloseable{
                         .filter( r -> r.length() > 1000)
         );
 
+        /*
         Statistic<VehDensPerSecond> vehDensStat = new Statistic<>(
                 "VehicleDensityPerEdge",
 
@@ -602,7 +607,8 @@ public class SimController implements AutoCloseable{
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
-        //statcol.addStatistic(vehDensStat);
+        statcol.addStatistic(vehDensStat);
+         */
 
         log.fine("StatCollector assembling was successful.");
 
@@ -650,7 +656,10 @@ public class SimController implements AutoCloseable{
 
         Statistic<VehicleRec> vehStat = new Statistic<>(
                 vehicleStatName,
-                "Vehicle ID", "Average Speed", "Color");
+                DefaultStasticValues.ATT_VEH_ID_NAME,
+                DefaultStasticValues.ATT_AVG_SPEED_NAME,
+                DefaultStasticValues.ATT_COLOR_NAME
+        );
 
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
@@ -678,7 +687,13 @@ public class SimController implements AutoCloseable{
 
         //second stat
 
-        Statistic<EdgeRec> edgeStat = new Statistic<>(edgeStatName, "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>(
+                edgeStatName,
+                DefaultStasticValues.ATT_EDGE_NAME_NAME,
+                DefaultStasticValues.ATT_OCRATIO_NAME,
+                DefaultStasticValues.ATT_LENGTH_NAME
+        );
+
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
@@ -707,6 +722,7 @@ public class SimController implements AutoCloseable{
 
         //third stat
 
+        /*
         Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
                 getAllroads()
                         .values()
@@ -717,7 +733,8 @@ public class SimController implements AutoCloseable{
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
-        //statcol.addStatistic(vehDensStat);
+        statcol.addStatistic(vehDensStat);
+         */
 
         statcol.setCssStyle(style);
 
@@ -1068,7 +1085,7 @@ public class SimController implements AutoCloseable{
     public WVehicle addVehicle(String typeID, String routeID, int depart, double pos, double speed, int lane){
 
         try {
-            String newVIDstr = Formatting.uniquegen("wveh_", "");
+            String newVIDstr = Formatting.uniquegen(Sumo.DEFAULT_WVEHICLE_PREFIX, "");
 
             stc.do_job_set(Vehicle.add(newVIDstr, typeID, routeID, depart, pos, speed, (byte)lane));
             return new WVehicle(newVIDstr, stc);
@@ -1091,7 +1108,7 @@ public class SimController implements AutoCloseable{
     @MayReturnNull
     public String addRoute(SumoStringList edges){
         try {
-            String RID = Formatting.uniquegen("r_", "");
+            String RID = Formatting.uniquegen(Sumo.DEFAULT_ROUTE_PREFIX, "");
 
             stc.do_job_set(Route.add(RID, edges));
 
@@ -1111,8 +1128,8 @@ public class SimController implements AutoCloseable{
 	 * */
 	@MayReturnNull
 	public SumoStringList generateFullRoute(String routeId){
-		WVehicle wVehicle = SimController.getMainsimcon().addVehicle(
-				"DEFAULT_VEHTYPE",
+		WVehicle wVehicle = addVehicle(
+				Sumo.DEFAULT_VEHICLE,
 				routeId,
 				0,
 				0,
@@ -1517,4 +1534,13 @@ public class SimController implements AutoCloseable{
             return false;
         }
     }
+
+	/**
+	 * A method to directly check if getMainsimcon() is not NULL.
+	 * @return If getMainsimcon() is not NULL.
+	 * @author Joel
+	 */
+	public static boolean isValid() {
+		return getMainsimcon() != null;
+	}
 }

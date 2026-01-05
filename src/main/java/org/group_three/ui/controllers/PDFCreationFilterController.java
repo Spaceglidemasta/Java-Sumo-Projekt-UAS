@@ -1,20 +1,17 @@
 package org.group_three.ui.controllers;
 
-import de.tudresden.sumo.cmd.Edge;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.group_three.api.SimController;
+import org.group_three.constants.DefaultStasticValues;
+import org.group_three.constants.Documents;
 import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.constants.enums.style.CSSStyle;
-import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
-
-import javax.swing.text.html.CSS;
 
 public class PDFCreationFilterController {
 
@@ -53,26 +50,28 @@ public class PDFCreationFilterController {
 			return;
 		}
 
-		int lengthValue = Integer.parseInt("0" + length.getText());
-		//if (lengthValue == 0) lengthValue = 1;
-
 		simcon.queueryStats(
 
-                "Output_Collection",
+                DefaultStasticValues.STATCOLLECTION_NAME,
 
-				"VehicleData",
+				DefaultStasticValues.VEHSTAT_NAME,
 				avgSpeed.isSelected(),
 				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
-				"EdgeData",
-				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
-				lengthValue,
+                DefaultStasticValues.EDGESTAT_NAME,
+				edgeSort.getValue(),
+				Integer.parseInt("0" + length.getText()),
 
-                CSSStyle.DEFAULT
+                style.getValue()
 
 		);
 
-		simcon.exportStatsToPDF();
+		if (stage.getTitle().contains(Documents.CSV_EXTENSION)) {
+			simcon.exportStatsAsZippedCSVs();
+		} else {
+			simcon.exportStatsToPDF();
+		}
+
 		stage.close();
 	}
 }

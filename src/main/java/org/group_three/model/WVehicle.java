@@ -131,7 +131,7 @@ public class WVehicle {
             return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Setting Color failed.");
             return false;
         }
     }
@@ -151,7 +151,7 @@ public class WVehicle {
             return (String) stc.do_job_get(Vehicle.getLaneID(vehID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Setting LaneID failed.");
             return null;
         }
     }
@@ -165,13 +165,13 @@ public class WVehicle {
             return (int) stc.do_job_get(Vehicle.getLaneIndex(vehID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Getting Lane Index failed.");
             return -1;
         }
     }
 
     /**
-     * @return Lane Index
+     * @return Lane Position as double, or -1 if failed.
      * @author Luca
      * */
     public double getLanePosition(){
@@ -179,13 +179,13 @@ public class WVehicle {
             return (double) stc.do_job_get(Vehicle.getLanePosition(vehID));
         }
         catch (Exception e){
-            e.printStackTrace();
-            return 0;
+            log.warning("Getting Lane Position failed.");
+            return -1.0d;
         }
     }
 
     /**
-     * @return Lane Index, or -1 if failed.
+     * @return Route Index, or -1 if failed.
      * @author Luca
      * */
     public int getRouteIndex(){
@@ -193,7 +193,7 @@ public class WVehicle {
             return (int) stc.do_job_get(Vehicle.getRouteIndex(vehID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Getting Route Index failed.");
             return -1;
         }
     }
@@ -208,7 +208,7 @@ public class WVehicle {
             return (double) stc.do_job_get(Vehicle.getMaxSpeed(vehID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Getting Max Speed failed.");
             return -1.0d;
         }
     }
@@ -222,7 +222,7 @@ public class WVehicle {
             return (double) stc.do_job_get(Vehicle.getSpeedDeviation(vehID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Getting Speed Deviation failed.");
             return -1.0d;
         }
     }
@@ -236,7 +236,7 @@ public class WVehicle {
             return (double) stc.do_job_get(Vehicle.getSpeedFactor(vehID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Getting Speed Factor failed.");
             return -1.0d;
         }
     }
@@ -251,7 +251,7 @@ public class WVehicle {
             return (double) stc.do_job_get(Vehicle.getAllowedSpeed(vehID));
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Getting Maximum allowed Speed failed.");
             return -1.0d;
         }
     }
@@ -269,7 +269,7 @@ public class WVehicle {
             return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Setting Speed failed.");
             return false;
         }
     }
@@ -285,7 +285,7 @@ public class WVehicle {
             return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Setting Maximum Speed failed.");
             return false;
         }
     }
@@ -301,7 +301,7 @@ public class WVehicle {
             return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Setting Speed Deviation failed.");
             return false;
         }
     }
@@ -318,7 +318,7 @@ public class WVehicle {
             return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            log.warning("Setting Speed Factor failed.");
             return false;
         }
     }

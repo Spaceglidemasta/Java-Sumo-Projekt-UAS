@@ -6,6 +6,8 @@ import de.tudresden.sumo.objects.SumoColor;
 import de.tudresden.sumo.objects.SumoGeometry;
 import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
+import org.group_three.constants.Documents;
+import org.group_three.constants.Sumo;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.utils.Formatting;
 
@@ -20,9 +22,9 @@ import java.util.List;
  * */
 public class WPolygon extends WObject {
 
-    private SumoColor color;
-    private SumoGeometry shape;
-    private String type;
+    private final SumoColor color;
+    private final SumoGeometry shape;
+    private final String type;
 
     public WPolygon(SimController sc,String id, SumoColor clr, SumoGeometry sh, String ty){
         super(sc, id);
@@ -31,8 +33,6 @@ public class WPolygon extends WObject {
         shape = sh;
         type = ty;
     }
-
-    public String getId() {return id;}
 
     public List<WPolygon> getAllPolys() {return simcon.getAllPolys();}
 
@@ -133,7 +133,7 @@ public class WPolygon extends WObject {
                                  int layer
     ){
 
-        String pid = Formatting.uniquegen("poly_", "");
+        String pid = Formatting.uniquegen(Sumo.DEFAULT_POLY_PREFIX, "");
 
         boolean response = simcon.jobset(Polygon.add(pid, shape, color, fill, type, layer));
 

@@ -1,7 +1,7 @@
 package org.group_three.service.records;
 
 import org.group_three.api.SimController;
-import org.group_three.constants.enums.AttributeStyle;
+import org.group_three.constants.enums.style.AttributeStyle;
 import org.group_three.debug.annotations.PrintStyle;
 import org.group_three.model.WEdge;
 

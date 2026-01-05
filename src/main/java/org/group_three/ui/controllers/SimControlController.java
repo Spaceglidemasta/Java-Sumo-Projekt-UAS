@@ -134,6 +134,8 @@ public class SimControlController {
 
 		simcon.step();
 		SimView2D.update();
+
+		StatisticsAnalyticsController.update();
 	}
 
 	/**

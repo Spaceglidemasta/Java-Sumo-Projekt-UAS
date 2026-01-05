@@ -40,7 +40,7 @@ public final class UI {
 	// A Vector2D to decide how far one can zoom in and out of the UI. (x = min, y = max)
 	public static final Vector2D zoomLimit = new Vector2D(0.1, 10);
 	// The limit to decide the minimum and maximum value of the speedModificator.
-	public static final Vector2D simulationSpeedLimit = new Vector2D(0.01, 50);
+	public static final Vector2D simulationSpeedLimit = new Vector2D(0.01, 25);
 	// The file extension filter data for the simulation open file chooser window.
 	public static final String[][][] simulationOpenFileExtensions = {
 			{ {"SUMO Config"}, {"*.sumocfg"} },
@@ -52,7 +52,7 @@ public final class UI {
 			{"CSV", "*.csv"}
 	};
 
-	public static final String recentlyOpenedDataFileName = "recentlyOpenedData.xml";
+	public static final String recentlyOpenedDataFileName = "recentlyOpenedData.json";
 
 	public static final double maxSimulationViewFps = 30;
 

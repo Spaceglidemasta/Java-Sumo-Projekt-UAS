@@ -3,6 +3,7 @@ package org.group_three.ui.controllers;
 import java.io.IOException;
 
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import org.group_three.constants.UI;
 import org.group_three.ui.*;
@@ -84,6 +85,11 @@ public class CanvasController {
 
 		tlTimingToggle.selectedProperty().addListener((_, _, value) -> {
 			UI.showTLTiming = value;
+			SimView2D.getWorld().requestUpdate();
+		});
+
+		vehicleSizeSlider.valueProperty().addListener((_, _, newValue) -> {
+			UI.vehicleScale = newValue.doubleValue();
 			SimView2D.getWorld().requestUpdate();
 		});
 	}
@@ -204,6 +210,8 @@ public class CanvasController {
 
 
 
+	@FXML
+	private Slider vehicleSizeSlider;
 
 
 

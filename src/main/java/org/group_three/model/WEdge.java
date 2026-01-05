@@ -2,6 +2,8 @@ package org.group_three.model;
 import de.tudresden.sumo.cmd.Edge;
 import de.tudresden.sumo.objects.SumoStringList;
 import org.group_three.api.SimController;
+import org.group_three.constants.Documents;
+import org.group_three.constants.SumoXMLReading;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.w3c.dom.Document;
@@ -174,7 +176,7 @@ public class WEdge extends WObject{
 
             Document doc;
 
-            if (network.getName().endsWith(".gz")) {
+            if (network.getName().endsWith(Documents.GZ_EXTENSION)) {
                 try (InputStream fis = new FileInputStream(network);
                      InputStream gis = new GZIPInputStream(fis)) {
 
@@ -186,7 +188,7 @@ public class WEdge extends WObject{
 
             doc.getDocumentElement().normalize();
 
-            NodeList edgeList = doc.getElementsByTagName("edge");
+            NodeList edgeList = doc.getElementsByTagName(SumoXMLReading.EDGE_ELEMENT);
 
             for (int i = 0; i < edgeList.getLength(); i++) {
                 Node edgeNode = edgeList.item(i);
@@ -194,10 +196,10 @@ public class WEdge extends WObject{
                 if (edgeNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element edgeElement = (Element) edgeNode;
 
-                    String id   = edgeElement.getAttribute("id");
-                    String _from = edgeElement.getAttribute("from");
-                    String _to   = edgeElement.getAttribute("to");
-                    String _name = edgeElement.getAttribute("name");
+                    String id   = edgeElement.getAttribute(SumoXMLReading.ID_ELEMENT);
+                    String _from = edgeElement.getAttribute(SumoXMLReading.FROM_ELEMENT);
+                    String _to   = edgeElement.getAttribute(SumoXMLReading.TO_ELEMENT);
+                    String _name = edgeElement.getAttribute(SumoXMLReading.NAME_ELEMENT);
 
                     if (_from.isEmpty() || _to.isEmpty()) {
                         continue;
@@ -205,7 +207,7 @@ public class WEdge extends WObject{
 
                     WEdge sr = new WEdge(simcon, _from, _to, id, _name);
 
-                    NodeList lanelist = edgeElement.getElementsByTagName("lane");
+                    NodeList lanelist = edgeElement.getElementsByTagName(SumoXMLReading.LANE_ELEMENT);
 
                     for(int j = 0; j < lanelist.getLength(); j++){
                         Node lanenode = lanelist.item(j);
@@ -214,7 +216,7 @@ public class WEdge extends WObject{
 
                             Element laneelement = (Element) lanenode;
 
-                            String _laneid = laneelement.getAttribute("id");
+                            String _laneid = laneelement.getAttribute(SumoXMLReading.ID_ELEMENT);
 
                             sr.addLane(_laneid);
 
