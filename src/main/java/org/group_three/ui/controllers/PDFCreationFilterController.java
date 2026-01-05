@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.group_three.api.SimController;
+import org.group_three.constants.DefaultStatisticNames;
 import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.debug.Debug;
@@ -53,22 +54,23 @@ public class PDFCreationFilterController {
 			return;
 		}
 
+        //add "0" at the beginning, so that no input resolves to 0
 		int lengthValue = Integer.parseInt("0" + length.getText());
-		//if (lengthValue == 0) lengthValue = 1;
+
 
 		simcon.queueryStats(
 
-                "Output_Collection",
+                DefaultStatisticNames.STATCOLLECTION_NAME,
 
-				"VehicleData",
+				DefaultStatisticNames.VEHSTAT_NAME,
 				avgSpeed.isSelected(),
 				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
-				"EdgeData",
+				DefaultStatisticNames.EDGESTAT_NAME,
 				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
 				lengthValue,
 
-                CSSStyle.DEFAULT
+                style.getValue()
 
 		);
 
