@@ -7,8 +7,7 @@ import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.model.*;
-import org.group_three.ui.controllers.BodyController;
-import org.group_three.ui.controllers.VehicleFilterController;
+import org.group_three.ui.controllers.Filter_Vehicle_Controller;
 import org.group_three.ui.world.*;
 
 import java.util.ArrayList;
@@ -163,11 +162,11 @@ public class SimView2D {
 			Debug.print(routeSelection.getClass() == WorldRoad.class);
 
 			if (routeSelection.getClass() == WorldRoad.class) {
-				((WorldRoad) routeSelection).roadDetailsController.routeSelected(selected);
+				((WorldRoad) routeSelection).detailsPanelRoadController.routeSelected(selected);
 			}
 
 			if (routeSelection.getClass() == WorldVehicle.class) {
-				((WorldVehicle) routeSelection).vehicleDetailsController.routeSelected(selected);
+				((WorldVehicle) routeSelection).detailsPanelVehicleController.routeSelected(selected);
 			}
 
 			routeSelection = null;
@@ -189,20 +188,20 @@ public class SimView2D {
 		}
 
 		// update details panel
-		//SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+		//SimView2D.selected.setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(SimView2D.selected.detailClassPath));
 	}
 
 	public static void clickInWorld(Vector2D pos) {
-		if (vehicleFilterController != null) {
-			vehicleFilterController.receivePosition(pos);
-			vehicleFilterController = null;
+		if (filterVehicleController != null) {
+			filterVehicleController.receivePosition(pos);
+			filterVehicleController = null;
 		}
 	}
 
-	private static VehicleFilterController vehicleFilterController;
+	private static Filter_Vehicle_Controller filterVehicleController;
 
-	public static void setRequestPosition(VehicleFilterController vehicleFilterController) {
-		SimView2D.vehicleFilterController = vehicleFilterController;
+	public static void setRequestPosition(Filter_Vehicle_Controller filterVehicleController) {
+		SimView2D.filterVehicleController = filterVehicleController;
 	}
 
 	//--------------------------------------------------SetterClassMethods--------------------------------------------------

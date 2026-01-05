@@ -16,7 +16,7 @@ import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.TrafficLightDetailsController;
+import org.group_three.ui.controllers.DetailsPanel_TrafficLight_Controller;
 
 /**
  * The class to render TrafficLights.
@@ -74,7 +74,7 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final Vector2D size;
-	private TrafficLightDetailsController trafficLightDetailsController;
+	private DetailsPanel_TrafficLight_Controller detailsPanelTrafficLightController;
 
 	//--------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -118,7 +118,7 @@ public class WorldTrafficLight extends WorldObject {
 
 		setInteractable(true);
 		setSphereCollision(size.y / 2);
-		detailClassPath = "/org/group_three/ui/fxml/TrafficLightDetails.fxml";
+		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_TrafficLight.fxml";
 
 		/*wTrafficLight.getPhaseIndex();
 		wLink.getTLIndex();
@@ -191,16 +191,16 @@ public class WorldTrafficLight extends WorldObject {
 
 	@Override
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
-		trafficLightDetailsController = fxmlLoader.getController();
-		trafficLightDetailsController.setup(this);
+		detailsPanelTrafficLightController = fxmlLoader.getController();
+		detailsPanelTrafficLightController.setup(this);
 	}
 
     @Override
     public void updateDetailsPanel() {
-        if (trafficLightDetailsController == null) {
+        if (detailsPanelTrafficLightController == null) {
             return;
         }
-        trafficLightDetailsController.update();
+        detailsPanelTrafficLightController.update();
     }
 
     /**

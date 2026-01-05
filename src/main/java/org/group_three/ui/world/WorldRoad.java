@@ -7,7 +7,7 @@ import org.group_three.constants.UI;
 import org.group_three.model.WEdge;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.RoadDetailsController;
+import org.group_three.ui.controllers.DetailsPanel_Road_Controller;
 
 /**
  * The class to represent roads in the world.
@@ -99,7 +99,7 @@ public class WorldRoad extends WorldObject {
 		this.id = id;
 		this.wEdge = wEdge;
 
-		detailClassPath = "/org/group_three/ui/fxml/RoadDetails.fxml";
+		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_Road.fxml";
 
 		from = start;
 		to = end;
@@ -124,7 +124,7 @@ public class WorldRoad extends WorldObject {
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	public RoadDetailsController roadDetailsController;
+	public DetailsPanel_Road_Controller detailsPanelRoadController;
 
 	/**
 	 * A method to set up the details panel when the object is selected.
@@ -134,14 +134,14 @@ public class WorldRoad extends WorldObject {
 	 */
 	@Override
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
-		roadDetailsController = fxmlLoader.getController();
-		roadDetailsController.setup(this);
+		detailsPanelRoadController = fxmlLoader.getController();
+		detailsPanelRoadController.setup(this);
 	}
 
 	@Override
 	public void deselect() {
-		if (roadDetailsController != null) {
-			roadDetailsController.deselect();
+		if (detailsPanelRoadController != null) {
+			detailsPanelRoadController.deselect();
 		}
 	}
 

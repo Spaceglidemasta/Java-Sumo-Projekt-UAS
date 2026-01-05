@@ -5,7 +5,7 @@
 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <fx:include source="MainWindow_Toolbar.fxml" />
-      <fx:include source="MainWindow_Body.fxml" VBox.vgrow="ALWAYS" />
+      <fx:include source="MainWindow_SimulationFrame.fxml" VBox.vgrow="ALWAYS" />
       <fx:include source="MainWindow_Tail.fxml" />
    </children>
 </VBox>

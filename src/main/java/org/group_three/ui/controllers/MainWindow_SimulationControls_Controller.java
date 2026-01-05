@@ -16,7 +16,7 @@ import org.group_three.ui.SimView2D;
  *
  * @author Joel
  */
-public class SimControlController {
+public class MainWindow_SimulationControls_Controller {
 
 	/**
 	 * The speed mod text field to display and change the value via ui.
@@ -79,7 +79,7 @@ public class SimControlController {
 	 * @author Joel
 	 */
 	public static void setPlay(boolean play) {
-		SimControlController.play = play;
+		MainWindow_SimulationControls_Controller.play = play;
 
 		if (play) {
 			timeline.play();
@@ -135,7 +135,7 @@ public class SimControlController {
 		simcon.step();
 		SimView2D.update();
 
-		StatisticsAnalyticsController.update();
+		StatisticsAnalytics_Controller.update();
 	}
 
 	/**

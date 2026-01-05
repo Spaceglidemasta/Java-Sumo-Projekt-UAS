@@ -6,16 +6,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.SimControlController;
-import org.group_three.ui.controllers.VehicleDetailsController;
-
-import java.rmi.server.UID;
-import java.util.Objects;
+import org.group_three.ui.controllers.DetailsPanel_Vehicle_Controller;
 
 import static org.group_three.ui.Meth.ClrToSumoClr;
 import static org.group_three.ui.Meth.SumoClrToClr;
@@ -85,7 +80,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	public VehicleDetailsController vehicleDetailsController;
+	public DetailsPanel_Vehicle_Controller detailsPanelVehicleController;
 
 	/**
 	 * The wVehicle object for this class.
@@ -128,7 +123,7 @@ public class WorldVehicle extends WorldObject {
 		this.wVehicle = wVehicle;
 		updateSim();
 
-		detailClassPath = "/org/group_three/ui/fxml/VehicleDetails.fxml";
+		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_Vehicle.fxml";
 		setInteractable(true);
 		setUseBoxCollision(true);
 		setBoxCollision(size.div(2));
@@ -267,8 +262,8 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@Override
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
-		vehicleDetailsController = fxmlLoader.getController();
-		vehicleDetailsController.setup(this);
+		detailsPanelVehicleController = fxmlLoader.getController();
+		detailsPanelVehicleController.setup(this);
 	}
 
 	/**
@@ -278,12 +273,12 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@Override
 	public void updateDetailsPanel() {
-		if (vehicleDetailsController == null) {
-			//Debug.print("vehicleDetailsController is invalid.");
+		if (detailsPanelVehicleController == null) {
+			//Debug.print("detailsPanelVehicleController is invalid.");
 			return;
 		}
 
-		vehicleDetailsController.update();
+		detailsPanelVehicleController.update();
 	}
 
 	/**
@@ -294,19 +289,19 @@ public class WorldVehicle extends WorldObject {
 	@Override
 	public void remove() {
 		super.remove();
-		if (vehicleDetailsController != null) vehicleDetailsController.kill();
+		if (detailsPanelVehicleController != null) detailsPanelVehicleController.kill();
 	}
 
 	@Override
 	public void select() {
 		super.select();
-		vehicleDetailsController.createWorlVehicleRoute();
+		detailsPanelVehicleController.createWorlVehicleRoute();
 	}
 
 	@Override
 	public void deselect() {
 		super.deselect();
-		vehicleDetailsController.removeWorlVehicleRoute();
+		detailsPanelVehicleController.removeWorlVehicleRoute();
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------

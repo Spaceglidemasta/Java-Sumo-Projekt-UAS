@@ -17,8 +17,6 @@ import org.group_three.ui.world.WorldObject;
 import org.group_three.ui.world.WorldRoad;
 import org.group_three.ui.world.WorldRoute;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -27,7 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author Joel
  */
-public class RoadDetailsController {
+public class DetailsPanel_Road_Controller {
 
 	/**
 	 * The world object id.

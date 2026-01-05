@@ -1,6 +1,5 @@
 package org.group_three.ui.world;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
@@ -8,12 +7,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.CanvasController;
-import org.group_three.ui.controllers.SimControlController;
+import org.group_three.ui.controllers.SimulationView_Controller;
+import org.group_three.ui.controllers.MainWindow_SimulationControls_Controller;
 
 import java.util.*;
 
@@ -151,8 +149,8 @@ public class World {
 	 * @author Joel
 	 */
 	public World() {
-		SimControlController.setPlay(false);
-		CanvasController.rotationIndicatorStatic.setRotate(0);
+		MainWindow_SimulationControls_Controller.setPlay(false);
+		SimulationView_Controller.rotationIndicatorStatic.setRotate(0);
 
 		timeline = new Timeline(new KeyFrame(Duration.seconds(1/UI.maxSimulationViewFps), e -> updateTick()) );
 		timeline.setCycleCount(Timeline.INDEFINITE);
@@ -256,7 +254,7 @@ public class World {
 		}
 
 		viewerRotation = rotation;
-		CanvasController.rotationIndicatorStatic.setRotate(360-rotation);
+		SimulationView_Controller.rotationIndicatorStatic.setRotate(360-rotation);
 
 		requestUpdate();
 	}

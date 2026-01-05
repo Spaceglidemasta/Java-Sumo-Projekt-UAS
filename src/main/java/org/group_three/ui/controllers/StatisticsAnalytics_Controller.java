@@ -1,24 +1,17 @@
 package org.group_three.ui.controllers;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ListView;
-import javafx.util.Duration;
 import org.group_three.api.SimController;
-import org.group_three.debug.Debug;
 import org.group_three.service.records.EdgeRec;
 import org.group_three.service.records.VehicleRec;
 
 
-import java.text.NumberFormat;
 import java.util.*;
 
-public class StatisticsAnalyticsController {
+public class StatisticsAnalytics_Controller {
 
 	@FXML
 	private LineChart<Number, Number> avgSpeed;

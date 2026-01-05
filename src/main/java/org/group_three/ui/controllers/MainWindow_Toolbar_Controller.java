@@ -29,10 +29,10 @@ import org.group_three.ui.SimView2D;
  *
  * @author Joel
  */
-public class ToolbarController {
+public class MainWindow_Toolbar_Controller {
 
 	private static final Logger log =
-			Logger.getLogger(ToolbarController.class.getName());
+			Logger.getLogger(MainWindow_Toolbar_Controller.class.getName());
 
 	// FX:ID's
 	@FXML
@@ -268,7 +268,7 @@ public class ToolbarController {
 
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-			((CreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).stage = pdfFilter;
 
 			pdfFilter.show();
 
@@ -311,7 +311,7 @@ public class ToolbarController {
 
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-			((CreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).stage = pdfFilter;
 
 			pdfFilter.show();
 
