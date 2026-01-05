@@ -63,10 +63,10 @@ public class PDFCreationFilterController {
 				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
 				DefaultStatisticNames.EDGESTAT_NAME,
-				edgeSort.getSelectionModel().getSelectedItem(),
+				edgeSort.getValue(),
 				Integer.parseInt("0" + length.getText()),
 
-                style.getSelectionModel().getSelectedItem()
+                style.getValue()
 
 		);
 
