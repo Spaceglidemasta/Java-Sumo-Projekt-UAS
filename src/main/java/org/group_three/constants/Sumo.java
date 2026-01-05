@@ -5,4 +5,7 @@ public final class Sumo {
 
     public static final String DEFAULT_VEHICLE = "DEFAULT_VEHTYPE";
 
+    public static final String DEFAULT_WVEHICLE_PREFIX = "wveh_";
+    public static final String DEFAULT_ROUTE_PREFIX = "r_";
+
 }

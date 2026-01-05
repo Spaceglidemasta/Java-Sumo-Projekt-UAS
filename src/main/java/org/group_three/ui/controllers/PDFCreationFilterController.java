@@ -1,21 +1,16 @@
 package org.group_three.ui.controllers;
 
-import de.tudresden.sumo.cmd.Edge;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.group_three.api.SimController;
-import org.group_three.constants.DefaultStatisticNames;
+import org.group_three.constants.DefaultStasticValues;
 import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.constants.enums.style.CSSStyle;
-import org.group_three.debug.Debug;
 import org.group_three.ui.Meth;
-
-import javax.swing.text.html.CSS;
 
 public class PDFCreationFilterController {
 
@@ -60,13 +55,13 @@ public class PDFCreationFilterController {
 
 		simcon.queueryStats(
 
-                DefaultStatisticNames.STATCOLLECTION_NAME,
+                DefaultStasticValues.STATCOLLECTION_NAME,
 
-				DefaultStatisticNames.VEHSTAT_NAME,
+				DefaultStasticValues.VEHSTAT_NAME,
 				avgSpeed.isSelected(),
 				(color.getValue().getOpacity() != 0) ? Meth.ClrToSumoClr(color.getValue()) : null,
 
-				DefaultStatisticNames.EDGESTAT_NAME,
+				DefaultStasticValues.EDGESTAT_NAME,
 				(EdgeSortOption) edgeSort.getSelectionModel().getSelectedItem(),
 				lengthValue,
 

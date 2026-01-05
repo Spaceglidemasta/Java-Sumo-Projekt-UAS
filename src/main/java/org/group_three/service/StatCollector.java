@@ -242,13 +242,12 @@ public class StatCollector implements Iterable<Statistic<?>> {
                     cssStyle
             );
 
-            String filename =  Formatting.uniquegen(name, ".pdf");
+            String filename = Formatting.uniquegen(name, ".pdf");
 
-            Path out = PathUtils.prepareOutputPath(
-                    filename
-            );
+            Path out = PathUtils.prepareOutputPath(filename);
 
-            if (buildPDF(html, out)) log.info("Statistics of " + filename + " were exported as a PDF successfully.");
+            if (buildPDF(html, out))
+                log.info("Statistics of " + filename + " were exported as a PDF successfully.");
 
 
         } catch (IOException e) {
