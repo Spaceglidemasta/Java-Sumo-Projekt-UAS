@@ -157,7 +157,7 @@ public class TrafficLightDetailsController {
 
 
     /**
-     * Default values
+     * Default constants.
      *
      * @author Leon
      */
