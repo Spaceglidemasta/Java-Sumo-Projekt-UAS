@@ -156,8 +156,14 @@ public class TrafficLightDetailsController {
     private static final Map<String, String> adaptiveState = new HashMap<>(); // "IDLE" or "GREEN"
 
 
+    /**
+     * Default constants.
+     *
+     * @author Leon
+     */
+    @SuppressWarnings("JavadocDeclaration")
     private static final String DEFAULT_PROGRAM_ID = "0";
-    private static final int DEFAUL_IDLE_TIME = 1000;
+    private static final int DEFAULT_IDLE_TIME = 1000;
     private static final int ADAPTIVE_CHECK_INTERVAL = 10;
     private static final int ADAPTIVE_GREEN_DURATION = 10;
 
@@ -509,7 +515,7 @@ public class TrafficLightDetailsController {
         SumoTLSController controller = wtl.getProgram();
         SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
         
-        SumoTLSPhase redPhase = new SumoTLSPhase(DEFAUL_IDLE_TIME, redState.toString());
+        SumoTLSPhase redPhase = new SumoTLSPhase(DEFAULT_IDLE_TIME, redState.toString());
         SumoTLSProgram newProgram = new SumoTLSProgram();
 
         newProgram.subID = program.subID;
@@ -520,7 +526,7 @@ public class TrafficLightDetailsController {
             newProgram.phases.add(redPhase);
         }
         
-        wtl.setPhaseLen(DEFAUL_IDLE_TIME);
+        wtl.setPhaseLen(DEFAULT_IDLE_TIME);
         wtl.setProgram(newProgram);
         adaptiveState.put(tlID, "IDLE");
         adaptiveStepCounters.put(tlID, 0);

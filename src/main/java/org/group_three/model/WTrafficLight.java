@@ -331,8 +331,8 @@ public class WTrafficLight extends WObject {
             else if(Objects.equals(state, "G"))   sc = new SumoColor(0,255,0,255  );
             else if(Objects.equals(state, "g"))   sc = new SumoColor(0,255,0,100  );
 
-            else if(Objects.equals(state, "Y"))   sc = new SumoColor(0,255,255,255);
-            else if(Objects.equals(state, "y"))   sc = new SumoColor(0,255,255,100);
+            else if(Objects.equals(state, "Y"))   sc = new SumoColor(255,255,0,255);
+            else if(Objects.equals(state, "y"))   sc = new SumoColor(255,255,0,100);
 
             allWlinks.get(i).setColor(sc);
 
