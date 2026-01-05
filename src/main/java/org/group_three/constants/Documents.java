@@ -18,8 +18,12 @@ public final class Documents {
     public final static String PDF_AUTHOR_SHIP = "group_three";
     public final static String DOC_LOCATION = "src/main/resources/org/group_three/documents/";
     public final static String STYLE_LOCATION = "src/main/resources/org/group_three/documents/style";
+    public final static String MD_TEMPLATE_NAME = "template.md";
 
-    public final static String ZIP_EXTENSION = ".gz";
+    public final static String GZ_EXTENSION = ".gz";
+    public final static String ZIP_EXTENSION = ".zip";
+    public final static String PDF_EXTENSION = ".pdf";
+    public final static String CSV_EXTENSION  = ".csv";
 
     public static final class Vars {
         public final static String HEADER = "{{H1}}";

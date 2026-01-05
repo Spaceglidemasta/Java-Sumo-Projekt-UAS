@@ -176,7 +176,7 @@ public class WEdge extends WObject{
 
             Document doc;
 
-            if (network.getName().endsWith(Documents.ZIP_EXTENSION)) {
+            if (network.getName().endsWith(Documents.GZ_EXTENSION)) {
                 try (InputStream fis = new FileInputStream(network);
                      InputStream gis = new GZIPInputStream(fis)) {
 

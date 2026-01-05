@@ -17,4 +17,6 @@ public final class DefaultStasticValues {
     public final static String ATT_EDGE_NAME_NAME = "Name";
     public final static String ATT_OCRATIO_NAME = "Occupancy Ratio";
     public final static String ATT_LENGTH_NAME = "Length";
+
+    public final static String NOT_AVAILABLE = "N/A";
 }

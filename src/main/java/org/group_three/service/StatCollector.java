@@ -16,6 +16,7 @@ import org.group_three.utils.PathUtils;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 
 
+import javax.print.Doc;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,6 +30,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
+
+import static org.group_three.utils.PathUtils.prepareOutputPath;
 
 /**<h1>StatCollector</h1>
  * A Collection of Stats. Supports additional features like group-exporting to .tar.gz.
@@ -175,9 +178,18 @@ public class StatCollector implements Iterable<Statistic<?>> {
      * */
     public boolean exportAsZip() {
 
-        String filename = Formatting.uniquegen(name, ".zip");
+        String filename = Formatting.uniquegen(name, Documents.ZIP_EXTENSION);
 
-        try (FileOutputStream fos = new FileOutputStream("output/" + filename);
+        Path target;
+
+        try {
+            target = prepareOutputPath(filename);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Output Directory could not be set-upped.", e);
+            return false;
+        }
+
+        try (OutputStream fos = Files.newOutputStream(target);
              ZipOutputStream zip = new ZipOutputStream(fos)) {
 
             int successful = 0;
@@ -216,9 +228,11 @@ public class StatCollector implements Iterable<Statistic<?>> {
 
         try {
 
-            String templatemd = Files.readString(
-                    Path.of(Documents.DOC_LOCATION + "template.md")
-            );
+            Path docs = Path.of(Documents.DOC_LOCATION);
+            Path templatePath = docs.resolve(Documents.MD_TEMPLATE_NAME);
+
+            String templatemd = Files.readString(templatePath);
+
             //very important. Your table syntax can be perfect, but you need this renderer.
             MutableDataSet options = new MutableDataSet();
             options.set(Parser.EXTENSIONS, List.of(TablesExtension.create()));
@@ -242,9 +256,9 @@ public class StatCollector implements Iterable<Statistic<?>> {
                     cssStyle
             );
 
-            String filename = Formatting.uniquegen(name, ".pdf");
+            String filename = Formatting.uniquegen(name, Documents.PDF_EXTENSION);
 
-            Path out = PathUtils.prepareOutputPath(filename);
+            Path out = prepareOutputPath(filename);
 
             if (buildPDF(html, out))
                 log.info("Statistics of " + filename + " were exported as a PDF successfully.");
