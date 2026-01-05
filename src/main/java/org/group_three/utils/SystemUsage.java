@@ -29,7 +29,7 @@ public class SystemUsage {
     private static final double GIGA_BYTE = 1073741824.0;
 
     /**
-     * Calls getProcessCpuLoad function which return a value between 0.0
+     * Calls getCpuLoad function which return a value between 0.0
      * and 1.0. Multipy that number by 100 and round to get final percentage.
      *
      * @return system CPU usage as a percentage (0-100), or 0 if the current CPU load
