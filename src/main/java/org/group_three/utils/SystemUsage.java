@@ -37,7 +37,7 @@ public class SystemUsage {
      * @author Leon
      */
     public static int getSystemCpuPercent() {
-            double procLoad = osInfo.getProcessCpuLoad();
+            double procLoad = osInfo.getCpuLoad();
             if (procLoad >= 0) {
                 return (int) Math.round(procLoad * 100);
             }
