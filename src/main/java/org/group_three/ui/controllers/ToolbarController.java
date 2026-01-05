@@ -1,26 +1,16 @@
 package org.group_three.ui.controllers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-// import java.io.IOException; for what was that?
 
-import de.tudresden.sumo.objects.SumoColor;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.group_three.Main;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
-import org.group_three.constants.enums.stats.EdgeSortOption;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
 
@@ -30,7 +20,6 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import org.group_three.service.StressTest;
 import org.group_three.ui.MainApp;
-import org.group_three.ui.Meth;
 import org.group_three.ui.RecentlyOpenedData;
 import org.group_three.ui.SimView2D;
 
@@ -42,8 +31,8 @@ import org.group_three.ui.SimView2D;
  */
 public class ToolbarController {
 
-    private static final Logger log =
-            Logger.getLogger(ToolbarController.class.getName());
+	private static final Logger log =
+			Logger.getLogger(ToolbarController.class.getName());
 
 	// FX:ID's
 	@FXML
@@ -74,7 +63,7 @@ public class ToolbarController {
 
 	/**
 	 * Adds the recently opened simulations to the "recent" menu tab
-     *
+	 *
 	 * @author Joel
 	 */
 	private void initializeOpenRecentList() {
@@ -94,8 +83,8 @@ public class ToolbarController {
 	}
 
 	/**
-     * Function to disable/reactivate the
-     * "close", "reload" and "export" buttons when simulation is loaded
+	 * Function to disable/reactivate the
+	 * "close", "reload" and "export" buttons when simulation is loaded
 	 *
 	 * @param disabled Param-Comment
 	 * @author Joel
@@ -111,8 +100,8 @@ public class ToolbarController {
 
 	/**
 	 * Function to activate buttons related to the simulation,
-     * such as "close" and add the opened simulation to
-     * the top of the list of recently opened simulations
+	 * such as "close" and add the opened simulation to
+	 * the top of the list of recently opened simulations
 	 *
 	 * @param path Takes in the path as String
 	 * @author Joel
@@ -138,7 +127,7 @@ public class ToolbarController {
 
 	/**
 	 * Function that tries to load the simulation from the passed in
-     * config or xml files
+	 * config or xml files
 	 *
 	 * @param paths takes in the path(s) of the opened file(s)
 	 * @author Joel
@@ -151,8 +140,8 @@ public class ToolbarController {
 
 		for (File path : paths) {
 			mergedPath
-                    .append(path.getAbsolutePath())
-                    .append("\n");
+					.append(path.getAbsolutePath())
+					.append("\n");
 		}
 
 		// don't attempt to load the same simulation if its currently loaded
@@ -171,9 +160,9 @@ public class ToolbarController {
 
 
 	/**
-     * Function for "open" button to open fileChooser,
-     * select a desired Sumo config or net as well as rou xml
-     * file and try to load the simulation
+	 * Function for "open" button to open fileChooser,
+	 * select a desired Sumo config or net as well as rou xml
+	 * file and try to load the simulation
 	 *
 	 * @author Joel
 	 */
@@ -223,18 +212,18 @@ public class ToolbarController {
 	private void onSimulationOpenRecentClicked(MenuItem item) {
 		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText());
 
-        List<File> files = new ArrayList<>();
+		List<File> files = new ArrayList<>();
 
-        for(String strfile : item.getText().split("\n")){
-            files.add(new File(strfile));
-        }
+		for (String strfile : item.getText().split("\n")) {
+			files.add(new File(strfile));
+		}
 
 		tryLoadingSimulation(files);
 	}
 
 	/**
 	 * Function to close the simulation if the
-     * "Close" button is clicked
+	 * "Close" button is clicked
 	 *
 	 * @author Joel
 	 */
@@ -249,6 +238,7 @@ public class ToolbarController {
 	/**
 	 * Function to reload the already loaded simulation
 	 * (Yet to be implemented)
+	 *
 	 * @author Joel
 	 */
 	@FXML
@@ -265,7 +255,7 @@ public class ToolbarController {
 	private void onExportCSV() {
 		Debug.toConsole("Simulation -> Export");
 
-		if(!SimController.isValid()) return;
+		if (!SimController.isValid()) return;
 
 		try {
 			Stage pdfFilter = new Stage();
@@ -293,7 +283,7 @@ public class ToolbarController {
 	 */
 	@FXML
 	private void onExportXML() {
-		if(!SimController.isValid()) return;
+		if (!SimController.isValid()) return;
 
 		SimController.getMainsimcon().saveState(".xml");
 
@@ -307,7 +297,7 @@ public class ToolbarController {
 	@FXML
 	private void onExportPDF() {
 
-		if(!SimController.isValid()) return;
+		if (!SimController.isValid()) return;
 
 		try {
 			Stage pdfFilter = new Stage();
@@ -323,24 +313,20 @@ public class ToolbarController {
 
 			pdfFilter.show();
 
-			} catch (IOException e) {
-				log.severe("Filter Stage for PDF export could not be rendered.");
-			}
+		} catch (IOException e) {
+			log.severe("Filter Stage for PDF export could not be rendered.");
 		}
-
-
 	}
 
 
-
-    /**
-     * Function to perform a stresstest
-     *
-     * @author Leon
-     */
-    @FXML
-    private void onStressTestClick(){
-        new StressTest().Test();
-        }
+	/**
+	 * Function to perform a stresstest
+	 *
+	 * @author Leon
+	 */
+	@FXML
+	private void onStressTestClick() {
+		new StressTest().Test();
+	}
 
 }
