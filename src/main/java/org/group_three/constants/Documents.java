@@ -19,6 +19,8 @@ public final class Documents {
     public final static String DOC_LOCATION = "src/main/resources/org/group_three/documents/";
     public final static String STYLE_LOCATION = "src/main/resources/org/group_three/documents/style";
 
+    public final static String ZIP_EXTENSION = ".gz";
+
     public static final class Vars {
         public final static String HEADER = "{{H1}}";
         public final static String DESCRIPTION = "{{DSCPT}}";

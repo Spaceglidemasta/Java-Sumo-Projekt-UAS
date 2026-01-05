@@ -7,5 +7,6 @@ public final class Sumo {
 
     public static final String DEFAULT_WVEHICLE_PREFIX = "wveh_";
     public static final String DEFAULT_ROUTE_PREFIX = "r_";
+    public static final String DEFAULT_POLY_PREFIX = "poly_";
 
 }

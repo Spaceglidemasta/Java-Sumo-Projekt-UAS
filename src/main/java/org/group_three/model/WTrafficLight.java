@@ -325,14 +325,14 @@ public class WTrafficLight extends WObject {
 
             SumoColor sc = new SumoColor();
 
-            if( Objects.equals(state, "R"))        sc = new SumoColor(255,0,0,255);
-            else if(Objects.equals(state, "r"))    sc = new SumoColor(255,0,0,100);
+            if     (Objects.equals(state, "R"))   sc = new SumoColor(255,0,0,255  );
+            else if(Objects.equals(state, "r"))   sc = new SumoColor(255,0,0,100  );
 
-            else if(Objects.equals(state, "G"))   sc = new SumoColor(0,255,0,255);
-            else if(Objects.equals(state, "g"))   sc = new SumoColor(0,255,0,100);
+            else if(Objects.equals(state, "G"))   sc = new SumoColor(0,255,0,255  );
+            else if(Objects.equals(state, "g"))   sc = new SumoColor(0,255,0,100  );
 
-
-            else if(Objects.equals(state, "y") || Objects.equals(state, "Y"))   sc = new SumoColor(255,255,0,255);
+            else if(Objects.equals(state, "Y"))   sc = new SumoColor(0,255,255,255);
+            else if(Objects.equals(state, "y"))   sc = new SumoColor(0,255,255,100);
 
             allWlinks.get(i).setColor(sc);
 
@@ -367,9 +367,11 @@ public class WTrafficLight extends WObject {
                 LinkedList<SumoPosition2D> shape = simcon.getLaneShape(LID);
 
                 Vector2D last = new Vector2D(shape.getLast());
-                Vector2D stlast = new Vector2D(shape.get(shape.size() - 2));
+                Vector2D secondToLast = new Vector2D(
+                        shape.get(shape.size() - 2)
+                );
 
-	            double angle = last.getDirectionAngle(stlast);
+	            double angle = last.getDirectionAngle(secondToLast);
 
                 double width = simcon.getLaneWidth(LID);
                 double len = 0.5;
