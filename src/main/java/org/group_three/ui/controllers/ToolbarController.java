@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 // import java.io.IOException; for what was that?
 
 import de.tudresden.sumo.objects.SumoColor;
@@ -40,6 +41,9 @@ import org.group_three.ui.SimView2D;
  * @author Joel
  */
 public class ToolbarController {
+
+    private static final Logger log =
+            Logger.getLogger(ToolbarController.class.getName());
 
 	// FX:ID's
 	@FXML
@@ -146,19 +150,21 @@ public class ToolbarController {
 		StringBuilder mergedPath = new StringBuilder();
 
 		for (File path : paths) {
-			mergedPath.append(path.getAbsolutePath() + "\n");
+			mergedPath
+                    .append(path.getAbsolutePath())
+                    .append("\n");
 		}
 
 		// don't attempt to load the same simulation if its currently loaded
 		if (mergedPath.toString().equals(loadedSimulation))
 			return; // ----------- add a check to not display the currently loaded file in recently opend
 
-
 		try {
 			SimController.loadSimulation(paths);
 			setLoadedSimulation(mergedPath.toString());
+
 		} catch (InvalidFilesSelected ifs) {
-			ifs.printStackTrace();
+			log.severe("Simulation could not be loaded.");
 		}
 
 	}
@@ -317,8 +323,9 @@ public class ToolbarController {
 
 			pdfFilter.show();
 
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			} catch (IOException e) {
+				log.severe("Filter Stage for PDF export could not be rendered.");
+			}
 		}
 
 

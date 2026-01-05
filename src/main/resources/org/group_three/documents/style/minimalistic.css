@@ -1,0 +1,52 @@
+@page {
+    @bottom-center {
+    content:  counter(page) " / " counter(pages);
+    }
+}
+
+.page-break {
+    page-break-before: always;
+    page-break-after: always;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 40px;
+    line-height: 1.7;
+}
+
+h1 {
+    color: #000000;
+    text-align: center;
+    font-size: 40px;
+    border-bottom: 1px solid #00000034;
+}
+
+h2 {
+  color: #000000;
+  font-size: 30px;
+}
+
+table{
+  margin: auto;
+  width: 60%;
+  border-collapse: collapse;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #222;
+  border-radius: 10px;
+  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.24);
+
+}
+
+th {
+  background-color: #fff;
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}

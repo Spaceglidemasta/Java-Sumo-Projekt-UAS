@@ -4,6 +4,7 @@ import de.tudresden.sumo.cmd.*;
 import de.tudresden.sumo.objects.*;
 import de.tudresden.sumo.util.SumoCommand;
 import it.polito.appeal.traci.SumoTraciConnection;
+import org.group_three.constants.DefaultStatisticNames;
 import org.group_three.constants.Settings;
 import org.group_three.constants.Sumo;
 import org.group_three.constants.enums.stats.EdgeSortOption;
@@ -650,7 +651,10 @@ public class SimController implements AutoCloseable{
 
         Statistic<VehicleRec> vehStat = new Statistic<>(
                 vehicleStatName,
-                "Vehicle ID", "Average Speed", "Color");
+                DefaultStatisticNames.ATT_VEH_ID_NAME,
+                DefaultStatisticNames.ATT_AVG_SPEED_NAME,
+                DefaultStatisticNames.ATT_COLOR_NAME
+        );
 
         for(VehicleRec vrec : VehicleRec.collect(this)){
             vehStat.add(vrec);
@@ -678,7 +682,13 @@ public class SimController implements AutoCloseable{
 
         //second stat
 
-        Statistic<EdgeRec> edgeStat = new Statistic<>(edgeStatName, "Name", "Occupancy Ratio", "Length (m)");
+        Statistic<EdgeRec> edgeStat = new Statistic<>(
+                edgeStatName,
+                DefaultStatisticNames.ATT_EDGE_NAME_NAME,
+                DefaultStatisticNames.ATT_OCRATIO_NAME,
+                DefaultStatisticNames.ATT_LENGTH_NAME
+        );
+
         for(EdgeRec erec : EdgeRec.collect(this)){
             edgeStat.add(erec);
         }
@@ -707,6 +717,7 @@ public class SimController implements AutoCloseable{
 
         //third stat
 
+        /*
         Statistic<VehDensPerSecond> vehDensStat = new Statistic<>("VehicleDensityPerEdge",
                 getAllroads()
                         .values()
@@ -717,7 +728,8 @@ public class SimController implements AutoCloseable{
         for(VehDensPerSecond vdrec : VehDensPerSecond.collect(this)){
             vehDensStat.add(vdrec);
         }
-        //statcol.addStatistic(vehDensStat);
+        statcol.addStatistic(vehDensStat);
+         */
 
         statcol.setCssStyle(style);
 
