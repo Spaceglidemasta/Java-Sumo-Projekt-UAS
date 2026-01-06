@@ -20,7 +20,7 @@ public class StatisticsAnalytics_Controller {
 	private ListView<String> edgeDensity;
 	private static ListView<String> edgeDensityRef;
 
-	private static XYChart.Series<Number, Number> seriesVehicle = new XYChart.Series<>();
+	private static final XYChart.Series<Number, Number> seriesVehicle = new XYChart.Series<>();
 
 
 

@@ -218,10 +218,7 @@ public class SimView2D {
 	public static void newWorld() {
 		if (world != null) world.timeline.stop();
 
-		world = new World();
-
-		world.worldStaticRenderTarget = worldStaticRenderTarget;
-		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
+		world = new World(worldStaticRenderTarget);
 
 		// bind to view size changes to adjust viewer position offset
 		renderTargetBounds.widthProperty().addListener((_, _, newValue) ->

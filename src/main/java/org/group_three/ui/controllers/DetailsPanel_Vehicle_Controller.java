@@ -160,7 +160,7 @@ public class DetailsPanel_Vehicle_Controller {
 
 				worldRoute = new WorldRoute(
 						worldVehicle.getWorld(),
-						worldVehicle.getWorld().worldStaticRenderTarget,
+						worldVehicle.getWorld().getRenderTarget(),
 						"",
 						worldVehicle.getwVehicle().getRouteEdges());
 
@@ -176,7 +176,7 @@ public class DetailsPanel_Vehicle_Controller {
 	public void createWorlVehicleRoute() {
 		worldRoute = new WorldRoute(
 				worldVehicle.getWorld(),
-				worldVehicle.getWorld().worldStaticRenderTarget,
+				worldVehicle.getWorld().getRenderTarget(),
 				"",
 				worldVehicle.getwVehicle().getRouteEdges());
 	}

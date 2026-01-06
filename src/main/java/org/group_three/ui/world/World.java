@@ -4,7 +4,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.group_three.constants.UI;
 import org.group_three.debug.annotations.MayReturnNull;
@@ -94,42 +93,20 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private List<WorldObject> worldObjects = new ArrayList<WorldObject>();
+	private final List<WorldObject> worldObjects = new ArrayList<WorldObject>();
+
 
 	/**
-	 * The worlds base color.
-	 * Visualizes the world bounds.
+	 * The graphics context of the canvas which is being used to draw.
 	 *
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private final Color worldColor = UI.worldColor;
+	private final GraphicsContext graphicsContext;
 
-	public Color getBackgroundColor() {
-		return backgroundColor;
+	public Canvas getRenderTarget() {
+		return renderTarget;
 	}
-
-	public void setBackgroundColor(Color backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
-
-	/**
-	 * The background color of the world view.
-	 * Visualizes out of bounds.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private Color backgroundColor = UI.worldColor;
-
-
-	/**
-	 * The graphics context of the canvas which is being used to drawn on it.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	public GraphicsContext graphicsContext;
 
 	/**
 	 * The canvas to draw on.
@@ -137,7 +114,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	public Canvas worldStaticRenderTarget;
+	private final Canvas renderTarget;
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -149,7 +126,10 @@ public class World {
 	 *
 	 * @author Joel
 	 */
-	public World() {
+	public World(Canvas renderTarget) {
+		this.renderTarget = renderTarget;
+		graphicsContext = renderTarget.getGraphicsContext2D();
+
 		MainWindow_SimulationControls_Controller.setPlay(false);
 		SimulationView_Controller.rotationIndicatorStatic.setRotate(0);
 		StatisticsAnalytics_Controller.clear();
@@ -323,16 +303,6 @@ public class World {
 		this.worldOffset = worldOffset;
 	}
 
-	/**
-	 * Sets the world object list.
-	 *
-	 * @param worldObjects The new world object list.
-	 * @author Joel
-	 */
-	public void setWorldObjects(List<WorldObject> worldObjects) {
-		this.worldObjects = worldObjects;
-	}
-
 	//--------------------------------------------------SetterMethods---------------------------------------------------
 
 
@@ -437,8 +407,8 @@ public class World {
 	 */
 	private void update() {
 		graphicsContext.save();
-		graphicsContext.setFill(UI.highContrast ? UI.worldHighContrastColor : backgroundColor);
-		graphicsContext.fillRect(0, 0, worldStaticRenderTarget.getWidth(), worldStaticRenderTarget.getHeight());
+		graphicsContext.setFill(UI.highContrast ? UI.worldHighContrastColor : UI.worldColor);
+		graphicsContext.fillRect(0, 0, renderTarget.getWidth(), renderTarget.getHeight());
 		graphicsContext.restore();
 
 		for (WorldObject object : worldObjects) {
