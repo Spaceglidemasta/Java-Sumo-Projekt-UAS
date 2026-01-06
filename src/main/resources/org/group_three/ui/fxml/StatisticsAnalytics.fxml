@@ -16,7 +16,7 @@
                 <NumberAxis animated="false" autoRanging="false" label="Time (s)" minorTickCount="0" minorTickLength="0.0" minorTickVisible="false" side="BOTTOM" tickUnit="1.0" upperBound="30.0" />
               </xAxis>
               <yAxis>
-                <NumberAxis animated="false" side="LEFT" />
+                <NumberAxis animated="false" label="km/h" side="LEFT" tickLabelGap="0.0" />
               </yAxis>
             </LineChart>
             <AnchorPane VBox.vgrow="ALWAYS">
