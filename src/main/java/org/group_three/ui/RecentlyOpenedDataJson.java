@@ -18,14 +18,6 @@ public class RecentlyOpenedDataJson {
 	public List<String> sims;
 
 	/**
-	 * The empty constructor to potentially load data in later.
-	 *
-	 * @author Joel
-	 */
-	public RecentlyOpenedDataJson() {
-	}
-
-	/**
 	 * The normal constructor to load this JSON data class with data.
 	 *
 	 * @param sims The list of recently loaded simulations.
@@ -33,4 +25,5 @@ public class RecentlyOpenedDataJson {
 	public RecentlyOpenedDataJson(List<String> sims) {
 		this.sims = sims;
 	}
+
 }

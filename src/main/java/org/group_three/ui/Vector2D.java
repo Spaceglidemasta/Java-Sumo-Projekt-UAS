@@ -2,8 +2,6 @@ package org.group_three.ui;
 
 import de.tudresden.sumo.objects.SumoPosition2D;
 
-import java.util.Objects;
-
 /**
  * The Vector2D class contains two double components: x and y.
  * Can be used to represent 2D world coordinates for example.
