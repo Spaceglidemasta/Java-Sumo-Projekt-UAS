@@ -40,8 +40,6 @@ public class MainWindow_Toolbar_Controller {
 	@FXML
 	private MenuItem simulationClose;
 	@FXML
-	private MenuItem simulationReload;
-	@FXML
 	private MenuItem stressTest;
 	@FXML
 	private Menu export;
@@ -91,7 +89,6 @@ public class MainWindow_Toolbar_Controller {
 	 */
 	private void setSimulationButtonStates(boolean disabled) {
 		simulationClose.setDisable(disabled);
-		simulationReload.setDisable(true); // not implemented yet
 		export.setDisable(disabled);
 		stressTest.setDisable(disabled);
 	}
