@@ -12,6 +12,7 @@ import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
 import org.group_three.ui.controllers.SimulationView_Controller;
 import org.group_three.ui.controllers.MainWindow_SimulationControls_Controller;
+import org.group_three.ui.controllers.StatisticsAnalytics_Controller;
 
 import java.util.*;
 
@@ -151,6 +152,7 @@ public class World {
 	public World() {
 		MainWindow_SimulationControls_Controller.setPlay(false);
 		SimulationView_Controller.rotationIndicatorStatic.setRotate(0);
+		StatisticsAnalytics_Controller.clear();
 
 		timeline = new Timeline(new KeyFrame(Duration.seconds(1/UI.maxSimulationViewFps), e -> updateTick()) );
 		timeline.setCycleCount(Timeline.INDEFINITE);

@@ -29,6 +29,7 @@ public class MainWindow_SimulationControls_Controller {
 
 	@FXML
 	private ToggleButton playPauseButton;
+	private static ToggleButton playPauseButtonFixed;
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -86,6 +87,8 @@ public class MainWindow_SimulationControls_Controller {
 		} else {
 			timeline.stop();
 		}
+
+		playPauseButtonFixed.setSelected(play);
 	}
 
 	//---------------------------------------------------ClassMethods---------------------------------------------------
@@ -101,6 +104,7 @@ public class MainWindow_SimulationControls_Controller {
 	@FXML
 	public void initialize() {
 		Debug.print("Controls loaded.");
+		playPauseButtonFixed = playPauseButton;
 
 		timeline = new Timeline(
 				new KeyFrame(Duration.seconds(1), e -> onTick())

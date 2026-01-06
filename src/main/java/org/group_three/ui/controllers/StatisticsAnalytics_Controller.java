@@ -37,6 +37,17 @@ public class StatisticsAnalytics_Controller {
 		update();
 	}
 
+	public static void clear() {
+		avgVehicleSpeed.clear();
+		for (int i = 0; i <= 30; i++) {
+			avgVehicleSpeed.add(0);
+		}
+
+		edgeDensityRef.getItems().clear();
+
+		update();
+	}
+
 	public static void update() {
 		avgVehicleSpeed.addFirst(getAverageSpeed());
 
