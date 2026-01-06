@@ -358,7 +358,7 @@ public abstract class WorldObject {
 			this.rotation -= 360;
 		}
 
-		Debug.toConsole(rotation);
+        //Debug.toConsole(rotation);
 	}
 
 	/**
