@@ -180,6 +180,7 @@ public class RoadDetailsController {
 				if (wVehicle != null) wVehicle.setColor(Meth.ClrToSumoClr(vColor));
 			}
 		}
+        Debug.toConsole(vehicleSpawnAmount.textProperty().getValue() + " Vehicle(s) spawned on " + worldRoad.getId());
 	}
 
 	private String targetRouteId;
