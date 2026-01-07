@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import org.group_three.api.SimController;
+import org.group_three.debug.Debug;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.world.WorldTrafficLight;
 import java.util.ArrayList;
@@ -319,10 +320,14 @@ public class DetailsPanel_TrafficLight_Controller {
             // This sets the duration for the phase right after the change is applied.
             // If this is not implemented, the user would have to wait one entire cycle to see the effect.
             wtl.setPhaseLen(newDuration);
+            Debug.toConsole("Traffic light phase duration set to " + userInputDuration);
+        } else {
+            newDuration = (int) program.phases.get(currentPhaseIdx).duration;
         }
 
         if (pendingRYGState != null) {
             newPhase = pendingRYGState;
+            Debug.toConsole("Color of " + worldTrafficLight.getwLink().getTLIndex() + ". traffic light changed");
         } else {
             newPhase = program.phases.get(currentPhaseIdx).phasedef;
         }
@@ -343,6 +348,7 @@ public class DetailsPanel_TrafficLight_Controller {
             }
         }
         wtl.setProgram(newProgram);
+
     }
 
 
@@ -593,6 +599,7 @@ public class DetailsPanel_TrafficLight_Controller {
             setIdleState(currentTLID);
             adaptiveStateButton.setText("Static mode");
             setControlsEnabled(false);
+            Debug.toConsole("Adaptive mode enabled");
 
         } else {
             if (adaptiveSavedStates.containsKey(currentTLID)) {

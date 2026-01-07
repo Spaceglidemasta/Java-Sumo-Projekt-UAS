@@ -44,7 +44,7 @@ public class Keyboard {
 					if (!keyCodes.contains(e.getCode())) {
 						keyCodes.add(e.getCode());
 
-						Debug.toConsole("Pressed: " + e.getCode());
+                        //Debug.toConsole("Pressed: " + e.getCode());
 					}
 				}
 		);
