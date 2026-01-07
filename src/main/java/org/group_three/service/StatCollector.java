@@ -12,14 +12,13 @@ import org.group_three.constants.Documents;
 import org.group_three.constants.enums.style.CSSStyle;
 import org.group_three.model.WEdge;
 import org.group_three.utils.Formatting;
-import org.group_three.utils.PathUtils;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 
 
-import javax.print.Doc;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -228,10 +227,18 @@ public class StatCollector implements Iterable<Statistic<?>> {
 
         try {
 
-            Path docs = Path.of(Documents.DOC_LOCATION);
-            Path templatePath = docs.resolve(Documents.MD_TEMPLATE_NAME);
+            String templatemd;
 
-            String templatemd = Files.readString(templatePath);
+            try(InputStream is = getClass().getResourceAsStream(Documents.TEMPLATEMD_PATH)){
+
+                assert is != null;
+                templatemd = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+
+            } catch (IOException io){
+                log.warning("template.md is not found or could not be opened.");
+                return false;
+            }
+
 
             //very important. Your table syntax can be perfect, but you need this renderer.
             MutableDataSet options = new MutableDataSet();
