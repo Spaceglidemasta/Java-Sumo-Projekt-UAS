@@ -235,17 +235,6 @@ public class MainWindow_Toolbar_Controller {
 	}
 
 	/**
-	 * Function to reload the already loaded simulation
-	 * (Yet to be implemented)
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private void onSimulationReloadClicked() {
-		Debug.toConsole("Simulation -> Reload");
-	}
-
-	/**
 	 * A method to export gathered data from the simulation to a file.
 	 *
 	 * @author Joel
@@ -332,20 +321,11 @@ public class MainWindow_Toolbar_Controller {
 
 	@FXML
 	private void onUserGuide() {
-		openLink();
-	}
-
-	public static void openLink(String url) {
 		try {
-			Desktop.getDesktop().browse(new URI(url));
+			Desktop.getDesktop().browse(new URI(UI.userGuideLink));
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.severe("Failed to open UserGuide.");
 		}
-	}
-
-	@FXML
-	private void onAbout() {
-
 	}
 
 }
