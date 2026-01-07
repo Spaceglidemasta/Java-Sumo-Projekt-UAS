@@ -5,9 +5,8 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import org.group_three.debug.Debug;
-import org.group_three.service.Statistic;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -86,20 +85,23 @@ public class ColoredIconManager {
 		// try loading the image from its path,
 		// can fail if the path is incorrect
 		try {
-			loadedImage = new Image(getClass().getResourceAsStream(iconPath));
+			InputStream resourceStream = getClass().getResourceAsStream(iconPath);
+			if (resourceStream != null) {
+				loadedImage = new Image(resourceStream);
+				log.info("ImageLoaded: " + iconPath);
+			} else {
+				log.warning("ImageNotLoaded: " + iconPath);
+			}
+
 		} catch (Exception e) {
-			//throw new RuntimeException(e);
+			log.severe("Image failed to load unexpectedly.");
 		}
 
 		this.baseIcon = loadedImage;
 
-		if (this.baseIcon != null) {
-			iconWidth = (int) baseIcon.getWidth();
-			iconHeight = (int) baseIcon.getHeight();
-		} else {
-			this.iconWidth = 0;
-			this.iconHeight = 0;
-		}
+		// set icon size
+		iconWidth = this.baseIcon != null ? (int) baseIcon.getWidth() : 0;
+		iconHeight = this.baseIcon != null ? (int) baseIcon.getHeight() : 0;
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------
@@ -142,7 +144,7 @@ public class ColoredIconManager {
 		PixelReader reader = baseIcon.getPixelReader();
 		PixelWriter writer = tinted.getPixelWriter();
 
-
+		// loop through every pixel and multiply it by the given color value, tinting it
 		for (int y = 0; y < iconHeight; y++) {
 			for (int x = 0; x < iconWidth; x++) {
 				Color c = reader.getColor(x, y);
