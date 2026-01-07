@@ -59,11 +59,9 @@
             <MenuItem mnemonicParsing="false" onAction="#onExportPDF" text=".pdf" />
          </items>
       </Menu>
-      <Menu fx:id="export1" disable="true" mnemonicParsing="false" text="Help">
+      <Menu mnemonicParsing="false" text="Help">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#onUserGuide" text="User Guide" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#onAbout" text="About" />
          </items>
       </Menu>
    </menus>
