@@ -10,11 +10,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The data manager for the recently opened functionality of the ui.
+ * Used to load/save/modify the data.
+ *
+ * @author Joel
+ */
 public class RecentlyOpenedData {
-	public RecentlyOpenedData() {}
 
+	/**
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private static List<String> simulations = new ArrayList<>();
 
+	/**
+	 * @author Joel
+	 */
+	public RecentlyOpenedData() {
+	}
+
+	/**
+	 * @author Joel
+	 */
 	public static void load() {
 		File rOD = new File(UI.recentlyOpenedDataFileName);
 
@@ -39,17 +57,35 @@ public class RecentlyOpenedData {
 
 	}
 
+	/**
+	 * @param sim
+	 * @author Joel
+	 */
 	public static void removeSimulation(String sim) {
 		simulations.remove(sim);
 		save();
 	}
+
+	/**
+	 * @param sim
+	 * @author Joel
+	 */
 	public static void addSimulation(String sim) {
 		simulations.addFirst(sim);
 		save();
 	}
 
-	public static List<String> getSimulations() {return simulations;}
+	/**
+	 * @return
+	 * @author Joel
+	 */
+	public static List<String> getSimulations() {
+		return simulations;
+	}
 
+	/**
+	 * @author Joel
+	 */
 	public static void save() {
 		try {
 			FileWriter fileWriter = new FileWriter(UI.recentlyOpenedDataFileName);
@@ -68,26 +104,29 @@ public class RecentlyOpenedData {
 		}
 	}
 
+	/**
+	 * @author Joel
+	 */
 	public static void validate() {
-			List<String> fails = new ArrayList<String>() {
-			};
+		List<String> fails = new ArrayList<String>() {
+		};
 
-			for (String path : getSimulations()) {
-				try {
-					for (String subPath : path.split("\n")) {
-						if (!(new File(subPath).exists() && !subPath.isEmpty() )) {
-							fails.add(path);
-							break;
-						}
+		for (String path : getSimulations()) {
+			try {
+				for (String subPath : path.split("\n")) {
+					if (!(new File(subPath).exists() && !subPath.isEmpty())) {
+						fails.add(path);
+						break;
 					}
-				} catch (Exception e) {
-					//throw new RuntimeException(e);
 				}
+			} catch (Exception e) {
+				//throw new RuntimeException(e);
 			}
+		}
 
-			for (String path : fails) {
-				removeSimulation(path);
-			}
+		for (String path : fails) {
+			removeSimulation(path);
+		}
 
 	}
 }

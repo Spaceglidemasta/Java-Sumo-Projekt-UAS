@@ -37,15 +37,13 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 
-<MenuBar stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.ToolbarController">
+<MenuBar stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.MainWindow_Toolbar_Controller">
    <menus>
       <Menu mnemonicParsing="false" text="Simulation">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#onSimulationOpenClicked" text="Open…" />
             <Menu fx:id="simulationOpenRecent" disable="true" mnemonicParsing="false" text="Open Recent" />
             <MenuItem fx:id="simulationClose" disable="true" mnemonicParsing="false" onAction="#onSimulationCloseClicked" text="Close" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="simulationReload" disable="true" mnemonicParsing="false" onAction="#onSimulationReloadClicked" text="Reload" />
          </items>
       </Menu>
       <Menu mnemonicParsing="false" text="Other">

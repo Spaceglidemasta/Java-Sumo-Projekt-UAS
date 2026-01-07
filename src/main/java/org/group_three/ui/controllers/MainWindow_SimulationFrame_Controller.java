@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +19,7 @@ import org.group_three.ui.SimView2D;
  *
  * @author Joel
  */
-public class BodyController {
+public class MainWindow_SimulationFrame_Controller {
 
 	/**
 	 * The subscene that will contain the simulation views.
@@ -61,7 +60,7 @@ public class BodyController {
 
 
 	/**
-	 * The method to initialize the BodyController.
+	 * The method to initialize the MainWindow_SimulationFrame_Controller.
 	 * Gets called after FXML body creation.
 	 *
 	 * @throws IOException The fxml loading might throw an IOException.
@@ -83,7 +82,7 @@ public class BodyController {
 			case 0: // 2d view
 				// try loading fxml file
 				FXMLLoader loader = new FXMLLoader(
-						getClass().getResource("/org/group_three/ui/fxml/CanvasView.fxml")
+						getClass().getResource("/org/group_three/ui/fxml/SimulationView.fxml")
 				);
 
 				Parent root = loader.load();

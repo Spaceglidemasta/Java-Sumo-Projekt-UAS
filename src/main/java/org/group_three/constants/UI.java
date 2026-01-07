@@ -5,7 +5,6 @@ import org.group_three.ui.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public final class UI {
     private UI() {} //prevents init.
@@ -14,12 +13,12 @@ public final class UI {
 	// and the name when you hover over the window in the taskbar.
 	public static final String appTitle = "Java-Sumo-Projekt-UAS";
 	// The image which is loaded as the main window icon and as the icon in the taskbar.
-	public static final String appIcon = "/org/group_three/ui/icons/SumoLogoAdjustments3.png";
+	public static final String appIcon = "/org/group_three/ui/icons/icon.png";
 	// The main FXML class which is loaded into the main window.
 	// Other UI/FXML parts will be loaded into it.
 	public static final String appFXML = "/org/group_three/ui/fxml/MainWindow.fxml";
 	// The base icon to be used and colored for cars.
-	public static final String carIcon = "/org/group_three/ui/icons/carCustom2.png";
+	public static final String carIcon = "/org/group_three/ui/icons/carIcon.png";
 	// The default sphere collision color of world objects.
 	public static final Color sphereCollisionColor = new Color(1,0,0,0.1);
 	// The default box collision color of world objects.

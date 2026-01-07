@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class VehicleFilterController {
+public class Filter_Vehicle_Controller {
 
 	@FXML private TextField speedMin;
 
@@ -65,13 +65,13 @@ public class VehicleFilterController {
 	@FXML
 	private void onColorAddButtonClicked() {
 		FXMLLoader loader = new FXMLLoader(
-				SimView2D.class.getResource("/org/group_three/ui/fxml/VehicleFilter_ColorListEntry.fxml")
+				SimView2D.class.getResource("/org/group_three/ui/fxml/Filter_VehicleColorElement.fxml")
 		);
 
 		Node detailsNode;
 		try {
 			detailsNode = loader.load();
-			((VehicleFilterColorController) loader.getController()).setup(this);
+			((Filter_VehicleColorElement_Controller) loader.getController()).setup(this);
 
 			colorFilterList.getChildren().add(colorFilterList.getChildren().size()-1, detailsNode);
 
@@ -83,7 +83,7 @@ public class VehicleFilterController {
 
 	@FXML
 	private void onSelectPos() {
-		SimView2D.setRequestPosition(this);
+		SimView2D.requestPosition(this);
 	}
 
 	public void receivePosition(Vector2D pos) {

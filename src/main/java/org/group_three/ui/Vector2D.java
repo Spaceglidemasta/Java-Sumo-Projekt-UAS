@@ -2,8 +2,6 @@ package org.group_three.ui;
 
 import de.tudresden.sumo.objects.SumoPosition2D;
 
-import java.util.Objects;
-
 /**
  * The Vector2D class contains two double components: x and y.
  * Can be used to represent 2D world coordinates for example.
@@ -14,7 +12,7 @@ import java.util.Objects;
  */
 public class Vector2D {
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The x component of the Vector2D.
@@ -32,10 +30,10 @@ public class Vector2D {
 	@SuppressWarnings("JavadocDeclaration")
 	public double y = 0;
 
-	//--------------------------------------------------MemberVariables--------------------------------------------------
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The constructor to initialize the Vector2D with its x- and y-components being 0.
@@ -77,10 +75,10 @@ public class Vector2D {
 		this.y = sumoPosition2D.y;
 	}
 
-	//--------------------------------------------------Constructors--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Overrides the toString() method to return the Vector2D properly as a string.
@@ -302,6 +300,6 @@ public class Vector2D {
 		return this.getRelativeLocation(to).length();
 	}
 
-	//--------------------------------------------------Methods--------------------------------------------------
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }

@@ -10,7 +10,7 @@ import org.group_three.debug.Debug;
 import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.BodyController;
+import org.group_three.ui.controllers.MainWindow_SimulationFrame_Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -731,7 +731,7 @@ public abstract class WorldObject {
 	public void select() {
 		selected = true;
 		Debug.print(id + ": Selected.");
-		setupDetailsPanel(BodyController.setDetailsPanel(detailClassPath));
+		setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(detailClassPath));
 	}
 	public void deselect() {
 		selected = false;

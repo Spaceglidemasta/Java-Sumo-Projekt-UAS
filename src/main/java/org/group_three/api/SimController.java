@@ -1535,12 +1535,4 @@ public class SimController implements AutoCloseable{
         }
     }
 
-	/**
-	 * A method to directly check if getMainsimcon() is not NULL.
-	 * @return If getMainsimcon() is not NULL.
-	 * @author Joel
-	 */
-	public static boolean isValid() {
-		return getMainsimcon() != null;
-	}
 }

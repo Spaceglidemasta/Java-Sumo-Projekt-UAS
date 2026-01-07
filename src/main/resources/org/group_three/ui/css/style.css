@@ -1,5 +1,5 @@
 .playPause-button {
-    -fx-background-image: url("../icons/play-button.png");
+    -fx-background-image: url("../icons/playButtonIcon.png");
     -fx-background-size: 28 28;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -7,7 +7,7 @@
 }
 
 .playPause-button:selected {
-    -fx-background-image: url("../icons/pause-button.png");
+    -fx-background-image: url("../icons/pauseButtonIcon.png");
 }
 
 /*.playPause-button:hover {
@@ -16,7 +16,7 @@
 
 
 .step-button {
-    -fx-background-image: url("../icons/next-button.png");
+    -fx-background-image: url("../icons/nextButtonIcon.png");
     -fx-background-size: 28 28;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;

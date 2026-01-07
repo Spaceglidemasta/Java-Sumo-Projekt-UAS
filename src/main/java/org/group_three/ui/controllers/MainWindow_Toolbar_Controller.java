@@ -29,18 +29,16 @@ import org.group_three.ui.SimView2D;
  *
  * @author Joel
  */
-public class ToolbarController {
+public class MainWindow_Toolbar_Controller {
 
 	private static final Logger log =
-			Logger.getLogger(ToolbarController.class.getName());
+			Logger.getLogger(MainWindow_Toolbar_Controller.class.getName());
 
 	// FX:ID's
 	@FXML
 	private Menu simulationOpenRecent;
 	@FXML
 	private MenuItem simulationClose;
-	@FXML
-	private MenuItem simulationReload;
 	@FXML
 	private MenuItem stressTest;
 	@FXML
@@ -91,7 +89,6 @@ public class ToolbarController {
 	 */
 	private void setSimulationButtonStates(boolean disabled) {
 		simulationClose.setDisable(disabled);
-		simulationReload.setDisable(true); // not implemented yet
 		export.setDisable(disabled);
 		stressTest.setDisable(disabled);
 	}
@@ -255,7 +252,8 @@ public class ToolbarController {
 	private void onExportCSV() {
 		Debug.toConsole("Simulation -> Export");
 
-		if (!SimController.isValid()) return;
+		// validate sim controller
+		if (SimController.getMainsimcon() == null) return;
 
 		try {
 			Stage pdfFilter = new Stage();
@@ -263,11 +261,11 @@ public class ToolbarController {
 			pdfFilter.getIcons().add(MainApp.getAppIcon());
 			pdfFilter.setResizable(false);
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/SaveWindow_CreationFilter.fxml"));
 
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-			((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).stage = pdfFilter;
 
 			pdfFilter.show();
 
@@ -283,10 +281,11 @@ public class ToolbarController {
 	 */
 	@FXML
 	private void onExportXML() {
-		if (!SimController.isValid()) return;
+		// get sim controller and validate
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
-		SimController.getMainsimcon().saveState(".xml");
-
+		simcon.saveState(".xml");
 	}
 
 	/**
@@ -296,8 +295,8 @@ public class ToolbarController {
 	 */
 	@FXML
 	private void onExportPDF() {
-
-		if (!SimController.isValid()) return;
+		// validate sim controller
+		if (SimController.getMainsimcon() == null) return;
 
 		try {
 			Stage pdfFilter = new Stage();
@@ -305,11 +304,11 @@ public class ToolbarController {
 			pdfFilter.getIcons().add(MainApp.getAppIcon());
 			pdfFilter.setResizable(false);
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/PDFCreationFilter.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/SaveWindow_CreationFilter.fxml"));
 
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-			((PDFCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
+			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).stage = pdfFilter;
 
 			pdfFilter.show();
 
