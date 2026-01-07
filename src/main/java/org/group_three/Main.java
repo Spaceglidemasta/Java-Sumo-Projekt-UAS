@@ -27,8 +27,7 @@ public class Main {
 		log.info("Program Start");
 
 		// Create and start the GUI
-		MainApp aMainGui = new MainApp();
-		aMainGui.start(args);
+		new MainApp().start(args);
 
 		// Close main simulation on program end to make sure all threads get killed
 		SimController simcon = SimController.getMainsimcon();

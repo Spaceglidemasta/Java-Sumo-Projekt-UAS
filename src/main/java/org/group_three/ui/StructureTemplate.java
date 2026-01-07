@@ -1,11 +1,20 @@
 package org.group_three.ui;
 
+import org.group_three.api.SimController;
+
 import java.util.logging.Logger;
 
 public class StructureTemplate {
 
+	/*
+
 	// Logger
-	private static final Logger log = Logger.getLogger(StructureTemplate.class.getName());
+	private static final Logger log = Logger.getLogger(.class.getName());
+
+	SimController simcon = SimController.getMainsimcon();
+	if (simcon == null) return;
+
+	*/
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
