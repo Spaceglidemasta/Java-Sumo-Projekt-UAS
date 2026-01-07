@@ -3,6 +3,8 @@ package org.group_three.constants;
 import org.group_three.constants.enums.style.CSSStyle;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
@@ -16,9 +18,12 @@ public final class Documents {
 
     public final static String OUTPUT_DIR_NAME = "output";
     public final static String PDF_AUTHOR_SHIP = "group_three";
-    public final static String DOC_LOCATION = "src/main/resources/org/group_three/documents/";
-    public final static String STYLE_LOCATION = "src/main/resources/org/group_three/documents/style";
-    public final static String MD_TEMPLATE_NAME = "template.md";
+    ///relative to resources
+    public final static String DOC_LOCATION = "/org/group_three/documents/";
+    ///relative to resources
+    public final static String STYLE_LOCATION = "/org/group_three/documents/style";
+    ///relative to resources
+    public final static String TEMPLATEMD_PATH = "/org/group_three/documents/template.md";
 
     public final static String GZ_EXTENSION = ".gz";
     public final static String ZIP_EXTENSION = ".zip";
@@ -65,24 +70,33 @@ public final class Documents {
      * @see Documents#wrapHTMLbody(String, CSSStyle)
      * @author Luca
      * */
-    public static String getCSS(CSSStyle select) throws IOException {
+    public static String getCSS(CSSStyle select) {
+        String fileName;
 
-        Path style = Path.of(STYLE_LOCATION);
+        switch (select) {
+            case YOUNG -> fileName = "young.css";
+            case SERIOUS -> fileName = "serious.css";
+            case MINIMALISTIC -> fileName = "minimalistic.css";
+            case NO_STYLE -> { return ""; }
+            default -> { return defaultCSS; }
+        }
 
-        return switch (select) {
-            case YOUNG -> Files.readString(
-                    style.resolve("young.css")
-            );
-            case SERIOUS -> Files.readString(
-                    style.resolve("serious.css")
-            );
-            case MINIMALISTIC -> Files.readString(
-                    style.resolve("minimalistic.css")
-            );
-            case NO_STYLE -> "";
-            default -> defaultCSS;
-        };
+        String resourcePath = STYLE_LOCATION + "/" + fileName;
 
+        try (InputStream is = Documents.class.getResourceAsStream(resourcePath)) {
+            if (is == null) {
+                log.warning("CSS file not found in resources: " + resourcePath);
+
+                return defaultCSS;
+            }
+            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
+
+        } catch (IOException e) {
+            log.warning("CSS file could not be found: ");
+
+            return defaultCSS;
+
+        }
     }
 
     /**
