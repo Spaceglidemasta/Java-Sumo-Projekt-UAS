@@ -83,7 +83,7 @@ public class Filter_Vehicle_Controller {
 
 	@FXML
 	private void onSelectPos() {
-		SimView2D.setRequestPosition(this);
+		SimView2D.requestPosition(this);
 	}
 
 	public void receivePosition(Vector2D pos) {

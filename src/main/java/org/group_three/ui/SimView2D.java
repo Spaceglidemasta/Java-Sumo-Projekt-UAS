@@ -1,7 +1,6 @@
 package org.group_three.ui;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
@@ -40,16 +39,6 @@ public class SimView2D {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private static Pane renderTargetBounds;
-
-
-	/**
-	 * The graphics context which is used to draw on a canvas.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private static GraphicsContext worldStaticRenderTarget_GraphicsContext;
-
 
 	/**
 	 * The world reference, which will change on runtime but should always be valid after ini.
@@ -95,6 +84,8 @@ public class SimView2D {
 	@SuppressWarnings("JavadocDeclaration")
 	private static final List<String> vehicleIds = new ArrayList<>();
 
+	private static Filter_Vehicle_Controller filterVehicleController;
+
 	//--------------------------------------------------ClassVariables--------------------------------------------------
 
 
@@ -110,7 +101,6 @@ public class SimView2D {
 	public static void initialize(Canvas wSRT, Pane rTB) {
 		worldStaticRenderTarget = wSRT;
 		renderTargetBounds = rTB;
-		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 
 		// create new world on ini so the default view is just an empty world instead of undefined.
 		newWorld();
@@ -119,7 +109,7 @@ public class SimView2D {
 	//--------------------------------------------------InitializeClassMethods--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++GetterSetterClassMethods+++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Gets the currently selected world object.
@@ -132,21 +122,6 @@ public class SimView2D {
 	public static WorldObject getSelected() {
 		return selected;
 	}
-
-	/**
-	 * Gets the currently active world.
-	 *
-	 * @return The currently active world.
-	 * @author Joel
-	 */
-	public static World getWorld() {
-		return world;
-	}
-
-	//--------------------------------------------------GetterClassMethods--------------------------------------------------
-
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A setter method to set the currently selected world object.
@@ -191,23 +166,21 @@ public class SimView2D {
 		//SimView2D.selected.setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(SimView2D.selected.detailClassPath));
 	}
 
-	public static void clickInWorld(Vector2D pos) {
-		if (filterVehicleController != null) {
-			filterVehicleController.receivePosition(pos);
-			filterVehicleController = null;
-		}
+
+	/**
+	 * Gets the currently active world.
+	 *
+	 * @return The currently active world.
+	 * @author Joel
+	 */
+	public static World getWorld() {
+		return world;
 	}
 
-	private static Filter_Vehicle_Controller filterVehicleController;
-
-	public static void setRequestPosition(Filter_Vehicle_Controller filterVehicleController) {
-		SimView2D.filterVehicleController = filterVehicleController;
-	}
-
-	//--------------------------------------------------SetterClassMethods--------------------------------------------------
+	//---------------------------------------------GetterSetterClassMethods---------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The method to create a new world.
@@ -490,6 +463,29 @@ public class SimView2D {
 		world.requestUpdate();
 	}
 
-	//--------------------------------------------------ClassMethods--------------------------------------------------
+
+	/**
+	 * A method to request world position data for the vehicle filter.
+	 * @param filterVehicleController The controller that requests the position.
+	 * @author Joel
+	 */
+	public static void requestPosition(Filter_Vehicle_Controller filterVehicleController) {
+		SimView2D.filterVehicleController = filterVehicleController;
+	}
+
+
+	/**
+	 * A method to interact with the world base don a position.
+	 * @param pos The position in the world.
+	 * @author Joel
+	 */
+	public static void clickInWorld(Vector2D pos) {
+		if (filterVehicleController != null) {
+			filterVehicleController.receivePosition(pos);
+			filterVehicleController = null;
+		}
+	}
+
+	//---------------------------------------------------ClassMethods---------------------------------------------------
 
 }
