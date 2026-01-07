@@ -1,6 +1,11 @@
 package org.group_three.ui;
 
+import java.util.logging.Logger;
+
 public class StructureTemplate {
+
+	// Logger
+	private static final Logger log = Logger.getLogger(.class.getName());
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 

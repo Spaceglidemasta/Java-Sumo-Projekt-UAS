@@ -41,7 +41,6 @@ public final class Meth {
 	 * @return The lerped Vector2D.
 	 * @author Joel
 	 */
-	@SuppressWarnings("unused")
 	public static Vector2D lerp(Vector2D v0, Vector2D v1, double lerp) {
 		return v0.add(v0.sub(v1).mul(lerp));
 	}
@@ -63,10 +62,10 @@ public final class Meth {
 	/**
 	 * A method to get the relative location(vector) of two vectors in world (non-relative) space.
 	 *
-	 * @param location         Param-Comment
-	 * @param rotation         Param-Comment
-	 * @param relativeLocation Param-Comment
-	 * @return Return-Comment
+	 * @param location         start location
+	 * @param rotation         start rotation
+	 * @param relativeLocation second location
+	 * @return the relative location from the start location to the second lcoation
 	 * @author Joel
 	 * @see #addRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation)
 	 */
@@ -87,10 +86,10 @@ public final class Meth {
 	/**
 	 * A method to add a relative location to a world space vector.
 	 *
-	 * @param location         Param-Comment
-	 * @param rotation         Param-Comment
-	 * @param relativeLocation Param-Comment
-	 * @return Return-Comment
+	 * @param location         start location
+	 * @param rotation         start rotation
+	 * @param relativeLocation location to add
+	 * @return The new location by combining both given locations.
 	 * @author Joel
 	 * @see #getRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation)
 	 */
@@ -108,9 +107,9 @@ public final class Meth {
 	/**
 	 * basically just does double - double right now, might change
 	 *
-	 * @param rotation         Param-Comment
-	 * @param relativeRotation Param-Comment
-	 * @return Return-Comment
+	 * @param rotation         Start rotation
+	 * @param relativeRotation second rotation
+	 * @return the difference between both rotations
 	 * @author Joel
 	 * @see #addRelativeRotation(double rotation, double relativeRotation)
 	 */
@@ -122,9 +121,9 @@ public final class Meth {
 	/**
 	 * basically just does double + double right now, might change
 	 *
-	 * @param rotation         Param-Comment
-	 * @param relativeRotation Param-Comment
-	 * @return Return-Comment
+	 * @param rotation         start rotation
+	 * @param relativeRotation rotation to add
+	 * @return The start rotation + the second rotation
 	 * @author Joel
 	 * @see #getRelativeRotation(double rotation, double relativeRotation)
 	 */
@@ -193,35 +192,38 @@ public final class Meth {
 	 * @return The length of all Vector2D's together. -1 if failed.
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public static double getVector2DListLength(List<Vector2D> list) {
 		if (list.size() < 2) return -1;
 
 		double length = 0;
-		for (int i = 0; i < list.size()-1; i++) {
-			length += getRelativeLocation(list.get(i), 0, list.get(i+1)).length();
+		for (int i = 0; i < list.size() - 1; i++) {
+			length += getRelativeLocation(list.get(i), 0, list.get(i + 1)).length();
 		}
 
 		return length;
 	}
 
 
-    /**
-     * Calculates the sum of all elements contained in the given List.
-     * @param list The Iterable containing numbers
-     * @return the sum
-     * @author Luca
-     * @see WEdge#getVehDensitySum()
-     * */
-    public static double sumOfList(Iterable<? extends Number> list){
+	/**
+	 * Calculates the sum of all elements contained in the given List.
+	 *
+	 * @param list The Iterable containing numbers
+	 * @return the sum
+	 * @author Luca
+	 * @see WEdge#getVehDensitySum()
+	 *
+	 */
+	public static double sumOfList(Iterable<? extends Number> list) {
 
-        double out = 0;
+		double out = 0;
 
-        for(Number num : list){
-            out += num.doubleValue();
-        }
+		for (Number num : list) {
+			out += num.doubleValue();
+		}
 
-        return out;
-    }
+		return out;
+	}
 
 	//---------------------------------------------------ClassMethods---------------------------------------------------
 
