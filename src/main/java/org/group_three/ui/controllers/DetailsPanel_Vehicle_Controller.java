@@ -7,7 +7,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import org.group_three.api.SimController;
 import org.group_three.debug.Debug;
-import org.group_three.ui.Meth;
 import org.group_three.ui.SimView2D;
 import org.group_three.ui.world.*;
 
@@ -16,7 +15,7 @@ import org.group_three.ui.world.*;
  *
  * @author Joel
  */
-public class VehicleDetailsController {
+public class DetailsPanel_Vehicle_Controller {
 
 	/**
 	 * The world object id.
@@ -161,7 +160,7 @@ public class VehicleDetailsController {
 
 				worldRoute = new WorldRoute(
 						worldVehicle.getWorld(),
-						worldVehicle.getWorld().worldStaticRenderTarget,
+						worldVehicle.getWorld().getRenderTarget(),
 						"",
 						worldVehicle.getwVehicle().getRouteEdges());
 
@@ -177,7 +176,7 @@ public class VehicleDetailsController {
 	public void createWorlVehicleRoute() {
 		worldRoute = new WorldRoute(
 				worldVehicle.getWorld(),
-				worldVehicle.getWorld().worldStaticRenderTarget,
+				worldVehicle.getWorld().getRenderTarget(),
 				"",
 				worldVehicle.getwVehicle().getRouteEdges());
 	}

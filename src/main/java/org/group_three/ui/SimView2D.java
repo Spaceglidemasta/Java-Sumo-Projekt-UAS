@@ -1,14 +1,12 @@
 package org.group_three.ui;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.model.*;
-import org.group_three.ui.controllers.BodyController;
-import org.group_three.ui.controllers.VehicleFilterController;
+import org.group_three.ui.controllers.Filter_Vehicle_Controller;
 import org.group_three.ui.world.*;
 
 import java.util.ArrayList;
@@ -41,16 +39,6 @@ public class SimView2D {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private static Pane renderTargetBounds;
-
-
-	/**
-	 * The graphics context which is used to draw on a canvas.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private static GraphicsContext worldStaticRenderTarget_GraphicsContext;
-
 
 	/**
 	 * The world reference, which will change on runtime but should always be valid after ini.
@@ -96,6 +84,8 @@ public class SimView2D {
 	@SuppressWarnings("JavadocDeclaration")
 	private static final List<String> vehicleIds = new ArrayList<>();
 
+	private static Filter_Vehicle_Controller filterVehicleController;
+
 	//--------------------------------------------------ClassVariables--------------------------------------------------
 
 
@@ -111,7 +101,6 @@ public class SimView2D {
 	public static void initialize(Canvas wSRT, Pane rTB) {
 		worldStaticRenderTarget = wSRT;
 		renderTargetBounds = rTB;
-		worldStaticRenderTarget_GraphicsContext = worldStaticRenderTarget.getGraphicsContext2D();
 
 		// create new world on ini so the default view is just an empty world instead of undefined.
 		newWorld();
@@ -120,7 +109,7 @@ public class SimView2D {
 	//--------------------------------------------------InitializeClassMethods--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++GetterSetterClassMethods+++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Gets the currently selected world object.
@@ -133,21 +122,6 @@ public class SimView2D {
 	public static WorldObject getSelected() {
 		return selected;
 	}
-
-	/**
-	 * Gets the currently active world.
-	 *
-	 * @return The currently active world.
-	 * @author Joel
-	 */
-	public static World getWorld() {
-		return world;
-	}
-
-	//--------------------------------------------------GetterClassMethods--------------------------------------------------
-
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A setter method to set the currently selected world object.
@@ -163,11 +137,11 @@ public class SimView2D {
 			Debug.print(routeSelection.getClass() == WorldRoad.class);
 
 			if (routeSelection.getClass() == WorldRoad.class) {
-				((WorldRoad) routeSelection).roadDetailsController.routeSelected(selected);
+				((WorldRoad) routeSelection).detailsPanelRoadController.routeSelected(selected);
 			}
 
 			if (routeSelection.getClass() == WorldVehicle.class) {
-				((WorldVehicle) routeSelection).vehicleDetailsController.routeSelected(selected);
+				((WorldVehicle) routeSelection).detailsPanelVehicleController.routeSelected(selected);
 			}
 
 			routeSelection = null;
@@ -189,26 +163,24 @@ public class SimView2D {
 		}
 
 		// update details panel
-		//SimView2D.selected.setupDetailsPanel(BodyController.setDetailsPanel(SimView2D.selected.detailClassPath));
+		//SimView2D.selected.setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(SimView2D.selected.detailClassPath));
 	}
 
-	public static void clickInWorld(Vector2D pos) {
-		if (vehicleFilterController != null) {
-			vehicleFilterController.receivePosition(pos);
-			vehicleFilterController = null;
-		}
+
+	/**
+	 * Gets the currently active world.
+	 *
+	 * @return The currently active world.
+	 * @author Joel
+	 */
+	public static World getWorld() {
+		return world;
 	}
 
-	private static VehicleFilterController vehicleFilterController;
-
-	public static void setRequestPosition(VehicleFilterController vehicleFilterController) {
-		SimView2D.vehicleFilterController = vehicleFilterController;
-	}
-
-	//--------------------------------------------------SetterClassMethods--------------------------------------------------
+	//---------------------------------------------GetterSetterClassMethods---------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The method to create a new world.
@@ -219,10 +191,7 @@ public class SimView2D {
 	public static void newWorld() {
 		if (world != null) world.timeline.stop();
 
-		world = new World();
-
-		world.worldStaticRenderTarget = worldStaticRenderTarget;
-		world.graphicsContext = worldStaticRenderTarget_GraphicsContext;
+		world = new World(worldStaticRenderTarget);
 
 		// bind to view size changes to adjust viewer position offset
 		renderTargetBounds.widthProperty().addListener((_, _, newValue) ->
@@ -494,6 +463,29 @@ public class SimView2D {
 		world.requestUpdate();
 	}
 
-	//--------------------------------------------------ClassMethods--------------------------------------------------
+
+	/**
+	 * A method to request world position data for the vehicle filter.
+	 * @param filterVehicleController The controller that requests the position.
+	 * @author Joel
+	 */
+	public static void requestPosition(Filter_Vehicle_Controller filterVehicleController) {
+		SimView2D.filterVehicleController = filterVehicleController;
+	}
+
+
+	/**
+	 * A method to interact with the world base don a position.
+	 * @param pos The position in the world.
+	 * @author Joel
+	 */
+	public static void clickInWorld(Vector2D pos) {
+		if (filterVehicleController != null) {
+			filterVehicleController.receivePosition(pos);
+			filterVehicleController = null;
+		}
+	}
+
+	//---------------------------------------------------ClassMethods---------------------------------------------------
 
 }

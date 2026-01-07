@@ -42,7 +42,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.BodyController">
+<AnchorPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.MainWindow_SimulationFrame_Controller">
    <children>
       <SplitPane dividerPositions="0.7" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
@@ -59,7 +59,7 @@
                   </Pane>
                   <StackPane pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <fx:include scaleX="0.8" scaleY="0.8" scaleZ="0.8" source="SimulationControls.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" StackPane.alignment="BOTTOM_CENTER" />
+                        <fx:include scaleX="0.8" scaleY="0.8" scaleZ="0.8" source="MainWindow_SimulationControls.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" StackPane.alignment="BOTTOM_CENTER" />
                      </children>
                   </StackPane>
                </children>
@@ -77,7 +77,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <fx:include source="VehicleFilter.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <fx:include source="Filter_Vehicle.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                         </content>

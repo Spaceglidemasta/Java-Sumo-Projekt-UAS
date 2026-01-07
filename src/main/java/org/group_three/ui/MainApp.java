@@ -11,7 +11,7 @@ import javafx.scene.*;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import org.group_three.debug.annotations.MayReturnNull;
-import org.group_three.ui.controllers.TailController;
+import org.group_three.ui.controllers.MainWindow_Tail_Controller;
 
 /**
  * The MainApp class which is the GUI.
@@ -77,7 +77,7 @@ public class MainApp extends Application {
                 if (lastTime == 0) lastTime = now;
 
                 if (now - lastTime >= 1_000_000_000L) {
-                    TailController.setFPS(frames);
+                    MainWindow_Tail_Controller.setFPS(frames);
                     frames = 0;
                     lastTime = now;
                 }

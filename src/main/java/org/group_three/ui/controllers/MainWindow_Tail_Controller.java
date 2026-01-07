@@ -14,7 +14,7 @@ import org.group_three.utils.SystemUsage;
  *
  * @author Joel
  */
-public class TailController {
+public class MainWindow_Tail_Controller {
 
 	/**
 	 * The default initialize method.

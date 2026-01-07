@@ -1,24 +1,17 @@
 package org.group_three.ui.controllers;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ListView;
-import javafx.util.Duration;
 import org.group_three.api.SimController;
-import org.group_three.debug.Debug;
 import org.group_three.service.records.EdgeRec;
 import org.group_three.service.records.VehicleRec;
 
 
-import java.text.NumberFormat;
 import java.util.*;
 
-public class StatisticsAnalyticsController {
+public class StatisticsAnalytics_Controller {
 
 	@FXML
 	private LineChart<Number, Number> avgSpeed;
@@ -27,7 +20,7 @@ public class StatisticsAnalyticsController {
 	private ListView<String> edgeDensity;
 	private static ListView<String> edgeDensityRef;
 
-	private static XYChart.Series<Number, Number> seriesVehicle = new XYChart.Series<>();
+	private static final XYChart.Series<Number, Number> seriesVehicle = new XYChart.Series<>();
 
 
 
@@ -40,6 +33,17 @@ public class StatisticsAnalyticsController {
 		for (int i = 0; i <= 30; i++) {
 			avgVehicleSpeed.add(0);
 		}
+
+		update();
+	}
+
+	public static void clear() {
+		avgVehicleSpeed.clear();
+		for (int i = 0; i <= 30; i++) {
+			avgVehicleSpeed.add(0);
+		}
+
+		edgeDensityRef.getItems().clear();
 
 		update();
 	}
@@ -65,7 +69,9 @@ public class StatisticsAnalyticsController {
 	private static List<Integer> avgVehicleSpeed = new ArrayList<>();
 
 	private static int getAverageSpeed() {
-		if (!SimController.isValid()) return 0;
+		// get sim controller and validate
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return 0;
 
 		double v = 0;
 		List<VehicleRec> vehicleRecs = VehicleRec.collect(SimController.getMainsimcon());
@@ -78,7 +84,9 @@ public class StatisticsAnalyticsController {
 	}
 
 	private static List<String> getEdgeDensityData() {
-		if (!SimController.isValid()) return new ArrayList<>();
+		// get sim controller and validate
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return new ArrayList<>();
 
 		List<EdgeRec> EdgeRecs = EdgeRec.collect(SimController.getMainsimcon());
 
