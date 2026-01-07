@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 public class StructureTemplate {
 
 	// Logger
-	private static final Logger log = Logger.getLogger(.class.getName());
+	private static final Logger log = Logger.getLogger(StructureTemplate.class.getName());
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 

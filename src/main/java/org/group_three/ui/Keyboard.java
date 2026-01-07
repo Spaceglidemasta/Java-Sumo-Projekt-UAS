@@ -2,7 +2,6 @@ package org.group_three.ui;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import org.group_three.debug.Debug;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class Keyboard {
 	//--------------------------------------------------ClassVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++InitializeClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The method to initialize this class.
@@ -43,8 +42,6 @@ public class Keyboard {
 				e -> {
 					if (!keyCodes.contains(e.getCode())) {
 						keyCodes.add(e.getCode());
-
-                        //Debug.toConsole("Pressed: " + e.getCode());
 					}
 				}
 		);
@@ -55,7 +52,7 @@ public class Keyboard {
 		);
 	}
 
-	//--------------------------------------------------InitializeClassMethods--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
