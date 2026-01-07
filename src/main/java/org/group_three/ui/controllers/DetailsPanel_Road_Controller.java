@@ -227,7 +227,7 @@ public class DetailsPanel_Road_Controller {
 
 		// check if selection is a world road and if not cancel
 		if (worldObject.getClass() != WorldRoad.class) {
-			log.severe("Selection is not a WorldRoad: " + worldObject.getClass().getName());
+			log.warning("Selection is not a WorldRoad: " + worldObject.getClass().getName());
 			return;
 		}
 

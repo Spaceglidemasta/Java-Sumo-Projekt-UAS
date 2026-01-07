@@ -1,7 +1,9 @@
 package org.group_three.ui.controllers;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -326,6 +328,24 @@ public class MainWindow_Toolbar_Controller {
 	@FXML
 	private void onStressTestClick() {
 		new StressTest().Test();
+	}
+
+	@FXML
+	private void onUserGuide() {
+		openLink();
+	}
+
+	public static void openLink(String url) {
+		try {
+			Desktop.getDesktop().browse(new URI(url));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	private void onAbout() {
+
 	}
 
 }
