@@ -11,6 +11,7 @@ import org.group_three.ui.world.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static org.group_three.ui.Meth.lerp;
 
@@ -21,6 +22,9 @@ import static org.group_three.ui.Meth.lerp;
  */
 public class SimView2D {
 
+	// Logger
+	private static final Logger log = Logger.getLogger(SimView2D.class.getName());
+
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
@@ -29,7 +33,7 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private static Canvas worldStaticRenderTarget;
+	private static Canvas renderTarget;
 
 	/**
 	 * Represents the window size of the simulation view.
@@ -58,15 +62,6 @@ public class SimView2D {
 	@SuppressWarnings("JavadocDeclaration")
 	private static WorldObject selected;
 
-
-	public static WorldObject getRouteSelection() {
-		return routeSelection;
-	}
-
-	public static void setRouteSelection(WorldObject routeSelection) {
-		SimView2D.routeSelection = routeSelection;
-	}
-
 	/**
 	 * A boolean to reroute the selection process,
 	 * to allow for route selection.
@@ -84,12 +79,18 @@ public class SimView2D {
 	@SuppressWarnings("JavadocDeclaration")
 	private static final List<String> vehicleIds = new ArrayList<>();
 
+	/**
+	 * The vehicle filter controller.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
 	private static Filter_Vehicle_Controller filterVehicleController;
 
 	//--------------------------------------------------ClassVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++InitializeClassMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to initialize this class.
@@ -99,14 +100,14 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	public static void initialize(Canvas wSRT, Pane rTB) {
-		worldStaticRenderTarget = wSRT;
+		renderTarget = wSRT;
 		renderTargetBounds = rTB;
 
 		// create new world on ini so the default view is just an empty world instead of undefined.
 		newWorld();
 	}
 
-	//--------------------------------------------------InitializeClassMethods--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 
 	//+++++++++++++++++++++++++++++++++++++++++++++GetterSetterClassMethods+++++++++++++++++++++++++++++++++++++++++++++
@@ -118,7 +119,6 @@ public class SimView2D {
 	 * @return The currently selected world object.
 	 * @author Joel
 	 */
-	@SuppressWarnings("unused")
 	public static WorldObject getSelected() {
 		return selected;
 	}
@@ -144,10 +144,11 @@ public class SimView2D {
 				((WorldVehicle) routeSelection).detailsPanelVehicleController.routeSelected(selected);
 			}
 
+			log.info("New Route \"" + selected.getDisplayName() + "\" selected for \"" + routeSelection.getDisplayName() + "\".");
+
 			routeSelection = null;
 			return;
 		}
-
 
 		if (SimView2D.selected == selected) return;
 
@@ -162,10 +163,17 @@ public class SimView2D {
 			selected.select();
 		}
 
-		// update details panel
-		//SimView2D.selected.setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(SimView2D.selected.detailClassPath));
 	}
 
+	/**
+	 * A method to select a route.
+	 *
+	 * @param routeSelection The object that asks for a route selection.
+	 * @author Joel
+	 */
+	public static void setRouteSelection(WorldObject routeSelection) {
+		SimView2D.routeSelection = routeSelection;
+	}
 
 	/**
 	 * Gets the currently active world.
@@ -180,7 +188,7 @@ public class SimView2D {
 	//---------------------------------------------GetterSetterClassMethods---------------------------------------------
 
 
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The method to create a new world.
@@ -191,7 +199,7 @@ public class SimView2D {
 	public static void newWorld() {
 		if (world != null) world.timeline.stop();
 
-		world = new World(worldStaticRenderTarget);
+		world = new World(renderTarget);
 
 		// bind to view size changes to adjust viewer position offset
 		renderTargetBounds.widthProperty().addListener((_, _, newValue) ->
@@ -201,23 +209,23 @@ public class SimView2D {
 				world.setViewerPositionOffset(new Vector2D((world.getViewerPositionOffset().x), (newValue.doubleValue() / 2))));
 
 		// initialize viewer position with current view size
-		world.setViewerPositionOffset(new Vector2D(worldStaticRenderTarget.getWidth() / 2, worldStaticRenderTarget.getHeight() / 2));
+		world.setViewerPositionOffset(new Vector2D(renderTarget.getWidth() / 2, renderTarget.getHeight() / 2));
 
 
 		// skip if simulation is null
-		if (SimController.getMainsimcon() == null) return;
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
-
+		// road network min max values
 		Vector2D rnHeight = new Vector2D();
 		Vector2D rnWidth = new Vector2D();
 
+		List<String> allJIDs = simcon.getJunctionIDList();
 
-        List<String> allJIDs = SimController.getMainsimcon().getJunctionIDList();
-
-        if(allJIDs == null) return;
-        // calculate rn, what was rn? something related to full world size and moving viewer initially to center of world
+		if (allJIDs == null) return;
+		// calculate the road network size
 		for (String jid : allJIDs) {
-			Vector2D jidV = new Vector2D(SimController.getMainsimcon().getJunctionPos(jid).x, SimController.getMainsimcon().getJunctionPos(jid).y);
+			Vector2D jidV = new Vector2D(simcon.getJunctionPos(jid).x, simcon.getJunctionPos(jid).y);
 			boolean firstIteration = jid.equals(allJIDs.getFirst());
 
 			if (rnHeight.x > jidV.x || firstIteration)
@@ -231,14 +239,14 @@ public class SimView2D {
 		}
 
 		// add world objects, order matters
-		addPolygons(worldStaticRenderTarget);
-		addJunctions(worldStaticRenderTarget);
-		addRoads(worldStaticRenderTarget);
-		addTrafficLights(worldStaticRenderTarget);
-		addVehicles(worldStaticRenderTarget);
+		addPolygons(renderTarget);
+		addJunctions(renderTarget);
+		addRoads(renderTarget);
+		addTrafficLights(renderTarget);
+		addVehicles(renderTarget);
 
 
-		// see rn above, make proper comments later
+		// set viewer position and offset to center of road network
 		world.setWorldSize(new Vector2D(Math.abs(rnHeight.x - rnHeight.y), Math.abs(rnWidth.x - rnWidth.y)).add(new Vector2D(128, 128)));
 		world.setViewerPosition(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)).negate());
 		world.setWorldOffset(new Vector2D(lerp(rnHeight.x, rnHeight.y, 0.5), lerp(rnWidth.x, rnWidth.y, 0.5)));
@@ -251,13 +259,8 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addPolygons(Canvas renderLayer) {
-
-        SimController simcon = SimController.getMainsimcon();
-
-        if(simcon == null){
-            Debug.print("Main Simcon instance is null");
-            return;
-        }
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
 		// add all polys to world
 		for (WPolygon poly : simcon.getAllPolys()) {
@@ -276,15 +279,11 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addJunctions(Canvas renderLayer) {
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
-        SimController simcon = SimController.getMainsimcon();
-
-        if(simcon == null){
-            Debug.print("Main Simcon instance is null");
-            return;
-        }
-
-		for (String junctionId : SimController.getMainsimcon().getJunctionIDList()) {
+		// loop through each junction and add world junctions
+		for (String junctionId : simcon.getJunctionIDList()) {
 			new WorldJunction(
 					world,
 					renderLayer,
@@ -301,20 +300,15 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addRoads(Canvas renderLayer) {
-
-        SimController simcon = SimController.getMainsimcon();
-
-        if(simcon == null){
-            Debug.print("Main Simcon instance is null");
-            return;
-        }
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
 		// loop through all roads
 		for (WEdge wEdge : simcon.getAllroads().values()) {
 			// loop through all lanes
 			for (String laneId : wEdge.getLaneIDs()) {
 				// create lane sub point list
-				List<Vector2D> list = Meth.convertSumoCoords(SimController.getMainsimcon().getLaneShape(laneId));
+				List<Vector2D> list = Meth.convertSumoCoords(simcon.getLaneShape(laneId));
 
 				// loop through all lane sub points
 				for (Vector2D subPoint : list) {
@@ -326,7 +320,7 @@ public class SimView2D {
 								UI.roadColor,
 								list.get(list.indexOf(subPoint) - 1),
 								subPoint,
-								SimController.getMainsimcon().getLaneWidth(laneId) / 2,
+								simcon.getLaneWidth(laneId) / 2,
 								laneId + " (" + (list.indexOf(subPoint) - 1) + ")",
 								wEdge
 						);
@@ -343,17 +337,14 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addTrafficLights(Canvas renderLayer) {
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
-        SimController simcon = SimController.getMainsimcon();
-
-        if(simcon == null){
-            Debug.print("Main Simcon instance is null");
-            return;
-        }
-
-        for (WTrafficLight wTrafficLight : simcon.getAllWTLs().values()) {
+		// loop through traffic light clusters and add all stop lines
+		for (WTrafficLight wTrafficLight : simcon.getAllWTLs().values()) {
 			wTrafficLight.loadLinkedStateColors();
 
+			// add traffic light stop lines
 			for (WLink wLink : wTrafficLight.getAllWlinks()) {
 				new WorldTrafficLight(
 						world,
@@ -373,14 +364,10 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void updateTrafficLights(Canvas renderLayer) {
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
-        SimController simcon = SimController.getMainsimcon();
-
-        if(simcon == null){
-            Debug.print("Main Simcon instance is null");
-            return;
-        }
-
+		// update link data
 		for (WTrafficLight wTrafficLight : simcon.getAllWTLs().values()) {
 			wTrafficLight.loadLinkedStateColors();
 		}
@@ -393,12 +380,16 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void addVehicles(Canvas renderLayer) {
-		for (String id : SimController.getMainsimcon().getVehicleIDList()) {
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
+
+		// add all initially existing vehicles
+		for (String id : simcon.getVehicleIDList()) {
 			new WorldVehicle(
 					world,
 					renderLayer,
 					"Object TestCarSim",
-					new WVehicle(id, SimController.getMainsimcon().getStc())
+					new WVehicle(id, simcon.getStc())
 			);
 			vehicleIds.add(id);
 		}
@@ -411,9 +402,13 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	private static void updateVehicles(Canvas renderLayer) {
-		List<String> currentVehicleList = SimController.getMainsimcon().getVehicleIDList();
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
+
+		List<String> currentVehicleList = simcon.getVehicleIDList();
 		List<WorldObject> removeVehicleList = new ArrayList<>();
 
+		// create invalid vehicle list
 		for (WorldObject worldObject : world.getWorldObjects()) {
 			if (worldObject.getClass() == WorldVehicle.class) {
 				if (currentVehicleList.contains(((WorldVehicle) worldObject).getwVehicle().getID()))
@@ -422,18 +417,19 @@ public class SimView2D {
 			}
 		}
 
+		// remove invalid vehicles
 		for (WorldObject worldObject : removeVehicleList) {
 			worldObject.remove();
 		}
 
-
+		// add new vehicles
 		for (String id : currentVehicleList) {
 			if (vehicleIds.contains(id)) continue;
 			new WorldVehicle(
 					world,
 					renderLayer,
 					"Object TestCarSim",
-					new WVehicle(id, SimController.getMainsimcon().getStc())
+					new WVehicle(id, simcon.getStc())
 			);
 			vehicleIds.add(id);
 		}
@@ -441,31 +437,27 @@ public class SimView2D {
 
 	/**
 	 * A method to tell the renderer to update.
+	 * Also updates vehicle and traffic light data from sumo.
 	 *
 	 * @author Joel
 	 */
 	public static void update() {
-		updateTrafficLights(worldStaticRenderTarget);
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
 
+		updateTrafficLights(renderTarget);
 
-        SimController simcon = SimController.getMainsimcon();
+		WVehicle.loadnupdateAll(simcon);
+		simcon.collectTelemetry();
+		updateVehicles(renderTarget);
 
-        if(simcon != null){
-            WVehicle.loadnupdateAll(simcon);
-            simcon.collectTelemetry();
-
-        }
-
-
-
-        updateVehicles(worldStaticRenderTarget);
-
+		// render changes
 		world.requestUpdate();
 	}
 
-
 	/**
 	 * A method to request world position data for the vehicle filter.
+	 *
 	 * @param filterVehicleController The controller that requests the position.
 	 * @author Joel
 	 */
@@ -473,9 +465,9 @@ public class SimView2D {
 		SimView2D.filterVehicleController = filterVehicleController;
 	}
 
-
 	/**
 	 * A method to interact with the world base don a position.
+	 *
 	 * @param pos The position in the world.
 	 * @author Joel
 	 */

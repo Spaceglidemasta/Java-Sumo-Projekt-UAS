@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class RecentlyOpenedDataJson {
 
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
 	 * The list of recently loaded simulations.
 	 *
@@ -16,6 +18,11 @@ public class RecentlyOpenedDataJson {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	public List<String> sims;
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The normal constructor to load this JSON data class with data.
@@ -25,5 +32,7 @@ public class RecentlyOpenedDataJson {
 	public RecentlyOpenedDataJson(List<String> sims) {
 		this.sims = sims;
 	}
+
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 }

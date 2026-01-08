@@ -59,5 +59,10 @@
             <MenuItem mnemonicParsing="false" onAction="#onExportPDF" text=".pdf" />
          </items>
       </Menu>
+      <Menu mnemonicParsing="false" text="Help">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#onUserGuide" text="User Guide" />
+         </items>
+      </Menu>
    </menus>
 </MenuBar>

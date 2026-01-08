@@ -1,7 +1,9 @@
 package org.group_three.ui.controllers;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -233,17 +235,6 @@ public class MainWindow_Toolbar_Controller {
 	}
 
 	/**
-	 * Function to reload the already loaded simulation
-	 * (Yet to be implemented)
-	 *
-	 * @author Joel
-	 */
-	@FXML
-	private void onSimulationReloadClicked() {
-		Debug.toConsole("Simulation -> Reload");
-	}
-
-	/**
 	 * A method to export gathered data from the simulation to a file.
 	 *
 	 * @author Joel
@@ -326,6 +317,15 @@ public class MainWindow_Toolbar_Controller {
 	@FXML
 	private void onStressTestClick() {
 		new StressTest().Test();
+	}
+
+	@FXML
+	private void onUserGuide() {
+		try {
+			Desktop.getDesktop().browse(new URI(UI.userGuideLink));
+		} catch (Exception e) {
+			log.severe("Failed to open UserGuide.");
+		}
 	}
 
 }

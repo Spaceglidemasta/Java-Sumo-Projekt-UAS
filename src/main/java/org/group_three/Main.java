@@ -1,8 +1,9 @@
 package org.group_three;
 
-import org.group_three.debug.Debug;
 import org.group_three.api.SimController;
 import org.group_three.ui.MainApp;
+
+import java.util.logging.Logger;
 
 /**
  * The main class which creates the MainApp and does sumo process clean up.
@@ -10,6 +11,9 @@ import org.group_three.ui.MainApp;
  * @author Joel, Luca
  */
 public class Main {
+
+	// Logger
+	private static final Logger log = Logger.getLogger(Main.class.getName());
 
 	/**
 	 * The main method for this whole project.
@@ -20,15 +24,16 @@ public class Main {
 	 * @author Joel, Luca
 	 */
 	static void main(String[] args) {
-		Debug.print("Program Start");
+		log.info("Program Start");
 
 		// Create and start the GUI
-		MainApp aMainGui = new MainApp();
-		aMainGui.start(args);
+		new MainApp().start(args);
 
 		// Close main simulation on program end to make sure all threads get killed
 		SimController simcon = SimController.getMainsimcon();
 		if (simcon != null) simcon.close();
+
+		log.info("Program End");
 	}
 
 }

@@ -3,6 +3,7 @@ package org.group_three.constants;
 import javafx.scene.paint.Color;
 import org.group_three.ui.Vector2D;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public final class UI {
 			{"XML", "*.xml"},
 			{"CSV", "*.csv"}
 	};
+	public static final String userGuideLink = "https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS/blob/main/UserGuide.pdf";
 
 	public static final String recentlyOpenedDataFileName = "recentlyOpenedData.json";
 

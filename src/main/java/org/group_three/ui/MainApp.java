@@ -13,6 +13,9 @@ import javafx.geometry.Rectangle2D;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.controllers.MainWindow_Tail_Controller;
 
+import java.io.InputStream;
+import java.util.logging.Logger;
+
 /**
  * The MainApp class which is the GUI.
  * Any UI element will be a part or be referenced in some way here.
@@ -21,7 +24,17 @@ import org.group_three.ui.controllers.MainWindow_Tail_Controller;
  */
 public class MainApp extends Application {
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++StartMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Logger
+	private static final Logger log = Logger.getLogger(MainApp.class.getName());
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	private AnimationTimer fpsTimer;
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A custom start method, to initialize the UI manually with custom parameters.
@@ -32,9 +45,6 @@ public class MainApp extends Application {
 	public void start(String[] args) {
 		launch(args);
 	}
-
-
-    private AnimationTimer fpsTimer;
 
 	/**
 	 * The applications start method which can be called after the application was created.
@@ -67,30 +77,61 @@ public class MainApp extends Application {
 		// Initialize the Keyboard class so it listens to keyboard events
 		Keyboard.initialize(mainScene);
 
-        fpsTimer = new AnimationTimer() {
-            private long lastTime = 0;
-            private int frames = 0;
+		fpsTimer = new AnimationTimer() {
+			private long lastTime = 0;
+			private int frames = 0;
 
-            @Override
-            public void handle(long now) {
-                frames++;
-                if (lastTime == 0) lastTime = now;
+			@Override
+			public void handle(long now) {
+				frames++;
+				if (lastTime == 0) lastTime = now;
 
-                if (now - lastTime >= 1_000_000_000L) {
-                    MainWindow_Tail_Controller.setFPS(frames);
-                    frames = 0;
-                    lastTime = now;
-                }
-            }
-        };
+				if (now - lastTime >= 1_000_000_000L) {
+					MainWindow_Tail_Controller.setFPS(frames);
+					frames = 0;
+					lastTime = now;
+				}
+			}
+		};
 
-        fpsTimer.start();
+		fpsTimer.start();
+
+		log.info("App Loaded.");
 	}
 
-	//--------------------------------------------------StartMethods--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * A simple method to load(stream) and get the app icon as an image.
+	 *
+	 * @return The app icon as an image.
+	 * @author Joel
+	 */
+	@MayReturnNull
+	public static Image getAppIcon() {
+		try {
+			InputStream resourceStream = MainApp.class.getResourceAsStream(UI.appIcon);
+			if (resourceStream == null) {
+				log.warning("AppIcon: Failed to load.");
+				return null;
+			}
+
+			log.info("AppIcon: Loaded.");
+			return new Image(resourceStream);
+		} catch (Exception e) {
+			log.severe("AppIcon loading failed unexpectedly.");
+		}
+
+		return null;
+	}
+
+	//---------------------------------------------------ClassMethods---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to specify how the window should be spawned.
@@ -120,35 +161,18 @@ public class MainApp extends Application {
 	}
 
 	/**
-	 * A simple method to load(stream) and get the app icon as an image.
+	 * Gets automatically called by JavaFX when the window is closed.
 	 *
-	 * @return The app icon as an image.
-	 * @author Joel
+	 * @author Luca
+	 *
 	 */
-    @MayReturnNull
-	public static Image getAppIcon() {
-		//add error handling, if no "icons" is found
-		try {
-			return new Image(MainApp.class.getResourceAsStream(UI.appIcon));
-		} catch (Exception e) {
-			//throw new RuntimeException(e);
+	@Override
+	public void stop() {
+		if (fpsTimer != null) {
+			fpsTimer.stop();
 		}
-
-		return null;
 	}
 
-    /**
-     * Gets automaticall called by JavaFX when the window is closed.
-     * @author Luca
-     * */
-    @Override
-    public void stop() {
-        if (fpsTimer != null) {
-            fpsTimer.stop();
-        }
-    }
-
-
-	//--------------------------------------------------Methods--------------------------------------------------
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }

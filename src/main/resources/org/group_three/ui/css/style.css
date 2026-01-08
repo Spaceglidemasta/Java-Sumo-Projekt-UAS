@@ -10,9 +10,6 @@
     -fx-background-image: url("../icons/pauseButtonIcon.png");
 }
 
-/*.playPause-button:hover {
-    -fx-background-color: #444;
-}*/
 
 
 .step-button {
@@ -22,11 +19,3 @@
     -fx-background-position: center;
     -fx-background-color: transparent;
 }
-
-/*.step-button:hover {
-    -fx-background-color: #444;
-}
-
-.white-text {
-    -fx-text-fill: white;
-}*/
