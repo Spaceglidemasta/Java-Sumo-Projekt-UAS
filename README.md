@@ -29,35 +29,13 @@ This automatically gets installed when you install SUMO on you device, or when y
 
 Make sure to have SUMO installed and the environment variable SUMO_HOME set correctly. The TraaS API needs this.
 
-Move the /SumoConfig directory to the parent folder (This is already done in the .zip):
+First, you need to install the TraaS.jar library located in ./libs/TraaS.jar. This is done with
 
-```
-├> JavaProjectWiSe2526: 16.42 MB // <-- Project
-├──────┼> .git: 6.30 MB
-│      │       ...
-│      ├> .gitignore: 490 B
-├──────┼> .idea: 6.84 KB
-│      │       ...
-│      ├> .mvn: 0 B
-├──────┼> libs: 122.76 KB
-│      │       ...
-│      ├> pom.xml: 4.57 KB
-│      ├> PROJECTNOTES.md: 569 B
-│      ├> README.md: 108 B
-├──────┼> src: 48.21 KB
-│      │       ...
-├──────┼> target: 9.94 MB
-│      │       ...
-├> JavaProjectWiSe2526-1.0-SNAPSHOT-jar-with-dependencies.jar: 9.83 MB // <-- .jar, if you use one
-├> SumoConfig: 6.61 MB
-│      ├> net.net.xml: 1.71 KB
-│      ├> net.rou.xml: 449 B
-│      ├> sumo.exe: 6.61 MB     <-- IMPORTANT: Only needed if there is no sumo.exe in %SUMO_HOME%\bin
-```
+    mvn install:install-file -Dfile=libs/TraaS.jar -DgroupId=org.eclipse.sumo -DartifactId=traas -Dversion=1.0.0 -Dpackaging=jar
 
 Start / compile using
 
-    mvn javafx:run
+    mvn clean javafx:run
 
 or
 
@@ -71,12 +49,9 @@ or, if you want a .jar file:
 This creates 2 .jar's in /src/target, make sure move the one named *-with-dependencies.jar to the parent folder,
 like showed in the file tree above.
 
-Then, double-click the .jar or, inside the parent folder, 
+Then, double-click the .jar or, inside the <code>target</code> folder, 
 
-    java -jar JavaProjectWi[...]-dependencies.jar
-
-Important: if there is no sumo.exe / sumo in your "%sumo_home%\bin" / "$SUMO_HOME/bin", there needs to be one
-in the SumoConfig folder, although this is redundant, as TraaS needs SUMO_HOME anyway.
+    java -jar JavaProjectWiSe2526-1.0-SNAPSHOT.jar
 
 ## Usage
 

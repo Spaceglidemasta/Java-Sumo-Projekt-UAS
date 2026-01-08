@@ -107,7 +107,7 @@
                 <executions>
                     <execution>
                         <id>install-local-jar</id>
-                        <phase>initialize</phase>
+                        <phase>validate</phase> <!-- NOT initialize!!! -->
                         <goals>
                             <goal>install-file</goal>
                         </goals>
