@@ -48,6 +48,7 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private int countdownStartSimTime = -1;
+
 	/**
 	 * The WTrafficLight object which is grouping the WLink classes.
 	 *
@@ -55,10 +56,6 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final WTrafficLight wTrafficLight;
-
-	public WLink getwLink() {
-		return wLink;
-	}
 
 	/**
 	 * The WLink object which owns this class.
@@ -228,6 +225,16 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	public WTrafficLight getwTrafficLight() {
 		return wTrafficLight;
+	}
+
+	/**
+	 * A getter to return the WLink reference of this object.
+	 *
+	 * @return The WLink reference of this object.
+	 * @author Joel
+	 */
+	public WLink getwLink() {
+		return wLink;
 	}
 
 	/**

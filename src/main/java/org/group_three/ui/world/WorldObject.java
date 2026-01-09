@@ -316,6 +316,7 @@ public abstract class WorldObject {
 
 	/**
 	 * Sets the sphere collision of the object.
+	 *
 	 * @param sphereCollision radius
 	 * @author Joel
 	 */
@@ -367,7 +368,7 @@ public abstract class WorldObject {
 			this.rotation -= 360;
 		}
 
-        //Debug.toConsole(rotation);
+		//Debug.toConsole(rotation);
 	}
 
 	/**
@@ -633,7 +634,7 @@ public abstract class WorldObject {
 		getWorld().removeWorldObject(this);
 
 		// log WorldObject removal
-		log.info("Removed WorldObject: " + getClass().getSimpleName());		
+		log.info("Removed WorldObject: " + getClass().getSimpleName());
 	}
 
 	/**
@@ -741,11 +742,13 @@ public abstract class WorldObject {
 	}
 
 	public boolean selected = false;
+
 	public void select() {
 		selected = true;
 		Debug.print(id + ": Selected.");
 		setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(detailClassPath));
 	}
+
 	public void deselect() {
 		selected = false;
 		Debug.print(id + ": Deselected.");
