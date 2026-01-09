@@ -155,10 +155,6 @@ public abstract class WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private final Color boxCollisionColor = UI.boxCollisionColor;
 
-	public String getDetailClassPath() {
-		return detailClassPath;
-	}
-
 	public void setDetailClassPath(String detailClassPath) {
 		this.detailClassPath = UI.detailClassFolderPath + detailClassPath;
 	}

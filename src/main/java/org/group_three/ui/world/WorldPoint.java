@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 @SuppressWarnings("unused")
 public class WorldPoint extends WorldObject {
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The color of the point which is being drawn.
@@ -31,10 +31,10 @@ public class WorldPoint extends WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private final double radius;
 
-	//--------------------------------------------------MemberVariables--------------------------------------------------
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The default empty constructor.
@@ -42,7 +42,6 @@ public class WorldPoint extends WorldObject {
 	 *
 	 * @author Joel
 	 */
-	@SuppressWarnings("unused")
 	public WorldPoint() {
 		super();
 		this.color = null;
@@ -63,10 +62,10 @@ public class WorldPoint extends WorldObject {
 		this.radius = radius;
 	}
 
-	//--------------------------------------------------Constructors--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The update method which is used to draw the WorldPoint in the world.
@@ -78,6 +77,6 @@ public class WorldPoint extends WorldObject {
 		drawSphere(radius, color);
 	}
 
-	//--------------------------------------------------Methods--------------------------------------------------
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }

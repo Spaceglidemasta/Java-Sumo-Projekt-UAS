@@ -46,11 +46,6 @@ public final class UI {
 			{ {"SUMO Config"}, {"*.sumocfg"} },
 			{ {"Network & Route"}, {"*.net.xml", "*.rou.xml"} }
 	};
-	// The file extension filter data for the simulation export save file chooser window.
-	public static final String[][] simulationExportFileExtensions = {
-			{"XML", "*.xml"},
-			{"CSV", "*.csv"}
-	};
 	public static final String userGuideLink = "https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS/blob/main/UserGuide.pdf";
 
 	public static final String detailClassFolderPath = "/org/group_three/ui/fxml/";
