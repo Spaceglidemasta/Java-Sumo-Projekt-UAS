@@ -31,7 +31,7 @@ public class WorldTrafficLight extends WorldObject {
 	// Logger
 	private static final Logger log = Logger.getLogger(WorldTrafficLight.class.getName());
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * time until the next switch of the tl.
@@ -81,10 +81,10 @@ public class WorldTrafficLight extends WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private DetailsPanel_TrafficLight_Controller detailsPanelTrafficLightController;
 
-	//--------------------------------------------------MemberVariables--------------------------------------------------
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The default empty constructor.
@@ -92,7 +92,6 @@ public class WorldTrafficLight extends WorldObject {
 	 *
 	 * @author Joel
 	 */
-	@SuppressWarnings("unused")
 	public WorldTrafficLight() {
 		super();
 		this.wTrafficLight = null;
@@ -104,7 +103,7 @@ public class WorldTrafficLight extends WorldObject {
 	/**
 	 * The default WorldTrafficLight constructor to spawn a new WorldTrafficLight in a world.
 	 *
-	 * @param world         The world to which the WorldRoad should be added.
+	 * @param world         The world to which the WorldTrafficLight should be added.
 	 * @param canvas        The canvas of the world.
 	 * @param displayName   The display name which should show up on selection.
 	 * @param wTrafficLight The WTrafficLight reference.
@@ -126,7 +125,10 @@ public class WorldTrafficLight extends WorldObject {
 		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_TrafficLight.fxml";
 	}
 
-	//--------------------------------------------------Constructors--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The update method which is used to draw the WorldTrafficLight in the world.
@@ -278,5 +280,7 @@ public class WorldTrafficLight extends WorldObject {
 		}
 		return remainingTime;
 	}
+
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }
