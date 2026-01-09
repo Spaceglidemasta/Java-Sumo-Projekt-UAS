@@ -14,6 +14,7 @@ import org.group_three.ui.controllers.MainWindow_SimulationFrame_Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * A class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
@@ -22,6 +23,9 @@ import java.util.List;
  * @author Joel
  */
 public abstract class WorldObject {
+
+	// Logger
+	private static final Logger log = Logger.getLogger(WorldObject.class.getName());
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -151,13 +155,17 @@ public abstract class WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private final Color boxCollisionColor = UI.boxCollisionColor;
 
+	public void setDetailClassPath(String detailClassPath) {
+		this.detailClassPath = UI.detailClassFolderPath + detailClassPath;
+	}
+
 	/**
 	 * The FXML path of the interactable details panel.
 	 *
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	public String detailClassPath = "";
+	private String detailClassPath = "";
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -191,7 +199,12 @@ public abstract class WorldObject {
 		graphicsContext = canvas.getGraphicsContext2D();
 		this.displayName = displayName;
 		id = createId();
+
+		// add object to world
 		getWorld().addWorldObject(this);
+
+		// log WorldObject creation
+		log.info("Spawned WorldObject: " + getClass().getSimpleName());
 	}
 
 	//--------------------------------------------------Constructor--------------------------------------------------
@@ -307,6 +320,7 @@ public abstract class WorldObject {
 
 	/**
 	 * Sets the sphere collision of the object.
+	 *
 	 * @param sphereCollision radius
 	 * @author Joel
 	 */
@@ -358,7 +372,7 @@ public abstract class WorldObject {
 			this.rotation -= 360;
 		}
 
-        //Debug.toConsole(rotation);
+		//Debug.toConsole(rotation);
 	}
 
 	/**
@@ -620,7 +634,11 @@ public abstract class WorldObject {
 	 * @author Joel
 	 */
 	public void remove() {
+		// remove object from world
 		getWorld().removeWorldObject(this);
+
+		// log WorldObject removal
+		log.info("Removed WorldObject: " + getClass().getSimpleName());
 	}
 
 	/**
@@ -728,11 +746,13 @@ public abstract class WorldObject {
 	}
 
 	public boolean selected = false;
+
 	public void select() {
 		selected = true;
 		Debug.print(id + ": Selected.");
 		setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(detailClassPath));
 	}
+
 	public void deselect() {
 		selected = false;
 		Debug.print(id + ": Deselected.");

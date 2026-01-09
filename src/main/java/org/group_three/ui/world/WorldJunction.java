@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class WorldJunction extends WorldObject {
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The color of the junction which is being drawn.
@@ -36,10 +36,10 @@ public class WorldJunction extends WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private final List<Vector2D> shape;
 
-	//--------------------------------------------------MemberVariables--------------------------------------------------
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The default empty constructor.
@@ -66,17 +66,23 @@ public class WorldJunction extends WorldObject {
 	public WorldJunction(World world, Canvas canvas, String displayName, String junctionId) {
 		super(world, canvas, displayName);
 
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) {
+			shape = null;
+			return;
+		}
+
 		// set the position of the junction
-		setPosition(new Vector2D(SimController.getMainsimcon().getJunctionPos(junctionId)));
+		setPosition(new Vector2D(simcon.getJunctionPos(junctionId)));
 
 		// set the shape of the junction
-		shape = getRelativeShape(Meth.convertSumoCoords(SimController.getMainsimcon().getJunctionShape(junctionId)));
+		shape = getRelativeShape(Meth.convertSumoCoords(simcon.getJunctionShape(junctionId)));
 	}
 
-	//--------------------------------------------------Constructors--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The update method which is used to draw the WorldJunction in the world.
@@ -85,9 +91,10 @@ public class WorldJunction extends WorldObject {
 	 */
 	@Override
 	public void update() {
+		// draw junction in white if high contrast mode is active
 		drawPolygon(shape, UI.highContrast ? Color.WHITE : color);
 	}
 
-	//--------------------------------------------------Methods--------------------------------------------------
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }

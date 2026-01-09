@@ -147,7 +147,7 @@ public class DetailsPanel_Road_Controller {
 
 		id.setText(worldRoad.getId());
 		displayName.setText(worldRoad.getDisplayName());
-		sumoId.setText(worldRoad.id);
+		sumoId.setText(worldRoad.getSumoId());
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------
