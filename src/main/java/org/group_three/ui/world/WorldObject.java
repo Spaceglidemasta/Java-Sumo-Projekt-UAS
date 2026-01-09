@@ -14,6 +14,7 @@ import org.group_three.ui.controllers.MainWindow_SimulationFrame_Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * A class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
@@ -22,6 +23,9 @@ import java.util.List;
  * @author Joel
  */
 public abstract class WorldObject {
+
+	// Logger
+	private static final Logger log = Logger.getLogger(WorldObject.class.getName());
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -191,7 +195,12 @@ public abstract class WorldObject {
 		graphicsContext = canvas.getGraphicsContext2D();
 		this.displayName = displayName;
 		id = createId();
+
+		// add object to world
 		getWorld().addWorldObject(this);
+
+		// log WorldObject creation
+		log.info("Spawned WorldObject: " + getClass().getSimpleName());
 	}
 
 	//--------------------------------------------------Constructor--------------------------------------------------
@@ -620,7 +629,11 @@ public abstract class WorldObject {
 	 * @author Joel
 	 */
 	public void remove() {
+		// remove object from world
 		getWorld().removeWorldObject(this);
+
+		// log WorldObject removal
+		log.info("Removed WorldObject: " + getClass().getSimpleName());		
 	}
 
 	/**
