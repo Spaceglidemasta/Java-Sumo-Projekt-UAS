@@ -123,7 +123,7 @@ public class WorldVehicle extends WorldObject {
 		this.wVehicle = wVehicle;
 		updateSim();
 
-		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_Vehicle.fxml";
+		setDetailClassPath("DetailsPanel_Vehicle.fxml");
 		setInteractable(true);
 		setUseBoxCollision(true);
 		setBoxCollision(size.div(2));

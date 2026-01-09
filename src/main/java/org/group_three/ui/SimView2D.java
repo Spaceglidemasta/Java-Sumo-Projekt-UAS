@@ -137,7 +137,7 @@ public class SimView2D {
 			Debug.print(routeSelection.getClass() == WorldRoad.class);
 
 			if (routeSelection.getClass() == WorldRoad.class) {
-				((WorldRoad) routeSelection).detailsPanelRoadController.routeSelected(selected);
+				((WorldRoad) routeSelection).getDetailsPanelRoadController().routeSelected(selected);
 			}
 
 			if (routeSelection.getClass() == WorldVehicle.class) {

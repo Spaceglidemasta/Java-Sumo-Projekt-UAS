@@ -122,7 +122,7 @@ public class WorldTrafficLight extends WorldObject {
 
 		setInteractable(true);
 		setSphereCollision(size.y / 2);
-		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_TrafficLight.fxml";
+		setDetailClassPath("DetailsPanel_TrafficLight.fxml");
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------

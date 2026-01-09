@@ -53,6 +53,7 @@ public final class UI {
 	};
 	public static final String userGuideLink = "https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS/blob/main/UserGuide.pdf";
 
+	public static final String detailClassFolderPath = "/org/group_three/ui/fxml/";
 	public static final String recentlyOpenedDataFileName = "recentlyOpenedData.json";
 
 	public static final double maxSimulationViewFps = 30;

@@ -24,7 +24,7 @@ public class WorldRoad extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private Color color;
+	private final Color color;
 
 	/**
 	 * The wrapper class of the edge.
@@ -33,22 +33,6 @@ public class WorldRoad extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final WEdge wEdge;
-
-	/**
-	 * The start point of the road.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private Vector2D from;
-
-	/**
-	 * The end point of the road.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private Vector2D to;
 
 	/**
 	 * The size of the road.
@@ -64,7 +48,15 @@ public class WorldRoad extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	public String id = "";
+	private String sumoId = "";
+
+	/**
+	 * The details panel controller for this object.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private DetailsPanel_Road_Controller detailsPanelRoadController;
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -77,7 +69,6 @@ public class WorldRoad extends WorldObject {
 	 *
 	 * @author Joel
 	 */
-	@SuppressWarnings("unused")
 	public WorldRoad() {
 		super();
 		this.color = null;
@@ -96,23 +87,22 @@ public class WorldRoad extends WorldObject {
 	public WorldRoad(World world, Canvas canvas, String displayName, Color color, Vector2D start, Vector2D end, double width, String id, WEdge wEdge) {
 		super(world, canvas, displayName);
 		this.color = color;
-		this.id = id;
+		this.sumoId = id;
 		this.wEdge = wEdge;
 
-		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_Road.fxml";
+		setDetailClassPath("DetailsPanel_Road.fxml");
 
-		from = start;
-		to = end;
-
-		Vector2D a = Meth.getRelativeLocation(from, 0, to);
+		// calculate and set center position of the road
+		Vector2D a = Meth.getRelativeLocation(start, 0, end);
 		setPosition(
-				from.add(a.div(2))
+				start.add(a.div(2))
 		);
-		setRotation(from.getDirectionAngle(to));
+
+		// set road rotation based on start to end angle
+		setRotation(start.getDirectionAngle(end));
 
 		//noinspection SuspiciousNameCombination
 		size = new Vector2D(a.length() / 2, width);
-
 
 		setInteractable(true);
 		setUseBoxCollision(true);
@@ -122,9 +112,42 @@ public class WorldRoad extends WorldObject {
 	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++GetterSetterMethods++++++++++++++++++++++++++++++++++++++++++++++++
 
-	public DetailsPanel_Road_Controller detailsPanelRoadController;
+	/**
+	 * Gets the wedge object from this class.
+	 *
+	 * @return The wEdge object.
+	 * @author Joel
+	 */
+	public WEdge getwEdge() {
+		return wEdge;
+	}
+
+	/**
+	 * Gets the sumo id from this object.
+	 *
+	 * @return The sumo id.
+	 * @author Joel
+	 */
+	public String getSumoId() {
+		return sumoId;
+	}
+
+	/**
+	 * Gets the details panel controller form this object.
+	 *
+	 * @return The controller object.
+	 * @author Joel
+	 */
+	public DetailsPanel_Road_Controller getDetailsPanelRoadController() {
+		return detailsPanelRoadController;
+	}
+
+	//-----------------------------------------------GetterSetterMethods------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to set up the details panel when the object is selected.
@@ -138,8 +161,14 @@ public class WorldRoad extends WorldObject {
 		detailsPanelRoadController.setup(this);
 	}
 
+	/**
+	 * A method that is being called when this object gets deselected.
+	 *
+	 * @author Joel
+	 */
 	@Override
 	public void deselect() {
+		// run deselect on the details panel controller
 		if (detailsPanelRoadController != null) {
 			detailsPanelRoadController.deselect();
 		}
@@ -152,17 +181,8 @@ public class WorldRoad extends WorldObject {
 	 */
 	@Override
 	public void update() {
+		// draw the road as a rectangle. use the color WHITE for the road if high contrast is enabled
 		drawRectangle(size, UI.highContrast ? Color.WHITE : color);
-	}
-
-	/**
-	 * Gets the wedge object from this class.
-	 *
-	 * @return The wEdge object.
-	 * @author Joel
-	 */
-	public WEdge getwEdge() {
-		return wEdge;
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------
