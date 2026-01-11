@@ -24,10 +24,10 @@ import java.util.logging.Logger;
  *
  * @author Joel
  */
-public class DetailsPanel_Road_Controller {
+public class DetailsPanelRoadController {
 
 	// Logger
-	private static final Logger log = Logger.getLogger(DetailsPanel_Road_Controller.class.getName());
+	private static final Logger log = Logger.getLogger(DetailsPanelRoadController.class.getName());
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 

@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Leon
  */
-public class DetailsPanel_TrafficLight_Controller {
+public class DetailsPanelTrafficLightController {
 
     /**
      * The text field to view and change the phase duration.

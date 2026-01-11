@@ -19,7 +19,7 @@ import org.group_three.ui.SimView2D;
  *
  * @author Joel
  */
-public class MainWindow_SimulationFrame_Controller {
+public class MainWindowSimulationFrameController {
 
 	/**
 	 * The subscene that will contain the simulation views.
@@ -60,7 +60,7 @@ public class MainWindow_SimulationFrame_Controller {
 
 
 	/**
-	 * The method to initialize the MainWindow_SimulationFrame_Controller.
+	 * The method to initialize the MainWindowSimulationFrameController.
 	 * Gets called after FXML body creation.
 	 *
 	 * @throws IOException The fxml loading might throw an IOException.

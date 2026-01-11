@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.model.*;
-import org.group_three.ui.controllers.Filter_Vehicle_Controller;
+import org.group_three.ui.controllers.FilterVehicleController;
 import org.group_three.ui.world.*;
 
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private static Filter_Vehicle_Controller filterVehicleController;
+	private static FilterVehicleController filterVehicleController;
 
 	//--------------------------------------------------ClassVariables--------------------------------------------------
 
@@ -458,7 +458,7 @@ public class SimView2D {
 	 * @param filterVehicleController The controller that requests the position.
 	 * @author Joel
 	 */
-	public static void requestPosition(Filter_Vehicle_Controller filterVehicleController) {
+	public static void requestPosition(FilterVehicleController filterVehicleController) {
 		SimView2D.filterVehicleController = filterVehicleController;
 	}
 

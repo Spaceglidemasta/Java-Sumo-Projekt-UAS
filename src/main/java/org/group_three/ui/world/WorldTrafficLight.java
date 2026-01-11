@@ -16,7 +16,7 @@ import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.DetailsPanel_TrafficLight_Controller;
+import org.group_three.ui.controllers.DetailsPanelTrafficLightController;
 
 import java.util.logging.Logger;
 
@@ -79,7 +79,7 @@ public class WorldTrafficLight extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private DetailsPanel_TrafficLight_Controller detailsPanelTrafficLightController;
+	private DetailsPanelTrafficLightController detailsPanelTrafficLightController;
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -122,7 +122,7 @@ public class WorldTrafficLight extends WorldObject {
 
 		setInteractable(true);
 		setSphereCollision(size.y / 2);
-		setDetailClassPath("DetailsPanel_TrafficLight.fxml");
+		setDetailClassPath("DetailsPanelTrafficLight.fxml");
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------

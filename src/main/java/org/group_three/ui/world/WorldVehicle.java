@@ -10,7 +10,7 @@ import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.DetailsPanel_Vehicle_Controller;
+import org.group_three.ui.controllers.DetailsPanelVehicleController;
 
 import java.util.logging.Logger;
 
@@ -73,7 +73,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private DetailsPanel_Vehicle_Controller detailsPanelVehicleController;
+	private DetailsPanelVehicleController detailsPanelVehicleController;
 
 	/**
 	 * The wVehicle object for this class.
@@ -123,7 +123,7 @@ public class WorldVehicle extends WorldObject {
 		this.wVehicle = wVehicle;
 		updateSim();
 
-		setDetailClassPath("DetailsPanel_Vehicle.fxml");
+		setDetailClassPath("DetailsPanelVehicle.fxml");
 		setInteractable(true);
 		setUseBoxCollision(true);
 		setBoxCollision(size.div(2));
@@ -221,7 +221,7 @@ public class WorldVehicle extends WorldObject {
 	 * @return The detail panel controller for this object.
 	 * @author Joel
 	 */
-	public DetailsPanel_Vehicle_Controller getDetailsPanelVehicleController() {
+	public DetailsPanelVehicleController getDetailsPanelVehicleController() {
 		return detailsPanelVehicleController;
 	}
 
@@ -345,7 +345,7 @@ public class WorldVehicle extends WorldObject {
 		super.select();
 
 		// create/show world vehicle route on selection
-		detailsPanelVehicleController.createWorlVehicleRoute();
+		detailsPanelVehicleController.createWorldVehicleRoute();
 	}
 
 	/**
@@ -359,7 +359,7 @@ public class WorldVehicle extends WorldObject {
 		super.deselect();
 
 		// remove/hide world vehicle route on selection
-		detailsPanelVehicleController.removeWorlVehicleRoute();
+		detailsPanelVehicleController.removeWorldVehicleRoute();
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------

@@ -9,9 +9,9 @@ import org.group_three.constants.UI;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.SimulationView_Controller;
-import org.group_three.ui.controllers.MainWindow_SimulationControls_Controller;
-import org.group_three.ui.controllers.StatisticsAnalytics_Controller;
+import org.group_three.ui.controllers.SimulationViewController;
+import org.group_three.ui.controllers.MainWindowSimulationControlsController;
+import org.group_three.ui.controllers.StatisticsAnalyticsController;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -146,9 +146,9 @@ public class World {
 		this.renderTarget = renderTarget;
 		graphicsContext = renderTarget.getGraphicsContext2D();
 
-		MainWindow_SimulationControls_Controller.setPlay(false);
-		SimulationView_Controller.rotationIndicatorStatic.setRotate(0);
-		StatisticsAnalytics_Controller.clear();
+		MainWindowSimulationControlsController.setPlay(false);
+		SimulationViewController.rotationIndicatorStatic.setRotate(0);
+		StatisticsAnalyticsController.clear();
 
 		updateTimer = new Timeline(new KeyFrame(Duration.seconds(1 / UI.maxSimulationViewFps), _ -> updateTick()));
 		updateTimer.setCycleCount(Timeline.INDEFINITE);
@@ -264,7 +264,7 @@ public class World {
 		viewerRotation = rotation;
 
 		// update the rotation indicator
-		SimulationView_Controller.rotationIndicatorStatic.setRotate(360 - rotation);
+		SimulationViewController.rotationIndicatorStatic.setRotate(360 - rotation);
 
 		requestUpdate();
 	}

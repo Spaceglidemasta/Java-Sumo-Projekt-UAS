@@ -9,7 +9,7 @@ import org.group_three.constants.UI;
 import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.MainWindow_SimulationFrame_Controller;
+import org.group_three.ui.controllers.MainWindowSimulationFrameController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -808,7 +808,7 @@ public abstract class WorldObject {
 	public void select() {
 		selected = true;
 		log.info("Selected Object: " + getDisplayName());
-		setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(detailClassPath));
+		setupDetailsPanel(MainWindowSimulationFrameController.setDetailsPanel(detailClassPath));
 	}
 
 	/**

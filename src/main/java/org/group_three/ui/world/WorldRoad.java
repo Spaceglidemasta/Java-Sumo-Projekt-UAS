@@ -7,7 +7,7 @@ import org.group_three.constants.UI;
 import org.group_three.model.WEdge;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.DetailsPanel_Road_Controller;
+import org.group_three.ui.controllers.DetailsPanelRoadController;
 
 /**
  * The class to represent roads in the world.
@@ -56,7 +56,7 @@ public class WorldRoad extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private DetailsPanel_Road_Controller detailsPanelRoadController;
+	private DetailsPanelRoadController detailsPanelRoadController;
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -90,7 +90,7 @@ public class WorldRoad extends WorldObject {
 		this.sumoId = id;
 		this.wEdge = wEdge;
 
-		setDetailClassPath("DetailsPanel_Road.fxml");
+		setDetailClassPath("DetailsPanelRoad.fxml");
 
 		// calculate and set center position of the road
 		Vector2D a = Meth.getRelativeLocation(start, 0, end);
@@ -140,7 +140,7 @@ public class WorldRoad extends WorldObject {
 	 * @return The controller object.
 	 * @author Joel
 	 */
-	public DetailsPanel_Road_Controller getDetailsPanelRoadController() {
+	public DetailsPanelRoadController getDetailsPanelRoadController() {
 		return detailsPanelRoadController;
 	}
 
