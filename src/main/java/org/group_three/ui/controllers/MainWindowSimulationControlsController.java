@@ -11,6 +11,8 @@ import org.group_three.constants.UI;
 import org.group_three.debug.Debug;
 import org.group_three.ui.SimView2D;
 
+import java.util.logging.Logger;
+
 /**
  * The controller class for the gui simulation controls.
  *
@@ -18,18 +20,8 @@ import org.group_three.ui.SimView2D;
  */
 public class MainWindowSimulationControlsController {
 
-	/**
-	 * The speed mod text field to display and change the value via ui.
-	 *
-	 * @author Joel
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	@FXML
-	private TextField speedModifier;
-
-	@FXML
-	private ToggleButton playPauseButton;
-	private static ToggleButton playPauseButtonFixed;
+	// Logger
+	private static final Logger log = Logger.getLogger(MainWindowSimulationControlsController.class.getName());
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -58,7 +50,34 @@ public class MainWindowSimulationControlsController {
 	@SuppressWarnings("JavadocDeclaration")
 	private static boolean play = false;
 
+	/**
+	 * The static play/pause button reference for the simulation controls.
+	 * @author Joel
+	 */
+	private static ToggleButton playPauseButtonFixed;
+
 	//--------------------------------------------------ClassVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The speed mod text field to display and change the value via ui.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	@FXML
+	private TextField speedModifier;
+
+	/**
+	 * The play/pause button for the simulation controls.
+	 * @author Joel
+	 */
+	@FXML
+	private ToggleButton playPauseButton;
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -69,6 +88,7 @@ public class MainWindowSimulationControlsController {
 	 * @return If the simulation is currently playing.
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public static boolean isPlaying() {
 		return play;
 	}

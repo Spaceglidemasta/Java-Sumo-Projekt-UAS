@@ -177,7 +177,7 @@ public class FilterVehicleController {
 
 
 	/**
-	 * A method that is called when a color picker element is added or rmeoved,
+	 * A method that is called when a color picker element is added or removed,
 	 * binds to color changes.
 	 *
 	 * @param picker
