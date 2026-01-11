@@ -40,16 +40,11 @@ public class Keyboard {
 	public static void initialize(Scene scene) {
 		scene.setOnKeyPressed(
 				e -> {
-					if (!keyCodes.contains(e.getCode())) {
-						keyCodes.add(e.getCode());
-					}
+					if (!keyCodes.contains(e.getCode())) keyCodes.add(e.getCode());
 				}
 		);
 
-		scene.setOnKeyReleased(e -> {
-					keyCodes.remove(e.getCode());
-				}
-		);
+		scene.setOnKeyReleased(e -> keyCodes.remove(e.getCode()) );
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------

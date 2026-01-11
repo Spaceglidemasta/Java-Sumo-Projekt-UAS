@@ -216,7 +216,7 @@ public class WorldVehicle extends WorldObject {
 	}
 
 	/**
-	 * The getter for the details panel controlle rof this object.
+	 * The getter for the details panel controller rof this object.
 	 *
 	 * @return The detail panel controller for this object.
 	 * @author Joel
@@ -246,7 +246,7 @@ public class WorldVehicle extends WorldObject {
 	}
 
 	/**
-	 * A method to check if the vehicle currently should be displayed or if its filtered out.
+	 * A method to check if the vehicle currently should be displayed or if it's filtered out.
 	 *
 	 * @return If the vehicle should be displayed.
 	 * @author Joel

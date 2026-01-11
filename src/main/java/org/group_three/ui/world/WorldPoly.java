@@ -121,7 +121,7 @@ public class WorldPoly extends WorldObject {
 		// skip if polys are disabled
 		if (!UI.showPolys) return;
 
-		// draw the poly in grayscale with a 10% brightness adjustment if hight contrast mode is active
+		// draw the poly in grayscale with a 10% brightness adjustment if height contrast mode is active
 		drawPolygon(shape, UI.highContrast ? highContrastColor : defaultColor);
 	}
 

@@ -140,7 +140,7 @@ public class MainApp extends Application {
 	 * @param stage            The stage which is created by the start method of the Application class.
 	 * @param widthPercentage  A double ranging from 0 to 1. 0 being 0% of the screen and 1 being 100% of the screen.
 	 * @param heightPercentage A double ranging from 0 to 1. 0 being 0% of the screen and 1 being 100% of the screen.
-	 * @param center           A boolean to decide if the window location should be perfectly in the center or if it should use the default spawn lcoation.
+	 * @param center           A boolean to decide if the window location should be perfectly in the center or if it should use the default spawn location.
 	 * @author Joel
 	 */
 	public void setWindowSpawnSettings(Stage stage, double widthPercentage, double heightPercentage, boolean center) {
