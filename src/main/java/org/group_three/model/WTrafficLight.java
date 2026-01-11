@@ -188,9 +188,9 @@ public class WTrafficLight extends WObject {
     }
 
     /**
-     * Returns the Traffic Light phase duration <br>
+     * Gets the current RYG state as a string for the given TLID.<br>
      * @param TLID ID of the Traffic Light
-     * @return Duration of the Phase, <code>-1</code> if getter failed.
+     * @return current RYG state as a string.
      * @author Leon
      */
     public String getRYGState(String TLID) {
@@ -198,20 +198,6 @@ public class WTrafficLight extends WObject {
         return (String) simcon.jobget(Trafficlight.getRedYellowGreenState(TLID));
 
     }
-
-    /**
-     * Returns the Traffic Light phase duration <br>
-     * @param TLID ID of the Traffic Light
-     * @return Duration of the Phase, <code>-1</code> if getter failed.
-     * @author Leon
-     */
-    public boolean setRYGState(String TLID, String state) {
-
-         return simcon.jobset(Trafficlight.setRedYellowGreenState(TLID, state));
-
-    }
-
-
 
     /**
      * Sets the Length of the current Phase of the given TL.
