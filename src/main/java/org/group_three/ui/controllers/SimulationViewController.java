@@ -22,7 +22,7 @@ import org.group_three.ui.world.WorldObject;
  *
  * @author Joel
  */
-public class SimulationView_Controller {
+public class SimulationViewController {
 
 	/**
 	 * For static world elements: roads, traffic lights,...

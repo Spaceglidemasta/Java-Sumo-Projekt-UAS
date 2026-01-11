@@ -18,7 +18,7 @@ import org.group_three.ui.Meth;
  *
  * @author Joel
  */
-public class SaveWindow_CreationFilter_Controller {
+public class SaveWindowCreationFilterController {
 
 	/**
 	 * The stage which this FXML/Controller is part of.
@@ -86,6 +86,10 @@ public class SaveWindow_CreationFilter_Controller {
 		// Ini pdf style combo box
 		style.getItems().addAll(CSSStyle.values());
 		style.getSelectionModel().select(CSSStyle.DEFAULT);
+	}
+
+	public void disableStyle() {
+		style.setDisable(true);
 	}
 
 	/**
