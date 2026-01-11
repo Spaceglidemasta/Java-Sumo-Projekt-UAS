@@ -17,9 +17,9 @@ public class Filter_VehicleColorElement_Controller {
 		((VBox) root.getParent()).getChildren().remove(root);
 	}
 
-	private Filter_Vehicle_Controller filterVehicleController;
+	private FilterVehicleController filterVehicleController;
 
-	public void setup(Filter_Vehicle_Controller filterVehicleController) {
+	public void setup(FilterVehicleController filterVehicleController) {
 		this.filterVehicleController = filterVehicleController;
 		filterVehicleController.updatedColorPickerList(colorPicker, false);
 	}

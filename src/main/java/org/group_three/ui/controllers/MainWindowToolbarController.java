@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.group_three.api.SimController;
-import org.group_three.constants.Documents;
 import org.group_three.constants.UI;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
@@ -32,10 +31,10 @@ import org.group_three.ui.SimView2D;
  *
  * @author Joel
  */
-public class MainWindow_Toolbar_Controller {
+public class MainWindowToolbarController {
 
 	private static final Logger log =
-			Logger.getLogger(MainWindow_Toolbar_Controller.class.getName());
+			Logger.getLogger(MainWindowToolbarController.class.getName());
 
 	// FX:ID's
 	@FXML
@@ -253,13 +252,13 @@ public class MainWindow_Toolbar_Controller {
 			pdfFilter.getIcons().add(MainApp.getAppIcon());
 			pdfFilter.setResizable(false);
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/SaveWindow_CreationFilter.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/SaveWindowCreationFilter.fxml"));
 
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).stage = pdfFilter;
+			((SaveWindowCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
 
-			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).disableStyle();
+			((SaveWindowCreationFilterController) fxmlLoader.getController()).disableStyle();
 
 			pdfFilter.show();
 
@@ -298,11 +297,11 @@ public class MainWindow_Toolbar_Controller {
 			pdfFilter.getIcons().add(MainApp.getAppIcon());
 			pdfFilter.setResizable(false);
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/SaveWindow_CreationFilter.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/group_three/ui/fxml/SaveWindowCreationFilter.fxml"));
 
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
-			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).stage = pdfFilter;
+			((SaveWindowCreationFilterController) fxmlLoader.getController()).stage = pdfFilter;
 
 			pdfFilter.show();
 

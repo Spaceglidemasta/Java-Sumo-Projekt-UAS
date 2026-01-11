@@ -40,7 +40,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<HBox id="HBox" alignment="BOTTOM_CENTER" maxHeight="22.0" minHeight="22.0" prefHeight="22.0" spacing="5.0" styleClass="tail" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.MainWindow_Tail_Controller">
+<HBox id="HBox" alignment="BOTTOM_CENTER" maxHeight="22.0" minHeight="22.0" prefHeight="22.0" spacing="5.0" styleClass="tail" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group_three.ui.controllers.MainWindowTailController">
    <children>
       <Label maxWidth="-1.0" onMouseClicked="#onConsoleOpen" text="Output Log" HBox.hgrow="ALWAYS">
          <font>

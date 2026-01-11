@@ -17,10 +17,10 @@ import java.util.logging.Logger;
  *
  * @author Joel
  */
-public class DetailsPanel_Vehicle_Controller {
+public class DetailsPanelVehicleController {
 
 	// Logger
-	private static final Logger log = Logger.getLogger(DetailsPanel_Vehicle_Controller.class.getName());
+	private static final Logger log = Logger.getLogger(DetailsPanelVehicleController.class.getName());
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 

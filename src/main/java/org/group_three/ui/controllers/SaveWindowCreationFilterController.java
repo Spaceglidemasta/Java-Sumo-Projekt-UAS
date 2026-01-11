@@ -18,7 +18,7 @@ import org.group_three.ui.Meth;
  *
  * @author Joel
  */
-public class SaveWindow_CreationFilter_Controller {
+public class SaveWindowCreationFilterController {
 
 	/**
 	 * The stage which this FXML/Controller is part of.

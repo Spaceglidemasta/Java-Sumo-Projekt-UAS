@@ -11,7 +11,7 @@ import org.group_three.service.records.VehicleRec;
 
 import java.util.*;
 
-public class StatisticsAnalytics_Controller {
+public class StatisticsAnalyticsController {
 
 	@FXML
 	private LineChart<Number, Number> avgSpeed;

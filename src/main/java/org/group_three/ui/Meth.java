@@ -65,7 +65,7 @@ public final class Meth {
 	 * @param location         start location
 	 * @param rotation         start rotation
 	 * @param relativeLocation second location
-	 * @return the relative location from the start location to the second lcoation
+	 * @return the relative location from the start location to the second location
 	 * @author Joel
 	 * @see #addRelativeLocation(Vector2D location, double rotation, Vector2D relativeLocation)
 	 */
