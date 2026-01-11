@@ -142,7 +142,7 @@ public class FilterVehicleController {
 		try {
 			// load fxml and set it up with data
 			Node detailsNode = loader.load();
-			((Filter_VehicleColorElement_Controller) loader.getController()).setup(this);
+			((FilterVehicleColorElementController) loader.getController()).setup(this);
 
 			// add color picker element to list
 			colorFilterList.getChildren().add(colorFilterList.getChildren().size() - 1, detailsNode);
