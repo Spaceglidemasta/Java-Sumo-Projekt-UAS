@@ -108,12 +108,8 @@ public class MainWindowTailController {
 	 * @author Leon
 	 */
 	private void update() {
-		final int cpuPercent = SystemUsage.getSystemCpuPercent();
-		final double used = SystemUsage.getUsedPhysicalMemoryGB();
-		final double total = SystemUsage.getTotalPhysicalMemoryGB();
-
-		cpu.setText("CPU: " + cpuPercent + "%");
-		ram.setText(String.format("RAM %.1f/%.1fGB", used, total));
+		cpu.setText("CPU: " + SystemUsage.getSystemCpuPercent() + "%");
+		ram.setText(String.format("RAM %.1f/%.1fGB", SystemUsage.getUsedPhysicalMemoryGB(), SystemUsage.getTotalPhysicalMemoryGB()));
 	}
 
 	/**

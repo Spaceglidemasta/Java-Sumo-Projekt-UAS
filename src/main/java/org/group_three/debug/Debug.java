@@ -17,8 +17,26 @@ public final class Debug {
 
     private static final Logger logger = Logger.getLogger(Debug.class.getName());
 
+
+    /**
+     * Booleans to later enable or disable debugging if needed.
+     *
+     *
+     * @author Leon
+     * */
+    @SuppressWarnings("JavadocDeclaration")
     private static final boolean MAIN_CON_DEBUG = true;
     public static boolean JAVAFX_FULL_DEBUG = false;
+
+    /**
+     * TextArea that is used as the custom debug console.
+     * When set, all debug messages are appended to this TextArea on the JavaFX Application Thread.
+     * If the TextArea is not yet initialized, messages are temporarily
+     * buffered and flushed once this reference is set.
+     *
+     * @author Leon
+     * */
+    @SuppressWarnings("JavadocDeclaration")
     private static TextArea debugTextArea;
 
     /**
@@ -45,7 +63,7 @@ public final class Debug {
         if (MAIN_CON_DEBUG) {
             StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
             String className = caller.getClassName().substring(16);
-            System.out.println(BOLD + "[" + ANSI_BLUE + "DEBUG" + ANSI_RESET + BOLD + "](" + ANSI_CYAN + className + ANSI_RESET + ") " + ANSI_RESET + String.valueOf(value));
+            System.out.println(BOLD + "[" + ANSI_BLUE + "DEBUG" + ANSI_RESET + BOLD + "](" + ANSI_CYAN + className + ANSI_RESET + ") " + ANSI_RESET + value);
         }
     }
 
@@ -58,11 +76,14 @@ public final class Debug {
     public static void toConsole(Object message) {
         String msg = message + "\n";
         if (debugTextArea != null) {
+            // Schedule the text append
             Platform.runLater(() -> {
                 debugTextArea.appendText(msg);
+                // Move the caret to the end
                 debugTextArea.positionCaret(debugTextArea.getLength());
             });
         } else {
+            // If text area isn't ready yet, buffer the message for later
             synchronized (buffer) {
                 buffer.append(msg);
             }
@@ -70,19 +91,24 @@ public final class Debug {
     }
 
     /**
+     * Sets the text area to the one in the console.
      * When the console is opened, flush any messages that were
      * buffered while the console was inactive
      * @author Leon
      * */
 
     public static void setDebugTextArea(TextArea textArea) {
+        // Set the text area reference so messages can be displayed
         debugTextArea = textArea;
         String pending;
         synchronized (buffer) {
             if (buffer.isEmpty()) return;
+            // Get all buffered messages
             pending = buffer.toString();
+            // Clear the buffer
             buffer.setLength(0);
         }
+        // Schedule for the messages to be displayed
         Platform.runLater(() -> {
             debugTextArea.appendText(pending);
             debugTextArea.positionCaret(debugTextArea.getLength());
