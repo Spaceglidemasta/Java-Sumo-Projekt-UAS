@@ -20,6 +20,8 @@ import org.group_three.ui.Meth;
  */
 public class SaveWindowCreationFilterController {
 
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
 	 * The stage which this FXML/Controller is part of.
 	 *
@@ -47,6 +49,8 @@ public class SaveWindowCreationFilterController {
 	private ColorPicker color;
 
 	/**
+	 * If everything should be sorted by avg speed.
+	 *
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
@@ -71,6 +75,11 @@ public class SaveWindowCreationFilterController {
 	@FXML
 	private ComboBox<CSSStyle> style;
 
+	//-------------------------------------------------MemberVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
 	 * The initialize method of this controller.
 	 * Initializes the ComboBoxes.
@@ -88,6 +97,16 @@ public class SaveWindowCreationFilterController {
 		style.getSelectionModel().select(CSSStyle.DEFAULT);
 	}
 
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * A method to disable the style selection option.
+	 *
+	 * @author Joel
+	 */
 	public void disableStyle() {
 		style.setDisable(true);
 	}
@@ -145,4 +164,7 @@ public class SaveWindowCreationFilterController {
 		// close window
 		stage.close();
 	}
+
+	//-----------------------------------------------------Methods------------------------------------------------------
+
 }

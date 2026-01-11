@@ -8,10 +8,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.util.Duration;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 import org.group_three.ui.SimView2D;
-
-import java.util.logging.Logger;
 
 /**
  * The controller class for the gui simulation controls.
@@ -19,9 +16,6 @@ import java.util.logging.Logger;
  * @author Joel
  */
 public class MainWindowSimulationControlsController {
-
-	// Logger
-	private static final Logger log = Logger.getLogger(MainWindowSimulationControlsController.class.getName());
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -114,7 +108,7 @@ public class MainWindowSimulationControlsController {
 	//---------------------------------------------------ClassMethods---------------------------------------------------
 
 
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The default ini method of the controller.
@@ -123,16 +117,18 @@ public class MainWindowSimulationControlsController {
 	 */
 	@FXML
 	public void initialize() {
-		Debug.print("Controls loaded.");
+		// set static play pause button ref
 		playPauseButtonFixed = playPauseButton;
 
+		// create new timer for timed step triggering
 		timeline = new Timeline(
 				new KeyFrame(Duration.seconds(1), e -> onTick())
 		);
 		timeline.setCycleCount(Timeline.INDEFINITE);
 
+		// ensure speed mod is a proper number
 		speedModifier.textProperty().addListener(
-				(obs, oldText, newText) -> {
+				(_, _, newText) -> {
 					try {
 						speedModValue = Math.clamp(Math.abs(Double.parseDouble(newText)), UI.simulationSpeedLimit.x, UI.simulationSpeedLimit.y);
 						speedModifier.textProperty().set(String.valueOf(speedModValue));
@@ -144,6 +140,11 @@ public class MainWindowSimulationControlsController {
 
 				});
 	}
+
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to do a step in the simulation.
