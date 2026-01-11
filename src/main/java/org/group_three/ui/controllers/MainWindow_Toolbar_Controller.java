@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.group_three.api.SimController;
+import org.group_three.constants.Documents;
 import org.group_three.constants.UI;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
 import org.group_three.debug.Debug;
@@ -257,6 +258,8 @@ public class MainWindow_Toolbar_Controller {
 			pdfFilter.setScene(new Scene(fxmlLoader.load()));
 
 			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).stage = pdfFilter;
+
+			((SaveWindow_CreationFilter_Controller) fxmlLoader.getController()).disableStyle();
 
 			pdfFilter.show();
 

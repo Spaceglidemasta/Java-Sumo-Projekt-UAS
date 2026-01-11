@@ -88,6 +88,10 @@ public class SaveWindow_CreationFilter_Controller {
 		style.getSelectionModel().select(CSSStyle.DEFAULT);
 	}
 
+	public void disableStyle() {
+		style.setDisable(true);
+	}
+
 	/**
 	 * A method that gets called when the save button is pressed.
 	 * Grabs the data based on the given parameters from the FXML and exports it.
