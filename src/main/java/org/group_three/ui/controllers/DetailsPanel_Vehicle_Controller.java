@@ -6,9 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import org.group_three.api.SimController;
-import org.group_three.debug.Debug;
+import org.group_three.model.WEdge;
 import org.group_three.ui.SimView2D;
 import org.group_three.ui.world.*;
+
+import java.util.logging.Logger;
 
 /**
  * The controller for the VehicleDetails.
@@ -16,6 +18,11 @@ import org.group_three.ui.world.*;
  * @author Joel
  */
 public class DetailsPanel_Vehicle_Controller {
+
+	// Logger
+	private static final Logger log = Logger.getLogger(DetailsPanel_Vehicle_Controller.class.getName());
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The world object id.
@@ -89,6 +96,17 @@ public class DetailsPanel_Vehicle_Controller {
 	@FXML
 	private Button selectRouteButton;
 
+	/**
+	 * The reference of the WorldRoute when this object is selected.
+	 *
+	 * @author Joel
+	 */
+	private WorldRoute worldRoute;
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The initialize method of the vehicle details panel.
@@ -98,6 +116,7 @@ public class DetailsPanel_Vehicle_Controller {
 	@FXML
 	private void initialize() {
 
+		// validate speed factor input to be a number/double and update speed factor on sumo vehicle
 		speedFactor.textProperty().addListener((_, oldText, newText) -> {
 			try {
 				// set vehicle speed to a corrected value (for example "EEE" is not a valid speed) from the input
@@ -105,84 +124,20 @@ public class DetailsPanel_Vehicle_Controller {
 				speedFactor.setText(String.valueOf(Math.abs(Double.parseDouble(newText))));
 			} catch (Exception e) {
 				speedFactor.textProperty().set(oldText);
+				log.warning("SpeedFactor: InvalidInput");
 			}
 		});
 
+		// validate color input and update vehicle color on assignment
 		color.valueProperty().addListener(
 				(_, _, newColor) -> {
 					try {
 						worldVehicle.setColor(newColor);
 						worldVehicle.update();
 					} catch (Exception e) {
-						//throw new RuntimeException(e);
+						log.warning("SpeedFactor: InvalidInput");
 					}
 				});
-	}
-
-	@FXML
-	private void onRouteSelectPressed() {
-		SimView2D.setRouteSelection(worldVehicle);
-	}
-
-	private String targetRouteId;
-
-	public void routeSelected(WorldObject worldObject) {
-		Debug.print(worldObject.getClass());
-		Debug.print(WorldRoad.class);
-		Debug.print(((WorldRoad) worldObject).getwEdge().getId());
-		Debug.print(worldObject.getClass() == WorldRoad.class);
-		if ( worldObject.getClass() == WorldRoad.class) {
-			if (worldRoute != null) {
-				worldRoute.remove();
-				worldRoute = null;
-			}
-
-
-			SumoStringList route = new SumoStringList();
-			route.add(worldVehicle.getwVehicle().getRouteEdges().get(worldVehicle.getwVehicle().getRouteIndex()));
-			route.add(((WorldRoad) worldObject).getwEdge().getId());
-
-			Debug.print(route);
-
-			targetRouteId = SimController.getMainsimcon().addRoute(route);
-
-			Debug.print(targetRouteId);
-			//Debug.print(SimController.getMainsimcon().get);
-
-			if (targetRouteId != null) {
-
-				worldVehicle.getwVehicle().changeRoute(route);
-
-				//worldVehicle.getwVehicle().setRoute(targetRouteId);
-				//worldVehicle.getwVehicle().reroute();
-
-
-
-				worldRoute = new WorldRoute(
-						worldVehicle.getWorld(),
-						worldVehicle.getWorld().getRenderTarget(),
-						"",
-						worldVehicle.getwVehicle().getRouteEdges());
-
-			} else {
-				targetRouteId = null;
-			}
-
-		}
-	}
-
-	private WorldRoute worldRoute;
-
-	public void createWorlVehicleRoute() {
-		worldRoute = new WorldRoute(
-				worldVehicle.getWorld(),
-				worldVehicle.getWorld().getRenderTarget(),
-				"",
-				worldVehicle.getwVehicle().getRouteEdges());
-	}
-
-	public void removeWorlVehicleRoute() {
-		worldRoute.remove();
 	}
 
 	/**
@@ -200,6 +155,92 @@ public class DetailsPanel_Vehicle_Controller {
 		speed.setText(String.valueOf(worldVehicle.getwVehicle().getSpeed()));
 		speedFactor.setText(String.valueOf(worldVehicle.getwVehicle().getSpeedFactor()));
 		color.setValue(worldVehicle.getColor());
+	}
+
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * Called when the route selection button of the ui is pressed and
+	 * request a route selection from SimView2D.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private void onRouteSelectPressed() {
+		// request route selection
+		SimView2D.setRouteSelection(worldVehicle);
+	}
+
+	/**
+	 * A method to set a new route for the vehicle.
+	 * Also creates a new WorldRoute to display the new route.
+	 *
+	 * @param worldObject The new WorldRoad to drive to.
+	 * @author Joel
+	 */
+	public void routeSelected(WorldObject worldObject) {
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
+
+		// skip if object is not a road
+		if (worldObject.getClass() != WorldRoad.class) return;
+
+		// remove old route if present
+		if (worldRoute != null) {
+			worldRoute.remove();
+			worldRoute = null;
+		}
+
+
+		// skip if wedge reference is null
+		WEdge wEdge = ((WorldRoad) worldObject).getwEdge();
+		if (wEdge == null) return;
+
+		// create new route
+		SumoStringList route = new SumoStringList();
+		route.add(worldVehicle.getwVehicle().getRouteEdges().get(worldVehicle.getwVehicle().getRouteIndex()));
+		route.add(wEdge.getId());
+
+
+		// validate route, if not valid skip
+		if (simcon.addRoute(route) == null) return;
+
+
+		// set new vehicle route
+		worldVehicle.getwVehicle().changeRoute(route);
+
+		// spawn new world vehicle route object
+		worldRoute = new WorldRoute(
+				worldVehicle.getWorld(),
+				worldVehicle.getWorld().getRenderTarget(),
+				"",
+				worldVehicle.getwVehicle().getRouteEdges()
+		);
+	}
+
+	/**
+	 * A method to create and assign a new WorldRoute object.
+	 *
+	 * @author Joel
+	 */
+	public void createWorldVehicleRoute() {
+		worldRoute = new WorldRoute(
+				worldVehicle.getWorld(),
+				worldVehicle.getWorld().getRenderTarget(),
+				"",
+				worldVehicle.getwVehicle().getRouteEdges());
+	}
+
+	/**
+	 * A method remove the assigned WorldRoute object.
+	 *
+	 * @author Joel
+	 */
+	public void removeWorldVehicleRoute() {
+		worldRoute.remove();
 	}
 
 	/**
@@ -220,7 +261,7 @@ public class DetailsPanel_Vehicle_Controller {
 	 * @author Joel
 	 */
 	public void kill() {
-		// disable everything
+		// all buttons
 		id.setDisable(true);
 		displayName.setDisable(true);
 		sumoId.setDisable(true);
@@ -228,6 +269,11 @@ public class DetailsPanel_Vehicle_Controller {
 		color.setDisable(true);
 		selectRouteButton.setDisable(true);
 		speedFactor.setDisable(true);
-		removeWorlVehicleRoute();
+
+		// remove world route
+		removeWorldVehicleRoute();
 	}
+
+	//-----------------------------------------------------Methods------------------------------------------------------
+
 }

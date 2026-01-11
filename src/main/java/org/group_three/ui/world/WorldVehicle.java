@@ -345,7 +345,7 @@ public class WorldVehicle extends WorldObject {
 		super.select();
 
 		// create/show world vehicle route on selection
-		detailsPanelVehicleController.createWorlVehicleRoute();
+		detailsPanelVehicleController.createWorldVehicleRoute();
 	}
 
 	/**
@@ -359,7 +359,7 @@ public class WorldVehicle extends WorldObject {
 		super.deselect();
 
 		// remove/hide world vehicle route on selection
-		detailsPanelVehicleController.removeWorlVehicleRoute();
+		detailsPanelVehicleController.removeWorldVehicleRoute();
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------
