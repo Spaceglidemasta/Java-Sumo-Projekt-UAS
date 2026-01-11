@@ -5,23 +5,25 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 
 import javafx.scene.image.Image;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.MainWindow_SimulationFrame_Controller;
+import org.group_three.ui.controllers.MainWindowSimulationFrameController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * A class that represents an object in the 2d world subclasses should later be road parts, traffic lights, vehicles,...
- * will be divided into static and dynamic for rendering efficiency~~~~~~~~~~~
  *
  * @author Joel
  */
 public abstract class WorldObject {
+
+	// Logger
+	private static final Logger log = Logger.getLogger(WorldObject.class.getName());
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -151,18 +153,27 @@ public abstract class WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private final Color boxCollisionColor = UI.boxCollisionColor;
 
+
 	/**
 	 * The FXML path of the interactable details panel.
 	 *
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	public String detailClassPath = "";
+	private String detailClassPath = "";
+
+	/**
+	 * An indicator to check if this world object is currently selected.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings({"JavadocDeclaration", "unused"})
+	private boolean selected = false;
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructor++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The empty default constructor.
@@ -191,13 +202,28 @@ public abstract class WorldObject {
 		graphicsContext = canvas.getGraphicsContext2D();
 		this.displayName = displayName;
 		id = createId();
+
+		// add object to world
 		getWorld().addWorldObject(this);
+
+		// log WorldObject creation
+		log.info("Spawned WorldObject: " + getClass().getSimpleName());
 	}
 
-	//--------------------------------------------------Constructor--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++GetterSetterMethods++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * Sets the details panel FXML which should be loaded on object selection.
+	 *
+	 * @param detailClassPath The FXML file path (relative path to the fxml folder)
+	 * @author Joel
+	 */
+	public void setDetailClassPath(String detailClassPath) {
+		this.detailClassPath = UI.detailClassFolderPath + detailClassPath;
+	}
 
 	/**
 	 * Gets sphereCollision
@@ -220,7 +246,7 @@ public abstract class WorldObject {
 	}
 
 	/**
-	 * Graphics context
+	 * Gets the graphics context for the world the object is in.
 	 *
 	 * @return Graphics context
 	 * @author Joel
@@ -230,7 +256,7 @@ public abstract class WorldObject {
 	}
 
 	/**
-	 * Canvas
+	 * Gets the canvas the object should be drawn on.
 	 *
 	 * @return Canvas
 	 * @author Joel
@@ -266,7 +292,6 @@ public abstract class WorldObject {
 	 * @author Joel
 	 */
 	public String getIdName() {
-		//return "WorldObject";
 		return getClass().getSimpleName();
 	}
 
@@ -281,7 +306,7 @@ public abstract class WorldObject {
 	}
 
 	/**
-	 * Gets the roation of the object in the world
+	 * Gets the rotation of the object in the world
 	 *
 	 * @return Double
 	 * @author Joel
@@ -296,17 +321,15 @@ public abstract class WorldObject {
 	 * @return Boolean
 	 * @author Joel
 	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean isInteractable() {
 		return interactable;
 	}
 
-	//--------------------------------------------------GetterMethods--------------------------------------------------
-
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Sets the sphere collision of the object.
+	 *
 	 * @param sphereCollision radius
 	 * @author Joel
 	 */
@@ -321,24 +344,7 @@ public abstract class WorldObject {
 	 * @author Joel
 	 */
 	public void setPosition(Vector2D position) {
-		/*double worldSizeX = world.getWorldSize().x - sphereCollision / 2;
-		if (position.x < worldSizeX) {
-			position.x = worldSizeX;
-		} else if (position.x > worldSizeX) {
-			position.x = worldSizeX;
-		} else {
-
-		}
-
-		double worldSizeY = world.getWorldSize().y - sphereCollision / 2;
-		if (position.y < worldSizeY) {
-			position.y = worldSizeY;
-		} else if (position.y > worldSizeY) {
-			position.y = worldSizeY;
-		}*/
-
 		this.position = position;
-		//this.position.y *= -1;
 	}
 
 	/**
@@ -358,7 +364,7 @@ public abstract class WorldObject {
 			this.rotation -= 360;
 		}
 
-        //Debug.toConsole(rotation);
+		//Debug.toConsole(rotation);
 	}
 
 	/**
@@ -371,10 +377,6 @@ public abstract class WorldObject {
 		this.interactable = interactable;
 	}
 
-	//--------------------------------------------------SetterMethods--------------------------------------------------
-
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++AdderMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Adder to add a relative position to the object.
@@ -382,6 +384,7 @@ public abstract class WorldObject {
 	 * @param position The relative position to add.
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public void addPosition(Vector2D position) {
 		Vector2D pos = getPosition();
 		pos.x += position.x;
@@ -395,14 +398,130 @@ public abstract class WorldObject {
 	 * @param rotation The rotation to add in degrees.
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public void addRotation(double rotation) {
 		setRotation(getRotation() + rotation);
 	}
 
-	//--------------------------------------------------AdderMethods--------------------------------------------------
+
+	/**
+	 * A method to get the location of where to draw the object on the canvas.
+	 *
+	 * @return Vector2D location
+	 * @author Joel
+	 */
+	public Vector2D getDrawLocation() {
+		return Meth.addRelativeLocation(
+				world.getViewerPosition(),
+				world.getViewerRotation(),
+				getPosition().mul(world.getViewerZoom()
+				)
+		);
+	}
+
+	/**
+	 * A method to set the draw transform of the object based on the already used location and rotation.
+	 *
+	 * @author Joel
+	 */
+	public void setDrawTransform() {
+		graphicsContext.translate(
+				getDrawLocation().x + world.getViewerPositionOffset().x,
+				getDrawLocation().y + world.getViewerPositionOffset().y
+		); // Object Location
+		graphicsContext.rotate(
+				Meth.addRelativeRotation(world.getViewerRotation(),
+						getRotation()
+				)
+		);
+	}
+
+	/**
+	 * A method to get the draw center offset for an object. (adjusted for zoom,...)
+	 * To draw for example an image perfectly centered.
+	 *
+	 * @param objectHalfSize The half size of the object.
+	 * @return The offset value. (uniform)
+	 * @author Joel
+	 */
+	public double getDrawCenterOffset(double objectHalfSize) {
+		return objectHalfSize * world.getViewerZoom() * -1;
+	}
+
+	/**
+	 * A method to get the draw size on the canvas. (adjusted for zoom,...)
+	 *
+	 * @param objectHalfSize The half size of the object.
+	 * @return The real draw size.
+	 * @author Joel
+	 */
+	public Vector2D getDrawSize(Vector2D objectHalfSize) {
+		return new Vector2D(
+				getDrawSize(objectHalfSize.x),
+				getDrawSize(objectHalfSize.y)
+		);
+	}
+
+	/**
+	 * A method to get the draw size on the canvas. (adjusted for zoom,...)
+	 *
+	 * @param objectHalfSize The half size of the object.
+	 * @return The real draw size. (uniform)
+	 * @author Joel
+	 */
+	public double getDrawSize(double objectHalfSize) {
+		return objectHalfSize * 2 * world.getViewerZoom();
+	}
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++DrawMethods++++++++++++++++++++++++++++++++++++++++++++++++++
+	/**
+	 * A method to check if box collision should be used.
+	 *
+	 * @return boolean
+	 * @author Joel
+	 */
+	public boolean useBoxCollision() {
+		return useBoxCollision;
+	}
+
+	/**
+	 * A method to set if box collision should be used.
+	 *
+	 * @param useBoxCollision boolean
+	 * @author Joel
+	 */
+	public void setUseBoxCollision(boolean useBoxCollision) {
+		this.useBoxCollision = useBoxCollision;
+	}
+
+	/**
+	 * A method to get the box collision size.
+	 *
+	 * @return Vector2D size of box collision
+	 * @author Joel
+	 */
+	public Vector2D getBoxCollision() {
+		return boxCollision;
+	}
+
+	/**
+	 * A method to set the box collision size.
+	 * Also updates the sphere collision
+	 *
+	 * @param boxCollision Vector2D new size
+	 * @author Joel
+	 */
+	public void setBoxCollision(Vector2D boxCollision) {
+		this.boxCollision = boxCollision;
+
+		// update sphere collision size
+		setSphereCollision(boxCollision.length());
+	}
+
+	//-----------------------------------------------GetterSetterMethods------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++DrawMethods++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to draw a Sphere at the center of the WorldObject.
@@ -433,6 +552,7 @@ public abstract class WorldObject {
 	 * @author Joel
 	 * @see #drawSphere(double, Color)
 	 */
+	@SuppressWarnings("unused")
 	public void drawOval(Vector2D halfSize, Color color) {
 		graphicsContext.save();
 		graphicsContext.setFill(color);
@@ -455,6 +575,7 @@ public abstract class WorldObject {
 	 * @author Joel
 	 * @see #drawRectangle(Vector2D, Color)
 	 */
+	@SuppressWarnings("unused")
 	public void drawSquare(double halfSize, Color color) {
 		graphicsContext.save();
 		graphicsContext.setFill(color);
@@ -513,6 +634,7 @@ public abstract class WorldObject {
 	 * A method to draw a Polygon at the center of the WorldObject.
 	 *
 	 * @param points A list of Vector2D's which contains all the points of the polygon.
+	 * @param color  The color of the polygon.
 	 * @author Joel
 	 */
 	public void drawPolygon(List<Vector2D> points, Color color) {
@@ -539,6 +661,14 @@ public abstract class WorldObject {
 		graphicsContext.restore();
 	}
 
+	/**
+	 * A method to draw a Line at the center of the WorldObject.
+	 *
+	 * @param points The points to draw the line from.
+	 * @param width  The absolute width of the line.
+	 * @param color  The color of the line
+	 * @author Joel
+	 */
 	public void drawLine(List<Vector2D> points, double width, Color color) {
 		graphicsContext.save();
 		graphicsContext.setStroke(color);
@@ -565,29 +695,31 @@ public abstract class WorldObject {
 	}
 
 	/**
-	 * A method to draw a Text at the center of the WorldObject.
+	 * A method to draw the collision of the world object.
 	 *
-	 * @param halfSize The half size of the rectangle.
-	 * @param color    The color of the rectangle.
 	 * @author Joel
-	 * @see #drawSquare(double, Color)
 	 */
-	public void drawText(String text, Vector2D halfSize, Color color) {
-		graphicsContext.save();
-		graphicsContext.setFill(color);
-		setDrawTransform();
-		graphicsContext.fillText(
-				text,
-				getDrawSize(halfSize.x),
-				getDrawSize(halfSize.y)
-		);
-		graphicsContext.restore();
+	@SuppressWarnings("unused")
+	public void drawCollision() {
+		if (!UI.showCollision) return;
+
+		if (!useBoxCollision() || UI.forceShowSphereCollision) {
+			// skip if object has no collision enabled or collision size is 0
+			if (!isInteractable() || getSphereCollision() <= 0) return;
+			drawSphere(sphereCollision, sphereCollisionColor);
+		}
+
+		if (useBoxCollision()) {
+			// skip if box collision is not enabled or collision component sizes are 0
+			if (!useBoxCollision() || getBoxCollision().x <= 0 || getBoxCollision().y <= 0) return;
+			drawRectangle(boxCollision, boxCollisionColor);
+		}
 	}
 
-	//--------------------------------------------------DrawMethods--------------------------------------------------
+	//---------------------------------------------------DrawMethods----------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++#####++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to convert a shape, with absolute world coordinates,
@@ -609,7 +741,9 @@ public abstract class WorldObject {
 	}
 
 	/**
-	 * @return
+	 * A method to create an id for this world object.
+	 *
+	 * @return The id as id name + total object counter
 	 * @author Joel
 	 */
 	private String createId() {
@@ -617,124 +751,76 @@ public abstract class WorldObject {
 	}
 
 	/**
-	 * @author Joel
-	 */
-	public void remove() {
-		getWorld().removeWorldObject(this);
-	}
-
-	/**
-	 * Comment
+	 * The draw method for this object, abstract and to be implemented in the child classes.
 	 *
 	 * @author Joel
 	 */
 	public abstract void update();
 
-	public Vector2D getDrawLocation() {
-		return Meth.addRelativeLocation(
-				world.getViewerPosition(),
-				world.getViewerRotation(),
-				getPosition().mul(world.getViewerZoom()
-				)
-		);
-	}
-
-	public void setDrawTransform() {
-		graphicsContext.translate(
-				getDrawLocation().x + world.getViewerPositionOffset().x,
-				getDrawLocation().y + world.getViewerPositionOffset().y
-		); // Object Location
-		graphicsContext.rotate(
-				Meth.addRelativeRotation(world.getViewerRotation(),
-						getRotation()
-				)
-		);
-	}
-
-	public Vector2D getDrawCenterOffset(Vector2D objectHalfSize) {
-		return new Vector2D(
-				getDrawCenterOffset(objectHalfSize.x),
-				getDrawCenterOffset(objectHalfSize.y)
-		);
-	}
-
-	public double getDrawCenterOffset(double objectHalfSize) {
-		return objectHalfSize * world.getViewerZoom() * -1;
-	}
-
-	public Vector2D getDrawSize(Vector2D objectHalfSize) {
-		return new Vector2D(
-				getDrawSize(objectHalfSize.x),
-				getDrawSize(objectHalfSize.y)
-		);
-	}
-
-	public double getDrawSize(double objectHalfSize) {
-		return objectHalfSize * 2 * world.getViewerZoom();
-	}
-
 	/**
+	 * A method to remove this object from the world.
+	 *
 	 * @author Joel
 	 */
-	public void drawCollision() {
-		if (!UI.showCollision) return;
+	public void remove() {
+		// remove object from world
+		getWorld().removeWorldObject(this);
 
-		if (!useBoxCollision() || UI.forceShowSphereCollision) {
-			// skip if object has no collision enabled or collision size is 0
-			if (!isInteractable() || getSphereCollision() <= 0) return;
-			drawSphere(sphereCollision, sphereCollisionColor);
-		}
-
-		if (useBoxCollision()) {
-			// skip if box collision is not enabled or collision component sizes are 0
-			if (!useBoxCollision() || getBoxCollision().x <= 0 || getBoxCollision().y <= 0) return;
-			drawRectangle(boxCollision, boxCollisionColor);
-		}
+		// log WorldObject removal
+		log.info("Removed WorldObject: " + getClass().getSimpleName());
 	}
 
-	//--------------------------------------------------#####--------------------------------------------------
 
-
+	/**
+	 * A method to update simulation data.
+	 * No use by default, not abstract as its optional
+	 *
+	 * @author Joel
+	 */
 	public void updateSim() {
 	}
 
-	public boolean useBoxCollision() {
-		return useBoxCollision;
-	}
-
-	public void setUseBoxCollision(boolean useBoxCollision) {
-		this.useBoxCollision = useBoxCollision;
-	}
-
-	public Vector2D getBoxCollision() {
-		return boxCollision;
-	}
-
-	public void setBoxCollision(Vector2D boxCollision) {
-		this.boxCollision = boxCollision;
-
-		// update sphere collision size
-		setSphereCollision(boxCollision.length());
-	}
-
-	public Color getBoxCollisionColor() {
-		return boxCollisionColor;
-	}
-
+	/**
+	 * A method to set up the detail panel.
+	 * No use by default, not abstract as its optional
+	 *
+	 * @param fxmlLoader FXMLLoader for the details panel
+	 * @author Joel
+	 */
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
 	}
 
+	/**
+	 * A method to update the details panel.
+	 * No use by default, not abstract as its optional
+	 *
+	 * @author Joel
+	 */
 	public void updateDetailsPanel() {
 	}
 
-	public boolean selected = false;
+
+	/**
+	 * A method that is called when this object is selected.
+	 *
+	 * @author Joel
+	 */
 	public void select() {
 		selected = true;
-		Debug.print(id + ": Selected.");
-		setupDetailsPanel(MainWindow_SimulationFrame_Controller.setDetailsPanel(detailClassPath));
+		log.info("Selected Object: " + getDisplayName());
+		setupDetailsPanel(MainWindowSimulationFrameController.setDetailsPanel(detailClassPath));
 	}
+
+	/**
+	 * A method that is called when this object is deselected.
+	 *
+	 * @author Joel
+	 */
 	public void deselect() {
 		selected = false;
-		Debug.print(id + ": Deselected.");
+		log.info("Deselected Object: " + getDisplayName());
 	}
+
+	//-----------------------------------------------------Methods------------------------------------------------------
+
 }

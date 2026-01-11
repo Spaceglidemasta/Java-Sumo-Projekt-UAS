@@ -10,28 +10,24 @@ import org.group_three.model.WVehicle;
 import org.group_three.ui.ColoredIconManager;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.DetailsPanel_Vehicle_Controller;
+import org.group_three.ui.controllers.DetailsPanelVehicleController;
+
+import java.util.logging.Logger;
 
 import static org.group_three.ui.Meth.ClrToSumoClr;
 import static org.group_three.ui.Meth.SumoClrToClr;
 
 /**
- * THe vehicle to be rendered on the canvas.
+ * The vehicle object to be rendered on the canvas.
  *
  * @author Joel
  */
 public class WorldVehicle extends WorldObject {
 
+	// Logger
+	private static final Logger log = Logger.getLogger(WorldVehicle.class.getName());
+
 	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	public static double getScale() {
-		return scale;
-	}
-
-	public static void setScale(double scale) {
-		WorldVehicle.scale = scale;
-		WorldVehicle.size = new Vector2D(5 * scale, 2.5 * scale);
-	}
 
 	/**
 	 * The scale of the vehicle.
@@ -41,8 +37,6 @@ public class WorldVehicle extends WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private static double scale = UI.vehicleScale;
 
-
-
 	/**
 	 * The scaled size of the vehicle
 	 *
@@ -51,7 +45,6 @@ public class WorldVehicle extends WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private static Vector2D size = new Vector2D(5 * scale, 2.5 * scale);
 
-
 	/**
 	 * The icon manager of this class.
 	 * Manages icons and makes sure to not create the same icon twice.
@@ -59,7 +52,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	public static final ColoredIconManager iconManager = new ColoredIconManager(UI.carIcon);
+	private static final ColoredIconManager iconManager = new ColoredIconManager(UI.carIcon);
 
 	//--------------------------------------------------ClassVariables--------------------------------------------------
 
@@ -80,7 +73,7 @@ public class WorldVehicle extends WorldObject {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	public DetailsPanel_Vehicle_Controller detailsPanelVehicleController;
+	private DetailsPanelVehicleController detailsPanelVehicleController;
 
 	/**
 	 * The wVehicle object for this class.
@@ -89,6 +82,14 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final WVehicle wVehicle;
+
+	/**
+	 * If the vehicle is in boogie (disco) mode.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private boolean boogieMode = false;
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -107,7 +108,6 @@ public class WorldVehicle extends WorldObject {
 		remove();
 	}
 
-
 	/**
 	 * The default WorldVehicle constructor to spawn a new WorldVehicle in the world.
 	 *
@@ -123,7 +123,7 @@ public class WorldVehicle extends WorldObject {
 		this.wVehicle = wVehicle;
 		updateSim();
 
-		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_Vehicle.fxml";
+		setDetailClassPath("DetailsPanelVehicle.fxml");
 		setInteractable(true);
 		setUseBoxCollision(true);
 		setBoxCollision(size.div(2));
@@ -132,7 +132,35 @@ public class WorldVehicle extends WorldObject {
 	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++GetterSetterClassMethods+++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The getter for the vehicle scale.
+	 *
+	 * @return The (global) vehicle scale.
+	 * @author Joel
+	 */
+	public static double getScale() {
+		return scale;
+	}
+
+	/**
+	 * The setter for the vehicle scale.
+	 * Adjust related values too.
+	 *
+	 * @param scale
+	 * @author Joel
+	 */
+	public static void setScale(double scale) {
+		WorldVehicle.scale = scale;
+		WorldVehicle.size = new Vector2D(5 * scale, 2.5 * scale);
+		log.info("VehicleScale changed to: " + scale);
+	}
+
+	//---------------------------------------------GetterSetterClassMethods---------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++GetterSetterMethods++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Gets the vVehicle object of this class.
@@ -154,17 +182,13 @@ public class WorldVehicle extends WorldObject {
 		return color;
 	}
 
-	//--------------------------------------------------GetterMethods---------------------------------------------------
-
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
-
 	/**
 	 * Sets the color via wVehicle
 	 *
 	 * @param color in Color (JavaFX)
 	 * @author Luca
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	public boolean setColor(Color color) {
 
 		if (wVehicle.setColor(ClrToSumoClr(color))) {
@@ -181,6 +205,7 @@ public class WorldVehicle extends WorldObject {
 	 * @param color in SumoColor
 	 * @author Luca
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	public boolean setColor(SumoColor color) {
 		if (wVehicle.setColor(color)) {
 			this.color = SumoClrToClr(color);
@@ -190,14 +215,23 @@ public class WorldVehicle extends WorldObject {
 		}
 	}
 
-	//--------------------------------------------------SetterMethods---------------------------------------------------
+	/**
+	 * The getter for the details panel controller rof this object.
+	 *
+	 * @return The detail panel controller for this object.
+	 * @author Joel
+	 */
+	public DetailsPanelVehicleController getDetailsPanelVehicleController() {
+		return detailsPanelVehicleController;
+	}
+
+	//-----------------------------------------------GetterSetterMethods------------------------------------------------
 
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
-	 * An update method which should not exist I think?
-	 * Needs to be moved over to other methods and be removed.
+	 * A method to update this object with new sumo simulation data.
 	 *
 	 * @author Joel
 	 */
@@ -205,12 +239,18 @@ public class WorldVehicle extends WorldObject {
 	public void updateSim() {
 		wVehicle.update();
 		setRotation(360 - wVehicle.getAngle() + 90);
-		setPosition(Meth.addRelativeLocation(new Vector2D(wVehicle.getPos()), getRotation(), new Vector2D(-size.x/2, 0)));
+		setPosition(Meth.addRelativeLocation(new Vector2D(wVehicle.getPos()), getRotation(), new Vector2D(-size.x / 2, 0)));
 		setColor(wVehicle.getColor());
 
 		updateDetailsPanel();
 	}
 
+	/**
+	 * A method to check if the vehicle currently should be displayed or if it's filtered out.
+	 *
+	 * @return If the vehicle should be displayed.
+	 * @author Joel
+	 */
 	private boolean filterCheck() {
 		// speed filter check
 		double speed = getwVehicle().getSpeed();
@@ -221,12 +261,12 @@ public class WorldVehicle extends WorldObject {
 		if (!UI.viewFilter_VehicleColor.isEmpty() && !UI.viewFilter_VehicleColor.contains(getColor())) return false;
 
 		// pos filter check
-		if ((UI.viewFilter_PositionRadius != 0) && (UI.viewFilter_Position.getDistance(getPosition()) > UI.viewFilter_PositionRadius)) return false;
+		if ((UI.viewFilter_PositionRadius != 0) && (UI.viewFilter_Position.getDistance(getPosition()) > UI.viewFilter_PositionRadius))
+			return false;
 
+		// no filter
 		return true;
 	}
-
-
 
 	/**
 	 * The method to update the render of the vehicle.
@@ -235,24 +275,27 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@Override
 	public void update() {
+		// get colored icon from icon manager
 		Image visualImage = iconManager.getIcon(getColor());
 
+		// scale confirmation / force update
 		if (UI.vehicleScale != getScale()) setScale(UI.vehicleScale);
 
+		// skip if vehicle is filtered out
 		if (!filterCheck()) return;
 
-		if (boogie) {
+		// check if boogie mode should be enabled
+		if (boogieMode) {
 			wVehicle.boogieWonderland();
 		} else {
 			if (getColor().getOpacity() != 0 && getColor().getOpacity() != 1) {
-				boogie = true;
+				boogieMode = true;
+				log.info("WorldVehicle: BoogieMode Enabled.");
 			}
 		}
 
 		drawImage(size.div(2), visualImage);
 	}
-
-	private boolean boogie = false;
 
 	/**
 	 * A method to set up the details panel when the object is selected.
@@ -273,10 +316,7 @@ public class WorldVehicle extends WorldObject {
 	 */
 	@Override
 	public void updateDetailsPanel() {
-		if (detailsPanelVehicleController == null) {
-			//Debug.print("detailsPanelVehicleController is invalid.");
-			return;
-		}
+		if (detailsPanelVehicleController == null) return;
 
 		detailsPanelVehicleController.update();
 	}
@@ -289,19 +329,37 @@ public class WorldVehicle extends WorldObject {
 	@Override
 	public void remove() {
 		super.remove();
+
+		// destroy details panel on removal
 		if (detailsPanelVehicleController != null) detailsPanelVehicleController.kill();
 	}
 
+	/**
+	 * A method which is called on object selection.
+	 * Adds a world route for the route of this vehicle.
+	 *
+	 * @author Joel
+	 */
 	@Override
 	public void select() {
 		super.select();
-		detailsPanelVehicleController.createWorlVehicleRoute();
+
+		// create/show world vehicle route on selection
+		detailsPanelVehicleController.createWorldVehicleRoute();
 	}
 
+	/**
+	 * A method which is called on object deselection.
+	 * Removes the related world route if present.
+	 *
+	 * @author Joel
+	 */
 	@Override
 	public void deselect() {
 		super.deselect();
-		detailsPanelVehicleController.removeWorlVehicleRoute();
+
+		// remove/hide world vehicle route on selection
+		detailsPanelVehicleController.removeWorldVehicleRoute();
 	}
 
 	//-----------------------------------------------------Methods------------------------------------------------------

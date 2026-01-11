@@ -19,114 +19,117 @@ import java.util.logging.Logger;
 
 /**
  * Utility Class for Pathing
+ *
  * @author Luca
- * */
+ *
+ */
 public final class PathUtils {
 
-    private static final Logger log =
-            Logger.getLogger(PathUtils.class.getName());
+	private static final Logger log =
+			Logger.getLogger(PathUtils.class.getName());
 
-    /**
-     * Reads out the relative path / filename of the network file via XML parsing the .sumocfg file.
-     * @param scfg The location of the .sumocfg file
-     * @return The location of the network file as File, or null if failed.
-     * @author Luca
-     * */
-    public static File getNetFromSCFG(File scfg) throws Exception {
+	/**
+	 * Reads out the relative path / filename of the network file via XML parsing the .sumocfg file.
+	 *
+	 * @param scfg The location of the .sumocfg file
+	 * @return The location of the network file as File, or null if failed.
+	 * @author Luca
+	 *
+	 */
+	public static File getNetFromSCFG(File scfg) throws Exception {
 
-        NodeList nets;
+		NodeList nets;
 
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder(); //this may throw
-        Document doc = dBuilder.parse(scfg); //this too
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder(); //this may throw
+		Document doc = dBuilder.parse(scfg); //this too
 
-        doc.getDocumentElement().normalize();
+		doc.getDocumentElement().normalize();
 
-        nets = doc.getElementsByTagName("net-file");
-
-
-        if(nets.getLength() == 0){
-            throw new SumoCfgParsingError("No network value found in SumoConfig");
-        }
-
-        String parent = scfg.getParent();
-
-        Element netelement = (Element) nets.item(0);
-
-        String netpathstr =  netelement.getAttribute("value");
-
-        if(netpathstr.isEmpty()) throw new XMLEmptyAttributeError("Value of network element is empty");
-
-        return new File(parent, netpathstr);
-    }
-
-    /**
-     * Checks if the output directory is present, and creates one of not present.
-     * @param filename the name of the file
-     * @return the Path of the given filename
-     * @author Luca
-     * */
-    public static Path prepareOutputPath(String filename) throws IOException {
-        Path outputDir = Path.of(Documents.OUTPUT_DIR_NAME);
-        Files.createDirectories(outputDir);
-        return outputDir.resolve(filename);
-    }
+		nets = doc.getElementsByTagName("net-file");
 
 
+		if (nets.getLength() == 0) {
+			throw new SumoCfgParsingError("No network value found in SumoConfig");
+		}
 
-    /**
-     * Reads out the relative path / filename of the route file via XML parsing the .sumocfg file.
-     * @param scfg The location of the .sumocfg file
-     * @return The location of the route file as File
-     * @author Luca
-     * */
-    public static File getRouFromSCFG(File scfg) throws Exception {
+		String parent = scfg.getParent();
 
-        NodeList routes;
+		Element netelement = (Element) nets.item(0);
 
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder(); //this may throw
-        Document doc = dBuilder.parse(scfg); //this too
+		String netpathstr = netelement.getAttribute("value");
 
-        doc.getDocumentElement().normalize();
+		if (netpathstr.isEmpty()) throw new XMLEmptyAttributeError("Value of network element is empty");
 
-        routes = doc.getElementsByTagName("route-file");
+		return new File(parent, netpathstr);
+	}
+
+	/**
+	 * Checks if the output directory is present, and creates one of not present.
+	 *
+	 * @param filename the name of the file
+	 * @return the Path of the given filename
+	 * @author Luca
+	 *
+	 */
+	public static Path prepareOutputPath(String filename) throws IOException {
+		Path outputDir = Path.of(Documents.OUTPUT_DIR_NAME);
+		Files.createDirectories(outputDir);
+		return outputDir.resolve(filename);
+	}
 
 
-        if(routes.getLength() == 0){
-            throw new SumoCfgParsingError("No network value found in SumoConfig");
-        }
+	/**
+	 * Reads out the relative path / filename of the route file via XML parsing the .sumocfg file.
+	 *
+	 * @param scfg The location of the .sumocfg file
+	 * @return The location of the route file as File
+	 * @author Luca
+	 *
+	 */
+	public static File getRouFromSCFG(File scfg) throws Exception {
 
-        String parent = scfg.getParent();
+		NodeList routes;
 
-        Element routeelement = (Element) routes.item(0);
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder(); //this may throw
+		Document doc = dBuilder.parse(scfg); //this too
 
-        String routepathstr =  routeelement.getAttribute("value");
+		doc.getDocumentElement().normalize();
 
-        if(routepathstr.isEmpty()) throw new XMLEmptyAttributeError("Value of route element is empty");
+		routes = doc.getElementsByTagName("route-file");
 
-        return new File(parent, routepathstr);
-    }
 
-    /**
-     * A method to convert an absolute path to a relative path based on the SumoConfig path.
-     * <br>
-     * AI was used for help on the path conversion.
-     *
-     * @param absolutePath The absolute path which should be converted to a relative path.
-     * @return The relative path which was created.
-     * @author Joel
-     */
-    public static String getRelativePath(String absolutePath) {
-        // get SumoConfig path
-        Path sumoConfigPath = Paths.get(new File(SimController.getProjectLocation(), "SumoConfig").getPath());
+		if (routes.getLength() == 0) {
+			throw new SumoCfgParsingError("No network value found in SumoConfig");
+		}
 
-        // create and return a relative path based on the SumoConfig path
-        return sumoConfigPath.relativize(Paths.get(absolutePath)).toString();
+		String parent = scfg.getParent();
 
-        // Used AI code part explanations
-        // Paths.get(String)        <-- converts a string to a Path
-        // path0.relativize(path1)  <--returns the relative path of path1 relative to path0
-    }
+		Element routeelement = (Element) routes.item(0);
+
+		String routepathstr = routeelement.getAttribute("value");
+
+		if (routepathstr.isEmpty()) throw new XMLEmptyAttributeError("Value of route element is empty");
+
+		return new File(parent, routepathstr);
+	}
+
+	/**
+	 * A method to convert an absolute path to a relative path based on the SumoConfig path.
+	 * <br>
+	 * AI was used for help on the path conversion.
+	 *
+	 * @param absolutePath The absolute path which should be converted to a relative path.
+	 * @return The relative path which was created.
+	 * @author Joel
+	 */
+	public static String getRelativePath(String absolutePath) {
+		// get SumoConfig path
+		Path sumoConfigPath = Paths.get(new File(SimController.getProjectLocation(), "SumoConfig").getPath());
+
+		// create and return a relative path based on the SumoConfig path
+		return sumoConfigPath.relativize(Paths.get(absolutePath)).toString();
+	}
 
 }

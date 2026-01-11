@@ -9,11 +9,12 @@ import org.group_three.constants.UI;
 import org.group_three.debug.annotations.MayReturnNull;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.SimulationView_Controller;
-import org.group_three.ui.controllers.MainWindow_SimulationControls_Controller;
-import org.group_three.ui.controllers.StatisticsAnalytics_Controller;
+import org.group_three.ui.controllers.SimulationViewController;
+import org.group_three.ui.controllers.MainWindowSimulationControlsController;
+import org.group_three.ui.controllers.StatisticsAnalyticsController;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * A class that represents the 2d world.
@@ -21,6 +22,9 @@ import java.util.*;
  * @author Joel
  */
 public class World {
+
+	// Logger
+	private static final Logger log = Logger.getLogger(World.class.getName());
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -93,7 +97,7 @@ public class World {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private final List<WorldObject> worldObjects = new ArrayList<WorldObject>();
+	private final List<WorldObject> worldObjects = new ArrayList<>();
 
 
 	/**
@@ -104,10 +108,6 @@ public class World {
 	@SuppressWarnings("JavadocDeclaration")
 	private final GraphicsContext graphicsContext;
 
-	public Canvas getRenderTarget() {
-		return renderTarget;
-	}
-
 	/**
 	 * The canvas to draw on.
 	 *
@@ -115,6 +115,22 @@ public class World {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final Canvas renderTarget;
+
+	/**
+	 * A boolean if the world should update or not.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private boolean requestedUpdate = false;
+
+	/**
+	 * The update timer that triggers the update tick.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private final Timeline updateTimer;
 
 	//-------------------------------------------------MemberVariables--------------------------------------------------
 
@@ -130,19 +146,21 @@ public class World {
 		this.renderTarget = renderTarget;
 		graphicsContext = renderTarget.getGraphicsContext2D();
 
-		MainWindow_SimulationControls_Controller.setPlay(false);
-		SimulationView_Controller.rotationIndicatorStatic.setRotate(0);
-		StatisticsAnalytics_Controller.clear();
+		MainWindowSimulationControlsController.setPlay(false);
+		SimulationViewController.rotationIndicatorStatic.setRotate(0);
+		StatisticsAnalyticsController.clear();
 
-		timeline = new Timeline(new KeyFrame(Duration.seconds(1/UI.maxSimulationViewFps), e -> updateTick()) );
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
+		updateTimer = new Timeline(new KeyFrame(Duration.seconds(1 / UI.maxSimulationViewFps), _ -> updateTick()));
+		updateTimer.setCycleCount(Timeline.INDEFINITE);
+		updateTimer.play();
+
+		log.info("Created new World.");
 	}
 
 	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++GetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++GetterSetterMethods++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Gets the world viewers current rotation.
@@ -191,6 +209,7 @@ public class World {
 	 * @return The world size as a half Vector2D.
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public Vector2D getWorldSize() {
 		return worldSize;
 	}
@@ -201,6 +220,7 @@ public class World {
 	 * @return The world's bounds center offset.
 	 * @author Joel
 	 */
+	@SuppressWarnings("unused")
 	public Vector2D getWorldOffset() {
 		return worldOffset;
 	}
@@ -215,10 +235,16 @@ public class World {
 		return worldObjects;
 	}
 
-	//--------------------------------------------------GetterMethods---------------------------------------------------
+	/**
+	 * A method to get the worlds render target. (canvas)
+	 *
+	 * @return A canvas
+	 * @author Joel
+	 */
+	public Canvas getRenderTarget() {
+		return renderTarget;
+	}
 
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++SetterMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Sets the world viewers current rotation.
@@ -236,7 +262,9 @@ public class World {
 		}
 
 		viewerRotation = rotation;
-		SimulationView_Controller.rotationIndicatorStatic.setRotate(360-rotation);
+
+		// update the rotation indicator
+		SimulationViewController.rotationIndicatorStatic.setRotate(360 - rotation);
 
 		requestUpdate();
 	}
@@ -248,9 +276,13 @@ public class World {
 	 * @author Joel
 	 */
 	public void setViewerZoom(double zoom) {
+		// it somehow works if though logically I would think it wouldn't
+		// will stay like this as its working and trying to clean it up broke functionality for some reason
 		if (zoom < viewerZoomLimit.x) {
+			//noinspection UnusedAssignment
 			zoom = viewerZoomLimit.x;
 		} else if (zoom > viewerZoomLimit.y) {
+			//noinspection UnusedAssignment
 			zoom = viewerZoomLimit.y;
 		} else {
 			viewerZoom = zoom;
@@ -303,10 +335,6 @@ public class World {
 		this.worldOffset = worldOffset;
 	}
 
-	//--------------------------------------------------SetterMethods---------------------------------------------------
-
-
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++AdderMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Add a rotation value to the world viewer's rotation.
@@ -335,10 +363,7 @@ public class World {
 	 * @author Joel
 	 */
 	public void addViewerPosition(Vector2D position) {
-		Vector2D pos = getViewerPosition();
-		pos.x += position.x;
-		pos.y += position.y;
-		setViewerPosition(pos);
+		setViewerPosition(getViewerPosition().add(position));
 	}
 
 	/**
@@ -351,10 +376,6 @@ public class World {
 		worldObjects.add(object);
 	}
 
-	//---------------------------------------------------AdderMethods---------------------------------------------------
-
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++RemoverMethods++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Removes a world object to the world object list.
@@ -366,14 +387,22 @@ public class World {
 		worldObjects.remove(object);
 	}
 
-	//--------------------------------------------------RemoverMethods--------------------------------------------------
+	/**
+	 * A method to get the update timer.
+	 * @return Timeline
+	 * @author Joel
+	 */
+	public Timeline getUpdateTimer() {
+		return updateTimer;
+	}
+
+	//-----------------------------------------------GetterSetterMethods------------------------------------------------
 
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to request render updates.
-	 * Not really implemented yet and just forwards the request directly to render it.
 	 *
 	 * @author Joel
 	 * @see #update()
@@ -382,11 +411,12 @@ public class World {
 		requestedUpdate = true;
 	}
 
-
-
-	private boolean requestedUpdate = false;
-	public final Timeline timeline;
-
+	/**
+	 * A tick method to check and update the world.
+	 * runs CONSTANTLY with a minimum delay of 1 second divided by UI.maxSimulationViewFps
+	 *
+	 * @author Joel
+	 */
 	private void updateTick() {
 		// skip if no update is requested
 		if (!requestedUpdate) return;
@@ -406,11 +436,19 @@ public class World {
 	 * @see #requestUpdate()
 	 */
 	private void update() {
+		// save graphics context
 		graphicsContext.save();
+
+		// use different background color in high contrast mode
 		graphicsContext.setFill(UI.highContrast ? UI.worldHighContrastColor : UI.worldColor);
+
+		// draw rect over the whole canvas, to clear every pixel
 		graphicsContext.fillRect(0, 0, renderTarget.getWidth(), renderTarget.getHeight());
+
+		// restore graphics context
 		graphicsContext.restore();
 
+		// update all world objects in the world
 		for (WorldObject object : worldObjects) {
 			object.update();
 		}
@@ -424,23 +462,34 @@ public class World {
 	 * @return The hit world object.
 	 * @author Joel
 	 */
-    @MayReturnNull
+	@MayReturnNull
 	public WorldObject interact(Vector2D worldPosition) {
+		// skip if there are no world objects in the world
 		if (worldObjects.isEmpty()) return null;
+
+		// check for collisions
+		// --->
 
 		List<Double> distances = new ArrayList<>();
 		List<WorldObject> interactableObjects = new ArrayList<>();
 		List<WorldObject> boxCollisionHits = new ArrayList<>();
 
-		// reversed WorldObject list so you always select newer objects over older, so you can select cars over roads etc
+		// reversed WorldObject list so you always select newer objects over older, so you can select cars over roads etc.
+		// loop through every world object
 		for (WorldObject worldObject : worldObjects.reversed()) {
+			// skip world object check if not interactable
 			if (!worldObject.isInteractable()) continue;
 
+			// get distance between world object and interact position
 			double distanceToObject = worldObject.getPosition().sub(worldPosition).length();
 
+			// if interact position is inside the sphere collision (checked if distance less equal sphere collision radius)
 			if (distanceToObject <= worldObject.getSphereCollision()) {
-				if (worldObject.useBoxCollision()) {
+
+				// check if box collision is enabled
+				if (worldObject.useBoxCollision()) { // if true -> check for box collision
 					// BoxCollision
+					// get absolute relative hit position
 					Vector2D relativeHitPosition = Meth.getRelativeLocation(worldObject.getPosition(), worldObject.getRotation(), worldPosition);
 					Vector2D relativeHalfHeightHit = relativeHitPosition.abs();
 
@@ -451,22 +500,28 @@ public class World {
 						boxCollisionHits.add(worldObject);
 					}
 
-				} else {
+				} else { // if false -> add sphere collision
 					// SphereCollision
 					distances.add(distanceToObject);
 					interactableObjects.add(worldObject);
 				}
 			}
 		}
+		// <---
 
+		// if there is a box collision hit return the first object
 		if (!boxCollisionHits.isEmpty()) return boxCollisionHits.getFirst();
 
+		// if there are no hits return null
 		if (interactableObjects.isEmpty() || distances.isEmpty()) return null;
 
+		// if there are hits at this point in the code they will be sphere collisions
+		// find nearest sphere collision in hit list and return
 		double shortestDistance = distances.getFirst();
 		int shortestDistanceIndex = 0;
 		int index = 0;
 
+		// loop through every sphere collision hit and adjust the shortest distance and the indexes
 		for (double distance : distances) {
 			if (distance < shortestDistance) {
 				shortestDistance = distance;
@@ -475,6 +530,7 @@ public class World {
 			index++;
 		}
 
+		// return nearest sphere collision hit result to the interact position
 		return interactableObjects.get(shortestDistanceIndex);
 	}
 

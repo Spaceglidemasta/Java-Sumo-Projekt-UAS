@@ -4,9 +4,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 import org.group_three.model.*;
-import org.group_three.ui.controllers.Filter_Vehicle_Controller;
+import org.group_three.ui.controllers.FilterVehicleController;
 import org.group_three.ui.world.*;
 
 import java.util.ArrayList;
@@ -85,7 +84,7 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
-	private static Filter_Vehicle_Controller filterVehicleController;
+	private static FilterVehicleController filterVehicleController;
 
 	//--------------------------------------------------ClassVariables--------------------------------------------------
 
@@ -132,16 +131,15 @@ public class SimView2D {
 	 */
 	public static void setSelected(WorldObject selected) {
 
+		// go into route selection mode if not null
 		if (routeSelection != null) {
 
-			Debug.print(routeSelection.getClass() == WorldRoad.class);
-
 			if (routeSelection.getClass() == WorldRoad.class) {
-				((WorldRoad) routeSelection).detailsPanelRoadController.routeSelected(selected);
+				((WorldRoad) routeSelection).getDetailsPanelRoadController().routeSelected(selected);
 			}
 
 			if (routeSelection.getClass() == WorldVehicle.class) {
-				((WorldVehicle) routeSelection).detailsPanelVehicleController.routeSelected(selected);
+				((WorldVehicle) routeSelection).getDetailsPanelVehicleController().routeSelected(selected);
 			}
 
 			log.info("New Route \"" + selected.getDisplayName() + "\" selected for \"" + routeSelection.getDisplayName() + "\".");
@@ -197,7 +195,7 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	public static void newWorld() {
-		if (world != null) world.timeline.stop();
+		if (world != null) world.getUpdateTimer().stop();
 
 		world = new World(renderTarget);
 
@@ -360,10 +358,9 @@ public class SimView2D {
 	/**
 	 * A method to add and update all SUMO traffic lights in the world.
 	 *
-	 * @param renderLayer The render layer to which the object to update is.
 	 * @author Joel
 	 */
-	private static void updateTrafficLights(Canvas renderLayer) {
+	private static void updateTrafficLights() {
 		SimController simcon = SimController.getMainsimcon();
 		if (simcon == null) return;
 
@@ -445,7 +442,7 @@ public class SimView2D {
 		SimController simcon = SimController.getMainsimcon();
 		if (simcon == null) return;
 
-		updateTrafficLights(renderTarget);
+		updateTrafficLights();
 
 		WVehicle.loadnupdateAll(simcon);
 		simcon.collectTelemetry();
@@ -461,7 +458,7 @@ public class SimView2D {
 	 * @param filterVehicleController The controller that requests the position.
 	 * @author Joel
 	 */
-	public static void requestPosition(Filter_Vehicle_Controller filterVehicleController) {
+	public static void requestPosition(FilterVehicleController filterVehicleController) {
 		SimView2D.filterVehicleController = filterVehicleController;
 	}
 

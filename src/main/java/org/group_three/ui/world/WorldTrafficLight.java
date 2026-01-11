@@ -16,48 +16,46 @@ import org.group_three.model.WLink;
 import org.group_three.model.WTrafficLight;
 import org.group_three.ui.Meth;
 import org.group_three.ui.Vector2D;
-import org.group_three.ui.controllers.DetailsPanel_TrafficLight_Controller;
+import org.group_three.ui.controllers.DetailsPanelTrafficLightController;
+
+import java.util.logging.Logger;
 
 /**
  * The class to render TrafficLights.
  * Incomplete and only displays stop lines yet.
  *
- * @author Joel
+ * @author Joel, Leon
  */
 public class WorldTrafficLight extends WorldObject {
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Logger
+	private static final Logger log = Logger.getLogger(WorldTrafficLight.class.getName());
 
-	public WTrafficLight getwTrafficLight() {
-		return wTrafficLight;
-	}
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    /**
-     * time until the next switch of the tl.
-     *
-     * @author Leon
-     */
-    @SuppressWarnings("JavadocDeclaration")
-    private int initialRemainingTimeUntilSwitch = 0;
+	/**
+	 * time until the next switch of the tl.
+	 *
+	 * @author Leon
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private int initialRemainingTimeUntilSwitch = 0;
 
-    /**
-     * Countdown time (set to -1 if not initialized).
-     *
-     * @author Leon
-     */
-    @SuppressWarnings("JavadocDeclaration")
-    private int countdownStartSimTime = -1;
-    /**
+	/**
+	 * Countdown time (set to -1 if not initialized).
+	 *
+	 * @author Leon
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private int countdownStartSimTime = -1;
+
+	/**
 	 * The WTrafficLight object which is grouping the WLink classes.
 	 *
 	 * @author Joel
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final WTrafficLight wTrafficLight;
-
-	public WLink getwLink() {
-		return wLink;
-	}
 
 	/**
 	 * The WLink object which owns this class.
@@ -74,12 +72,19 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	@SuppressWarnings("JavadocDeclaration")
 	private final Vector2D size;
-	private DetailsPanel_TrafficLight_Controller detailsPanelTrafficLightController;
 
-	//--------------------------------------------------MemberVariables--------------------------------------------------
+	/**
+	 * The details panel reference for this world traffic light.
+	 *
+	 * @author Joel
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private DetailsPanelTrafficLightController detailsPanelTrafficLightController;
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The default empty constructor.
@@ -87,7 +92,6 @@ public class WorldTrafficLight extends WorldObject {
 	 *
 	 * @author Joel
 	 */
-	@SuppressWarnings("unused")
 	public WorldTrafficLight() {
 		super();
 		this.wTrafficLight = null;
@@ -99,7 +103,7 @@ public class WorldTrafficLight extends WorldObject {
 	/**
 	 * The default WorldTrafficLight constructor to spawn a new WorldTrafficLight in a world.
 	 *
-	 * @param world         The world to which the WorldRoad should be added.
+	 * @param world         The world to which the WorldTrafficLight should be added.
 	 * @param canvas        The canvas of the world.
 	 * @param displayName   The display name which should show up on selection.
 	 * @param wTrafficLight The WTrafficLight reference.
@@ -118,51 +122,47 @@ public class WorldTrafficLight extends WorldObject {
 
 		setInteractable(true);
 		setSphereCollision(size.y / 2);
-		detailClassPath = "/org/group_three/ui/fxml/DetailsPanel_TrafficLight.fxml";
-
-		/*wTrafficLight.getPhaseIndex();
-		wLink.getTLIndex();
-		wTrafficLight.getPhaseLen();
-		wTrafficLight.setProgram();
-		wTrafficLight.pr*/
-
-
-		//Debug.print(wTrafficLight.getProgram().programs.get(wTrafficLight.getProgramID()));
-
+		setDetailClassPath("DetailsPanelTrafficLight.fxml");
 	}
 
-	//--------------------------------------------------Constructors--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The update method which is used to draw the WorldTrafficLight in the world.
-     * It also draws the time if <code>showTLTiming</code> is true.
+	 * It also draws the time if <code>showTLTiming</code> is true.
 	 *
 	 * @author Joel + Leon
 	 */
 	@Override
 	public void update() {
-		Color color = Color.GRAY;
+		// update traffic light stop line color
+		Color color;
 		try {
 			color = Meth.SumoClrToClr(wLink.getColor());
 		} catch (Exception e) {
-			//throw new RuntimeException(e);
+			log.warning("Failed to set WorldTrafficLight color.");
 			color = Color.GRAY;
 		}
 
+		// draw stop line
 		drawRectangle(size.div(2), color);
 
 		if (UI.showTLTiming) {
-			SimController sim = SimController.getMainsimcon();
+			SimController simcon = SimController.getMainsimcon();
+			if (simcon == null) return;
 
-            int currentSimTime = sim.getTime();
-            int baseRemaining = getTimeUntilNextState();
-            if (countdownStartSimTime < 0 || baseRemaining != initialRemainingTimeUntilSwitch) {
-                initialRemainingTimeUntilSwitch = baseRemaining;
-                countdownStartSimTime = Math.max(0, currentSimTime - 1);
-            }
+			int currentSimTime = simcon.getTime();
+			int baseRemaining = getTimeUntilNextState();
+			if (countdownStartSimTime < 0 || baseRemaining != initialRemainingTimeUntilSwitch) {
+				initialRemainingTimeUntilSwitch = baseRemaining;
+				countdownStartSimTime = Math.max(0, currentSimTime - 1);
+			}
 
-            int elapsed = Math.max(0, currentSimTime - countdownStartSimTime);
-            int remainingTimeUntilSwitch = Math.max(0, initialRemainingTimeUntilSwitch - elapsed);
+			int elapsed = Math.max(0, currentSimTime - countdownStartSimTime);
+			int remainingTimeUntilSwitch = Math.max(0, initialRemainingTimeUntilSwitch - elapsed);
 
 
 			String text = Integer.toString(remainingTimeUntilSwitch);
@@ -171,7 +171,7 @@ public class WorldTrafficLight extends WorldObject {
 			setDrawTransform();
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
-			
+
 			double heightPx = getDrawSize(size.div(2)).y;
 			gc.setFont(Font.font(Math.max(10, heightPx * 0.6)));
 			double yOffset = -heightPx * 0.15;
@@ -185,64 +185,103 @@ public class WorldTrafficLight extends WorldObject {
 			gc.fillText(text, 0, yOffset);
 			gc.restore();
 		}
-		
-        updateDetailsPanel();
+
+		updateDetailsPanel();
 	}
 
+	/**
+	 * A method to set up the details panel for this class.
+	 *
+	 * @param fxmlLoader The FXML Loader reference to load the details panel into.
+	 * @author Joel
+	 */
 	@Override
 	public void setupDetailsPanel(FXMLLoader fxmlLoader) {
+		// set controller reference
 		detailsPanelTrafficLightController = fxmlLoader.getController();
+
+		// run setup process
 		detailsPanelTrafficLightController.setup(this);
 	}
 
-    @Override
-    public void updateDetailsPanel() {
-        if (detailsPanelTrafficLightController == null) {
-            return;
-        }
-        detailsPanelTrafficLightController.update();
-    }
+	/**
+	 * A method to update the details panel for this class.
+	 *
+	 * @author Joel
+	 */
+	@Override
+	public void updateDetailsPanel() {
+		// skip if controller is invalid
+		if (detailsPanelTrafficLightController == null) {
+			return;
+		}
 
-    /**
-     * Method to calculate when the tl will switch next.
-     * It sums up the phase time (or the minDur) up until
-     * a change occurs (tl changes color)
-     *
-     * @author Leon
-     */
+		// run update process
+		detailsPanelTrafficLightController.update();
+	}
+
+	/**
+	 * A getter to return the WTrafficLight reference of this object.
+	 *
+	 * @return The WTrafficLight reference of this object.
+	 * @author Joel
+	 */
+	public WTrafficLight getwTrafficLight() {
+		return wTrafficLight;
+	}
+
+	/**
+	 * A getter to return the WLink reference of this object.
+	 *
+	 * @return The WLink reference of this object.
+	 * @author Joel
+	 */
+	public WLink getwLink() {
+		return wLink;
+	}
+
+	/**
+	 * Method to calculate when the tl will switch next.
+	 * It sums up the phase time (or the minDur) up until
+	 * a change occurs (tl changes color)
+	 *
+	 * @author Leon
+	 */
 	private int getTimeUntilNextState() {
-        SumoTLSController controller = wTrafficLight.getProgram();
-        SumoTLSProgram program = controller.get("0");
-        int currentPhaseIdx = program.currentPhaseIndex;
-        SumoTLSPhase currentPhase = program.phases.get(currentPhaseIdx);
-        String phaseString = currentPhase.phasedef;
-        int tlIndex = wLink.getTLIndex();
-        int remainingTime = 0;
+		SumoTLSController controller = wTrafficLight.getProgram();
+		SumoTLSProgram program = controller.get("0");
+		int currentPhaseIdx = program.currentPhaseIndex;
+		SumoTLSPhase currentPhase = program.phases.get(currentPhaseIdx);
+		String phaseString = currentPhase.phasedef;
+		int tlIndex = wLink.getTLIndex();
+		int remainingTime = 0;
 
-        for (int i = currentPhaseIdx; i < program.phases.size(); i++) {
-            SumoTLSPhase phase = program.phases.get(i);
-            String phaseDef = phase.phasedef;
-            double minDur = phase.minDur;
-            int duration = (int) phase.duration;
+		for (int i = currentPhaseIdx; i < program.phases.size(); i++) {
+			SumoTLSPhase phase = program.phases.get(i);
+			String phaseDef = phase.phasedef;
+			double minDur = phase.minDur;
+			int duration = (int) phase.duration;
 
-            if (tlIndex >= phaseDef.length()) {
-                break;
-            }
+			if (tlIndex >= phaseDef.length()) {
+				break;
+			}
 
-            char stateChar = phaseDef.charAt(tlIndex);
-            char currentChar = phaseString.charAt(tlIndex);
+			char stateChar = phaseDef.charAt(tlIndex);
+			char currentChar = phaseString.charAt(tlIndex);
 
-            if (stateChar == currentChar) {
-                if (minDur > 0) {
-                    remainingTime += (int) minDur;
-                } else {
-                    remainingTime += duration;
-                }
-            } else {
-                break;
-            }
-        }
+			if (stateChar == currentChar) {
+				if (minDur > 0) {
+					remainingTime += (int) minDur;
+				} else {
+					remainingTime += duration;
+				}
+			} else {
+				break;
+			}
+		}
 		return remainingTime;
 	}
+
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }

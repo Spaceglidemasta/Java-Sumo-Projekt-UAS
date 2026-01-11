@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class WorldPoly extends WorldObject {
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The default color of the poly which is being drawn.
@@ -45,10 +45,10 @@ public class WorldPoly extends WorldObject {
 	@SuppressWarnings("JavadocDeclaration")
 	private final List<Vector2D> shape;
 
-	//--------------------------------------------------MemberVariables--------------------------------------------------
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Constructors++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The default empty constructor.
@@ -56,7 +56,6 @@ public class WorldPoly extends WorldObject {
 	 *
 	 * @author Joel
 	 */
-	@SuppressWarnings("unused")
 	public WorldPoly() {
 		super();
 		this.defaultColor = null;
@@ -83,11 +82,11 @@ public class WorldPoly extends WorldObject {
 		// convert the sumo color value from the poly to a javafx color value, adjust it for high contrast and set it
 		Color c = Meth.SumoClrToClr(poly.getColor()).grayscale();
 		this.highContrastColor = new Color(
-				c.getRed()*0.1,
-				c.getGreen()*0.1,
-				c.getBlue()*0.1,
+				c.getRed() * 0.1,
+				c.getGreen() * 0.1,
+				c.getBlue() * 0.1,
 				c.getOpacity()
-				);
+		);
 
 
 		// get poly shape points
@@ -107,10 +106,10 @@ public class WorldPoly extends WorldObject {
 		this.shape = getRelativeShape(Meth.convertSumoCoords(poly.getShape().coords));
 	}
 
-	//--------------------------------------------------Constructors--------------------------------------------------
+	//---------------------------------------------------Constructors---------------------------------------------------
 
 
-	//++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The update method which is used to draw the WorldPoly in the world.
@@ -119,11 +118,13 @@ public class WorldPoly extends WorldObject {
 	 */
 	@Override
 	public void update() {
+		// skip if polys are disabled
 		if (!UI.showPolys) return;
 
+		// draw the poly in grayscale with a 10% brightness adjustment if height contrast mode is active
 		drawPolygon(shape, UI.highContrast ? highContrastColor : defaultColor);
 	}
 
-	//--------------------------------------------------Methods--------------------------------------------------
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }
