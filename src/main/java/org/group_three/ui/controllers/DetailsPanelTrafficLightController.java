@@ -464,7 +464,6 @@ public class DetailsPanelTrafficLightController {
         }
         
         StringBuilder greenState = new StringBuilder();
-        }
         greenState.append("r".repeat(currentRYGState.length()));
         
         for (String greenLaneID : greenLaneIDs) {
