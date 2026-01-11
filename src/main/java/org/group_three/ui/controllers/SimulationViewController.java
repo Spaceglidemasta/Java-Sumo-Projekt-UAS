@@ -1,13 +1,10 @@
 package org.group_three.ui.controllers;
 
-import java.io.IOException;
-
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import org.group_three.constants.UI;
 import org.group_three.ui.*;
-import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -23,6 +20,20 @@ import org.group_three.ui.world.WorldObject;
  * @author Joel
  */
 public class SimulationViewController {
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The static ref of the rotation indicator.
+	 *
+	 * @author Joel
+	 */
+	private static AnchorPane rotationIndicatorStatic;
+
+	//--------------------------------------------------ClassVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * For static world elements: roads, traffic lights,...
@@ -40,38 +51,85 @@ public class SimulationViewController {
 	@FXML
 	private Pane renderTargetBounds;
 
-	private Vector2D last = new Vector2D();
-	private Vector2D delta = new Vector2D();
-
-	@FXML
-	private CheckBox environmentToggle;
-	@FXML
-	private CheckBox highContrastToggle;
-	@FXML
-	private CheckBox tlTimingToggle;
-	@FXML
-	private AnchorPane rotationBase;
-	public static AnchorPane rotationBaseStatic;
-	@FXML private AnchorPane rotationIndicator;
-	public static AnchorPane rotationIndicatorStatic;
-
 	/**
-	 * Comment
+	 * The checkbox to toggle the environment aka polys.
 	 *
-	 * @throws IOException Throw-Comment
 	 * @author Joel
 	 */
 	@FXML
-	public void initialize() throws IOException {
-		Debug.toConsole("Canvas loaded.");
-		rotationIndicatorStatic = rotationIndicator;
-		rotationBaseStatic = rotationBase;
+	private CheckBox environmentToggle;
 
+	/**
+	 * The checkbox to toggle the high contrast mode.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private CheckBox highContrastToggle;
+
+	/**
+	 * The checkbox to toggle traffic light timings.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private CheckBox tlTimingToggle;
+
+	/**
+	 * The rotation indicator.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private AnchorPane rotationIndicator;
+
+	/**
+	 * The slider for the vehicle size.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	private Slider vehicleSizeSlider;
+
+	/**
+	 * The last known curser location on.
+	 *
+	 * @author Joel
+	 */
+	private Vector2D last = new Vector2D();
+
+	/**
+	 * The current mouse position in canvas space.
+	 *
+	 * @author Joel
+	 */
+	private Vector2D mousePosition = new Vector2D();
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The initialize method for this controller.
+	 * Handles checkbox value changes.
+	 *
+	 * @author Joel
+	 */
+	@FXML
+	public void initialize() {
+		rotationIndicatorStatic = rotationIndicator;
+
+		// bind the canvas size to the size of the parent pane
 		worldStaticRenderTarget.widthProperty().bind(renderTargetBounds.widthProperty());
 		worldStaticRenderTarget.heightProperty().bind(renderTargetBounds.heightProperty());
 
 		SimView2D.initialize(worldStaticRenderTarget,
 				renderTargetBounds);
+
+
+		// update toggle values and then request render update
+		// ----->
 
 		environmentToggle.selectedProperty().addListener((_, _, value) -> {
 			UI.showPolys = value;
@@ -92,130 +150,131 @@ public class SimulationViewController {
 			UI.vehicleScale = newValue.doubleValue();
 			SimView2D.getWorld().requestUpdate();
 		});
+
+		// <----
 	}
 
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++GetterSetterClassMethods+++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
-	 * Comment
+	 * A method to set the rotation of the rotation indicator.
+	 *
+	 * @param rotation The new rotation to indicate.
+	 * @author Joel
+	 */
+	public static void setIndicatorRotation(double rotation) {
+		rotationIndicatorStatic.setRotate(rotation);
+	}
+
+	//---------------------------------------------GetterSetterClassMethods---------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * A method that triggers when a mouse button is clicked.
+	 * To interact with the world.
 	 *
 	 * @author Joel
 	 */
 	@FXML
 	private void onMouseClicked() {
+		// convert mouse click location to in world position
 		Vector2D nMP = mousePosition.sub(SimView2D.getWorld().getViewerPositionOffset());
 		Vector2D worldspaceMousePosition = Meth.getRelativeLocation(SimView2D.getWorld().getViewerPosition(), SimView2D.getWorld().getViewerRotation(), nMP).mul(1 / SimView2D.getWorld().getViewerZoom());
 
+		// execute a click in the world
 		SimView2D.clickInWorld(worldspaceMousePosition);
 
-		try {
-			WorldObject interacted = SimView2D.getWorld().interact(worldspaceMousePosition);
-			if (interacted != null) SimView2D.setSelected(interacted);
-		} catch (Exception e) {
-		}
+		// check for interactions
+		WorldObject interacted = SimView2D.getWorld().interact(worldspaceMousePosition);
+		if (interacted != null) SimView2D.setSelected(interacted);
 
+		// request render update
 		SimView2D.getWorld().requestUpdate();
 	}
 
 	/**
-	 * Comment
+	 * A method that gets triggered when you drag in the canvas.
+	 * Used for panning and if alt key is pressed also rotating the world.
 	 *
-	 * @param event Param-Comment
+	 * @param event MouseEvent
 	 * @author Joel
 	 */
 	@FXML
 	private void onCanvasDragged(MouseEvent event) {
-		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasDragged");
-
+		// current mos pos
 		Vector2D current = new Vector2D(event.getX(), event.getY());
 
-		delta = current.sub(last);
+		// move pos delta
+		Vector2D delta = current.sub(last);
 
+		// rotation data adjusted for default flipped y axis of java fx
 		double startRot = last.sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
 		double rot = current.sub(SimView2D.getWorld().getViewerPositionOffset()).flipY().getRotation();
 		double deltaRot = rot - startRot;
 
-		if (/*!Keyboard.isCtrlKeyPressed() && */Keyboard.isAltKeyPressed()) { // start rotation freely, no snapping
+		if (Keyboard.isAltKeyPressed()) {
+			// rotation logic
 			SimView2D.getWorld().addViewerRotation(deltaRot);
-			SimView2D.getWorld().setViewerPosition(SimView2D.getWorld().getViewerPosition().rotate(deltaRot)); // move to rotate viewer func?!?
-
-		} else if (Keyboard.isCtrlKeyPressed() && Keyboard.isAltKeyPressed() && false) { // start rotation with 45 degree snapping
-			if (((rot >= 0) && (rot < 22.5)) || rot >= 337.5) rot = 0;
-			else if ((rot >= 22.5) && (rot < 67.5)) rot = 45;
-			else if ((rot >= 67.5) && (rot < 112.5)) rot = 90;
-			else if ((rot >= 112.5) && (rot < 157.5)) rot = 135;
-			else if ((rot >= 157.5) && (rot < 202.5)) rot = 180;
-			else if ((rot >= 202.5) && (rot < 247.5)) rot = 225;
-			else if ((rot >= 247.5) && (rot < 292.5)) rot = 270;
-			else if (rot >= 292.5) rot = 315;
-			else throw new RuntimeException("Rotation reached an impossible value!");
-
-			SimView2D.getWorld().setViewerRotation(rot);
+			SimView2D.getWorld().setViewerPosition(SimView2D.getWorld().getViewerPosition().rotate(deltaRot));
 
 		} else {
+			// panning logic
 			SimView2D.getWorld().addViewerPosition(delta);
 		}
 
+		// update last mouse pos
 		last = current;
 	}
 
 	/**
-	 * Comment
+	 * Gets triggered when the canvas is pressed,
+	 * Handles part of the dragging logic by setting the initial cursor position for drag start.
 	 *
-	 * @param event Param-Comment
+	 * @param event MouseEvent
 	 * @author Joel
 	 */
 	@FXML
 	private void onCanvasPressed(MouseEvent event) {
-		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onCanvasPressed");
-
 		last = new Vector2D(event.getX(), event.getY());
 	}
 
-	private Vector2D mousePosition = new Vector2D();
-
 	/**
-	 * Comment
+	 * A method that gets triggered when the mouse moves.
+	 * Used to calculate world dragging/panning.
 	 *
-	 * @param event Param-Comment
+	 * @param event MouseEvent
 	 * @author Joel
 	 */
 	@FXML
 	private void onMouseMoved(MouseEvent event) {
 		mousePosition = new Vector2D(event.getX(), event.getY());
-		//Debug.print(mousePosition);
 	}
 
 	/**
-	 * Comment
+	 * A method that gets triggered on mouse scroll.
+	 * Handles map zooming.
 	 *
-	 * @param event Param-Comment
+	 * @param event MouseEvent
 	 * @author Joel
 	 */
 	@FXML
 	private void onScroll(ScrollEvent event) {
-		if (Debug.JAVAFX_FULL_DEBUG) Debug.toConsole("onScroll");
-
+		// calculate zoom values
 		double zoomDelta = event.getDeltaY() * 0.01;
-		double mlp = zoomDelta < 0 ? 1 : 1;
 		double oldZoom = SimView2D.getWorld().getViewerZoom();
-		//Debug.print(mlp);
+
+		// adjust zoom value
 		SimView2D.getWorld().addViewerZoom(zoomDelta);
-		//world.setViewerPosition(world.getViewerPosition().mul(world.getViewerZoom()/oldZoom));
+
+		// adjust viewer position
 		SimView2D.getWorld().setViewerPosition(SimView2D.getWorld().getViewerPosition().mul(SimView2D.getWorld().getViewerZoom() / oldZoom));
-		//Debug.print(world.getViewerPosition());
 	}
 
-	// draw handler needed so it doesn't waste performance
-
-
-
-
-
-	@FXML
-	private Slider vehicleSizeSlider;
-
-
-
-
-
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }

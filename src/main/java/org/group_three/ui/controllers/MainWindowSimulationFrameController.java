@@ -1,6 +1,7 @@
 package org.group_three.ui.controllers;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -20,6 +21,26 @@ import org.group_three.ui.SimView2D;
  * @author Joel
  */
 public class MainWindowSimulationFrameController {
+
+	// Logger
+	private static final Logger log = Logger.getLogger(MainWindowSimulationFrameController.class.getName());
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++ClassVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The same as detailsAnchor,
+	 * but static to be able to access it from anywhere.
+	 *
+	 * @author Joel
+	 * @see #detailsAnchor
+	 */
+	@SuppressWarnings("JavadocDeclaration")
+	private static AnchorPane detailsPanel;
+
+	//--------------------------------------------------ClassVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The subscene that will contain the simulation views.
@@ -48,26 +69,19 @@ public class MainWindowSimulationFrameController {
 	@FXML
 	private AnchorPane detailsAnchor;
 
-	/**
-	 * The same as detailsAnchor,
-	 * but static to be able to access it from anywhere.
-	 *
-	 * @author Joel
-	 * @see #detailsAnchor
-	 */
-	@SuppressWarnings("JavadocDeclaration")
-	private static AnchorPane detailsPanel;
+	//-------------------------------------------------MemberVariables--------------------------------------------------
 
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * The method to initialize the MainWindowSimulationFrameController.
 	 * Gets called after FXML body creation.
 	 *
-	 * @throws IOException The fxml loading might throw an IOException.
 	 * @author Joel
 	 */
 	@FXML
-	public void initialize() throws IOException {
+	public void initialize() {
 		detailsPanel = detailsAnchor;
 
 		// bind the subscene size to the binder size to always resize it when the window size changes,
@@ -75,26 +89,23 @@ public class MainWindowSimulationFrameController {
 		subsceneView.widthProperty().bind(binder.widthProperty());
 		subsceneView.heightProperty().bind(binder.heightProperty());
 
-		// decide which simulation view should be loaded
-		switch (0) {
+		// try to load 2d view
+		try {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/org/group_three/ui/fxml/SimulationView.fxml")
+			);
+			Parent root = loader.load();
+			subsceneView.setRoot(root);
 
-			//noinspection DataFlowIssue
-			case 0: // 2d view
-				// try loading fxml file
-				FXMLLoader loader = new FXMLLoader(
-						getClass().getResource("/org/group_three/ui/fxml/SimulationView.fxml")
-				);
-
-				Parent root = loader.load();
-				subsceneView.setRoot(root);
-				break;
-
-			case 1: // 3d view
-				//subsceneView.setRoot(sv3d.createView());
-				//subsceneView.setCamera(new PerspectiveCamera());
-				break;
+		} catch (IOException e) {
+			log.severe("Failed to load SimulationView.");
 		}
 	}
+
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++ClassMethods+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * A method to create and assign the details panel.
@@ -103,15 +114,14 @@ public class MainWindowSimulationFrameController {
 	 * @return The FXMLLoader of the details panel.
 	 * @author Joel
 	 */
-    @MayReturnNull
+	@MayReturnNull
 	public static FXMLLoader setDetailsPanel(String fxmlPath) {
 		// try loading fxml file
 		FXMLLoader loader = new FXMLLoader(
 				SimView2D.class.getResource(fxmlPath)
 		);
 
-		//Debug.print(loader.getLocation().getPath());
-
+		// try to set up details panel
 		Node detailsNode;
 		try {
 			detailsNode = loader.load();
@@ -127,12 +137,13 @@ public class MainWindowSimulationFrameController {
 			detailsPanel.getChildren().add(detailsNode);
 
 		} catch (IOException e) {
-			//e.printStackTrace();
+			log.severe("Failed to setup DetailsPanel.");
 			return null;
 		}
 
-
 		return loader;
 	}
+
+	//---------------------------------------------------ClassMethods---------------------------------------------------
 
 }
