@@ -4,7 +4,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
-import org.group_three.debug.Debug;
 import org.group_three.model.*;
 import org.group_three.ui.controllers.Filter_Vehicle_Controller;
 import org.group_three.ui.world.*;
@@ -196,7 +195,7 @@ public class SimView2D {
 	 * @author Joel
 	 */
 	public static void newWorld() {
-		if (world != null) world.timeline.stop();
+		if (world != null) world.getUpdateTimer().stop();
 
 		world = new World(renderTarget);
 
@@ -359,10 +358,9 @@ public class SimView2D {
 	/**
 	 * A method to add and update all SUMO traffic lights in the world.
 	 *
-	 * @param renderLayer The render layer to which the object to update is.
 	 * @author Joel
 	 */
-	private static void updateTrafficLights(Canvas renderLayer) {
+	private static void updateTrafficLights() {
 		SimController simcon = SimController.getMainsimcon();
 		if (simcon == null) return;
 
@@ -444,7 +442,7 @@ public class SimView2D {
 		SimController simcon = SimController.getMainsimcon();
 		if (simcon == null) return;
 
-		updateTrafficLights(renderTarget);
+		updateTrafficLights();
 
 		WVehicle.loadnupdateAll(simcon);
 		simcon.collectTelemetry();

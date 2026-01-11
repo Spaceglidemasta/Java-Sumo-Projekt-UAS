@@ -151,9 +151,10 @@ public class WorldTrafficLight extends WorldObject {
 		drawRectangle(size.div(2), color);
 
 		if (UI.showTLTiming) {
-			SimController sim = SimController.getMainsimcon();
+			SimController simcon = SimController.getMainsimcon();
+			if (simcon == null) return;
 
-			int currentSimTime = sim.getTime();
+			int currentSimTime = simcon.getTime();
 			int baseRemaining = getTimeUntilNextState();
 			if (countdownStartSimTime < 0 || baseRemaining != initialRemainingTimeUntilSwitch) {
 				initialRemainingTimeUntilSwitch = baseRemaining;
