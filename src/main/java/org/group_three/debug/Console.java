@@ -1,7 +1,5 @@
 package org.group_three.debug;
 
-import com.sun.glass.ui.PlatformFactory;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
@@ -44,9 +42,7 @@ public class Console {
 
         // When the console window closes, clear the debug text area reference
         // so messages get buffered until the console is opened again
-        debugStage.setOnCloseRequest(event -> {
-            Debug.clearDebugTextArea();
-        });
+        debugStage.setOnCloseRequest(_ -> Debug.clearDebugTextArea());
 
     }
 
@@ -61,8 +57,4 @@ public class Console {
         debugStage.show();
     }
 
-    // may be used later
-    public void hide() {
-        debugStage.hide();
-    }
 }
