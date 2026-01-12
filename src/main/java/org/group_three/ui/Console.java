@@ -1,10 +1,10 @@
-package org.group_three.debug;
+package org.group_three.ui;
 
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.group_three.ui.MainApp;
+import org.group_three.debug.Debug;
 
 /**
  * Console class contains the controls for the console window
@@ -23,7 +23,7 @@ public class Console {
 
         debugStage = new Stage();
         debugStage.setTitle("Debug Window");
-		debugStage.getIcons().add(MainApp.getAppIcon());
+        debugStage.getIcons().add(MainApp.getAppIcon());
 
         TextArea debugTextArea = new TextArea();
         debugTextArea.setEditable(false);

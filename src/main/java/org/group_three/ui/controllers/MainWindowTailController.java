@@ -5,7 +5,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
-import org.group_three.debug.Console;
+import org.group_three.ui.Console;
 import org.group_three.utils.SystemUsage;
 
 import java.util.logging.Logger;
