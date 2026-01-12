@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import org.group_three.api.SimController;
 import org.group_three.constants.UI;
 import org.group_three.debug.exceptions.InvalidFilesSelected;
-import org.group_three.debug.Debug;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
@@ -33,18 +32,54 @@ import org.group_three.ui.SimView2D;
  */
 public class MainWindowToolbarController {
 
-	private static final Logger log =
-			Logger.getLogger(MainWindowToolbarController.class.getName());
+	// Logger
+	private static final Logger log = Logger.getLogger(MainWindowToolbarController.class.getName());
 
-	// FX:ID's
+	//+++++++++++++++++++++++++++++++++++++++++++++++++MemberVariables++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	/**
+	 * The menu for recently opened simulations.
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private Menu simulationOpenRecent;
+
+	/**
+	 * The button to close the currently active simulation.
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private MenuItem simulationClose;
+
+	/**
+	 * The button to trigger a stress test.
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private MenuItem stressTest;
+
+	/**
+	 * The menu for statistics exports.
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private Menu export;
+
+	/**
+	 * The currently loaded simulation string path.
+	 *
+	 * @author Joel
+	 */
+	private String loadedSimulation = null;
+
+	//-------------------------------------------------MemberVariables--------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++Constructors+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Initializes toolbar
@@ -53,7 +88,6 @@ public class MainWindowToolbarController {
 	 */
 	@FXML
 	private void initialize() {
-		Debug.toConsole("Toolbar loaded.");
 
 		RecentlyOpenedData.load();
 		RecentlyOpenedData.validate();
@@ -72,9 +106,8 @@ public class MainWindowToolbarController {
 
 		// add options
 		for (String path : RecentlyOpenedData.getSimulations()) {
-			//MenuItem_RecentlyOpend item = new MenuItem_RecentlyOpend(path, path);
 			MenuItem item = new MenuItem(path);
-			item.setOnAction(_ -> onSimulationOpenRecentClicked(item)); // _ = event
+			item.setOnAction(_ -> onSimulationOpenRecentClicked(item));
 			simulationOpenRecent.getItems().add(item);
 		}
 
@@ -82,11 +115,16 @@ public class MainWindowToolbarController {
 		simulationOpenRecent.setDisable(simulationOpenRecent.getItems().isEmpty());
 	}
 
+	//---------------------------------------------------Constructors---------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++GetterSetterMethods++++++++++++++++++++++++++++++++++++++++++++++++
+
 	/**
 	 * Function to disable/reactivate the
 	 * "close", "reload" and "export" buttons when simulation is loaded
 	 *
-	 * @param disabled Param-Comment
+	 * @param disabled If buttons should be disabled or not
 	 * @author Joel
 	 */
 	private void setSimulationButtonStates(boolean disabled) {
@@ -95,12 +133,11 @@ public class MainWindowToolbarController {
 		stressTest.setDisable(disabled);
 	}
 
-	private String loadedSimulation = null;
-
 	/**
 	 * Function to activate buttons related to the simulation,
 	 * such as "close" and add the opened simulation to
-	 * the top of the list of recently opened simulations
+	 * the top of the list of recently opened simulations.
+	 * Also sets the button states to enabled/disabled.
 	 *
 	 * @param path Takes in the path as String
 	 * @author Joel
@@ -121,8 +158,12 @@ public class MainWindowToolbarController {
 
 		initializeOpenRecentList();
 
-		Debug.toConsole(RecentlyOpenedData.getSimulations().size());
 	}
+
+	//-----------------------------------------------GetterSetterMethods------------------------------------------------
+
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++Methods++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * Function that tries to load the simulation from the passed in
@@ -137,6 +178,7 @@ public class MainWindowToolbarController {
 
 		StringBuilder mergedPath = new StringBuilder();
 
+		// merge the loaded paths into one string
 		for (File path : paths) {
 			mergedPath
 					.append(path.getAbsolutePath())
@@ -145,8 +187,9 @@ public class MainWindowToolbarController {
 
 		// don't attempt to load the same simulation if its currently loaded
 		if (mergedPath.toString().equals(loadedSimulation))
-			return; // ----------- add a check to not display the currently loaded file in recently opend
+			return;
 
+		// try to load the simulation
 		try {
 			SimController.loadSimulation(paths);
 			setLoadedSimulation(mergedPath.toString());
@@ -154,9 +197,7 @@ public class MainWindowToolbarController {
 		} catch (InvalidFilesSelected ifs) {
 			log.severe("Simulation could not be loaded.");
 		}
-
 	}
-
 
 	/**
 	 * Function for "open" button to open fileChooser,
@@ -167,8 +208,7 @@ public class MainWindowToolbarController {
 	 */
 	@FXML
 	private void onSimulationOpenClicked() {
-		Debug.toConsole("Simulation -> Open...");
-
+		// create new file chooser
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select file");
 
@@ -176,7 +216,7 @@ public class MainWindowToolbarController {
 		String desktopPath = System.getProperty("user.home") + "/Desktop";
 		File desktopDir = new File(desktopPath);
 
-
+		// set default to desktop
 		if (desktopDir.exists()) {
 			fileChooser.setInitialDirectory(desktopDir);
 		}
@@ -186,33 +226,23 @@ public class MainWindowToolbarController {
 			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(fileExtension[0][0], fileExtension[1]));
 		}
 
-
+		// show the actual dialog window, blocks until closed
 		List<File> files = fileChooser.showOpenMultipleDialog(null);
-		if (files != null) {
-			//List<String> paths = new ArrayList<String>() {};
 
-			for (File file : files) {
-				// if a file was selected do something with it here
-				Debug.toConsole("Selected: " + file.getName());
-				Debug.toConsole(file.getPath());
-				//paths.add(file.getPath());
-			}
-
-			tryLoadingSimulation(files);
-		}
+		// if there are selected files try loading them
+		if (files != null) tryLoadingSimulation(files);
 	}
 
 	/**
 	 * Function to load a recently selected simulation
 	 *
-	 * @param item Param-Comment
-	 * @author Joel
+	 * @param item The menu item that represents file paths
+	 * @author Joel, Luca
 	 */
 	private void onSimulationOpenRecentClicked(MenuItem item) {
-		Debug.toConsole("Simulation -> OpenRecent -> " + item.getText());
-
 		List<File> files = new ArrayList<>();
 
+		// extract files from string
 		for (String strfile : item.getText().split("\n")) {
 			files.add(new File(strfile));
 		}
@@ -228,9 +258,11 @@ public class MainWindowToolbarController {
 	 */
 	@FXML
 	private void onSimulationCloseClicked() {
-		Debug.toConsole("Simulation -> Close");
+		SimController simcon = SimController.getMainsimcon();
+		if (simcon == null) return;
+
 		setLoadedSimulation(null);
-		SimController.getMainsimcon().close();
+		simcon.close();
 		SimView2D.newWorld();
 	}
 
@@ -241,11 +273,10 @@ public class MainWindowToolbarController {
 	 */
 	@FXML
 	private void onExportCSV() {
-		Debug.toConsole("Simulation -> Export");
-
 		// validate sim controller
 		if (SimController.getMainsimcon() == null) return;
 
+		// try to spawn creation filter
 		try {
 			Stage pdfFilter = new Stage();
 			pdfFilter.setTitle("Export as .csv");
@@ -263,7 +294,7 @@ public class MainWindowToolbarController {
 			pdfFilter.show();
 
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			log.severe("Failed to create CreationFilter.");
 		}
 	}
 
@@ -291,6 +322,7 @@ public class MainWindowToolbarController {
 		// validate sim controller
 		if (SimController.getMainsimcon() == null) return;
 
+		// try to spawn creation filter
 		try {
 			Stage pdfFilter = new Stage();
 			pdfFilter.setTitle("Export as .pdf");
@@ -306,7 +338,7 @@ public class MainWindowToolbarController {
 			pdfFilter.show();
 
 		} catch (IOException e) {
-			log.severe("Filter Stage for PDF export could not be rendered.");
+			log.severe("Failed to create CreationFilter.");
 		}
 	}
 
@@ -321,6 +353,11 @@ public class MainWindowToolbarController {
 		new StressTest().Test();
 	}
 
+	/**
+	 * A button to open the user guide in a browser.
+	 *
+	 * @author Joel
+	 */
 	@FXML
 	private void onUserGuide() {
 		try {
@@ -329,5 +366,7 @@ public class MainWindowToolbarController {
 			log.severe("Failed to open UserGuide.");
 		}
 	}
+
+	//-----------------------------------------------------Methods------------------------------------------------------
 
 }

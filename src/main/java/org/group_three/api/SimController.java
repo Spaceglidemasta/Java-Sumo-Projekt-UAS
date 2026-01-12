@@ -761,7 +761,9 @@ public class SimController implements AutoCloseable{
      * @author Luca
      * */
     public void exportStatsAsZippedCSVs(){
-        statcol.exportAsZip();
+        new Thread(
+                () -> statcol.exportAsZip()
+        ).start();
     }
 
     /**Exports the Stat Collection to a .pdf
@@ -769,7 +771,9 @@ public class SimController implements AutoCloseable{
      * @author Luca
      * */
     public void exportStatsToPDF() {
-        statcol.exportAsPDF();
+        new Thread(
+                () -> statcol.exportAsPDF()
+        ).start();
     }
 
 

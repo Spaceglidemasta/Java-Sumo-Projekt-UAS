@@ -3,10 +3,13 @@ package org.group_three.constants;
 import javafx.scene.paint.Color;
 import org.group_three.ui.Vector2D;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A static class for ui constant values.
+ * @author Joel
+ */
 public final class UI {
     private UI() {} //prevents init.
 
@@ -18,6 +21,10 @@ public final class UI {
 	// The main FXML class which is loaded into the main window.
 	// Other UI/FXML parts will be loaded into it.
 	public static final String appFXML = "/org/group_three/ui/fxml/MainWindow.fxml";
+	// The minimal window width.
+	public static final int appMinWidth = 960;
+	// The minimal window height.
+	public static final int appMinHeight = 540;
 	// The base icon to be used and colored for cars.
 	public static final String carIcon = "/org/group_three/ui/icons/carIcon.png";
 	// The default sphere collision color of world objects.
@@ -44,31 +51,33 @@ public final class UI {
 	// The file extension filter data for the simulation open file chooser window.
 	public static final String[][][] simulationOpenFileExtensions = {
 			{ {"SUMO Config"}, {"*.sumocfg"} },
-			{ {"Network & Route"}, {"*.net.xml", "*.rou.xml"} }
-	};
+			{ {"Network & Route"}, {"*.net.xml", "*.rou.xml"} } };
+	// The link to the user guide.
 	public static final String userGuideLink = "https://github.com/Spaceglidemasta/Java-Sumo-Projekt-UAS/blob/main/UserGuide.pdf";
-
+	// The default detail class folder path.
 	public static final String detailClassFolderPath = "/org/group_three/ui/fxml/";
+	// The file name for the recently opened json file.
 	public static final String recentlyOpenedDataFileName = "recentlyOpenedData.json";
-
+	// The maximum fps for the 2d simulation view.
 	public static final double maxSimulationViewFps = 30;
-
+	// If the high contrast mode for the 2d simulation view should be enabled.
 	public static boolean highContrast = false;
+	// If the traffic light timings should be displayed on the canvas.
 	public static boolean showTLTiming = false;
+	// The global vehicle scale.
 	public static double vehicleScale = 1;
+	// The view filter based on vehicle speed. Min/Max ; -1 = no limit
 	public static Vector2D viewFilter_VehicleSpeed = new Vector2D(0, -1);
+	// The vehicle colors to only display.
 	public static List<Color> viewFilter_VehicleColor = new ArrayList<>();
+	// The center position for the vehicle position filter.
 	public static Vector2D viewFilter_Position = new Vector2D();
+	// The radius to filter vehicles around the position.
 	public static double viewFilter_PositionRadius = 0;
-
+	// A list of random vehicles colors, not dynamically created as each unique version creates its own icon which kills performance and fills ram.
 	public static final Color[] randomVehicleColors = {Color.LIGHTBLUE, Color.YELLOW, Color.ORANGE, Color.BLUE, Color.PINK, Color.RED, Color.GREEN, Color.LIGHTGREEN};
+	// A method to get a random color from the color list.
 	public static Color getRandomVehicleColor() {
 		return randomVehicleColors[Math.toIntExact(Math.round(Math.random() * 100)) % randomVehicleColors.length];
 	}
-
-
-	// The minimal window width.
-	public static final int appMinWidth = 960;
-	// The minimal window height.
-	public static final int appMinHeight = 540;
 }

@@ -147,7 +147,7 @@ public class World {
 		graphicsContext = renderTarget.getGraphicsContext2D();
 
 		MainWindowSimulationControlsController.setPlay(false);
-		SimulationViewController.rotationIndicatorStatic.setRotate(0);
+		SimulationViewController.setIndicatorRotation(0);
 		StatisticsAnalyticsController.clear();
 
 		updateTimer = new Timeline(new KeyFrame(Duration.seconds(1 / UI.maxSimulationViewFps), _ -> updateTick()));
@@ -264,7 +264,7 @@ public class World {
 		viewerRotation = rotation;
 
 		// update the rotation indicator
-		SimulationViewController.rotationIndicatorStatic.setRotate(360 - rotation);
+		SimulationViewController.setIndicatorRotation(360 - rotation);
 
 		requestUpdate();
 	}

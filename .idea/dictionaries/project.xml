@@ -4,6 +4,7 @@
       <w>chimentchik</w>
       <w>coords</w>
       <w>cosr</w>
+      <w>erec</w>
       <w>lerp</w>
       <w>lerped</w>
       <w>mainsim</w>
@@ -12,8 +13,11 @@
       <w>restep</w>
       <w>simcon</w>
       <w>sinr</w>
+      <w>strfile</w>
       <w>sumocfg</w>
       <w>vehtype</w>
+      <w>vrec</w>
+      <w>worldspace</w>
     </words>
   </dictionary>
 </component>
