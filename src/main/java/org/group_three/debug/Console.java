@@ -42,6 +42,12 @@ public class Console {
         // this is where the messages are passed to, to be displayed
         Debug.setDebugTextArea(debugTextArea);
 
+        // When the console window closes, clear the debug text area reference
+        // so messages get buffered until the console is opened again
+        debugStage.setOnCloseRequest(event -> {
+            Debug.clearDebugTextArea();
+        });
+
     }
 
     public static Console getInstance() {

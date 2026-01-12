@@ -93,11 +93,18 @@ public final class Debug {
     /**
      * Sets the text area to the one in the console.
      * When the console is opened, flush any messages that were
-     * buffered while the console was inactive
+     * buffered while the console was inactive.
+     * Pass null to clear the reference when console closes.
      * @author Leon
      * */
 
     public static void setDebugTextArea(TextArea textArea) {
+        // If textArea is null, clear the reference
+        if (textArea == null) {
+            debugTextArea = null;
+            return;
+        }
+        
         // Set the text area reference so messages can be displayed
         debugTextArea = textArea;
         String pending;
@@ -113,6 +120,16 @@ public final class Debug {
             debugTextArea.appendText(pending);
             debugTextArea.positionCaret(debugTextArea.getLength());
         });
+    }
+
+    /**
+     * Clears the debug text area reference.
+     * Used when the console window is closed, so that messages
+     * are buffered until the console is opened again.
+     * @author Leon
+     * */
+    public static void clearDebugTextArea() {
+        setDebugTextArea(null);
     }
 
 }
