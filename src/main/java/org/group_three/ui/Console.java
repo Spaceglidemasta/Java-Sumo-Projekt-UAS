@@ -1,12 +1,10 @@
-package org.group_three.debug;
+package org.group_three.ui;
 
-import com.sun.glass.ui.PlatformFactory;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.group_three.ui.MainApp;
+import org.group_three.debug.Debug;
 
 /**
  * Console class contains the controls for the console window
@@ -25,7 +23,7 @@ public class Console {
 
         debugStage = new Stage();
         debugStage.setTitle("Debug Window");
-		debugStage.getIcons().add(MainApp.getAppIcon());
+        debugStage.getIcons().add(MainApp.getAppIcon());
 
         TextArea debugTextArea = new TextArea();
         debugTextArea.setEditable(false);
@@ -42,6 +40,10 @@ public class Console {
         // this is where the messages are passed to, to be displayed
         Debug.setDebugTextArea(debugTextArea);
 
+        // When the console window closes, clear the debug text area reference
+        // so messages get buffered until the console is opened again
+        debugStage.setOnCloseRequest(_ -> Debug.clearDebugTextArea());
+
     }
 
     public static Console getInstance() {
@@ -55,8 +57,4 @@ public class Console {
         debugStage.show();
     }
 
-    // may be used later
-    public void hide() {
-        debugStage.hide();
-    }
 }

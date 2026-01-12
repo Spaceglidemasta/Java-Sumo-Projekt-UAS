@@ -154,6 +154,7 @@ public class WorldTrafficLight extends WorldObject {
 			SimController simcon = SimController.getMainsimcon();
 			if (simcon == null) return;
 
+            //counts down the time
 			int currentSimTime = simcon.getTime();
 			int baseRemaining = getTimeUntilNextState();
 			if (countdownStartSimTime < 0 || baseRemaining != initialRemainingTimeUntilSwitch) {
@@ -161,10 +162,11 @@ public class WorldTrafficLight extends WorldObject {
 				countdownStartSimTime = Math.max(0, currentSimTime - 1);
 			}
 
+            //gets the elapsed time and updates the remaining time by subtracting the elapsed one by the remainder
 			int elapsed = Math.max(0, currentSimTime - countdownStartSimTime);
 			int remainingTimeUntilSwitch = Math.max(0, initialRemainingTimeUntilSwitch - elapsed);
 
-
+            //draws the numbers on the canvas in the middle of a traffic light
 			String text = Integer.toString(remainingTimeUntilSwitch);
 			GraphicsContext gc = getGraphicsContext();
 			gc.save();
@@ -172,12 +174,15 @@ public class WorldTrafficLight extends WorldObject {
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 
-			double heightPx = getDrawSize(size.div(2)).y;
+            //finds the position on where to draw the number
+            double heightPx = getDrawSize(size.div(2)).y;
 			gc.setFont(Font.font(Math.max(10, heightPx * 0.6)));
 			double yOffset = -heightPx * 0.15;
 			gc.rotate(90);
+            //inverts the number so it is not mirrored
 			gc.scale(-1, 1);
 
+            //sets outline and color
 			gc.setStroke(Color.BLACK);
 			gc.setLineWidth(Math.max(1.0, heightPx * 0.08));
 			gc.strokeText(text, 0, yOffset);
@@ -249,26 +254,32 @@ public class WorldTrafficLight extends WorldObject {
 	 */
 	private int getTimeUntilNextState() {
 		SumoTLSController controller = wTrafficLight.getProgram();
+        //gets the current program of tl
 		SumoTLSProgram program = controller.get("0");
 		int currentPhaseIdx = program.currentPhaseIndex;
 		SumoTLSPhase currentPhase = program.phases.get(currentPhaseIdx);
+        //saves current phase as string
 		String phaseString = currentPhase.phasedef;
 		int tlIndex = wLink.getTLIndex();
+
 		int remainingTime = 0;
 
+        //for loop to iterate trough phases, to determine how much time is left until next change
+        //sets current phase as i, so that the time gets calculated from that point onward
 		for (int i = currentPhaseIdx; i < program.phases.size(); i++) {
 			SumoTLSPhase phase = program.phases.get(i);
+            //gets the phase definition as well as the minDur (if present) and duration
 			String phaseDef = phase.phasedef;
 			double minDur = phase.minDur;
 			int duration = (int) phase.duration;
 
-			if (tlIndex >= phaseDef.length()) {
-				break;
-			}
-
+            //collects current state char and the char that the traffic light has
+            //for comparing
 			char stateChar = phaseDef.charAt(tlIndex);
 			char currentChar = phaseString.charAt(tlIndex);
 
+            //if the current color matches the one in the next phase,
+            //add the phase time to the counter (or minDur). Breaks if char does not match anymore
 			if (stateChar == currentChar) {
 				if (minDur > 0) {
 					remainingTime += (int) minDur;

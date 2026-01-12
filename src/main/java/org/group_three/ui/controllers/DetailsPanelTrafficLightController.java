@@ -427,12 +427,8 @@ public class DetailsPanelTrafficLightController {
         Map<String, Integer> laneHaltingCounts = new HashMap<>();
         
         for (String laneID : controlledLanes) {
-            int carsHalting = (int) SimController.getMainsimcon().jobget(Lane.getLastStepHaltingNumber(laneID));
-            int haltingCount = 0;
-            if (carsHalting != 0) {
-                haltingCount = carsHalting;
-            }
-            
+            int haltingCount = (int) SimController.getMainsimcon().jobget(Lane.getLastStepHaltingNumber(laneID));
+
             laneHaltingCounts.put(laneID, haltingCount);
             if (haltingCount > maxHaltingCars) {
                 maxHaltingCars = haltingCount;
@@ -468,9 +464,7 @@ public class DetailsPanelTrafficLightController {
         }
         
         StringBuilder greenState = new StringBuilder();
-        for (int i = 0; i < currentRYGState.length(); i++) {
-            greenState.append('r');
-        }
+        greenState.append("r".repeat(currentRYGState.length()));
         
         for (String greenLaneID : greenLaneIDs) {
             int laneIndex = controlledLanes.indexOf(greenLaneID);
@@ -512,16 +506,13 @@ public class DetailsPanelTrafficLightController {
     private void setIdleState(String tlID) {
         WTrafficLight wtl = worldTrafficLight.getwTrafficLight();
         String currentRYGState = wtl.getRYGState(tlID);
-        
-        StringBuilder redState = new StringBuilder();
-        for (int i = 0; i < currentRYGState.length(); i++) {
-            redState.append('r');
-        }
+
+        String redState = "r".repeat(currentRYGState.length());
         
         SumoTLSController controller = wtl.getProgram();
         SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
         
-        SumoTLSPhase redPhase = new SumoTLSPhase(DEFAULT_IDLE_TIME, redState.toString());
+        SumoTLSPhase redPhase = new SumoTLSPhase(DEFAULT_IDLE_TIME, redState);
         SumoTLSProgram newProgram = new SumoTLSProgram();
 
         newProgram.subID = program.subID;
@@ -591,7 +582,8 @@ public class DetailsPanelTrafficLightController {
 
         if (currentText.equals("Adaptive mode")) {
             SumoTLSController currentController = wtl.getProgram();
-            
+
+            //saves the program for the TL if there isn't one already
             if (!adaptiveSavedStates.containsKey(currentTLID)) {
                 adaptiveSavedStates.put(currentTLID, currentController);
             }

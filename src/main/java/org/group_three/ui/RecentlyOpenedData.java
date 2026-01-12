@@ -92,9 +92,8 @@ public class RecentlyOpenedData {
 		}
 
 		// try to read data from file and parse it using GSON
-		try {
+		try (Scanner fileReader = new Scanner(rOD)) {
 			StringBuilder data = new StringBuilder();
-			Scanner fileReader = new Scanner(rOD);
 
 			// read each line in file and write it into "data"
 			while (fileReader.hasNextLine()) {
