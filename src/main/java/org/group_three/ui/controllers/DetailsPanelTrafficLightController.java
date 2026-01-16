@@ -167,6 +167,7 @@ public class DetailsPanelTrafficLightController {
     private static final int DEFAULT_IDLE_TIME = 1000;
     private static final int ADAPTIVE_CHECK_INTERVAL = 10;
     private static final int ADAPTIVE_GREEN_DURATION = 10;
+    private static boolean static_mode = false;
 
     /**
      * The setup method for this class to fill it with data.
@@ -206,6 +207,9 @@ public class DetailsPanelTrafficLightController {
 	 */
 	@FXML
 	private void initialize() {
+        if(static_mode){
+            setControlsEnabled(false);
+        }
 	}
 
     /**
@@ -310,7 +314,7 @@ public class DetailsPanelTrafficLightController {
         SumoTLSController controller = wtl.getProgram();
         SumoTLSProgram program = controller.get(DEFAULT_PROGRAM_ID);
         int currentPhaseIdx = program.currentPhaseIndex;
-        int newDuration = (int) program.phases.get(currentPhaseIdx).duration;
+        int newDuration;
         String newPhase;
 
         String userInputDuration = phaseTime.getText();
@@ -590,6 +594,7 @@ public class DetailsPanelTrafficLightController {
 
             setIdleState(currentTLID);
             adaptiveStateButton.setText("Static mode");
+            static_mode = true;
             setControlsEnabled(false);
             Debug.toConsole("Adaptive mode enabled");
 
@@ -606,6 +611,7 @@ public class DetailsPanelTrafficLightController {
             adaptiveState.remove(currentTLID);
             
             adaptiveStateButton.setText("Adaptive mode");
+            static_mode = false;
             setControlsEnabled(true);
         }
     }
